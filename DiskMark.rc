@@ -1,0 +1,300 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 日本語 (日本) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
+    "LANGUAGE 17, 1\r\n"
+    "#pragma code_page(932)\r\n"
+    "#include ""res\\DiskMark.rc2""  // Microsoft Visual C++ 以外で編集されたリソース\r\n"
+    "#include ""afxres.rc""     // 標準コンポーネント\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DISKMARK_DIALOG DIALOGEX 0, 0, 267, 185
+#ifdef SUISHO_SHIZUKU_SUPPORT
+STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+#else
+STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+#endif
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "CrystalDiskMark"
+MENU IDR_MENU
+FONT 8, "Tahoma", 400, 0, 0x0
+BEGIN
+END
+
+IDD_ABOUT DIALOGEX 0, 0, 168, 102
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "CrystalDiskMark"
+FONT 8, "Tahoma", 400, 0, 0x0
+BEGIN
+END
+
+IDD_SETTINGS DIALOGEX 0, 0, 154, 76
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Queues&Threads"
+FONT 8, "Tahoma", 400, 0, 0x0
+BEGIN
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+IDR_HTML_DUMMY          HTML                    "res\\dummy.html"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 7,0,0,2018
+ PRODUCTVERSION 7,0,0,2018
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041103a4"
+        BEGIN
+            VALUE "Comments", "https://crystalmark.info/, The MIT License"
+            VALUE "CompanyName", "Crystal Dew World"
+            VALUE "FileVersion", "7.0.0.2018"
+            VALUE "ProductName", "CrystalDiskMark"
+            VALUE "FileDescription", "CrystalDiskMark"
+            VALUE "OriginalFilename", "DiskMark.exe"
+            VALUE "InternalName", "DiskMark.exe"
+            VALUE "LegalCopyright", "(C) 2007-2018 hiyohiyo"
+            VALUE "ProductVersion", "7.0.0.2018"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x411, 932
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DISKMARK_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 259
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 179
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 161
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 95
+    END
+
+    IDD_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 147
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 69
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "Copy",                        ID_EDIT_COPY
+        MENUITEM "Save",                        ID_RESULT_SAVE
+        MENUITEM "Exit",                        ID_FILE_EXIT
+    END
+    POPUP "Settings"
+    BEGIN
+        POPUP "Test Mode"
+        BEGIN
+            MENUITEM "Default (Random)",            ID_MODE_DEFAULT
+            MENUITEM "All 0x00 (0 Fill)",           ID_MODE_ALL0X00
+        END
+		POPUP "Interval Time"
+		BEGIN
+		    MENUITEM "0 sec", ID_INTERVAL_TIME_0
+			MENUITEM "1 sec", ID_INTERVAL_TIME_1
+			MENUITEM "3 sec", ID_INTERVAL_TIME_3
+			MENUITEM "5 sec", ID_INTERVAL_TIME_5
+			MENUITEM "10 sec", ID_INTERVAL_TIME_10
+			MENUITEM "30 sec", ID_INTERVAL_TIME_30
+			MENUITEM "60 sec", ID_INTERVAL_TIME_60
+			MENUITEM "180 sec", ID_INTERVAL_TIME_180
+			MENUITEM "300 sec", ID_INTERVAL_TIME_300
+			MENUITEM "600 sec", ID_INTERVAL_TIME_600
+		END
+		MENUITEM "Queues && Threads", ID_SETTINGS_QUEUESTHREADS
+		MENUITEM "IE8 Mode (IE9-)", ID_IE8_MODE
+    END
+    POPUP "&Theme"
+    BEGIN
+        POPUP "Zoom"
+        BEGIN
+            MENUITEM "75%",                         ID_ZOOM_75
+            MENUITEM "100%",                        ID_ZOOM_100
+            MENUITEM "125%",                        ID_ZOOM_125
+            MENUITEM "150%",                        ID_ZOOM_150
+            MENUITEM "200%",                        ID_ZOOM_200
+			MENUITEM "250%",                        ID_ZOOM_250
+			MENUITEM "300%",                        ID_ZOOM_300
+			MENUITEM "400%",                        ID_ZOOM_400
+            MENUITEM "Auto",                        ID_ZOOM_AUTO
+        END
+        MENUITEM SEPARATOR
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "Help",                        ID_HELP
+        MENUITEM "About CrystalDiskMark",       ID_HELP_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "Crystal Dew World [Web]",     ID_HELP_CRYSTALDEWWORLD
+    END
+    POPUP "&Language"
+    BEGIN
+        POPUP "A-N"
+        BEGIN
+            MENUITEM "DUMMY",                       ID_A_DUMMY
+        END
+        POPUP "O-Z"
+        BEGIN
+            MENUITEM "DUMMY",                       ID_O_DUMMY
+        END
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+#ifdef SUISHO_SHIZUKU_SUPPORT
+IDR_MAINFRAME           ICON                    "res\\DiskMarkS.ico"
+IDI_TRAY_ICON           ICON                    "res\\DiskMarkS16.ico"
+#else
+IDR_MAINFRAME           ICON                    "res\\DiskMark.ico"
+IDI_TRAY_ICON           ICON                    "res\\DiskMark16.ico"
+#endif
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR ACCELERATORS
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_F4,          ID_FILE_EXIT,           VIRTKEY, ALT, NOINVERT
+    VK_F1,          ID_HELP,                VIRTKEY, NOINVERT
+    "S",            ID_RESULT_SAVE,         VIRTKEY, CONTROL, NOINVERT
+    "Q",            ID_SETTINGS_QUEUESTHREADS, VIRTKEY, CONTROL, NOINVERT
+    VK_ESCAPE,      IDOK,                   VIRTKEY, NOINVERT
+    VK_F5,          IDOK,                   VIRTKEY, NOINVERT
+END
+
+#endif    // 日本語 (日本) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+LANGUAGE 17, 1
+#pragma code_page(932)
+#include "res\DiskMark.rc2"  // Microsoft Visual C++ 以外で編集されたリソース
+#include "afxres.rc"     // 標準コンポーネント
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
