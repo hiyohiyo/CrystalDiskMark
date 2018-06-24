@@ -32,7 +32,7 @@ protected:
 	virtual void OnCancel();
 
 
-	HRESULT OnDefaultSetting(IHTMLElement *pElement);
+	HRESULT OnDefaultSetting();
 
 	void InitSelectBoxQ(CString ElementName, int currentValue, int maxValue, long *index);
 	void InitSelectBoxT(CString ElementName, int currentValue, int maxValue, long *index);

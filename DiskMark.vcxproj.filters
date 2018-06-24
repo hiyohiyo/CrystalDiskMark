@@ -33,12 +33,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DHtmlDialogEx.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DHtmlMainDialog.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
     <ClCompile Include="GetFileVersion.cpp">
       <Filter>Library Files</Filter>
     </ClCompile>
@@ -89,12 +83,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DHtmlDialogEx.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DHtmlMainDialog.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
     <ClInclude Include="GetFileVersion.h">
       <Filter>Library Files</Filter>
     </ClInclude>
@@ -139,9 +127,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\DiskMark16.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\dummy.html">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

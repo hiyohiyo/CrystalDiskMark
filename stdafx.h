@@ -47,12 +47,7 @@
 #include <afxcmn.h>			// MFC Windows Common Control support
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
-#include <afxdhtml.h>        // CDHtmlDialog
-#include "DHtmlDialogEx.h"		// CDHtmlDialogEx by hiyohiyo
-#include "DHtmlMainDialog.h"	// CDHtmlMainDialog by hiyohiyo
-
 #include "DebugPrint.h"
-
 #include "afxdialogex.h"
 
 #ifdef _UNICODE

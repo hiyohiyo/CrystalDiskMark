@@ -58,7 +58,7 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSettingsDlg, CDialogCx)
 END_MESSAGE_MAP()
 
-HRESULT CSettingsDlg::OnDefaultSetting(IHTMLElement *pElement)
+HRESULT CSettingsDlg::OnDefaultSetting()
 {
 	m_SequentialQueues1 = 32;
 	m_SequentialThreads1 = 1;

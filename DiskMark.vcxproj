@@ -1180,8 +1180,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|ARM64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|ARM'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="DHtmlDialogEx.cpp" />
-    <ClCompile Include="DHtmlMainDialog.cpp" />
     <ClCompile Include="GetFileVersion.cpp" />
     <ClCompile Include="GetOsInfo.cpp" />
   </ItemGroup>
@@ -1200,8 +1198,6 @@
     <ClInclude Include="SettingsDlg.h" />
     <ClInclude Include="StaticCX.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="DHtmlDialogEx.h" />
-    <ClInclude Include="DHtmlMainDialog.h" />
     <ClInclude Include="GetFileVersion.h" />
     <ClInclude Include="GetOsInfo.h" />
   </ItemGroup>
@@ -1212,7 +1208,6 @@
     <None Include="res\DiskMark.ico" />
     <None Include="res\DiskMark.rc2" />
     <None Include="res\DiskMark16.ico" />
-    <None Include="res\dummy.html" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DiskMark.rc" />

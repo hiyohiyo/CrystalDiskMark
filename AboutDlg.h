@@ -40,11 +40,11 @@ protected:
 	CString m_Release;
 	CString m_Copyright;;
 
-	HRESULT OnCrystalDewWorld(IHTMLElement *pElement);
-	HRESULT OnDiskSpd(IHTMLElement *pElement);
-	HRESULT OnLicense(IHTMLElement *pElement);
+	HRESULT OnCrystalDewWorld();
+	HRESULT OnDiskSpd();
+	HRESULT OnLicense();
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	HRESULT OnProjectShizuku(IHTMLElement *pElement);
+	HRESULT OnProjectShizuku();
 #endif
 	DECLARE_MESSAGE_MAP()
 };

@@ -95,15 +95,15 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
-	HRESULT OnAll(IHTMLElement *pElement);
-	HRESULT OnSelectDrive(IHTMLElement *pElement);
-	HRESULT OnSequential1(IHTMLElement *pElement);
+	HRESULT OnAll();
+	HRESULT OnSelectDrive();
+	HRESULT OnSequential1();
 #ifdef SEQUENTIAL2
-	HRESULT OnSequential2(IHTMLElement *pElement);
+	HRESULT OnSequential2();
 #endif
-	HRESULT OnRandom4KB1(IHTMLElement *pElement);
-	HRESULT OnRandom4KB2(IHTMLElement *pElement);
-	HRESULT OnRandom4KB3(IHTMLElement *pElement);
+	HRESULT OnRandom4KB1();
+	HRESULT OnRandom4KB2();
+	HRESULT OnRandom4KB3();
 
 	void Stop();
 

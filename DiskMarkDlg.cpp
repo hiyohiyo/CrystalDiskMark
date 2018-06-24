@@ -322,7 +322,7 @@ INT_PTR CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM 
 	return 0;
 }
 
-HRESULT CDiskMarkDlg::OnSelectDrive(IHTMLElement *pElement)
+HRESULT CDiskMarkDlg::OnSelectDrive()
 {
 	if (m_DiskBenchStatus)
 	{
@@ -514,7 +514,7 @@ void CDiskMarkDlg::UpdateScore()
 //	SetElementPropertyEx(_T("RandomWrite4KB3"), DISPID_IHTMLELEMENT_TITLE, cstr);
 }
 
-HRESULT CDiskMarkDlg::OnSequential1(IHTMLElement* /*pElement*/)
+HRESULT CDiskMarkDlg::OnSequential1()
 {
 	if(m_WinThread == NULL)
 	{
@@ -542,7 +542,7 @@ HRESULT CDiskMarkDlg::OnSequential1(IHTMLElement* /*pElement*/)
 }
 
 #ifdef SEQUENTIAL2
-HRESULT CDiskMarkDlg::OnSequential2(IHTMLElement* /*pElement*/)
+HRESULT CDiskMarkDlg::OnSequential2()
 {
 	if (m_WinThread == NULL)
 	{
@@ -570,7 +570,7 @@ HRESULT CDiskMarkDlg::OnSequential2(IHTMLElement* /*pElement*/)
 }
 #endif
 
-HRESULT CDiskMarkDlg::OnRandom4KB1(IHTMLElement* /*pElement*/)
+HRESULT CDiskMarkDlg::OnRandom4KB1()
 {
 	if(m_WinThread == NULL)
 	{
@@ -597,7 +597,7 @@ HRESULT CDiskMarkDlg::OnRandom4KB1(IHTMLElement* /*pElement*/)
 	return S_FALSE;
 }
 
-HRESULT CDiskMarkDlg::OnRandom4KB2(IHTMLElement* /*pElement*/)
+HRESULT CDiskMarkDlg::OnRandom4KB2()
 {
 	if(m_WinThread == NULL)
 	{
@@ -624,7 +624,7 @@ HRESULT CDiskMarkDlg::OnRandom4KB2(IHTMLElement* /*pElement*/)
 	return S_FALSE;
 }
 
-HRESULT CDiskMarkDlg::OnRandom4KB3(IHTMLElement* /*pElement*/)
+HRESULT CDiskMarkDlg::OnRandom4KB3()
 {
 	if (m_WinThread == NULL)
 	{
@@ -652,7 +652,7 @@ HRESULT CDiskMarkDlg::OnRandom4KB3(IHTMLElement* /*pElement*/)
 }
 
 
-HRESULT CDiskMarkDlg::OnAll(IHTMLElement* /*pElement*/)
+HRESULT CDiskMarkDlg::OnAll()
 {
 	if(m_WinThread == NULL)
 	{
@@ -902,8 +902,6 @@ void CDiskMarkDlg::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl)
 
 void CDiskMarkDlg::InitDrive(CString ElementName)
 {
-	CComPtr<IHTMLElement> pHtmlElement;
-	CComBSTR bstr;
 	CString cstr;
 	CString select;
 

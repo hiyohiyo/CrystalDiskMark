@@ -83,7 +83,7 @@ BEGIN_DHTML_EVENT_MAP(CAboutDlg)
 END_DHTML_EVENT_MAP()
 */
 
-HRESULT CAboutDlg::OnCrystalDewWorld(IHTMLElement* /*pElement*/)
+HRESULT CAboutDlg::OnCrystalDewWorld()
 {
 	if(GetUserDefaultLCID() == 0x0411)// Japanese
 	{
@@ -97,7 +97,7 @@ HRESULT CAboutDlg::OnCrystalDewWorld(IHTMLElement* /*pElement*/)
 	return S_FALSE;
 }
 
-HRESULT CAboutDlg::OnLicense(IHTMLElement* /*pElement*/)
+HRESULT CAboutDlg::OnLicense()
 {
 	if (GetUserDefaultLCID() == 0x0411)// Japanese
 	{
@@ -111,7 +111,7 @@ HRESULT CAboutDlg::OnLicense(IHTMLElement* /*pElement*/)
 	return S_FALSE;
 }
 
-HRESULT CAboutDlg::OnDiskSpd(IHTMLElement* /*pElement*/)
+HRESULT CAboutDlg::OnDiskSpd()
 {
 	OpenUrl(URL_DISKSPD);
 
@@ -119,7 +119,7 @@ HRESULT CAboutDlg::OnDiskSpd(IHTMLElement* /*pElement*/)
 }
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-HRESULT CAboutDlg::OnProjectShizuku(IHTMLElement* /*pElement*/)
+HRESULT CAboutDlg::OnProjectShizuku()
 {
 	if(GetUserDefaultLCID() == 0x0411)// Japanese
 	{
