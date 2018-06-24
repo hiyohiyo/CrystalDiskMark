@@ -217,12 +217,14 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	SetClientRect((DWORD)(m_SizeX * m_ZoomRatio), (DWORD)(m_SizeY * m_ZoomRatio));
 
 	m_FlagShowWindow = TRUE;
-	ChangeTheme(m_CurrentTheme);
-	ChangeButtonStatus(TRUE);
+//	ChangeTheme(m_CurrentTheme);
+//	ChangeButtonStatus(TRUE);
 
 	CenterWindow();
 	ShowWindow(SW_SHOW);
 	m_FlagInitializing = FALSE;
+
+	ChangeLang(m_CurrentLang);
 
 	return TRUE;
 }
@@ -1594,7 +1596,6 @@ void CDiskMarkDlg::CheckIntervalTime()
 
 void CDiskMarkDlg::OnHelp()
 {
-	CString cstr;
 	if (GetUserDefaultLCID() == 0x0411) // Japanese
 	{
 		OpenUrl(URL_HTML_HELP_JA);
@@ -1607,13 +1608,13 @@ void CDiskMarkDlg::OnHelp()
 
 void CDiskMarkDlg::OnCrystalDewWorld()
 {
-	if(GetUserDefaultLCID() == 0x0411) // Japanese
+	if (GetUserDefaultLCID() == 0x0411) // Japanese
 	{
-		ShellExecute(NULL, NULL, URL_CRYSTAL_DEW_WORLD_JA, NULL, NULL, SW_SHOWNORMAL);
+		OpenUrl(URL_CRYSTAL_DEW_WORLD_JA);
 	}
 	else // Other Language
 	{
-		ShellExecute(NULL, NULL, URL_CRYSTAL_DEW_WORLD_EN, NULL, NULL, SW_SHOWNORMAL);
+		OpenUrl(URL_CRYSTAL_DEW_WORLD_EN);
 	}
 }
 

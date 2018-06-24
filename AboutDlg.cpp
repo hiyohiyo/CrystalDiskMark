@@ -9,16 +9,17 @@
 
 #include "stdafx.h"
 #include "DiskMark.h"
+#include "DiskMarkDlg.h"
 #include "AboutDlg.h"
 
-IMPLEMENT_DYNCREATE(CAboutDlg, CDHtmlDialog)
+IMPLEMENT_DYNCREATE(CAboutDlg, CDialog)
 
 CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
-	: CDHtmlDialogEx(CAboutDlg::IDD, CAboutDlg::IDH, pParent)
+	: CDialogCx(CAboutDlg::IDD, pParent)
 {
-	m_CurrentLangPath = ((CDHtmlMainDialog*)pParent)->m_CurrentLangPath;
-	m_DefaultLangPath = ((CDHtmlMainDialog*)pParent)->m_DefaultLangPath;
-	m_ZoomType = ((CDHtmlMainDialog*)pParent)->GetZoomType();
+	m_CurrentLangPath = ((CMainDialog*)pParent)->m_CurrentLangPath;
+	m_DefaultLangPath = ((CMainDialog*)pParent)->m_DefaultLangPath;
+	m_ZoomType = ((CMainDialog*)pParent)->GetZoomType();
 }
 
 CAboutDlg::~CAboutDlg()
@@ -27,26 +28,25 @@ CAboutDlg::~CAboutDlg()
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDHtmlDialogEx::DoDataExchange(pDX);
-
-	DDX_DHtml_ElementInnerText(pDX, _T("Version"), m_Version);
-	DDX_DHtml_ElementInnerText(pDX, _T("Edition"), m_Edition);
-	DDX_DHtml_ElementInnerText(pDX, _T("Release"), m_Release);
-	DDX_DHtml_ElementInnerHtml(pDX, _T("Copyright"), m_Copyright);
+	CDialogCx::DoDataExchange(pDX);
 }
 
 BOOL CAboutDlg::OnInitDialog()
 {
-	CDHtmlDialogEx::OnInitDialog();
+	CDialogCx::OnInitDialog();
 
 	SetWindowText(i18n(_T("WindowTitle"), _T("ABOUT")));
+	m_FlagShowWindow = TRUE;
 
-	EnableDpiAware();
-	InitDHtmlDialog(SIZE_X, SIZE_Y, ((CDiskMarkApp*)AfxGetApp())->m_AboutDlgPath);
+	UpdateDialogSize();
 
+	CenterWindow();
+	ShowWindow(SW_SHOW);
+	
 	return TRUE;
 }
 
+/*
 void CAboutDlg::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl)
 {
 	CString cstr;
@@ -67,10 +67,12 @@ void CAboutDlg::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl)
 		ShowWindow(SW_SHOW);
 	}
 }
+*/
 
-BEGIN_MESSAGE_MAP(CAboutDlg, CDHtmlDialogEx)
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialogCx)
 END_MESSAGE_MAP()
 
+/*
 BEGIN_DHTML_EVENT_MAP(CAboutDlg)
 	DHTML_EVENT_ONCLICK(_T("CrystalDewWorld"), OnCrystalDewWorld)
 	DHTML_EVENT_ONCLICK(_T("License"), OnLicense)
@@ -79,6 +81,7 @@ BEGIN_DHTML_EVENT_MAP(CAboutDlg)
 	DHTML_EVENT_ONCLICK(_T("ProjectShizuku"), OnProjectShizuku)
 #endif
 END_DHTML_EVENT_MAP()
+*/
 
 HRESULT CAboutDlg::OnCrystalDewWorld(IHTMLElement* /*pElement*/)
 {

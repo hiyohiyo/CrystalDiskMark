@@ -8,8 +8,11 @@
 /*---------------------------------------------------------------------------*/
 
 #pragma once
+#include "DialogCx.h"
+#include "StaticCx.h"
+#include "ButtonCx.h"
 
-class CAboutDlg : public CDHtmlDialogEx
+class CAboutDlg : public CDialogCx
 {
 	DECLARE_DYNCREATE(CAboutDlg)
 
@@ -25,12 +28,12 @@ public:
 	CAboutDlg(CWnd* pParent = NULL);
 	virtual ~CAboutDlg();
 
-	enum { IDD = IDD_ABOUT, IDH = IDR_HTML_DUMMY };
+	enum { IDD = IDD_ABOUT };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnInitDialog();
-	virtual void OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl);
+//	virtual void OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl);
 
 	CString m_Version;
 	CString m_Edition;
@@ -44,5 +47,4 @@ protected:
 	HRESULT OnProjectShizuku(IHTMLElement *pElement);
 #endif
 	DECLARE_MESSAGE_MAP()
-	DECLARE_DHTML_EVENT_MAP()
 };
