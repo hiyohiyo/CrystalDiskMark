@@ -11,6 +11,7 @@
 void GetOsName(CString& OsFullName);
 BOOL IsX64();
 BOOL IsIa64();
+BOOL IsArm32();
 BOOL IsArm64();
 BOOL IsWow64();
 BOOL IsSidebar();

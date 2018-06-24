@@ -18,6 +18,12 @@
 #include <math.h>
 #include <exdispid.h>
 
+#include "DialogCx.h"
+#include "MainDialog.h"
+
+#include "ButtonCx.h"
+#include "StaticCx.h"
+
 #define MAX_METER_LENGTH	150
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
@@ -36,21 +42,8 @@
 #define new DEBUG_NEW
 #endif
 
-BEGIN_DHTML_EVENT_MAP(CDiskMarkDlg)
-	DHTML_EVENT_ONCLICK(_T("All"), OnAll)
-	DHTML_EVENT_ONCLICK(_T("TestDrive"), OnSelectDrive)
-	DHTML_EVENT_ONCLICK(_T("Sequential1"), OnSequential1)
-#ifdef SEQUENTIAL2
-	DHTML_EVENT_ONCLICK(_T("Sequential2"), OnSequential2)
-#endif
-	DHTML_EVENT_ONCLICK(_T("Random4KB1"), OnRandom4KB1)
-	DHTML_EVENT_ONCLICK(_T("Random4KB2"), OnRandom4KB2)
-	DHTML_EVENT_ONCLICK(_T("Random4KB3"), OnRandom4KB3)
-//	DHTML_EVENT_ONCHANGE(_T("TestDrive"), OnChangeTestDrive)
-END_DHTML_EVENT_MAP()
-
 CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
-	: CDHtmlMainDialog(CDiskMarkDlg::IDD, CDiskMarkDlg::IDH,
+	: CMainDialog(CDiskMarkDlg::IDD,
 	((CDiskMarkApp*)AfxGetApp())->m_ThemeDir,
 	((CDiskMarkApp*)AfxGetApp())->m_ThemeIndex,
 	((CDiskMarkApp*)AfxGetApp())->m_LangDir,
@@ -68,18 +61,10 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 
 void CDiskMarkDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDHtmlDialog::DoDataExchange(pDX);
-	DDX_DHtml_SelectValue(pDX, _T("TestDrive"), m_ValueTestDrive);
-	DDX_DHtml_SelectIndex(pDX, _T("TestDrive"), m_IndexTestDrive);
-	DDX_DHtml_SelectValue(pDX, _T("TestCount"), m_ValueTestCount);
-	DDX_DHtml_SelectIndex(pDX, _T("TestCount"), m_IndexTestCount);
-	DDX_DHtml_SelectValue(pDX, _T("TestSize"), m_ValueTestSize);
-	DDX_DHtml_SelectIndex(pDX, _T("TestSize"), m_IndexTestSize);
-
-	DDX_DHtml_ElementText(pDX, _T("Comment"), DISPID_IHTMLINPUTELEMENT_VALUE, m_Comment);
+	CMainDialog::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CDiskMarkDlg, CDHtmlMainDialog)
+BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	//}}AFX_MSG_MAP
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	ON_WM_GETMINMAXINFO()
@@ -116,7 +101,6 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CDHtmlMainDialog)
 	ON_COMMAND(ID_HELP_CRYSTALDEWWORLD, &CDiskMarkDlg::OnCrystalDewWorld)
 	ON_COMMAND(ID_MODE_DEFAULT, &CDiskMarkDlg::OnModeDefault)
 	ON_COMMAND(ID_MODE_ALL0X00, &CDiskMarkDlg::OnModeAll0x00)
-	ON_COMMAND(ID_IE8_MODE, &CDiskMarkDlg::OnIE8Mode)
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_RESULT_SAVE, &CDiskMarkDlg::OnResultSave)
 	ON_COMMAND(ID_SETTINGS_QUEUESTHREADS, &CDiskMarkDlg::OnSettingsQueuesThreads)
@@ -132,15 +116,13 @@ LRESULT CDiskMarkDlg::OnQueryEndSession(WPARAM wParam, LPARAM lParam)
 
 BOOL CDiskMarkDlg::OnInitDialog()
 {
-	CDHtmlMainDialog::OnInitDialog();
+	CMainDialog::OnInitDialog();
 
 	m_hAccelerator = ::LoadAccelerators(AfxGetInstanceHandle(),
 		                                MAKEINTRESOURCE(IDR_ACCELERATOR));
 
 	SetIcon(m_hIcon, TRUE);
 	SetIcon(m_hIconMini, FALSE);
-
-	m_FlagWorkaroundIE8Mode = (BOOL) GetPrivateProfileInt(_T("Settings"), _T("IE8Mode"), 0, m_Ini);
 
 	m_IndexTestDrive = 0;	// default value may be "C:\".
 	m_MaxIndexTestDrive = 0;
@@ -230,16 +212,18 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	{
 		SetWindowTitle(_T(""), _T(""));
 	}
-	
-	EnableDpiAware();
-	if (m_FlagWorkaroundIE8Mode)
-	{
-		InitDHtmlDialog(m_SizeX, m_SizeY, ((CDiskMarkApp*) AfxGetApp())->m_MainDlgPathIE8);
-	}
-	else
-	{
-		InitDHtmlDialog(m_SizeX, m_SizeY, ((CDiskMarkApp*) AfxGetApp())->m_MainDlgPath);
-	}
+
+
+	SetClientRect((DWORD)(m_SizeX * m_ZoomRatio), (DWORD)(m_SizeY * m_ZoomRatio));
+
+	m_FlagShowWindow = TRUE;
+	ChangeTheme(m_CurrentTheme);
+	ChangeButtonStatus(TRUE);
+
+	CenterWindow();
+	ShowWindow(SW_SHOW);
+	m_FlagInitializing = FALSE;
+
 	return TRUE;
 }
 
@@ -427,7 +411,7 @@ void CDiskMarkDlg::OnPaint()
 	}
 	else
 	{
-		CDHtmlMainDialog::OnPaint();
+		CMainDialog::OnPaint();
 	}
 }
 
@@ -478,7 +462,7 @@ void CDiskMarkDlg::OnCancel()
 	}
 	WritePrivateProfileString(_T("Settings"), _T("DriveLetter"), cstr, m_Ini);
 
-	CDHtmlMainDialog::OnCancel();
+	CMainDialog::OnCancel();
 }
 
 void CDiskMarkDlg::InitScore()
@@ -515,17 +499,17 @@ void CDiskMarkDlg::UpdateScore()
 	// Set IOPS value as title
 	CString cstr;
 	cstr.Format(_T("%8.1f IOPS"), m_RandomRead4KBScore1 * 1000 * 1000 / 4096);
-	SetElementPropertyEx(_T("RandomRead4KB1"), DISPID_IHTMLELEMENT_TITLE, cstr);
+//	SetElementPropertyEx(_T("RandomRead4KB1"), DISPID_IHTMLELEMENT_TITLE, cstr);
 	cstr.Format(_T("%8.1f IOPS"), m_RandomWrite4KBScore1 * 1000 * 1000 / 4096);
-	SetElementPropertyEx(_T("RandomWrite4KB1"), DISPID_IHTMLELEMENT_TITLE, cstr);
+//	SetElementPropertyEx(_T("RandomWrite4KB1"), DISPID_IHTMLELEMENT_TITLE, cstr);
 	cstr.Format(_T("%8.1f IOPS"), m_RandomRead4KBScore2 * 1000 * 1000 / 4096);
-	SetElementPropertyEx(_T("RandomRead4KB2"), DISPID_IHTMLELEMENT_TITLE, cstr);
+//	SetElementPropertyEx(_T("RandomRead4KB2"), DISPID_IHTMLELEMENT_TITLE, cstr);
 	cstr.Format(_T("%8.1f IOPS"), m_RandomWrite4KBScore2 * 1000 * 1000 / 4096);
-	SetElementPropertyEx(_T("RandomWrite4KB2"), DISPID_IHTMLELEMENT_TITLE, cstr);
+//	SetElementPropertyEx(_T("RandomWrite4KB2"), DISPID_IHTMLELEMENT_TITLE, cstr);
 	cstr.Format(_T("%8.1f IOPS"), m_RandomRead4KBScore3 * 1000 * 1000 / 4096);
-	SetElementPropertyEx(_T("RandomRead4KB3"), DISPID_IHTMLELEMENT_TITLE, cstr);
+//	SetElementPropertyEx(_T("RandomRead4KB3"), DISPID_IHTMLELEMENT_TITLE, cstr);
 	cstr.Format(_T("%8.1f IOPS"), m_RandomWrite4KBScore3 * 1000 * 1000 / 4096);
-	SetElementPropertyEx(_T("RandomWrite4KB3"), DISPID_IHTMLELEMENT_TITLE, cstr);
+//	SetElementPropertyEx(_T("RandomWrite4KB3"), DISPID_IHTMLELEMENT_TITLE, cstr);
 }
 
 HRESULT CDiskMarkDlg::OnSequential1(IHTMLElement* /*pElement*/)
@@ -774,38 +758,19 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 
 void CDiskMarkDlg::ChangeButton(CString elementName, CString className, CString title, CString innerHtml)
 {
-	SetElementPropertyEx(elementName, DISPID_IHTMLELEMENT_CLASSNAME, className);
-	SetElementPropertyEx(elementName, DISPID_IHTMLELEMENT_TITLE, title);
-	SetElementInnerHtmlEx(elementName, innerHtml);
+//	SetElementPropertyEx(elementName, DISPID_IHTMLELEMENT_CLASSNAME, className);
+//	SetElementPropertyEx(elementName, DISPID_IHTMLELEMENT_TITLE, title);
+//	SetElementInnerHtmlEx(elementName, innerHtml);
 }
 
 void CDiskMarkDlg::ChangeSelectStatus(CString ElementName, VARIANT_BOOL status)
 {
-	CComPtr<IHTMLSelectElement> pHtmlSelectElement;
-	HRESULT hr;
-	CComBSTR bstr;
-	CString cstr;
-	
-	hr = GetElementInterface(ElementName, IID_IHTMLSelectElement, (void **) &pHtmlSelectElement);
-	if(FAILED(hr)) return ;
 
-	hr = pHtmlSelectElement->put_disabled(status);
-	if(FAILED(hr)) return ;
 }
 
 void CDiskMarkDlg::ChangeSelectTitle(CString ElementName, CString title)
 {
-	CComPtr<IHTMLElement> pHtmlElement;
-	HRESULT hr;
-	CComBSTR bstr;
-	CString cstr;
-	
-	hr = GetElementInterface(ElementName, IID_IHTMLElement, (void **) &pHtmlElement);
-	if(FAILED(hr)) return ;
-	bstr = title;
 
-	hr = pHtmlElement->put_title(bstr);
-	if(FAILED(hr)) return ;
 }
 
 LRESULT CDiskMarkDlg::OnUpdateMessage(WPARAM wParam, LPARAM lParam)
@@ -831,24 +796,13 @@ void CDiskMarkDlg::UpdateMessage(CString ElementName, CString message)
 {
 	CComBSTR bstr;
 	bstr = _T("&nbsp;") + message;
-	SetElementHtml(ElementName, bstr);
+//	SetElementHtml(ElementName, bstr);
 }
 
 void CDiskMarkDlg::SetMeter(CString ElementName, double Score)
 {
-	CComPtr<IHTMLStyle> pHtmlStyle;
-	CComPtr<IHTMLElement> pHtmlElement;
 	HRESULT hr;
-	CComBSTR bstr;
 	CString cstr;
-	VARIANT va;
-	VariantInit(&va);
-
-	hr = GetElementInterface(ElementName, IID_IHTMLElement, (void **) &pHtmlElement);
-	if(FAILED(hr)) return ;
-
-	hr = pHtmlElement->get_style(&pHtmlStyle);
-	if(FAILED(hr)) return ;
 
 	int meterLength;
 	if(Score > 0.1)
@@ -870,10 +824,6 @@ void CDiskMarkDlg::SetMeter(CString ElementName, double Score)
 	}
 
 	cstr.Format(_T("%dpx"), -1 * (MAX_METER_LENGTH - meterLength));
-	bstr = cstr;
-	va.vt = VT_BSTR;
-	va.bstrVal = bstr;
-	pHtmlStyle->put_backgroundPositionX(va);
 
 	if(Score >= 1000000.0)
 	{
@@ -896,24 +846,19 @@ void CDiskMarkDlg::SetMeter(CString ElementName, double Score)
 		cstr.Format(_T("%.1f"), Score);
 	}
 
-	bstr = cstr;
-	pHtmlElement->put_innerHTML(bstr);
-
 	UpdateData(FALSE);
-
-	VariantClear(&va);
 
 	if (Score >= 100000.0)
 	{
-		SetElementPropertyEx(ElementName, DISPID_IHTMLELEMENT_CLASSNAME, _T("meter1HighScore"));
+	//	SetElementPropertyEx(ElementName, DISPID_IHTMLELEMENT_CLASSNAME, _T("meter1HighScore"));
 	}
 	else if(Score > 0.0)
 	{
-		SetElementPropertyEx(ElementName, DISPID_IHTMLELEMENT_CLASSNAME, _T("meter1"));
+	//	SetElementPropertyEx(ElementName, DISPID_IHTMLELEMENT_CLASSNAME, _T("meter1"));
 	}
 	else
 	{
-		SetElementPropertyEx(ElementName, DISPID_IHTMLELEMENT_CLASSNAME, _T("meter0"));
+	//	SetElementPropertyEx(ElementName, DISPID_IHTMLELEMENT_CLASSNAME, _T("meter0"));
 	}
 }
 
@@ -933,10 +878,6 @@ void CDiskMarkDlg::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl)
 			ChangeZoomType(m_ZoomType);
 			UpdateData(TRUE);
 
-#ifdef SUISHO_SHIZUKU_SUPPORT
-			CallScript(_T("setShizuku"), m_ThemeDir + m_CurrentTheme + _T("\\Shizuku.png"));
-			CallScript(_T("setShizukuCopyright"), m_ThemeDir + m_CurrentTheme + _T("\\ShizukuCopyright.png"));
-#endif	
 			SetClientRect((DWORD) (m_SizeX * m_ZoomRatio), (DWORD) (m_SizeY * m_ZoomRatio));
 
 			m_FlagShowWindow = TRUE;
@@ -950,10 +891,6 @@ void CDiskMarkDlg::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl)
 		}
 		else
 		{
-#ifdef SUISHO_SHIZUKU_SUPPORT
-			CallScript(_T("setShizuku"), m_ThemeDir + m_CurrentTheme + _T("\\Shizuku.png"));
-			CallScript(_T("setShizukuCopyright"), m_ThemeDir + m_CurrentTheme + _T("\\ShizukuCopyright.png"));
-#endif
 			InitDrive(_T("TestDrive"));
 			InitScore();
 			ChangeTheme(m_CurrentTheme);
@@ -964,13 +901,9 @@ void CDiskMarkDlg::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl)
 void CDiskMarkDlg::InitDrive(CString ElementName)
 {
 	CComPtr<IHTMLElement> pHtmlElement;
-	HRESULT hr;
 	CComBSTR bstr;
 	CString cstr;
 	CString select;
-
-	hr = GetElementInterface(ElementName, IID_IHTMLElement, (void **) &pHtmlElement);
-	if(FAILED(hr)) return ;
 
 	// list up drive
 	TCHAR szDrives[256] = {0};
@@ -980,7 +913,6 @@ void CDiskMarkDlg::InitDrive(CString ElementName)
 	int count = 0;
 	GetLogicalDriveStrings(255, szDrives);
 
-	select = _T("<select name=\"TestDrive\" id=\"TestDrive\" title=\"Test Drive\" onChange=\"this.click()\">\n");
 	while( pDrive[0] != _T('\0') )
 	{
 		ULARGE_INTEGER freeBytesAvailableToCaller = {0};
@@ -1039,20 +971,12 @@ void CDiskMarkDlg::InitDrive(CString ElementName)
 		pDrive += forward + 1;
 	}
 
-	cstr = _T("<option value=\"99\">");
-	cstr += i18n(L"Menu", L"SELECT_FOLDER");;
-	cstr += _T("</option>");
-	select += cstr;
-	select += _T("</select>");
 	if(m_TestDriveLetter == 99)
 	{
 		m_IndexTestDrive = count;
 	}
 
 	m_MaxIndexTestDrive = count;
-
-	bstr = select;
-	pHtmlElement->put_outerHTML(bstr);
 
 	UpdateData(FALSE);
 }
@@ -1217,11 +1141,7 @@ BOOL CDiskMarkDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 	// Select Theme
 	if (WM_THEME_ID <= wParam && wParam < WM_THEME_ID + (UINT) m_MenuArrayTheme.GetSize())
 	{
-		CDHtmlMainDialog::OnCommand(wParam, lParam);
-#ifdef SUISHO_SHIZUKU_SUPPORT
-		CallScript(_T("setShizuku"), m_ThemeDir + m_CurrentTheme + _T("\\Shizuku.png"));
-		CallScript(_T("setShizukuCopyright"), m_ThemeDir + m_CurrentTheme + _T("\\ShizukuCopyright.png"));
-#endif
+		CMainDialog::OnCommand(wParam, lParam);
 		return TRUE;
 	}
 
@@ -1264,7 +1184,7 @@ BOOL CDiskMarkDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 #endif
 	}
 
-	return CDHtmlMainDialog::OnCommand(wParam, lParam);
+	return CMainDialog::OnCommand(wParam, lParam);
 }
 
 void CDiskMarkDlg::OnEditCopy()
@@ -1721,44 +1641,10 @@ void CDiskMarkDlg::OnModeAll0x00()
 	SetWindowTitle(_T(""), ALL_0X00_0FILL);
 }
 
-void CDiskMarkDlg::OnIE8Mode()
-{
-	if (m_FlagWorkaroundIE8Mode)
-	{
-		WritePrivateProfileString(_T("Settings"), _T("IE8Mode"), _T("0"), m_Ini);
-		m_FlagWorkaroundIE8Mode = FALSE;
-
-		CMenu *menu = GetMenu();
-		menu->CheckMenuItem(ID_IE8_MODE, MF_UNCHECKED);
-		SetMenu(menu);
-		DrawMenuBar();
-
-		UpdateData(TRUE);
-		m_TestDriveLetter = m_ValueTestDrive.GetAt(0);
-
-		Navigate(_T("file://") + ((CDiskMarkApp*) AfxGetApp())->m_MainDlgPath, navNoHistory);
-	}
-	else
-	{
-		WritePrivateProfileString(_T("Settings"), _T("IE8Mode"), _T("1"), m_Ini);
-		m_FlagWorkaroundIE8Mode = TRUE;
-
-		CMenu *menu = GetMenu();
-		menu->CheckMenuItem(ID_IE8_MODE, MF_CHECKED);
-		SetMenu(menu);
-		DrawMenuBar();
-
-		UpdateData(TRUE);
-		m_TestDriveLetter = m_ValueTestDrive.GetAt(0);
-
-		Navigate(_T("file://") + ((CDiskMarkApp*) AfxGetApp())->m_MainDlgPathIE8, navNoHistory);
-	}
-}
-
 #ifdef SUISHO_SHIZUKU_SUPPORT
 void CDiskMarkDlg::OnSize(UINT nType, int cx, int cy)
 {
-	CDHtmlMainDialog::OnSize(nType, cx, cy);
+	CMainDialog::OnSize(nType, cx, cy);
 
 	if(! m_FlagInitializing)
 	{
@@ -1784,7 +1670,7 @@ void CDiskMarkDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 	lpMMI->ptMaxTrackSize.y = (LONG)(SIZE_Y * m_ZoomRatio + GetSystemMetrics(SM_CYMENU)
 							+ GetSystemMetrics(SM_CYSIZEFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION));
 
-	CDHtmlMainDialog::OnGetMinMaxInfo(lpMMI);
+	CMainDialog::OnGetMinMaxInfo(lpMMI);
 }
 #endif
 
@@ -1808,7 +1694,7 @@ typedef BOOL(WINAPI *FuncEnableNonClientDpiScaling) (HWND hwnd);
 
 BOOL CDiskMarkDlg::OnNcCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (!CDHtmlMainDialog::OnNcCreate(lpCreateStruct))
+	if (!CMainDialog::OnNcCreate(lpCreateStruct))
 		return FALSE;
 
 	HMODULE hModule = GetModuleHandle(_T("User32.dll"));

@@ -47,6 +47,22 @@ BOOL IsX64()
 	return FALSE;
 }
 
+BOOL IsArm32()
+{
+	SYSTEM_INFO si = { 0 };
+
+	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(GetModuleHandle(_T("kernel32.dll")), "GetNativeSystemInfo");
+	if (pGetNativeSystemInfo != NULL)
+	{
+		pGetNativeSystemInfo(&si);
+		if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM)
+		{
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
 BOOL IsArm64()
 {
 	SYSTEM_INFO si = { 0 };
@@ -511,6 +527,10 @@ void GetOsName(CString& OsFullName)
 		if(IsX64())
 		{
 			osArchitecture = _T("x64");
+		}
+		else if (IsArm32())
+		{
+			osArchitecture = _T("ARM32");
 		}
 		else if (IsArm64())
 		{

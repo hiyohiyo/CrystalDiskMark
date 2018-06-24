@@ -53,13 +53,15 @@
 
 #include "DebugPrint.h"
 
+#include "afxdialogex.h"
+
 #ifdef _UNICODE
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
 
 // Version Information
 #define PRODUCT_NAME			_T("CrystalDiskMark")
-#define PRODUCT_VERSION			_T("6.0.1")
+#define PRODUCT_VERSION			_T("7 -Marginality-")
 #define PRODUCT_ROMING_NAME		_T("CrystalDiskMark")
 
 #ifdef UWP
@@ -112,7 +114,7 @@
 #endif
 #endif
 
-#define PRODUCT_RELEASE			_T("2018/06/14")
+#define PRODUCT_RELEASE			_T("2018/06/24")
 #define PRODUCT_COPY_YEAR		_T("2007-2018")
 #define PRODUCT_COPYRIGHT		_T("&copy; hiyohiyo 2007-2018 ")
 

@@ -51,6 +51,24 @@
     <ClCompile Include="DebugPrint.cpp">
       <Filter>Library Files</Filter>
     </ClCompile>
+    <ClCompile Include="ButtonCx.cpp">
+      <Filter>Library Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonEx.cpp">
+      <Filter>Library Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogCx.cpp">
+      <Filter>Library Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EditEx.cpp">
+      <Filter>Library Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainDialog.cpp">
+      <Filter>Library Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticCx.cpp">
+      <Filter>Library Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -87,6 +105,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DebugPrint.h">
+      <Filter>Library Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonCx.h">
+      <Filter>Library Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonEx.h">
+      <Filter>Library Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogCx.h">
+      <Filter>Library Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EditEx.h">
+      <Filter>Library Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainDialog.h">
+      <Filter>Library Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticCX.h">
       <Filter>Library Files</Filter>
     </ClInclude>
   </ItemGroup>

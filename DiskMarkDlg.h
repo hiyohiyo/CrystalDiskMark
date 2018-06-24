@@ -12,12 +12,18 @@
 #include "AboutDlg.h"
 #include "SettingsDlg.h"
 
-class CDiskMarkDlg : public CDHtmlMainDialog
+#include "DialogCx.h"
+#include "MainDialog.h"
+
+#include "ButtonCx.h"
+#include "StaticCx.h"
+
+class CDiskMarkDlg : public CMainDialog
 {
 public:
 	CDiskMarkDlg(CWnd* pParent = NULL);
 
-	enum { IDD = IDD_DISKMARK_DIALOG, IDH = IDR_HTML_DISKMARK_DIALOG };
+	enum { IDD = IDD_DISKMARK_DIALOG };
 
 
 	enum RESULT_TEXT
@@ -177,7 +183,6 @@ protected:
 	LRESULT OnQueryEndSession(WPARAM wParam, LPARAM lParam);
 
 	DECLARE_MESSAGE_MAP()
-	DECLARE_DHTML_EVENT_MAP()
 
 public:
 	afx_msg void OnEditCopy();
@@ -185,7 +190,6 @@ public:
 	afx_msg void OnCrystalDewWorld();
 	afx_msg void OnModeDefault();
 	afx_msg void OnModeAll0x00();
-	afx_msg void OnIE8Mode();
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
