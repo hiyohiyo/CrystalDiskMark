@@ -8,8 +8,11 @@
 /*---------------------------------------------------------------------------*/
 
 #pragma once
+#include "DialogCx.h"
+#include "StaticCx.h"
+#include "ButtonCx.h"
 
-class CSettingsDlg : public CDHtmlDialogEx
+class CSettingsDlg : public CDialogCx
 {
 	DECLARE_DYNCREATE(CSettingsDlg)
 
@@ -21,12 +24,11 @@ public:
 	virtual ~CSettingsDlg();
 
 // ダイアログ データ
-	enum { IDD = IDD_SETTINGS, IDH = IDR_HTML_DUMMY };
+	enum { IDD = IDD_SETTINGS };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV サポート
 	virtual BOOL OnInitDialog();
-	virtual void OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl);
 	virtual void OnCancel();
 
 
@@ -75,5 +77,4 @@ protected:
 #endif
 
 	DECLARE_MESSAGE_MAP()
-	DECLARE_DHTML_EVENT_MAP()
 };

@@ -3,19 +3,20 @@
 
 #include "stdafx.h"
 #include "DiskMark.h"
+#include "DiskMarkDlg.h"
 #include "SettingsDlg.h"
 
 
 // CSettingsDlg ダイアログ
 
-IMPLEMENT_DYNCREATE(CSettingsDlg, CDHtmlDialog)
+IMPLEMENT_DYNCREATE(CSettingsDlg, CDialog)
 
 CSettingsDlg::CSettingsDlg(CWnd* pParent /*=NULL*/)
-	: CDHtmlDialogEx(CSettingsDlg::IDD, CSettingsDlg::IDH, pParent)
+	: CDialogCx(CSettingsDlg::IDD, pParent)
 {
-	m_CurrentLangPath = ((CDHtmlMainDialog*) pParent)->m_CurrentLangPath;
-	m_DefaultLangPath = ((CDHtmlMainDialog*) pParent)->m_DefaultLangPath;
-	m_ZoomType = ((CDHtmlMainDialog*) pParent)->GetZoomType();
+	m_CurrentLangPath = ((CMainDialog*) pParent)->m_CurrentLangPath;
+	m_DefaultLangPath = ((CMainDialog*)pParent)->m_DefaultLangPath;
+	m_ZoomType = ((CMainDialog*)pParent)->GetZoomType();
 
 	_tcscpy_s(m_Ini, MAX_PATH, ((CDiskMarkApp*) AfxGetApp())->m_Ini);
 }
@@ -26,8 +27,8 @@ CSettingsDlg::~CSettingsDlg()
 
 void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDHtmlDialogEx::DoDataExchange(pDX);
-
+	CDialogCx::DoDataExchange(pDX);
+	/*
 	DDX_DHtml_SelectValue(pDX, _T("SequentialQueues1"), m_ValueSequentialQueues1);
 	DDX_DHtml_SelectIndex(pDX, _T("SequentialQueues1"), m_IndexSequentialQueues1);
 	DDX_DHtml_SelectValue(pDX, _T("SequentialThreads1"), m_ValueSequentialThreads1);
@@ -50,16 +51,12 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_DHtml_SelectIndex(pDX, _T("RandomQueues3"), m_IndexRandomQueues3);
 	DDX_DHtml_SelectValue(pDX, _T("RandomThreads3"), m_ValueRandomThreads3);
 	DDX_DHtml_SelectIndex(pDX, _T("RandomThreads3"), m_IndexRandomThreads3);
+	*/
 }
 
 
-BEGIN_MESSAGE_MAP(CSettingsDlg, CDHtmlDialogEx)
+BEGIN_MESSAGE_MAP(CSettingsDlg, CDialogCx)
 END_MESSAGE_MAP()
-
-BEGIN_DHTML_EVENT_MAP(CSettingsDlg)
-	DHTML_EVENT_ONCLICK(_T("Default"), OnDefaultSetting)
-END_DHTML_EVENT_MAP()
-
 
 HRESULT CSettingsDlg::OnDefaultSetting(IHTMLElement *pElement)
 {
@@ -95,7 +92,7 @@ HRESULT CSettingsDlg::OnDefaultSetting(IHTMLElement *pElement)
 
 BOOL CSettingsDlg::OnInitDialog()
 {
-	CDHtmlDialogEx::OnInitDialog();
+	CDialogCx::OnInitDialog();
 
 	m_SequentialQueues1 = GetPrivateProfileInt(_T("Settings"), _T("SequentialMultiQueues1"), 32, m_Ini);
 	if (m_SequentialQueues1 <= 0 || m_SequentialQueues1 > MAX_QUEUES)
@@ -157,89 +154,18 @@ BOOL CSettingsDlg::OnInitDialog()
 
 	SetWindowText(i18n(_T("WindowTitle"), _T("QUEUES_THREADS")));
 
-	EnableDpiAware();
-	InitDHtmlDialog(SIZE_X, SIZE_Y, ((CDiskMarkApp*) AfxGetApp())->m_SettingsDlgPath);
-
 	return TRUE;
 }
 
 void CSettingsDlg::InitSelectBoxQ(CString ElementName, int currentValue, int maxValue, long *index)
 {
-	CComPtr<IHTMLElement> pHtmlElement;
-	HRESULT hr;
-	CComBSTR bstr;
-	CString cstr;
-	CString option = L"";
-
-	hr = GetElementInterface(ElementName, IID_IHTMLElement, (void **) &pHtmlElement);
-	if (FAILED(hr)) return;
-
-	option.Format(L"<select name=\"%s\" id=\"%s\">\n", ElementName, ElementName);
-
-	*index = -1;
-	int count = 0;
-	for (int i = 1; i <= maxValue; i<<=1)
-	{
-		cstr.Format(L"<option value=\"%d\">%d</option>\n", i, i);
-		option += cstr;
-
-		if (i == currentValue)
-		{
-			*index = count;
-		}
-		count++;
-	}
-
-	if (*index == -1)
-	{
-		cstr.Format(L"<option value=\"%d\">(%d)</option>\n", currentValue, currentValue);
-		option += cstr;
-		*index = count;
-	}
-
-	option += L"</select>\n";
-
-	bstr = option;
-	pHtmlElement->put_outerHTML(bstr);
-	bstr.Empty();
-
-	UpdateData(FALSE);
 }
 
 void CSettingsDlg::InitSelectBoxT(CString ElementName, int currentValue, int maxValue, long *index)
 {
-	CComPtr<IHTMLElement> pHtmlElement;
-	HRESULT hr;
-	CComBSTR bstr;
-	CString cstr;
-	CString option = L"";
 
-	hr = GetElementInterface(ElementName, IID_IHTMLElement, (void **) &pHtmlElement);
-	if (FAILED(hr)) return;
-
-	option.Format(L"<select name=\"%s\" id=\"%s\">\n", ElementName, ElementName);
-
-	int count = 0;
-	for (int i = 1; i <= maxValue; i += 1)
-	{
-		cstr.Format(L"<option value=\"%d\">%d</option>\n", i, i);
-		option += cstr;
-
-		if (i == currentValue)
-		{
-			*index = count;
-		}
-		count++;
-	}
-	option += L"</select>\n";
-
-	bstr = option;
-	pHtmlElement->put_outerHTML(bstr);
-	bstr.Empty();
-
-	UpdateData(FALSE);
 }
-
+/*
 void CSettingsDlg::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl)
 {
 	CString cstr;
@@ -269,6 +195,8 @@ void CSettingsDlg::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl)
 		ShowWindow(SW_SHOW);
 	}
 }
+*/
+
 void CSettingsDlg::OnCancel()
 {
 	UpdateData(TRUE);
@@ -286,7 +214,7 @@ void CSettingsDlg::OnCancel()
 	WritePrivateProfileString(_T("Settings"), _T("RandomMultiQueues3"), m_ValueRandomQueues3, m_Ini);
 	WritePrivateProfileString(_T("Settings"), _T("RandomMultiThreads3"), m_ValueRandomThreads3, m_Ini);
 
-	CDHtmlDialogEx::OnCancel();
+	CDialogCx::OnCancel();
 }
 
 
