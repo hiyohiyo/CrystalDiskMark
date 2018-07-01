@@ -23,6 +23,7 @@ class CAboutDlg : public CDialogCx
 	static const int SIZE_X = 480;
 	static const int SIZE_Y = 160;
 #endif
+	static const int SIZE_HC_Y = 170; // for HighContrast Mode
 
 public:
 	CAboutDlg(CWnd* pParent = NULL);
@@ -33,18 +34,29 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnInitDialog();
-//	virtual void OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl);
+	virtual void UpdateDialogSize();
 
-	CString m_Version;
-	CString m_Edition;
-	CString m_Release;
-	CString m_Copyright;;
-
-	HRESULT OnCrystalDewWorld();
-	HRESULT OnDiskSpd();
-	HRESULT OnLicense();
-#ifdef SUISHO_SHIZUKU_SUPPORT
-	HRESULT OnProjectShizuku();
-#endif
 	DECLARE_MESSAGE_MAP()
+
+public:
+	afx_msg void OnCrystalDewWorld();
+	afx_msg void OnBnClickedProjectSite1();
+	afx_msg void OnBnClickedProjectSite2();
+	afx_msg void OnBnClickedProjectSite3();
+	afx_msg void OnBnClickedProjectSite4();
+	afx_msg void OnBnClickedProjectSite5();
+
+	CButtonCx m_CtrlCrystalDewWorld;
+	CButtonCx m_CtrlSecretVoice;
+	CButtonCx m_CtrlProjectSite1;
+	CButtonCx m_CtrlProjectSite2;
+	CButtonCx m_CtrlProjectSite3;
+	CButtonCx m_CtrlProjectSite4;
+	CButtonCx m_CtrlProjectSite5;
+
+	CStaticCx m_CtrlVersion;
+	CStaticCx m_CtrlEdition;
+	CStaticCx m_CtrlRelease;
+	CStaticCx m_CtrlCopyright;
+	CStaticCx m_CtrlLicense;
 };

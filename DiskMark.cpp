@@ -106,30 +106,6 @@ BOOL CDiskMarkApp::InitInstance()
 
 	DefaultTheme.Format(_T("%s\\%s"), tmp, DEFAULT_THEME);
 	DefaultLanguage.Format(_T("%s\\%s"), tmp, DEFAULT_LANGUAGE);
-	
-	if (!IsFileExistEx(m_MainDlgPath, MAIN_DIALOG))
-	{
-		AfxMessageBox(_T("Not Found Main Dialog."));
-		return FALSE;
-	}
-
-	if (!IsFileExistEx(m_MainDlgPathIE8, MAIN_DIALOG_IE8))
-	{
-		AfxMessageBox(_T("Not Found Main Dialog for IE8 Mode."));
-		return FALSE;
-	}
-
-
-	if(! IsFileExistEx(DefaultTheme, DEFAULT_THEME))
-	{
-		AfxMessageBox(_T("Not Found Default Theme."));
-		return FALSE;
-	}
-	if(! IsFileExistEx(DefaultLanguage, DEFAULT_LANGUAGE))
-	{
-		AfxMessageBox(_T("Not Found Default Language."));
-		return FALSE;
-	}
 
 	// No Server Busy Dialog!!
 	if(!AfxOleInit())

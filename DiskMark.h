@@ -1,10 +1,8 @@
 /*---------------------------------------------------------------------------*/
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
-//          Web : http://crystalmark.info/
+//          Web : https://crystalmark.info/
 //      License : The MIT License
-//
-//                                             Copyright (c) 2007-2015 hiyohiyo
 /*---------------------------------------------------------------------------*/
 
 #pragma once
@@ -12,7 +10,7 @@
 #include "resource.h"
 
 
-#define THEME_DIR					_T("CdmResource\\theme\\")
+#define THEME_DIR					_T("CdmResource\\themes\\")
 #define LANGUAGE_DIR				_T("CdmResource\\language\\")
 #define DIALOG_DIR					_T("CdmResource\\dialog\\")
 

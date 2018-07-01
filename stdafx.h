@@ -1,4 +1,4 @@
-/*---------------------------------------------------------------------------*/
+﻿/*---------------------------------------------------------------------------*/
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : http://crystalmark.info/
@@ -55,8 +55,8 @@
 #endif
 
 // Version Information
-#define PRODUCT_NAME			_T("CrystalDiskMark")
-#define PRODUCT_VERSION			_T("7 -Marginality-")
+#define PRODUCT_NAME			_T("CrystalDiskMark 7")
+#define PRODUCT_VERSION			_T("")
 #define PRODUCT_ROMING_NAME		_T("CrystalDiskMark")
 
 #ifdef UWP
@@ -109,9 +109,13 @@
 #endif
 #endif
 
-#define PRODUCT_RELEASE			_T("2018/06/24")
+/// Beta
+#define PRODUCT_EDITION			_T("-Marginality-")
+
+#define PRODUCT_RELEASE			_T("2018/07/01")
 #define PRODUCT_COPY_YEAR		_T("2007-2018")
-#define PRODUCT_COPYRIGHT		_T("&copy; hiyohiyo 2007-2018 ")
+#define PRODUCT_COPYRIGHT		_T("© hiyohiyo 2007-2018 ")
+#define PRODUCT_LICENSE			_T("The MIT License")
 
 #define URL_CRYSTAL_DEW_WORLD_JA	_T("https://crystalmark.info/ja/")
 #define URL_CRYSTAL_DEW_WORLD_EN 	_T("https://crystalmark.info/en/")
@@ -126,6 +130,16 @@
 
 #define URL_HTML_HELP_JA			_T("https://crystalmark.info/ja/software/crystaldiskmark/")
 #define URL_HTML_HELP_EN 			_T("https://crystalmark.info/en/software/crystaldiskmark/")
+
+#ifdef SUISHO_SHIZUKU_SUPPORT
+
+#define	URL_PROJECT_SITE_1		    L"http://kirinokasumu.com/"
+#define URL_PROJECT_SITE_2		    L"http://linux-ha.sourceforge.jp/wp/"
+#define URL_PROJECT_SITE_3	        L"http://ch.nicovideo.jp/oss"
+#define URL_PROJECT_SITE_4			L"http://www.bellche.com/"
+#define URL_PROJECT_SITE_5			L"https://suishoshizuku.com/"
+
+#endif
 
 #define MAX_THREADS 64
 #define MAX_QUEUES 512

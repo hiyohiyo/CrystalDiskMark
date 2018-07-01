@@ -15,7 +15,19 @@
 #define IDI_ICON1                       138
 #define IDI_TRAY_ICON                   138
 #define IDD_SETTINGS                    139
-#define IDC_BUTTON1                     1002
+#define IDC_CRYSTAL_DEW_WORLD           1100
+#define IDC_PROJECT_SITE_1              1101
+#define IDC_PROJECT_SITE_2              1102
+#define IDC_PROJECT_SITE_3              1103
+#define IDC_PROJECT_SITE_4              1104
+#define IDC_PROJECT_SITE_5              1105
+#define IDC_VERSION                     1106
+#define IDC_RELEASE                     1107
+#define IDC_COPYRIGHT                   1108
+#define IDC_LICENSE                     1109
+#define IDC_EDITION                     1110
+
+
 #define ID_FILE_EXIT                    32771
 #define ID_HELP_ABOUT                   32772
 #define ID_THEME                        32775

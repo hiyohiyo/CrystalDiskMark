@@ -114,6 +114,16 @@ LRESULT CDiskMarkDlg::OnQueryEndSession(WPARAM wParam, LPARAM lParam)
 	return TRUE;
 }
 
+int CALLBACK EnumFontFamExProcMeiryo(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, int FontType, LPARAM lParam)
+{
+	if (_tcscmp(lpelfe->elfLogFont.lfFaceName, _T("メイリオ")) == 0)
+	{
+		BOOL *flag = (BOOL*)lParam;
+		*flag = TRUE;
+	}
+	return TRUE;
+}
+
 BOOL CDiskMarkDlg::OnInitDialog()
 {
 	CMainDialog::OnInitDialog();
@@ -124,7 +134,29 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);
 	SetIcon(m_hIconMini, FALSE);
 
-	m_IndexTestDrive = 0;	// default value may be "C:\".
+	TCHAR str[256];
+
+	CClientDC dc(this);
+	LOGFONT logfont;
+	CString defaultFontFace;
+	BOOL hasMeiryo = FALSE;
+	ZeroMemory(&logfont, sizeof(LOGFONT));
+	logfont.lfCharSet = ANSI_CHARSET;
+	::EnumFontFamiliesExW(dc.m_hDC, &logfont, (FONTENUMPROC)EnumFontFamExProcMeiryo, (INT_PTR)(&hasMeiryo), 0);
+
+	if (hasMeiryo)
+	{
+		defaultFontFace = _T("メイリオ");
+	}
+	else
+	{
+		defaultFontFace = _T("Tahoma");
+	}
+
+	GetPrivateProfileString(_T("Setting"), _T("FontFace"), defaultFontFace, str, 256, m_Ini);
+	m_FontFace = str;
+
+		m_IndexTestDrive = 0;	// default value may be "C:\".
 	m_MaxIndexTestDrive = 0;
 
 	m_TestDriveLetter = GetPrivateProfileInt(_T("Settings"), _T("DriveLetter"), 2, m_Ini);
@@ -803,7 +835,6 @@ void CDiskMarkDlg::UpdateMessage(CString ElementName, CString message)
 
 void CDiskMarkDlg::SetMeter(CString ElementName, double Score)
 {
-	HRESULT hr;
 	CString cstr;
 
 	int meterLength;
