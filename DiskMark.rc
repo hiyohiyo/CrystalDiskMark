@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// “ú–{Œê (“ú–{) resources
+// æ—¥æœ¬èªž (æ—¥æœ¬) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
@@ -46,8 +46,8 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
     "LANGUAGE 17, 1\r\n"
     "#pragma code_page(932)\r\n"
-    "#include ""res\\DiskMark.rc2""  // Microsoft Visual C++ ˆÈŠO‚Å•ÒW‚³‚ê‚½ƒŠƒ\[ƒX\r\n"
-    "#include ""afxres.rc""     // •W€ƒRƒ“ƒ|[ƒlƒ“ƒg\r\n"
+    "#include ""res\\DiskMark.rc2""  // Microsoft Visual C++ ä»¥å¤–ã§ç·¨é›†ã•ã‚ŒãŸãƒªã‚½ãƒ¼ã‚¹\r\n"
+    "#include ""afxres.rc""     // æ¨™æº–ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -84,11 +84,11 @@ PUSHBUTTON      "", IDC_PROJECT_SITE_2, 77, 194, 232, 22
 PUSHBUTTON      "", IDC_PROJECT_SITE_3, 196, 229, 270, 31
 PUSHBUTTON      "", IDC_PROJECT_SITE_4, 196, 267, 270, 31
 PUSHBUTTON      "", IDC_PROJECT_SITE_5, 196, 267, 270, 31
-LTEXT           "ƒXƒ^ƒeƒBƒbƒN", IDC_VERSION, 240, 18, 193, 8
-LTEXT           "ƒXƒ^ƒeƒBƒbƒN", IDC_EDITION, 241, 38, 33, 8
-LTEXT           "ƒXƒ^ƒeƒBƒbƒN", IDC_RELEASE, 239, 62, 33, 8
-LTEXT           "ƒXƒ^ƒeƒBƒbƒN", IDC_COPYRIGHT, 241, 84, 33, 8
-LTEXT           "ƒXƒ^ƒeƒBƒbƒN", IDC_LICENSE, 239, 110, 33, 8
+LTEXT           "ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯", IDC_VERSION, 240, 18, 193, 8
+LTEXT           "ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯", IDC_EDITION, 241, 38, 33, 8
+LTEXT           "ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯", IDC_RELEASE, 239, 62, 33, 8
+LTEXT           "ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯", IDC_COPYRIGHT, 241, 84, 33, 8
+LTEXT           "ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯", IDC_LICENSE, 239, 110, 33, 8
 END
 
 IDD_SETTINGS DIALOGEX 0, 0, 154, 76
@@ -276,7 +276,7 @@ BEGIN
     VK_F5,          IDOK,                   VIRTKEY, NOINVERT
 END
 
-#endif    // “ú–{Œê (“ú–{) resources
+#endif    // æ—¥æœ¬èªž (æ—¥æœ¬) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -294,8 +294,8 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 LANGUAGE 17, 1
 #pragma code_page(932)
-#include "res\DiskMark.rc2"  // Microsoft Visual C++ ˆÈŠO‚Å•ÒW‚³‚ê‚½ƒŠƒ\[ƒX
-#include "afxres.rc"     // •W€ƒRƒ“ƒ|[ƒlƒ“ƒg
+#include "res\DiskMark.rc2"  // Microsoft Visual C++ ä»¥å¤–ã§ç·¨é›†ã•ã‚ŒãŸãƒªã‚½ãƒ¼ã‚¹
+#include "afxres.rc"     // æ¨™æº–ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-//{{NO_DEPENDENCIES}}
+﻿//{{NO_DEPENDENCIES}}
 //
 #define IDD_DISKMARK_DIALOG             102
 #define IDR_HTML_ABOUTDLG               103

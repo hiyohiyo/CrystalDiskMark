@@ -1,4 +1,4 @@
-/*---------------------------------------------------------------------------*/
+ï»¿/*---------------------------------------------------------------------------*/
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
@@ -114,7 +114,7 @@ LRESULT CDiskMarkDlg::OnQueryEndSession(WPARAM wParam, LPARAM lParam)
 
 int CALLBACK EnumFontFamExProcMeiryo(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, int FontType, LPARAM lParam)
 {
-	if (_tcscmp(lpelfe->elfLogFont.lfFaceName, _T("ƒƒCƒŠƒI")) == 0)
+	if (_tcscmp(lpelfe->elfLogFont.lfFaceName, _T("ãƒ¡ã‚¤ãƒªã‚ª")) == 0)
 	{
 		BOOL *flag = (BOOL*)lParam;
 		*flag = TRUE;
@@ -144,7 +144,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 
 	if (hasMeiryo)
 	{
-		defaultFontFace = _T("ƒƒCƒŠƒI");
+		defaultFontFace = _T("ãƒ¡ã‚¤ãƒªã‚ª");
 	}
 	else
 	{

@@ -1,4 +1,4 @@
-/*---------------------------------------------------------------------------*/
+Ôªø/*---------------------------------------------------------------------------*/
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
@@ -11,7 +11,7 @@
 #include "SettingsDlg.h"
 
 
-// CSettingsDlg É_ÉCÉAÉçÉO
+// CSettingsDlg „ÉÄ„Ç§„Ç¢„É≠„Ç∞
 
 IMPLEMENT_DYNCREATE(CSettingsDlg, CDialog)
 
