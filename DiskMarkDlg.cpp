@@ -60,6 +60,13 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 void CDiskMarkDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CMainDialog::DoDataExchange(pDX);
+
+	DDX_Control(pDX, IDC_BUTTON_ALL, m_ButtonAll);
+	DDX_Control(pDX, IDC_BUTTON_SEQUENTIAL_1, m_ButtonSequential1);
+	DDX_Control(pDX, IDC_BUTTON_SEQUENTIAL_2, m_ButtonSequential2);
+	DDX_Control(pDX, IDC_BUTTON_RANDOM_1, m_ButtonRandom1);
+	DDX_Control(pDX, IDC_BUTTON_RANDOM_2, m_ButtonRandom2);
+	DDX_Control(pDX, IDC_BUTTON_RANDOM_3, m_ButtonRandom3);
 }
 
 BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
@@ -106,6 +113,7 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	ON_WM_NCCREATE()
 	ON_MESSAGE(WM_QUERYENDSESSION, &CDiskMarkDlg::OnQueryEndSession)
 
+	ON_BN_CLICKED(IDC_BUTTON_ALL, &CDiskMarkDlg::OnBnClickedAll)
 END_MESSAGE_MAP()
 
 LRESULT CDiskMarkDlg::OnQueryEndSession(WPARAM wParam, LPARAM lParam)
@@ -1734,4 +1742,10 @@ void CDiskMarkDlg::OnFontSetting()
 
 void CDiskMarkDlg::SetControlFont()
 {
+}
+
+
+void CDiskMarkDlg::OnBnClickedAll()
+{
+	// TODO: ここにコントロール通知ハンドラー コードを追加します。
 }

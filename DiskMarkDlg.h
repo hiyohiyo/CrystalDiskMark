@@ -142,6 +142,14 @@ protected:
 
 	void ResultText(RESULT_TEXT type);
 
+
+	CButtonCx m_ButtonAll;
+	CButtonCx m_ButtonSequential1;
+	CButtonCx m_ButtonSequential2;
+	CButtonCx m_ButtonRandom1;
+	CButtonCx m_ButtonRandom2;
+	CButtonCx m_ButtonRandom3;
+	
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	virtual void OnCancel();
@@ -197,4 +205,5 @@ public:
 	afx_msg void OnResultSave();
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnBnClickedAll();
 };

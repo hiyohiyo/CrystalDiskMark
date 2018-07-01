@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 日本語 (日本) resources
+// ���{�� (���{) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
@@ -46,8 +46,8 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
     "LANGUAGE 17, 1\r\n"
     "#pragma code_page(932)\r\n"
-    "#include ""res\\DiskMark.rc2""  // Microsoft Visual C++ 以外で編集されたリソース\r\n"
-    "#include ""afxres.rc""     // 標準コンポーネント\r\n"
+    "#include "res\\DiskMark.rc2""
+    "#include "afxres.rc""
     "#endif\r\n"
     "\0"
 END
@@ -60,17 +60,29 @@ END
 // Dialog
 //
 
-IDD_DISKMARK_DIALOG DIALOGEX 0, 0, 267, 185
-#ifdef SUISHO_SHIZUKU_SUPPORT
-STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-#else
+IDD_DISKMARK_DIALOG DIALOGEX 0, 0, 267, 273
 STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
-#endif
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "CrystalDiskMark"
 MENU IDR_MENU
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
+    PUSHBUTTON      "SEQUENTIAL 1",IDC_BUTTON_SEQUENTIAL_1,7,70,62,37
+    PUSHBUTTON      "All",IDC_BUTTON_ALL,7,32,62,37
+    PUSHBUTTON      "SEQUENTIAL 2",IDC_BUTTON_SEQUENTIAL_2,7,109,62,37
+    PUSHBUTTON      "RANDOM 1",IDC_BUTTON_RANDOM_1,7,149,62,37
+    PUSHBUTTON      "RANDOM 2",IDC_BUTTON_RANDOM_2,7,189,62,37
+    PUSHBUTTON      "RANDOM 3",IDC_BUTTON_RANDOM_3,7,230,62,37
+    LTEXT           "999999.999",IDC_SEQUENTIAL_READ_1,72,69,77,37
+    LTEXT           "999999.999",IDC_SEQUENTIAL_READ_2,71,108,77,37
+    LTEXT           "999999.999",IDC_RANDOM_READ_1,70,149,77,37
+    LTEXT           "999999.999",IDC_RANDOM_READ_2,71,189,77,37
+    LTEXT           "999999.999",IDC_RANDOM_READ_3,72,230,77,37
+    LTEXT           "999999.999",IDC_SEQUENTIAL_WRITE_1,160,69,77,37
+    LTEXT           "999999.999",IDC_SEQUENTIAL_WRITE_2,160,109,77,37
+    LTEXT           "999999.999",IDC_RANDOM_WRITE_1,156,149,77,37
+    LTEXT           "999999.999",IDC_RANDOM_WRITE_2,156,190,77,37
+    LTEXT           "999999.999",IDC_RANDOM_WRITE_3,154,230,77,37
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 477, 362
@@ -78,17 +90,17 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "CrystalDiskInfo"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-PUSHBUTTON      "", IDC_CRYSTAL_DEW_WORLD, 26, 17, 156, 107
-PUSHBUTTON      "", IDC_PROJECT_SITE_1, 77, 144, 228, 21
-PUSHBUTTON      "", IDC_PROJECT_SITE_2, 77, 194, 232, 22
-PUSHBUTTON      "", IDC_PROJECT_SITE_3, 196, 229, 270, 31
-PUSHBUTTON      "", IDC_PROJECT_SITE_4, 196, 267, 270, 31
-PUSHBUTTON      "", IDC_PROJECT_SITE_5, 196, 267, 270, 31
-LTEXT           "スタティック", IDC_VERSION, 240, 18, 193, 8
-LTEXT           "スタティック", IDC_EDITION, 241, 38, 33, 8
-LTEXT           "スタティック", IDC_RELEASE, 239, 62, 33, 8
-LTEXT           "スタティック", IDC_COPYRIGHT, 241, 84, 33, 8
-LTEXT           "スタティック", IDC_LICENSE, 239, 110, 33, 8
+    PUSHBUTTON      "",IDC_CRYSTAL_DEW_WORLD,26,17,156,107
+    PUSHBUTTON      "",IDC_PROJECT_SITE_1,77,144,228,21
+    PUSHBUTTON      "",IDC_PROJECT_SITE_2,77,194,232,22
+    PUSHBUTTON      "",IDC_PROJECT_SITE_3,196,229,270,31
+    PUSHBUTTON      "",IDC_PROJECT_SITE_4,196,267,270,31
+    PUSHBUTTON      "",IDC_PROJECT_SITE_5,196,267,270,31
+    LTEXT           "",IDC_VERSION,240,18,193,8
+    LTEXT           "",IDC_EDITION,241,38,33,8
+    LTEXT           "",IDC_RELEASE,239,62,33,8
+    LTEXT           "",IDC_COPYRIGHT,241,84,33,8
+    LTEXT           "",IDC_LICENSE,239,110,33,8
 END
 
 IDD_SETTINGS DIALOGEX 0, 0, 154, 76
@@ -103,10 +115,11 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Font Setting"
 FONT 12, "MS UI Gothic", 400, 0, 0x80
 BEGIN
-COMBOBOX        IDC_FONT_COMBO, 7, 6, 166, 148, CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
-DEFPUSHBUTTON   "OK", ID_OK, 48, 68, 83, 14, BS_CENTER
-COMBOBOX        IDC_FONT_TYPE_COMBO, 7, 28, 166, 148, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_FONT_COMBO,7,6,166,148,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",ID_OK,48,68,83,14,BS_CENTER
+    COMBOBOX        IDC_FONT_TYPE_COMBO,7,28,166,148,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -161,7 +174,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 259
         TOPMARGIN, 7
-        BOTTOMMARGIN, 179
+        BOTTOMMARGIN, 267
     END
 
     IDD_ABOUT, DIALOG
@@ -180,13 +193,13 @@ BEGIN
         BOTTOMMARGIN, 69
     END
 
-	IDD_FONT, DIALOG
-	BEGIN
-	    LEFTMARGIN, 7
-	    RIGHTMARGIN, 173
-	    TOPMARGIN, 6
-	    BOTTOMMARGIN, 82
-	END
+    IDD_FONT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 173
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 82
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -211,20 +224,20 @@ BEGIN
             MENUITEM "Default (Random)",            ID_MODE_DEFAULT
             MENUITEM "All 0x00 (0 Fill)",           ID_MODE_ALL0X00
         END
-		POPUP "Interval Time"
-		BEGIN
-		    MENUITEM "0 sec", ID_INTERVAL_TIME_0
-			MENUITEM "1 sec", ID_INTERVAL_TIME_1
-			MENUITEM "3 sec", ID_INTERVAL_TIME_3
-			MENUITEM "5 sec", ID_INTERVAL_TIME_5
-			MENUITEM "10 sec", ID_INTERVAL_TIME_10
-			MENUITEM "30 sec", ID_INTERVAL_TIME_30
-			MENUITEM "60 sec", ID_INTERVAL_TIME_60
-			MENUITEM "180 sec", ID_INTERVAL_TIME_180
-			MENUITEM "300 sec", ID_INTERVAL_TIME_300
-			MENUITEM "600 sec", ID_INTERVAL_TIME_600
-		END
-		MENUITEM "Queues && Threads", ID_SETTINGS_QUEUESTHREADS
+        POPUP "Interval Time"
+        BEGIN
+            MENUITEM "0 sec",                       ID_INTERVAL_TIME_0
+            MENUITEM "1 sec",                       ID_INTERVAL_TIME_1
+            MENUITEM "3 sec",                       ID_INTERVAL_TIME_3
+            MENUITEM "5 sec",                       ID_INTERVAL_TIME_5
+            MENUITEM "10 sec",                      ID_INTERVAL_TIME_10
+            MENUITEM "30 sec",                      ID_INTERVAL_TIME_30
+            MENUITEM "60 sec",                      ID_INTERVAL_TIME_60
+            MENUITEM "180 sec",                     ID_INTERVAL_TIME_180
+            MENUITEM "300 sec",                     ID_INTERVAL_TIME_300
+            MENUITEM "600 sec",                     ID_INTERVAL_TIME_600
+        END
+        MENUITEM "Queues && Threads",           ID_SETTINGS_QUEUESTHREADS
     END
     POPUP "&Theme"
     BEGIN
@@ -235,12 +248,12 @@ BEGIN
             MENUITEM "125%",                        ID_ZOOM_125
             MENUITEM "150%",                        ID_ZOOM_150
             MENUITEM "200%",                        ID_ZOOM_200
-			MENUITEM "250%",                        ID_ZOOM_250
-			MENUITEM "300%",                        ID_ZOOM_300
-			MENUITEM "400%",                        ID_ZOOM_400
+            MENUITEM "250%",                        ID_ZOOM_250
+            MENUITEM "300%",                        ID_ZOOM_300
+            MENUITEM "400%",                        ID_ZOOM_400
             MENUITEM "Auto",                        ID_ZOOM_AUTO
         END
-		MENUITEM "Font Settings", ID_FONT_SETTING
+        MENUITEM "Font Settings",               ID_FONT_SETTING
         MENUITEM SEPARATOR
     END
     POPUP "&Help"
@@ -271,13 +284,11 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-#ifdef SUISHO_SHIZUKU_SUPPORT
-IDR_MAINFRAME           ICON                    "res\\DiskMarkS.ico"
-IDI_TRAY_ICON           ICON                    "res\\DiskMarkS16.ico"
-#else
 IDR_MAINFRAME           ICON                    "res\\DiskMark.ico"
+
 IDI_TRAY_ICON           ICON                    "res\\DiskMark16.ico"
-#endif
+
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Accelerator
@@ -294,7 +305,18 @@ BEGIN
     VK_F5,          IDOK,                   VIRTKEY, NOINVERT
 END
 
-#endif    // 日本語 (日本) resources
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DISKMARK_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // ���{�� (���{) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -312,8 +334,8 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 LANGUAGE 17, 1
 #pragma code_page(932)
-#include "res\DiskMark.rc2"  // Microsoft Visual C++ 以外で編集されたリソース
-#include "afxres.rc"     // 標準コンポーネント
+#include "res\DiskMark.rc2"
+#include "afxres.rc"     //
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
