@@ -4,6 +4,7 @@
 //          Web : https://crystalmark.info/
 //      License : The MIT License
 /*---------------------------------------------------------------------------*/
+
 #include "stdafx.h"
 #include "resource.h"
 #include "GetFileVersion.h"

@@ -1,10 +1,8 @@
 ﻿/*---------------------------------------------------------------------------*/
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
-//          Web : http://crystalmark.info/
+//          Web : https://crystalmark.info/
 //      License : The MIT License
-//
-//                                             Copyright (c) 2007-2015 hiyohiyo
 /*---------------------------------------------------------------------------*/
 
 #pragma once
