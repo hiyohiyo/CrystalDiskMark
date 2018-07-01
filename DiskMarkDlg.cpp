@@ -102,6 +102,7 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_RESULT_SAVE, &CDiskMarkDlg::OnResultSave)
 	ON_COMMAND(ID_SETTINGS_QUEUESTHREADS, &CDiskMarkDlg::OnSettingsQueuesThreads)
+	ON_COMMAND(ID_FONT_SETTING, &CDiskMarkDlg::OnFontSetting)
 	ON_WM_NCCREATE()
 	ON_MESSAGE(WM_QUERYENDSESSION, &CDiskMarkDlg::OnQueryEndSession)
 
@@ -1047,24 +1048,6 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	cstr = i18n(_T("Menu"), _T("QUEUES_THREADS")) + _T("\tCtrl + Q");
 	menu->ModifyMenu(ID_SETTINGS_QUEUESTHREADS, MF_STRING, ID_SETTINGS_QUEUESTHREADS, cstr);
 
-	cstr = i18n(_T("Menu"), _T("IE8_MODE")) + _T(" [IE9-]");;
-	menu->ModifyMenu(ID_IE8_MODE, MF_STRING, ID_IE8_MODE, cstr);
-
-	if (GetIeVersion() < 900)
-	{
-		menu->EnableMenuItem(ID_IE8_MODE, MF_GRAYED);
-	}
-
-	// Check Status
-	if (m_FlagWorkaroundIE8Mode)
-	{
-		menu->CheckMenuItem(ID_IE8_MODE, MF_CHECKED);
-	}
-	else
-	{
-		menu->CheckMenuItem(ID_IE8_MODE, MF_UNCHECKED);
-	}
-
 	cstr = i18n(_T("Menu"), _T("HELP")) + _T("\tF1");
 	menu->ModifyMenu(ID_HELP, MF_STRING, ID_HELP, cstr);
 	cstr = i18n(_T("Menu"), _T("HELP_ABOUT"));
@@ -1101,20 +1084,14 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	// Theme
 	subMenu.Attach(menu->GetSubMenu(2)->GetSafeHmenu());
 	cstr = i18n(_T("Menu"), _T("ZOOM"));
-	if(GetIeVersion() < 800)
-	{
-		cstr += _T(" [IE8-]");
-		subMenu.ModifyMenu(0, MF_BYPOSITION, 0, cstr);
-		subMenu.EnableMenuItem(0, MF_BYPOSITION|MF_GRAYED);   
-	}
-	else
-	{
-		subMenu.ModifyMenu(0, MF_BYPOSITION, 0, cstr);
-	}
+	subMenu.ModifyMenu(0, MF_BYPOSITION, 0, cstr);
 	subMenu.Detach();
 
 	cstr = i18n(_T("Menu"), _T("AUTO"));
 	menu->ModifyMenu(ID_ZOOM_AUTO, MF_STRING, ID_ZOOM_AUTO, cstr);
+
+	cstr = i18n(_T("Menu"), _T("FONT_SETTING"));
+	menu->ModifyMenu(ID_FONT_SETTING, MF_STRING, ID_FONT_SETTING, cstr);
 
 	CheckRadioZoomType();
 
@@ -1736,4 +1713,25 @@ BOOL CDiskMarkDlg::OnNcCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	return TRUE;
+}
+
+void CDiskMarkDlg::OnFontSetting()
+{
+	CFontSelection fontSelection(this);
+	if (fontSelection.DoModal() == IDOK)
+	{
+		m_FontFace = fontSelection.GetFontFace();
+		m_FontType = fontSelection.GetFontType();
+		SetControlFont();
+		Invalidate();
+		CString cstr;
+		cstr.Format(L"%d", m_FontType);
+		WritePrivateProfileString(_T("Setting"), _T("FontFace"), _T("\"") + m_FontFace + _T("\""), m_Ini);
+		WritePrivateProfileString(_T("Setting"), _T("FontType"), cstr, m_Ini);
+	}
+}
+
+
+void CDiskMarkDlg::SetControlFont()
+{
 }

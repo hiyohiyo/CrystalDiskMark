@@ -13,6 +13,7 @@
 #define IDI_ICON1                       138
 #define IDI_TRAY_ICON                   138
 #define IDD_SETTINGS                    139
+#define IDD_FONT                        140
 #define IDC_CRYSTAL_DEW_WORLD           1100
 #define IDC_PROJECT_SITE_1              1101
 #define IDC_PROJECT_SITE_2              1102
@@ -24,6 +25,11 @@
 #define IDC_COPYRIGHT                   1108
 #define IDC_LICENSE                     1109
 #define IDC_EDITION                     1110
+
+#define ID_OK                           1200
+#define IDC_FONT_COMBO                  1201
+#define IDC_FONT_TYPE_COMBO             1202
+
 
 
 #define ID_FILE_EXIT                    32771
@@ -48,7 +54,6 @@
 #define ID_ZOOM_300                     32806
 #define ID_ZOOM_400                     32807
 #define ID_ZOOM_AUTO                    33808
-#define ID_IE8_MODE                     33809
 #define ID_HELP_HELP                    32810
 #define ID_HELP_CRYSTALDEWWORLD         32811
 #define ID_FILE_BENCHMARKMODE           32812
@@ -68,6 +73,8 @@
 #define ID_INTERVAL_TIME_180            33827
 #define ID_INTERVAL_TIME_300            33828
 #define ID_INTERVAL_TIME_600            33829
+
+#define ID_FONT_SETTING                 32830
 
 // Next default values for new objects
 // 

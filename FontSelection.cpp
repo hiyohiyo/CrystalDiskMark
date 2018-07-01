@@ -19,8 +19,8 @@ static CDiskMarkDlg *p;
 CFontSelection::CFontSelection(CWnd* pParent)
 	: CDialogCx(CFontSelection::IDD, pParent)
 {
-	p = (CDiskInfoDlg*)pParent;
-	_tcscpy_s(m_Ini, MAX_PATH, ((CDiskInfoApp*)AfxGetApp())->m_Ini);
+	p = (CDiskMarkDlg*)pParent;
+	_tcscpy_s(m_Ini, MAX_PATH, ((CDiskMarkApp*)AfxGetApp())->m_Ini);
 
 	m_CurrentLangPath = ((CMainDialog*)pParent)->m_CurrentLangPath;
 	m_DefaultLangPath = ((CMainDialog*)pParent)->m_DefaultLangPath;
@@ -28,7 +28,7 @@ CFontSelection::CFontSelection(CWnd* pParent)
 	m_FontFace = ((CMainDialog*)pParent)->m_FontFace;
 	m_FontType = ((CMainDialog*) pParent)->m_FontType;
 
-	m_CxThemeDir = ((CDiskInfoApp*)AfxGetApp())->m_ThemeDir;
+	m_CxThemeDir = ((CDiskMarkApp*)AfxGetApp())->m_ThemeDir;
 	m_CxCurrentTheme = ((CMainDialog*)pParent)->m_CurrentTheme;
 	m_CxDefaultTheme = ((CMainDialog*)pParent)->m_DefaultTheme;
 }
@@ -90,7 +90,7 @@ BOOL CFontSelection::OnInitDialog()
 		}
 	}
 
-	m_FontTypeComboBox.AddString(i18n(_T("HealthStatus"), _T("Default")));
+	m_FontTypeComboBox.AddString(i18n(_T("Dialog"), _T("Default")));
 	m_FontTypeComboBox.AddString(L"GDI");
 	m_FontTypeComboBox.AddString(L"GDI+");
 //	m_FontTypeComboBox.AddString(L"DirectWrite");

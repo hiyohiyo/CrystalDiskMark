@@ -9,6 +9,7 @@
 
 #include "AboutDlg.h"
 #include "SettingsDlg.h"
+#include "FontSelection.h"
 
 #include "DialogCx.h"
 #include "MainDialog.h"
@@ -118,13 +119,13 @@ protected:
 	HICON m_hIconMini;
 	HACCEL m_hAccelerator;
 
-	BOOL m_FlagWorkaroundIE8Mode;
-
 	int m_SizeX;
 	int m_SizeY;
 
 	CAboutDlg*		m_AboutDlg;
 	CSettingsDlg*	m_SettingsDlg;
+
+	void SetControlFont();
 
 	void InitDrive(CString ElementName);
 
@@ -177,6 +178,7 @@ protected:
 
 	afx_msg void OnExit();
 	afx_msg void OnAbout();
+	afx_msg void OnFontSetting();
 
 	LRESULT OnQueryEndSession(WPARAM wParam, LPARAM lParam);
 

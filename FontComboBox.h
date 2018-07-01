@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "ComboBoxCx.h"
 // CFontComboBox
 
 class CFontComboBox : public CComboBoxCx

@@ -97,11 +97,6 @@ BOOL CDiskMarkApp::InitInstance()
 	m_ThemeIndex = MENU_THEME_INDEX;
 	m_LangIndex = MENU_LANG_INDEX;
 
-	m_MainDlgPath.Format(_T("%s\\") DIALOG_DIR MAIN_DIALOG, tmp);
-	m_MainDlgPathIE8.Format(_T("%s\\") DIALOG_DIR MAIN_DIALOG_IE8, tmp);
-	m_AboutDlgPath.Format(_T("%s\\") DIALOG_DIR ABOUT_DIALOG, tmp);
-	m_SettingsDlgPath.Format(_T("%s\\") DIALOG_DIR SETTINGS_DIALOG, tmp);
-
 	DefaultTheme.Format(_T("%s\\%s"), tmp, DEFAULT_THEME);
 	DefaultLanguage.Format(_T("%s\\%s"), tmp, DEFAULT_LANGUAGE);
 
