@@ -258,6 +258,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	m_FlagShowWindow = TRUE;
 //	ChangeTheme(m_CurrentTheme);
 //	ChangeButtonStatus(TRUE);
+	UpdateDialogSize();
 
 	CenterWindow();
 	ShowWindow(SW_SHOW);
@@ -265,8 +266,70 @@ BOOL CDiskMarkDlg::OnInitDialog()
 
 	ChangeLang(m_CurrentLang);
 
+
 	return TRUE;
 }
+
+void CDiskMarkDlg::UpdateDialogSize()
+{
+	UpdateBackground(true);
+
+	SetControlFont();
+
+	m_ButtonAll.InitControl(        40 + OFFSET_X,  8, 60, 48, m_ZoomRatio, IP(L"button"), 1, SS_CENTER, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonSequential1.InitControl(40 + OFFSET_X, 80, 128, 64, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonSequential2.InitControl(40 + OFFSET_X,152, 128, 64, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonRandom1.InitControl(    40 + OFFSET_X,234, 128, 64, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonRandom2.InitControl(    40 + OFFSET_X,306, 128, 64, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonRandom3.InitControl(    40 + OFFSET_X,378, 128, 64, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+
+	m_ButtonAll.SetHandCursor(TRUE);
+	m_ButtonSequential1.SetHandCursor(TRUE);
+	m_ButtonSequential2.SetHandCursor(TRUE);
+	m_ButtonRandom1.SetHandCursor(TRUE);
+	m_ButtonRandom2.SetHandCursor(TRUE);
+	m_ButtonRandom3.SetHandCursor(TRUE);
+
+	Invalidate();
+}
+
+CString CDiskMarkDlg::IP(CString imageName)
+{
+	CString imagePath;
+	imagePath.Format(L"%s%s\\%s-%3d.png", m_ThemeDir, m_CurrentTheme, imageName, (DWORD)(m_ZoomRatio * 100));
+	if (IsFileExist(imagePath))
+	{
+		return imagePath;
+	}
+#ifdef SUISHO_SHIZUKU_SUPPORT
+	if (m_CurrentTheme.Find(L"ShizukuMikoNight") == 0)
+	{
+		imagePath.Format(L"%s%s\\%s-%3d.png", m_ThemeDir, L"ShizukuMiko", imageName, (DWORD)(m_ZoomRatio * 100));
+		if (IsFileExist(imagePath))
+		{
+			return imagePath;
+		}
+	}
+	if (m_CurrentTheme.Find(L"ShizukuHotaru") == 0)
+	{
+		imagePath.Format(L"%s%s\\%s-%3d.png", m_ThemeDir, L"ShizukuHeianKomachi", imageName, (DWORD)(m_ZoomRatio * 100));
+		if (IsFileExist(imagePath))
+		{
+			return imagePath;
+		}
+	}
+#endif
+	imagePath.Format(L"%s%s\\%s-%3d.png", m_ThemeDir, m_DefaultTheme, imageName, (DWORD)(m_ZoomRatio * 100));
+	if (IsFileExist(imagePath))
+	{
+		return imagePath;
+	}
+	return L"";
+}
+
+
+
+
 
 void CDiskMarkDlg::UpdateQueuesThreads()
 {
@@ -1742,6 +1805,20 @@ void CDiskMarkDlg::OnFontSetting()
 
 void CDiskMarkDlg::SetControlFont()
 {
+#ifdef SUISHO_SHIZUKU_SUPPORT
+	BYTE textAlpha = 255;
+	COLORREF textColor = RGB(0, 0, 0);
+#else
+	BYTE textAlpha = 255;
+	COLORREF textColor = RGB(0, 0, 0);
+#endif
+
+	m_ButtonAll.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonSequential1.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonSequential2.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonRandom1.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonRandom2.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonRandom3.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 }
 
 

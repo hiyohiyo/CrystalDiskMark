@@ -24,6 +24,11 @@ public:
 
 	enum { IDD = IDD_DISKMARK_DIALOG };
 
+#ifdef SUISHO_SHIZUKU_SUPPORT
+	static const int OFFSET_X = 0;
+#else
+	static const int OFFSET_X = 0;
+#endif
 
 	enum RESULT_TEXT
 	{
@@ -51,6 +56,7 @@ public:
 	void SetMeter(CString ElementName, double score);
 	void UpdateMessage(CString elementName, CString message);
 	void ChangeLang(CString LangName);
+	void UpdateDialogSize();
 	void ChangeButtonStatus(BOOL status);
 	void ChangeButton(CString elementName, CString className, CString title, CString html);
 	void ChangeSelectStatus(CString elementName, VARIANT_BOOL status);
@@ -126,6 +132,7 @@ protected:
 	CSettingsDlg*	m_SettingsDlg;
 
 	void SetControlFont();
+	CString IP(CString imagePath); // IP means Image Path!!
 
 	void InitDrive(CString ElementName);
 

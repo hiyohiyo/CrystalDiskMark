@@ -76,7 +76,6 @@ protected:
 	double GetZoomRatio();
 	CString i18n(CString section, CString key, BOOL inEnglish = FALSE);
 	void OpenUrl(CString url);
-	BOOL ClickCheck();
 	BOOL IsHighContrast();
 	BOOL IsDrawFrame();
 
