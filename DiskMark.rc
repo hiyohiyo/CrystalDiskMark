@@ -25,42 +25,41 @@ LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
+1 TEXTINCLUDE
 BEGIN
-    "resource.h\0"
+"resource.h\0"
 END
 
-2 TEXTINCLUDE 
+2 TEXTINCLUDE
 BEGIN
-    "#include ""afxres.h""\r\n"
-    "\0"
+"#include ""afxres.h""\r\n"
+"\0"
 END
 
-3 TEXTINCLUDE 
+3 TEXTINCLUDE
 BEGIN
-    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
-    "#define _AFX_NO_OLE_RESOURCES\r\n"
-    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
-    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
-    "\r\n"
-    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
-    "LANGUAGE 17, 1\r\n"
-    "#pragma code_page(932)\r\n"
-    "#include "res\\DiskMark.rc2""
-    "#include "afxres.rc""
-    "#endif\r\n"
-    "\0"
+"#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+"#define _AFX_NO_OLE_RESOURCES\r\n"
+"#define _AFX_NO_TRACKER_RESOURCES\r\n"
+"#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+"\r\n"
+"#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
+"LANGUAGE 17, 1\r\n"
+"#pragma code_page(932)\r\n"
+"#include ""res\\DiskMark.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+"#include ""afxres.rc""     // Standard components\r\n"
+"#endif\r\n"
+"\0"
 END
 
 #endif    // APSTUDIO_INVOKED
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog
 //
 
-IDD_DISKMARK_DIALOG DIALOGEX 0, 0, 267, 273
+IDD_DISKMARK_DIALOG DIALOGEX 0, 0, 267, 344
 STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "CrystalDiskMark"
@@ -72,17 +71,18 @@ BEGIN
     PUSHBUTTON      "SEQUENTIAL 2",IDC_BUTTON_SEQUENTIAL_2,7,109,62,37
     PUSHBUTTON      "RANDOM 1",IDC_BUTTON_RANDOM_1,7,149,62,37
     PUSHBUTTON      "RANDOM 2",IDC_BUTTON_RANDOM_2,7,189,62,37
-    PUSHBUTTON      "RANDOM 3",IDC_BUTTON_RANDOM_3,7,230,62,37
+    PUSHBUTTON      "RANDOM 3",IDC_BUTTON_RANDOM_3,7,229,62,37
     LTEXT           "999999.999",IDC_SEQUENTIAL_READ_1,72,69,77,37
     LTEXT           "999999.999",IDC_SEQUENTIAL_READ_2,71,108,77,37
     LTEXT           "999999.999",IDC_RANDOM_READ_1,70,149,77,37
     LTEXT           "999999.999",IDC_RANDOM_READ_2,71,189,77,37
-    LTEXT           "999999.999",IDC_RANDOM_READ_3,72,230,77,37
+    LTEXT           "999999.999",IDC_RANDOM_READ_3,72,229,77,37
     LTEXT           "999999.999",IDC_SEQUENTIAL_WRITE_1,160,69,77,37
     LTEXT           "999999.999",IDC_SEQUENTIAL_WRITE_2,160,109,77,37
     LTEXT           "999999.999",IDC_RANDOM_WRITE_1,156,149,77,37
     LTEXT           "999999.999",IDC_RANDOM_WRITE_2,156,190,77,37
-    LTEXT           "999999.999",IDC_RANDOM_WRITE_3,154,230,77,37
+    LTEXT           "999999.999",IDC_RANDOM_WRITE_3,154,229,77,37
+    EDITTEXT        IDC_COMMENT,7,269,252,21,ES_AUTOHSCROLL
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 477, 362
@@ -174,7 +174,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 259
         TOPMARGIN, 7
-        BOTTOMMARGIN, 267
+        BOTTOMMARGIN, 338
     END
 
     IDD_ABOUT, DIALOG
@@ -316,6 +316,31 @@ BEGIN
     0
 END
 
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
 #endif    // “ú–{Œê (“ú–{) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -326,17 +351,7 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-#define _AFX_NO_SPLITTER_RESOURCES
-#define _AFX_NO_OLE_RESOURCES
-#define _AFX_NO_TRACKER_RESOURCES
-#define _AFX_NO_PROPERTY_RESOURCES
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
-LANGUAGE 17, 1
-#pragma code_page(932)
-#include "res\DiskMark.rc2"
-#include "afxres.rc"     //
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

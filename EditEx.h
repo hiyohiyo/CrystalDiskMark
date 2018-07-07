@@ -14,7 +14,7 @@ class CEditEx : public CEdit
 public:
 	CEditEx();
 	virtual ~CEditEx();
-	void SetFontEx(CString face, double zoomRatio);
+	void SetFontEx(CString face, int size, double zoomRatio, LONG fontWeight);
 
 protected:
 	CFont    m_Font;

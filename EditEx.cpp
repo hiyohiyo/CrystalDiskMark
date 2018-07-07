@@ -22,13 +22,14 @@ CEditEx::~CEditEx()
 BEGIN_MESSAGE_MAP(CEditEx, CEdit)
 END_MESSAGE_MAP()
 
-void CEditEx::SetFontEx(CString face, double zoomRatio)
+void CEditEx::SetFontEx(CString face, int size, double zoomRatio, LONG fontWeight)
 {
-	LOGFONT logFont = {0};
+	LOGFONT logFont = { 0 };
 	logFont.lfCharSet = DEFAULT_CHARSET;
-	logFont.lfHeight = (LONG)(-12 * zoomRatio);
+	logFont.lfHeight = (LONG)(-1 * size * zoomRatio);
 	logFont.lfQuality = 6;
-	if(face.GetLength() < 32)
+	logFont.lfWeight = fontWeight;
+	if (face.GetLength() < 32)
 	{
 		wsprintf(logFont.lfFaceName, _T("%s"), face.GetString());
 	}

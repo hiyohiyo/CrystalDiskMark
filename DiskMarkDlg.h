@@ -16,6 +16,7 @@
 
 #include "ButtonCx.h"
 #include "StaticCx.h"
+#include "EditEx.h"
 
 class CDiskMarkDlg : public CMainDialog
 {
@@ -118,7 +119,6 @@ protected:
 	CString m_TitleTestQSize;
 
 	CString m_ExeDir;
-	CString m_Comment;
 
 protected:
 	HICON m_hIcon;
@@ -156,6 +156,20 @@ protected:
 	CButtonCx m_ButtonRandom1;
 	CButtonCx m_ButtonRandom2;
 	CButtonCx m_ButtonRandom3;
+
+	CStaticCx m_SequentialRead1;
+	CStaticCx m_SequentialRead2;
+	CStaticCx m_RandomRead1;
+	CStaticCx m_RandomRead2;
+	CStaticCx m_RandomRead3;
+
+	CStaticCx m_SequentialWrite1;
+	CStaticCx m_SequentialWrite2;
+	CStaticCx m_RandomWrite1;
+	CStaticCx m_RandomWrite2;
+	CStaticCx m_RandomWrite3;
+
+	CEditEx m_Comment;
 	
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();

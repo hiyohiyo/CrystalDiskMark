@@ -32,6 +32,7 @@
 #define IDC_RANDOM_WRITE_1              1016
 #define IDC_RANDOM_WRITE_2              1017
 #define IDC_RANDOM_WRITE_3              1018
+#define IDC_COMMENT                     1019
 #define IDC_CRYSTAL_DEW_WORLD           1100
 #define IDC_PROJECT_SITE_1              1101
 #define IDC_PROJECT_SITE_2              1102
@@ -94,7 +95,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        141
 #define _APS_NEXT_COMMAND_VALUE         33809
-#define _APS_NEXT_CONTROL_VALUE         1010
+#define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           107
 #endif
 #endif
