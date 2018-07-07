@@ -809,7 +809,7 @@ void CStaticCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlp
 	LOGFONT logFont = {0};
 	logFont.lfCharSet = DEFAULT_CHARSET;
 	logFont.lfHeight = (LONG)(-1 * size * zoomRatio);
-	logFont.lfQuality = 6;
+	logFont.lfQuality = CLEARTYPE_NATURAL_QUALITY;
 	logFont.lfWeight = fontWeight;
 	if(face.GetLength() < 32)
 	{

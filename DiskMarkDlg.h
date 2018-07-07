@@ -102,7 +102,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 	HRESULT OnAll();
-	HRESULT OnSelectDrive();
+	void SelectDrive();
 	HRESULT OnSequential1();
 #ifdef SEQUENTIAL2
 	HRESULT OnSequential2();
@@ -134,7 +134,7 @@ protected:
 	void SetControlFont();
 	CString IP(CString imagePath); // IP means Image Path!!
 
-	void InitDrive(CString ElementName);
+	void InitDrive();
 
 	BOOL CheckRadioZoomType(int id, int value);
 	void CheckRadioZoomType();
@@ -147,6 +147,8 @@ protected:
 	void DisableMenus();
 
 	void ResultText(RESULT_TEXT type);
+
+	void SetLayeredWindow(HWND hWnd, BYTE alpha);
 
 
 	CButtonCx m_ButtonAll;
@@ -233,4 +235,5 @@ public:
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnBnClickedAll();
+	afx_msg void OnCbnSelchangeComboDrive();
 };

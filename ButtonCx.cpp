@@ -303,8 +303,8 @@ void CButtonCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		for (int i = 0; i < arr.GetCount(); i++)
 		{
 			CRect r;
-			r.top = (LONG) (((double) rect.Height()) / arr.GetCount() * i);
-			r.bottom = (LONG) (((double) rect.Height()) / arr.GetCount() * (i + 1));
+			r.top = rect.top + (LONG) (((double) rect.Height()) / arr.GetCount() * i);
+			r.bottom = rect.top + (LONG) (((double) rect.Height()) / arr.GetCount() * (i + 1));
 			r.left = rect.left;
 			r.right = rect.right;
 
