@@ -25,34 +25,51 @@ LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE
+1 TEXTINCLUDE 
 BEGIN
-"resource.h\0"
+    "resource.h\0"
 END
 
-2 TEXTINCLUDE
+2 TEXTINCLUDE 
 BEGIN
-"#include ""afxres.h""\r\n"
-"\0"
+    "#include ""afxres.h""\r\n"
+    "\0"
 END
 
-3 TEXTINCLUDE
+3 TEXTINCLUDE 
 BEGIN
-"#define _AFX_NO_SPLITTER_RESOURCES\r\n"
-"#define _AFX_NO_OLE_RESOURCES\r\n"
-"#define _AFX_NO_TRACKER_RESOURCES\r\n"
-"#define _AFX_NO_PROPERTY_RESOURCES\r\n"
-"\r\n"
-"#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
-"LANGUAGE 17, 1\r\n"
-"#pragma code_page(932)\r\n"
-"#include ""res\\DiskMark.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
-"#include ""afxres.rc""     // Standard components\r\n"
-"#endif\r\n"
-"\0"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
+    "LANGUAGE 17, 1\r\n"
+    "#pragma code_page(932)\r\n"
+    "#include ""res\\DiskMark.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
 END
 
 #endif    // APSTUDIO_INVOKED
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -83,6 +100,11 @@ BEGIN
     LTEXT           "999999.999",IDC_RANDOM_WRITE_2,156,190,77,37
     LTEXT           "999999.999",IDC_RANDOM_WRITE_3,154,229,77,37
     EDITTEXT        IDC_COMMENT,7,269,252,21,ES_AUTOHSCROLL
+	COMBOBOX        IDC_COMBO_COUNT, 7, 7, 319, 30, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+	COMBOBOX        IDC_COMBO_DRIVE, 7, 7, 319, 30, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+	COMBOBOX        IDC_COMBO_SIZE, 7, 7, 319, 30, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Read [MB/s]",IDC_READ_MBS,76,58,29,8
+    LTEXT           "Write [MB/s]",IDC_WRITE_MBS,160,60,29,8
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 477, 362
@@ -316,31 +338,6 @@ BEGIN
     0
 END
 
-
-#ifdef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// TEXTINCLUDE
-//
-
-1 TEXTINCLUDE 
-BEGIN
-    "resource.h\0"
-END
-
-2 TEXTINCLUDE 
-BEGIN
-    "\0"
-END
-
-3 TEXTINCLUDE 
-BEGIN
-    "\r\n"
-    "\0"
-END
-
-#endif    // APSTUDIO_INVOKED
-
 #endif    // “ú–{Œê (“ú–{) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -351,7 +348,17 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
 
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+LANGUAGE 17, 1
+#pragma code_page(932)
+#include "res\DiskMark.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"     // Standard components
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

@@ -138,7 +138,6 @@ protected:
 
 	BOOL CheckRadioZoomType(int id, int value);
 	void CheckRadioZoomType();
-	void ChangeZoom();
 	void UpdateQueuesThreads();
 
 	BOOL CheckRadioIntervalTime(int id, int value);
@@ -170,6 +169,13 @@ protected:
 	CStaticCx m_RandomWrite3;
 
 	CEditEx m_Comment;
+
+	CComboBoxCx m_ComboCount;
+	CComboBoxCx m_ComboSize;
+	CComboBoxCx m_ComboDrive;
+
+	CStaticCx m_ReadMbps;
+	CStaticCx m_WriteMbps;
 	
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();

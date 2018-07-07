@@ -83,6 +83,13 @@ void CDiskMarkDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RANDOM_WRITE_3, m_RandomWrite3);
 
 	DDX_Control(pDX, IDC_COMMENT, m_Comment);
+
+	DDX_Control(pDX, IDC_COMBO_COUNT, m_ComboCount);
+	DDX_Control(pDX, IDC_COMBO_SIZE, m_ComboSize);
+	DDX_Control(pDX, IDC_COMBO_DRIVE, m_ComboDrive);
+
+	DDX_Control(pDX, IDC_READ_MBS, m_ReadMbps);
+	DDX_Control(pDX, IDC_WRITE_MBS, m_WriteMbps);
 }
 
 BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
@@ -343,6 +350,15 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_RandomWrite3.InitControl(    424 + OFFSET_X, 448, 240, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
 
 	m_Comment.MoveWindow((int)((8 + OFFSET_X) * m_ZoomRatio), (int)(536 * m_ZoomRatio), (int)(656 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
+
+	m_ReadMbps.InitControl( 176 + OFFSET_X, 48, 240, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_WriteMbps.InitControl(424 + OFFSET_X, 48, 240, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+
+	m_ComboCount.MoveWindow((int)((176 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(80 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
+	m_ComboSize.MoveWindow ((int)((264 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(120 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
+	m_ComboDrive.MoveWindow((int)((392 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(272 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
+
+
 	::SetWindowLong(m_Comment.m_hWnd, GWL_EXSTYLE, ::GetWindowLong(m_Comment.m_hWnd, GWL_EXSTYLE) ^ WS_EX_LAYERED);
 	::SetWindowLong(m_Comment.m_hWnd, GWL_EXSTYLE, ::GetWindowLong(m_Comment.m_hWnd, GWL_EXSTYLE) | WS_EX_LAYERED);
 	if (m_IsHighContrast)
@@ -388,6 +404,14 @@ void CDiskMarkDlg::SetControlFont()
 	m_RandomWrite3.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 
 	m_Comment.SetFontEx(m_FontFace, 24, m_ZoomRatio, FW_BOLD);
+
+	m_ReadMbps.SetFontEx(m_FontFace, 24, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_WriteMbps.SetFontEx(m_FontFace, 24, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+
+	m_ComboCount.SetFontEx(m_FontFace, 24, m_ZoomRatio);
+	m_ComboSize.SetFontEx(m_FontFace, 24, m_ZoomRatio);
+	m_ComboDrive.SetFontEx(m_FontFace, 24, m_ZoomRatio);
+
 }
 
 CString CDiskMarkDlg::IP(CString imageName)
@@ -1608,7 +1632,7 @@ BOOL CDiskMarkDlg::CheckRadioZoomType(int id, int value)
 	}
 
 	CMenu *menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_ZOOM_100, ID_ZOOM_AUTO, id, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_ZOOM_75, ID_ZOOM_AUTO, id, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 

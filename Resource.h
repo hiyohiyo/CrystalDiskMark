@@ -33,6 +33,11 @@
 #define IDC_RANDOM_WRITE_2              1017
 #define IDC_RANDOM_WRITE_3              1018
 #define IDC_COMMENT                     1019
+#define IDC_COMBO_COUNT                 1020
+#define IDC_COMBO_DRIVE                 1021
+#define IDC_COMBO_SIZE                  1022
+#define IDC_READ_MBS                    1023
+#define IDC_WRITE_MBS                   1024
 #define IDC_CRYSTAL_DEW_WORLD           1100
 #define IDC_PROJECT_SITE_1              1101
 #define IDC_PROJECT_SITE_2              1102
@@ -68,6 +73,7 @@
 #define ID_ZOOM_250                     32805
 #define ID_ZOOM_300                     32806
 #define ID_ZOOM_400                     32807
+#define ID_ZOOM_AUTO                    33808
 #define ID_HELP_HELP                    32810
 #define ID_HELP_CRYSTALDEWWORLD         32811
 #define ID_FILE_BENCHMARKMODE           32812
@@ -77,7 +83,6 @@
 #define ID_SETTINGS_QUEUESTHREADS       32818
 #define ID_RESULT_SAVE                  32819
 #define ID_FONT_SETTING                 32830
-#define ID_ZOOM_AUTO                    33808
 #define ID_INTERVAL_TIME_0              33820
 #define ID_INTERVAL_TIME_1              33821
 #define ID_INTERVAL_TIME_3              33822
@@ -95,7 +100,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        141
 #define _APS_NEXT_COMMAND_VALUE         33809
-#define _APS_NEXT_CONTROL_VALUE         1020
+#define _APS_NEXT_CONTROL_VALUE         1024
 #define _APS_NEXT_SYMED_VALUE           107
 #endif
 #endif
