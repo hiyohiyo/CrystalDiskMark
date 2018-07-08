@@ -368,7 +368,6 @@ BOOL CMainDialog::OnInitDialog()
 
 void CMainDialog::ChangeTheme(CString ThemeName)
 {
-	UpdateDialogSize();
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	#ifdef KUREI_KEI_SUPPORT
 		WritePrivateProfileString(_T("Setting"), _T("ThemeKureiKei"), ThemeName, m_Ini);
@@ -378,7 +377,6 @@ void CMainDialog::ChangeTheme(CString ThemeName)
 #else
 	WritePrivateProfileString(_T("Setting"), _T("Theme"), ThemeName, m_Ini);
 #endif
-
 }
 
 BOOL CMainDialog::OnCommand(WPARAM wParam, LPARAM lParam) 
@@ -397,6 +395,8 @@ BOOL CMainDialog::OnCommand(WPARAM wParam, LPARAM lParam)
 									(UINT)wParam, MF_BYCOMMAND);
 		subMenu.Detach();
 		menu.Detach();
+
+		UpdateDialogSize();
 	}
 
 	return CDialogCx::OnCommand(wParam, lParam);

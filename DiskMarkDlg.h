@@ -54,7 +54,7 @@ public:
 	double m_RandomRead4KBScore3;
 	double m_RandomWrite4KBScore3;
 
-	void SetMeter(CString ElementName, double score);
+	void SetMeter(CStaticCx* control, double score);
 	void UpdateMessage(CString elementName, CString message);
 	void ChangeLang(CString LangName);
 	void UpdateDialogSize();
@@ -70,10 +70,11 @@ public:
 	CString m_TestDriveInfo;
 	CString m_TestTargetPath;
 	long m_TestDriveLetter;
-	long m_IndexTestDrive;
-	long m_MaxIndexTestDrive;
-	long m_IndexTestCount;
-	long m_IndexTestSize;
+
+	int m_MaxIndexTestDrive;
+	int m_IndexTestDrive;
+	int m_IndexTestCount;
+	int m_IndexTestSize;
 
 	int m_SequentialMultiQueues1;
 	int m_SequentialMultiThreads1;
@@ -101,17 +102,14 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
-	HRESULT OnAll();
-	void SelectDrive();
-	HRESULT OnSequential1();
-#ifdef SEQUENTIAL2
-	HRESULT OnSequential2();
-#endif
-	HRESULT OnRandom4KB1();
-	HRESULT OnRandom4KB2();
-	HRESULT OnRandom4KB3();
-
+	void OnAll();
+	void OnSequential1();
+	void OnSequential2();
+	void OnRandom4KB1();
+	void OnRandom4KB2();
+	void OnRandom4KB3();
 	void Stop();
+	void SelectDrive();
 
 	CString m_TitleTestDrive;
 	CString m_TitleTestCount;
@@ -182,7 +180,6 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	virtual void OnCancel();
-	virtual void OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl);
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
@@ -234,6 +231,5 @@ public:
 	afx_msg void OnResultSave();
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnBnClickedAll();
 	afx_msg void OnCbnSelchangeComboDrive();
 };

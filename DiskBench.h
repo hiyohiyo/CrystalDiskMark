@@ -29,10 +29,8 @@ enum DISK_SPD_CMD
 	TEST_DELETE_FILE,
 	TEST_SEQUENTIAL_READ1,
 	TEST_SEQUENTIAL_WRITE1,
-#ifdef SEQUENTIAL2
 	TEST_SEQUENTIAL_READ2,
 	TEST_SEQUENTIAL_WRITE2,
-#endif
 	TEST_RANDOM_READ_4KB1,
 	TEST_RANDOM_WRITE_4KB1,
 	TEST_RANDOM_READ_4KB2,
@@ -43,9 +41,7 @@ enum DISK_SPD_CMD
 
 UINT ExecDiskBenchAll(void* dlg);
 UINT ExecDiskBenchSequential1(void* dlg);
-#ifdef SEQUENTIAL2
 UINT ExecDiskBenchSequential2(void* dlg);
-#endif
 UINT ExecDiskBenchRandom4KB1(void* dlg);
 UINT ExecDiskBenchRandom4KB2(void* dlg);
 UINT ExecDiskBenchRandom4KB3(void* dlg);

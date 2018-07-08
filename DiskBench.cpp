@@ -117,10 +117,8 @@ UINT ExecDiskBenchAll(LPVOID dlg)
 	{
 		DiskSpd(dlg, TEST_SEQUENTIAL_READ1);
 		Interval(dlg);
-#ifdef SEQUENTIAL2
 		DiskSpd(dlg, TEST_SEQUENTIAL_READ2);
 		Interval(dlg);
-#endif
 		DiskSpd(dlg, TEST_RANDOM_READ_4KB1);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_RANDOM_READ_4KB2);
@@ -129,10 +127,8 @@ UINT ExecDiskBenchAll(LPVOID dlg)
 		Interval(dlg);
 		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE1);
 		Interval(dlg);
-#ifdef SEQUENTIAL2
 		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE2);
 		Interval(dlg);
-#endif
 		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB1);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB2);
@@ -154,7 +150,6 @@ UINT ExecDiskBenchSequential1(LPVOID dlg)
 	return Exit(dlg);
 }
 
-#ifdef SEQUENTIAL2
 UINT ExecDiskBenchSequential2(LPVOID dlg)
 {
 	if (Init(dlg))
@@ -165,7 +160,6 @@ UINT ExecDiskBenchSequential2(LPVOID dlg)
 	}
 	return Exit(dlg);
 }
-#endif
 
 UINT ExecDiskBenchRandom4KB1(LPVOID dlg)
 {
@@ -236,7 +230,16 @@ BOOL Init(void* dlg)
 		return FALSE;
 	}
 	DiskTestCount = ((CDiskMarkDlg*) dlg)->m_IndexTestCount + 1;
-	DiskTestSize   = (UINT64)_tstoi(((CDiskMarkDlg*)dlg)->m_ValueTestSize);
+	
+	CString testSize = ((CDiskMarkDlg*)dlg)->m_ValueTestSize;
+	if (testSize.Find(L"M") == -1) // GiB
+	{
+		DiskTestSize = (UINT64)_tstoi(testSize) * 1024;
+	}
+	else // MiB
+	{
+		DiskTestSize = (UINT64)_tstoi(testSize);
+	}
 
 	CString RootPath;
 	if(((CDiskMarkDlg*)dlg)->m_MaxIndexTestDrive != ((CDiskMarkDlg*)dlg)->m_IndexTestDrive)
@@ -430,10 +433,10 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		switch (cmd)
 		{
 		case TEST_SEQUENTIAL_WRITE1:
-#ifdef SEQUENTIAL2
-		case TEST_SEQUENTIAL_WRITE2:
-#endif
 			bufOption += L" -Z128K";
+			break;
+		case TEST_SEQUENTIAL_WRITE2:
+			bufOption += L" -Z8M";
 			break;
 		case TEST_RANDOM_WRITE_4KB1:
 		case TEST_RANDOM_WRITE_4KB2:
@@ -469,21 +472,19 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*) dlg)->m_SequentialWriteScore1);
 		break;
-#ifdef SEQUENTIAL2
 	case TEST_SEQUENTIAL_READ2:
 		title.Format(L"Sequential Read");
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_SequentialMultiQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialMultiThreads2);
-		option.Format(L"-b128k -d5 -o%d -t%d -W0 -S -w0", ((CDiskMarkDlg*)dlg)->m_SequentialMultiQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialMultiThreads2);
+		option.Format(L"-b8M -d5 -o%d -t%d -W0 -S -w0", ((CDiskMarkDlg*)dlg)->m_SequentialMultiQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialMultiThreads2);
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialReadScore2);
 		break;
 	case TEST_SEQUENTIAL_WRITE2:
 		title.Format(L"Sequential Write");
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_SequentialMultiQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialMultiThreads2);
-		option.Format(L"-b128k -d5 -o%d -t%d -W0 -S -w100", ((CDiskMarkDlg*)dlg)->m_SequentialMultiQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialMultiThreads2);
+		option.Format(L"-b8M -d5 -o%d -t%d -W0 -S -w100", ((CDiskMarkDlg*)dlg)->m_SequentialMultiQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialMultiThreads2);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialWriteScore2);
 		break;
-#endif
 	case TEST_RANDOM_READ_4KB1:
 		title.Format(L"Random Read 4KiB");
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*) dlg)->m_RandomMultiQueues1, ((CDiskMarkDlg*) dlg)->m_RandomMultiThreads1);

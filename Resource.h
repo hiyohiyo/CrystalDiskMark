@@ -16,8 +16,8 @@
 #define IDI_TRAY_ICON                   138
 #define IDD_SETTINGS                    139
 #define IDD_FONT                        140
-#define IDC_BUTTON_SEQUENTIAL_1         1003
-#define IDC_BUTTON_ALL                  1004
+#define IDC_BUTTON_ALL                  1003
+#define IDC_BUTTON_SEQUENTIAL_1         1004
 #define IDC_BUTTON_SEQUENTIAL_2         1005
 #define IDC_BUTTON_RANDOM_1             1006
 #define IDC_BUTTON_RANDOM_2             1007

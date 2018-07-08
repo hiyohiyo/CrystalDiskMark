@@ -22,7 +22,7 @@
 #include "ButtonCx.h"
 #include "StaticCx.h"
 
-#define MAX_METER_LENGTH	150
+#define MAX_METER_LENGTH	280
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 #define SIZE_X		1000
@@ -90,6 +90,13 @@ void CDiskMarkDlg::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Control(pDX, IDC_READ_MBS, m_ReadMbps);
 	DDX_Control(pDX, IDC_WRITE_MBS, m_WriteMbps);
+
+	DDX_Text(pDX, IDC_COMBO_COUNT, m_ValueTestCount);
+	DDX_Text(pDX, IDC_COMBO_SIZE, m_ValueTestSize);
+	DDX_Text(pDX, IDC_COMBO_DRIVE, m_ValueTestDrive);
+	DDX_CBIndex(pDX, IDC_COMBO_COUNT, m_IndexTestCount);
+	DDX_CBIndex(pDX, IDC_COMBO_SIZE, m_IndexTestSize);
+	DDX_CBIndex(pDX, IDC_COMBO_DRIVE, m_IndexTestDrive);
 }
 
 BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
@@ -136,7 +143,12 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	ON_WM_NCCREATE()
 	ON_MESSAGE(WM_QUERYENDSESSION, &CDiskMarkDlg::OnQueryEndSession)
 
-	ON_BN_CLICKED(IDC_BUTTON_ALL, &CDiskMarkDlg::OnBnClickedAll)
+	ON_BN_CLICKED(IDC_BUTTON_ALL, &CDiskMarkDlg::OnAll)
+	ON_BN_CLICKED(IDC_BUTTON_SEQUENTIAL_1, &CDiskMarkDlg::OnSequential1)
+	ON_BN_CLICKED(IDC_BUTTON_SEQUENTIAL_2, &CDiskMarkDlg::OnSequential2)
+	ON_BN_CLICKED(IDC_BUTTON_RANDOM_1, &CDiskMarkDlg::OnRandom4KB1)
+	ON_BN_CLICKED(IDC_BUTTON_RANDOM_2, &CDiskMarkDlg::OnRandom4KB2)
+	ON_BN_CLICKED(IDC_BUTTON_RANDOM_3, &CDiskMarkDlg::OnRandom4KB3)
 	ON_CBN_SELCHANGE(IDC_COMBO_DRIVE, &CDiskMarkDlg::OnCbnSelchangeComboDrive)
 END_MESSAGE_MAP()
 
@@ -197,6 +209,8 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	GetPrivateProfileString(_T("Setting"), _T("FontFace"), defaultFontFace, str, 256, m_Ini);
 	m_FontFace = str;
 
+	InitScore();
+
 	// Count
 	for (int i = 1; i < 10; i++)
 	{
@@ -228,28 +242,8 @@ BOOL CDiskMarkDlg::OnInitDialog()
 		m_IndexTestSize = 3;	// default value is 1000 MiB;
 	}
 	m_ComboSize.SetCurSel(m_IndexTestSize);
+	UpdateData(FALSE);
 
-	// Drive
-	/*
-	m_IndexTestDrive = 0;	// default value may be "C:\".
-	m_MaxIndexTestDrive = 0;
-
-	m_TestDriveLetter = GetPrivateProfileInt(_T("Settings"), _T("DriveLetter"), 2, m_Ini);
-	if(m_TestDriveLetter != 99 && (m_TestDriveLetter < 0 || m_TestDriveLetter > 'Z' - 'A'))
-	{
-		m_TestDriveLetter = 'C' - 'A'; // default value is "C:\"
-	}
-
-	if (m_TestDriveLetter == 99)
-	{
-		TCHAR targetPath[MAX_PATH];
-		GetPrivateProfileStringW(_T("Settings"), _T("TargetPath"), L"", targetPath, MAX_PATH, m_Ini);
-		m_TestTargetPath = targetPath;
-	}
-
-	m_ComboDrive.SetCurSel(m_IndexTestDrive);
-	*/
-	
 	m_IntervalTime = GetPrivateProfileInt(_T("Settings"), _T("IntervalTime"), 5, m_Ini);
 	if (m_IntervalTime < 0)
 	{
@@ -264,7 +258,12 @@ BOOL CDiskMarkDlg::OnInitDialog()
 
 	InitThemeLang();
 	InitMenu();
+	ChangeTheme(m_CurrentTheme);
+	ChangeLang(m_CurrentLang);
 
+	// Drive
+	InitDrive();
+	
 	switch(GetPrivateProfileInt(_T("Settings"), _T("ZoomType"), 0, m_Ini))
 	{
 	case  75:  CheckRadioZoomType(ID_ZOOM_75,   75); break;
@@ -311,18 +310,16 @@ BOOL CDiskMarkDlg::OnInitDialog()
 		SetWindowTitle(_T(""), _T(""));
 	}
 
-	CenterWindow();
 	SetClientRect((DWORD)(m_SizeX * m_ZoomRatio), (DWORD)(m_SizeY * m_ZoomRatio));
 
 	m_FlagShowWindow = TRUE;
-	ChangeTheme(m_CurrentTheme);
+
 //	ChangeButtonStatus(TRUE);
-//	UpdateDialogSize();
+	CenterWindow();
+	ChangeButtonStatus(TRUE);
+	UpdateDialogSize();
 
 	m_FlagInitializing = FALSE;
-
-	ChangeLang(m_CurrentLang);
-
 
 	return TRUE;
 }
@@ -378,12 +375,12 @@ void CDiskMarkDlg::UpdateDialogSize()
 
 	m_Comment.MoveWindow((int)((8 + OFFSET_X) * m_ZoomRatio), (int)(536 * m_ZoomRatio), (int)(656 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
 
-	m_ReadMbps.InitControl(  96 + OFFSET_X, 48, 280, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_WriteMbps.InitControl(384 + OFFSET_X, 48, 280, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_ReadMbps.InitControl(  96 + OFFSET_X, 56, 280, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_WriteMbps.InitControl(384 + OFFSET_X, 56, 280, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
-	m_ComboCount.MoveWindow((int)((96 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(60 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
-	m_ComboSize.MoveWindow ((int)((164 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(160 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
-	m_ComboDrive.MoveWindow((int)((332 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(332 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
+	m_ComboCount.MoveWindow((int)((96 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(60 * m_ZoomRatio), (int)(48 * m_ZoomRatio));
+	m_ComboSize.MoveWindow ((int)((164 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(160 * m_ZoomRatio), (int)(48 * m_ZoomRatio));
+	m_ComboDrive.MoveWindow((int)((332 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(332 * m_ZoomRatio), (int)(48 * m_ZoomRatio));
 
 	Invalidate();
 	ShowWindow(SW_SHOW);
@@ -414,12 +411,12 @@ void CDiskMarkDlg::SetControlFont()
 	COLORREF textColor = RGB(0, 0, 0);
 #endif
 
-	m_ButtonAll.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonSequential1.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonSequential2.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonRandom1.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonRandom2.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonRandom3.SetFontEx(m_FontFace, 18, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonAll.SetFontEx(m_FontFace, 32, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonSequential1.SetFontEx(m_FontFace, 16, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonSequential2.SetFontEx(m_FontFace, 16, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonRandom1.SetFontEx(m_FontFace, 16, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonRandom2.SetFontEx(m_FontFace, 16, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonRandom3.SetFontEx(m_FontFace, 16, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 
 	m_SequentialRead1.SetFontEx(m_FontFace, 48, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 	m_SequentialRead2.SetFontEx(m_FontFace, 48, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
@@ -441,19 +438,12 @@ void CDiskMarkDlg::SetControlFont()
 	m_ComboCount.SetFontEx(m_FontFace, 24, m_ZoomRatio);
 	m_ComboSize.SetFontEx(m_FontFace, 24, m_ZoomRatio);
 	m_ComboDrive.SetFontEx(m_FontFace, 24, m_ZoomRatio);
-
-
-	m_ButtonSequential1.SetWindowTextW(L"Seq\r\nQ32T1\r\n");
-	m_ButtonSequential1.SetMargin(16, 0, 16, 0, m_ZoomRatio);
-	m_ButtonSequential2.SetWindowTextW(L"Seq\r\n1MiB\r\n");
-	m_ButtonSequential2.SetMargin(16, 0, 16, 0, m_ZoomRatio);
-	m_ButtonRandom1.SetWindowTextW(L"4KiB\r\nQ64T64\r\n");
+	
 	m_ButtonRandom1.SetMargin(16, 0, 16, 0, m_ZoomRatio);
-	m_ButtonRandom2.SetWindowTextW(L"4KiB\r\nQ32T1");
+	m_ButtonSequential1.SetMargin(16, 0, 16, 0, m_ZoomRatio);
+	m_ButtonSequential2.SetMargin(16, 0, 16, 0, m_ZoomRatio);
 	m_ButtonRandom2.SetMargin(16, 0, 16, 0, m_ZoomRatio);
-	m_ButtonRandom3.SetWindowTextW(L"4KiB\r\nQ1T1");
 	m_ButtonRandom3.SetMargin(16, 0, 16, 0, m_ZoomRatio);
-
 }
 
 CString CDiskMarkDlg::IP(CString imageName)
@@ -505,10 +495,10 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 		m_SequentialMultiThreads1 = 1;
 	}
 
-	m_SequentialMultiQueues2 = GetPrivateProfileInt(_T("Settings"), _T("SequentialMultiQueues2"), 8, m_Ini);
+	m_SequentialMultiQueues2 = GetPrivateProfileInt(_T("Settings"), _T("SequentialMultiQueues2"), 1, m_Ini);
 	if (m_SequentialMultiQueues2 <= 0 || m_SequentialMultiQueues2 > MAX_QUEUES)
 	{
-		m_SequentialMultiQueues2 = 8;
+		m_SequentialMultiQueues2 = 1;
 	}
 
 	m_SequentialMultiThreads2 = GetPrivateProfileInt(_T("Settings"), _T("SequentialMultiThreads2"), 1, m_Ini);
@@ -516,6 +506,9 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 	{
 		m_SequentialMultiThreads2 = 1;
 	}
+
+	m_SequentialMultiQueues2 = 1;
+	m_SequentialMultiThreads2 = 1;
 
 	m_RandomMultiQueues1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues1"), 8, m_Ini);
 	if (m_RandomMultiQueues1 <= 0 || m_RandomMultiQueues1 > MAX_QUEUES)
@@ -733,37 +726,35 @@ void CDiskMarkDlg::InitScore()
 
 void CDiskMarkDlg::UpdateScore()
 {
-	UpdateData(TRUE); // Hold Comment
-	SetMeter(_T("SequentialRead1"), m_SequentialReadScore1);
-	SetMeter(_T("SequentialWrite1"), m_SequentialWriteScore1);
-#ifdef SEQUENTIAL2
-	SetMeter(_T("SequentialRead2"), m_SequentialReadScore2);
-	SetMeter(_T("SequentialWrite2"), m_SequentialWriteScore2);
-#endif
-	SetMeter(_T("RandomRead4KB1"), m_RandomRead4KBScore1);
-	SetMeter(_T("RandomWrite4KB1"), m_RandomWrite4KBScore1);
-	SetMeter(_T("RandomRead4KB2"), m_RandomRead4KBScore2);
-	SetMeter(_T("RandomWrite4KB2"), m_RandomWrite4KBScore2);
-	SetMeter(_T("RandomRead4KB3"), m_RandomRead4KBScore3);
-	SetMeter(_T("RandomWrite4KB3"), m_RandomWrite4KBScore3);
+	UpdateData(TRUE);
+	SetMeter(&m_SequentialRead1, m_SequentialReadScore1);
+	SetMeter(&m_SequentialWrite1, m_SequentialWriteScore1);
+	SetMeter(&m_SequentialRead2, m_SequentialReadScore2);
+	SetMeter(&m_SequentialWrite2, m_SequentialWriteScore2);
+	SetMeter(&m_RandomRead1, m_RandomRead4KBScore1);
+	SetMeter(&m_RandomWrite1, m_RandomWrite4KBScore1);
+	SetMeter(&m_RandomRead2, m_RandomRead4KBScore2);
+	SetMeter(&m_RandomWrite2, m_RandomWrite4KBScore2);
+	SetMeter(&m_RandomRead3, m_RandomRead4KBScore3);
+	SetMeter(&m_RandomWrite3, m_RandomWrite4KBScore3);
 
 	// Set IOPS value as title
 	CString cstr;
 	cstr.Format(_T("%8.1f IOPS"), m_RandomRead4KBScore1 * 1000 * 1000 / 4096);
-//	SetElementPropertyEx(_T("RandomRead4KB1"), DISPID_IHTMLELEMENT_TITLE, cstr);
+	m_RandomRead1.SetToolTipText(cstr);
 	cstr.Format(_T("%8.1f IOPS"), m_RandomWrite4KBScore1 * 1000 * 1000 / 4096);
-//	SetElementPropertyEx(_T("RandomWrite4KB1"), DISPID_IHTMLELEMENT_TITLE, cstr);
+	m_RandomWrite1.SetToolTipText(cstr);
 	cstr.Format(_T("%8.1f IOPS"), m_RandomRead4KBScore2 * 1000 * 1000 / 4096);
-//	SetElementPropertyEx(_T("RandomRead4KB2"), DISPID_IHTMLELEMENT_TITLE, cstr);
+	m_RandomRead2.SetToolTipText(cstr);
 	cstr.Format(_T("%8.1f IOPS"), m_RandomWrite4KBScore2 * 1000 * 1000 / 4096);
-//	SetElementPropertyEx(_T("RandomWrite4KB2"), DISPID_IHTMLELEMENT_TITLE, cstr);
+	m_RandomWrite2.SetToolTipText(cstr);
 	cstr.Format(_T("%8.1f IOPS"), m_RandomRead4KBScore3 * 1000 * 1000 / 4096);
-//	SetElementPropertyEx(_T("RandomRead4KB3"), DISPID_IHTMLELEMENT_TITLE, cstr);
+	m_RandomRead3.SetToolTipText(cstr);
 	cstr.Format(_T("%8.1f IOPS"), m_RandomWrite4KBScore3 * 1000 * 1000 / 4096);
-//	SetElementPropertyEx(_T("RandomWrite4KB3"), DISPID_IHTMLELEMENT_TITLE, cstr);
+	m_RandomWrite3.SetToolTipText(cstr);
 }
 
-HRESULT CDiskMarkDlg::OnSequential1()
+void CDiskMarkDlg::OnSequential1()
 {
 	if(m_WinThread == NULL)
 	{
@@ -787,11 +778,9 @@ HRESULT CDiskMarkDlg::OnSequential1()
 	{
 		Stop();
 	}
-	return S_FALSE;
 }
 
-#ifdef SEQUENTIAL2
-HRESULT CDiskMarkDlg::OnSequential2()
+void CDiskMarkDlg::OnSequential2()
 {
 	if (m_WinThread == NULL)
 	{
@@ -815,11 +804,9 @@ HRESULT CDiskMarkDlg::OnSequential2()
 	{
 		Stop();
 	}
-	return S_FALSE;
 }
-#endif
 
-HRESULT CDiskMarkDlg::OnRandom4KB1()
+void CDiskMarkDlg::OnRandom4KB1()
 {
 	if(m_WinThread == NULL)
 	{
@@ -843,10 +830,9 @@ HRESULT CDiskMarkDlg::OnRandom4KB1()
 	{
 		Stop();
 	}
-	return S_FALSE;
 }
 
-HRESULT CDiskMarkDlg::OnRandom4KB2()
+void CDiskMarkDlg::OnRandom4KB2()
 {
 	if(m_WinThread == NULL)
 	{
@@ -870,10 +856,9 @@ HRESULT CDiskMarkDlg::OnRandom4KB2()
 	{
 		Stop();
 	}
-	return S_FALSE;
 }
 
-HRESULT CDiskMarkDlg::OnRandom4KB3()
+void CDiskMarkDlg::OnRandom4KB3()
 {
 	if (m_WinThread == NULL)
 	{
@@ -897,11 +882,10 @@ HRESULT CDiskMarkDlg::OnRandom4KB3()
 	{
 		Stop();
 	}
-	return S_FALSE;
 }
 
 
-HRESULT CDiskMarkDlg::OnAll()
+void CDiskMarkDlg::OnAll()
 {
 	if(m_WinThread == NULL)
 	{
@@ -923,7 +907,6 @@ HRESULT CDiskMarkDlg::OnAll()
 	{
 		Stop();
 	}
-	return S_FALSE;
 }
 
 void CDiskMarkDlg::Stop()
@@ -962,46 +945,55 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 {
 	if(status)
 	{
+		m_ComboCount.EnableWindow(TRUE);
+		m_ComboSize.EnableWindow(TRUE);
+		m_ComboDrive.EnableWindow(TRUE);
+
+		m_ButtonAll.SetWindowTextW(L"All");
+
 		CString title;
+		title.Format(L"Seq\r\nQ%dT%d", m_SequentialMultiQueues1, m_SequentialMultiThreads1);
+		m_ButtonSequential1.SetWindowTextW(title);
+		title.Format(L"Seq\r\n8MiB");
+		m_ButtonSequential2.SetWindowTextW(title);
+		title.Format(L"4KiB\r\nQ%dT%d", m_RandomMultiQueues1, m_RandomMultiThreads1);
+		m_ButtonRandom1.SetWindowTextW(title);
+		title.Format(L"4KiB\r\nQ%dT%d", m_RandomMultiQueues2, m_RandomMultiThreads2);
+		m_ButtonRandom2.SetWindowTextW(title);
+		title.Format(L"4KiB\r\nQ%dT%d", m_RandomMultiQueues3, m_RandomMultiThreads3);
+		m_ButtonRandom3.SetWindowTextW(title);
+
 		CString toolTip;
-
-		ChangeButton(_T("All"),			_T("button1"),	_T("All"),						_T("All"));
-
-		toolTip.Format(L"Sequential, Queues=%d, Threads=%d", m_SequentialMultiQueues1, m_SequentialMultiThreads1);
-		title.Format(L"Seq<br>Q%dT%d", m_SequentialMultiQueues1, m_SequentialMultiThreads1);
-		ChangeButton(_T("Sequential1"), _T("button2"), toolTip, title);
-		toolTip.Format(L"Sequential, Queues=%d, Threads=%d", m_SequentialMultiQueues2, m_SequentialMultiThreads2);
-		title.Format(L"Seq<br>Q%dT%d", m_SequentialMultiQueues2, m_SequentialMultiThreads2);
-		ChangeButton(_T("Sequential2"), _T("button2"), toolTip, title);
+		toolTip.Format(L"Sequential 128KiB, Queues=%d, Threads=%d", m_SequentialMultiQueues1, m_SequentialMultiThreads1);
+		m_ButtonSequential1.SetToolTipText(toolTip);
+		toolTip.Format(L"Sequential 8MiB");
+		m_ButtonSequential2.SetToolTipText(toolTip);
 		toolTip.Format(L"Random 4KiB, Queues=%d, Threads=%d", m_RandomMultiQueues1, m_RandomMultiThreads1);
-		title.Format(L"4KiB<br>Q%dT%d", m_RandomMultiQueues1, m_RandomMultiThreads1);
-		ChangeButton(_T("Random4KB1"), _T("button2"), toolTip, title);
-		
+		m_ButtonRandom1.SetToolTipText(toolTip);
 		toolTip.Format(L"Random 4KiB, Queues=%d, Threads=%d", m_RandomMultiQueues2, m_RandomMultiThreads2);
-		title.Format(L"4KiB<br>Q%dT%d", m_RandomMultiQueues2, m_RandomMultiThreads2);
-		ChangeButton(_T("Random4KB2"), _T("button2"), toolTip, title);
-	
+		m_ButtonRandom2.SetToolTipText(toolTip);
 		toolTip.Format(L"Random 4KiB, Queues=%d, Threads=%d", m_RandomMultiQueues3, m_RandomMultiThreads3);
-		title.Format(L"4KiB<br>Q%dT%d", m_RandomMultiQueues3, m_RandomMultiThreads3);
-		ChangeButton(_T("Random4KB3"), _T("button2"), toolTip, title);
-
-		ChangeSelectStatus(_T("TestDrive"),	VARIANT_FALSE);
-		ChangeSelectStatus(_T("TestCount"),VARIANT_FALSE);
-		ChangeSelectStatus(_T("TestSize"),	VARIANT_FALSE);
+		m_ButtonRandom3.SetToolTipText(toolTip);
 	}
 	else
 	{
-		ChangeButton(_T("All"),        _T("button1"), _T("Stop"), _T("Stop"));
-		ChangeButton(_T("Sequential1"),_T("button1"), _T("Stop"), _T("Stop"));
-#ifdef SEQUENTIAL2
-		ChangeButton(_T("Sequential2"),_T("button1"), _T("Stop"), _T("Stop"));
-#endif
-		ChangeButton(_T("Random4KB1"), _T("button1"), _T("Stop"), _T("Stop"));
-		ChangeButton(_T("Random4KB2"), _T("button1"), _T("Stop"), _T("Stop"));
-		ChangeButton(_T("Random4KB3"), _T("button1"), _T("Stop"), _T("Stop"));
-		ChangeSelectStatus(_T("TestDrive"),	VARIANT_TRUE);
-		ChangeSelectStatus(_T("TestCount"),VARIANT_TRUE);
-		ChangeSelectStatus(_T("TestSize"),	VARIANT_TRUE);
+		m_ComboCount.EnableWindow(FALSE);
+		m_ComboSize.EnableWindow(FALSE);
+		m_ComboDrive.EnableWindow(FALSE);
+
+		m_ButtonAll.SetWindowTextW(L"Stop");
+		m_ButtonSequential1.SetWindowTextW(L"Stop");
+		m_ButtonSequential2.SetWindowTextW(L"Stop");
+		m_ButtonRandom1.SetWindowTextW(L"Stop");
+		m_ButtonRandom2.SetWindowTextW(L"Stop");
+		m_ButtonRandom3.SetWindowTextW(L"Stop");
+
+		CString toolTip = L"";
+		m_ButtonSequential1.SetToolTipText(toolTip);
+		m_ButtonSequential2.SetToolTipText(toolTip);
+		m_ButtonRandom1.SetToolTipText(toolTip);
+		m_ButtonRandom2.SetToolTipText(toolTip);
+		m_ButtonRandom3.SetToolTipText(toolTip);
 	}
 }
 
@@ -1048,7 +1040,7 @@ void CDiskMarkDlg::UpdateMessage(CString ElementName, CString message)
 //	SetElementHtml(ElementName, bstr);
 }
 
-void CDiskMarkDlg::SetMeter(CString ElementName, double Score)
+void CDiskMarkDlg::SetMeter(CStaticCx* control, double Score)
 {
 	CString cstr;
 
@@ -1075,73 +1067,20 @@ void CDiskMarkDlg::SetMeter(CString ElementName, double Score)
 
 	if(Score >= 1000000.0)
 	{
-		cstr.Format(_T("999999"));
-	}
-	else if (Score >= 10000.0)
-	{
 		cstr.Format(_T("%d"), (int)Score);
 	}
-	else if (Score < 10.0)
+	else if (Score >= 100000.0)
 	{
-		cstr.Format(_T("%.3f"), Score);
-	}
-	else if (Score < 100.0)
-	{
-		cstr.Format(_T("%.2f"), Score);
+		cstr.Format(_T("%.1f"), Score);
 	}
 	else
 	{
-		cstr.Format(_T("%.1f"), Score);
+		cstr.Format(_T("%.2f"), Score);
 	}
 
 	UpdateData(FALSE);
 
-	if (Score >= 100000.0)
-	{
-	//	SetElementPropertyEx(ElementName, DISPID_IHTMLELEMENT_CLASSNAME, _T("meter1HighScore"));
-	}
-	else if(Score > 0.0)
-	{
-	//	SetElementPropertyEx(ElementName, DISPID_IHTMLELEMENT_CLASSNAME, _T("meter1"));
-	}
-	else
-	{
-	//	SetElementPropertyEx(ElementName, DISPID_IHTMLELEMENT_CLASSNAME, _T("meter0"));
-	}
-}
-
-void CDiskMarkDlg::OnDocumentComplete(LPDISPATCH pDisp, LPCTSTR szUrl)
-{
-	CString cstr;
-	cstr = szUrl;
-	static BOOL once = FALSE;
-	if(cstr.Find(_T("html")) != -1 || cstr.Find(_T("dlg")) != -1)
-	{
-		if(! once)
-		{
-			UpdateMessage(_T("Message"), _T(""));
-			InitScore();
-			ChangeLang(m_CurrentLang);
-			ChangeZoomType(m_ZoomType);
-			UpdateData(TRUE);
-
-			SetClientRect((DWORD) (m_SizeX * m_ZoomRatio), (DWORD) (m_SizeY * m_ZoomRatio));
-
-			m_FlagShowWindow = TRUE;
-			ChangeTheme(m_CurrentTheme);
-			ChangeButtonStatus(TRUE);
-
-			CenterWindow();
-			ShowWindow(SW_SHOW);
-			m_FlagInitializing = FALSE;
-			once = TRUE;
-		}
-		else
-		{
-			InitScore();
-			ChangeTheme(m_CurrentTheme);
-		}
-	}
+	control->SetWindowTextW(cstr);
 }
 
 void CDiskMarkDlg::InitDrive()
@@ -1292,7 +1231,6 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	cstr = i18n(_T("Menu"), _T("ALL_ZERO"));
 	menu->ModifyMenu(ID_MODE_ALL0X00, MF_STRING, ID_MODE_ALL0X00, cstr);
 
-
 	// Theme
 	subMenu.Attach(menu->GetSubMenu(2)->GetSafeHmenu());
 	cstr = i18n(_T("Menu"), _T("ZOOM"));
@@ -1325,33 +1263,9 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	m_MesDiskCreateFileError = i18n(_T("Message"), _T("DISK_CREATE_FILE_ERROR"));
 	m_MesDiskWriteError = i18n(_T("Message"), _T("DISK_WRITE_ERROR"));
 	m_MesDiskReadError = i18n(_T("Message"), _T("DISK_READ_ERROR"));
-
-#ifdef _M_X64
-	m_MesDiskSpdNotFound = L"Not found diskspd64.exe";//i18n(_T("Message"), _T("DISK_SPD_NOT_FOUND"));
-#else
-	m_MesDiskSpdNotFound = L"Not found diskspd32.exe";//i18n(_T("Message"), _T("DISK_SPD_NOT_FOUND"));
-#endif
-
-	InitDrive();
-
-	m_TitleTestDrive = i18n(_T("Title"), _T("TEST_DRIVE"));
-	m_TitleTestSize = i18n(_T("Title"), _T("TEST_SIZE"));
-	m_TitleTestCount = i18n(_T("Title"), _T("TEST_COUNT"));
-	if (m_MaxIndexTestDrive == m_IndexTestDrive)
-	{
-		ChangeSelectTitle(_T("TestDrive"), m_TitleTestDrive + L"(" + m_TestTargetPath + L")");
-	}
-	else
-	{ 
-		ChangeSelectTitle(_T("TestDrive"),	m_TitleTestDrive);
-	}
-
-	ChangeSelectTitle(_T("TestCount"), m_TitleTestCount);
-	ChangeSelectTitle(_T("TestSize"),	m_TitleTestSize);
+	m_MesDiskSpdNotFound = i18n(_T("Message"), _T("DISK_SPD_NOT_FOUND"));
 
 	WritePrivateProfileString(_T("Settings"), _T("Language"), LangName, m_Ini);
-
-	SetClientRect((DWORD)(m_SizeX * m_ZoomRatio), (DWORD)(m_SizeY * m_ZoomRatio), 1);
 }
 
 BOOL CDiskMarkDlg::OnCommand(WPARAM wParam, LPARAM lParam) 
@@ -1877,18 +1791,15 @@ void CDiskMarkDlg::OnFontSetting()
 	{
 		m_FontFace = fontSelection.GetFontFace();
 		m_FontType = fontSelection.GetFontType();
-		SetControlFont();
-		Invalidate();
+	//	SetControlFont();
+	//	Invalidate();
 		CString cstr;
 		cstr.Format(L"%d", m_FontType);
 		WritePrivateProfileString(_T("Setting"), _T("FontFace"), _T("\"") + m_FontFace + _T("\""), m_Ini);
 		WritePrivateProfileString(_T("Setting"), _T("FontType"), cstr, m_Ini);
-	}
-}
 
-void CDiskMarkDlg::OnBnClickedAll()
-{
-	// TODO: ここにコントロール通知ハンドラー コードを追加します。
+		UpdateDialogSize();
+	}
 }
 
 void CDiskMarkDlg::OnCbnSelchangeComboDrive()
