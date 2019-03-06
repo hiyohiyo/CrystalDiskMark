@@ -54,7 +54,7 @@
 
 // Version Information
 #define PRODUCT_NAME			_T("CrystalDiskMark 7")
-#define PRODUCT_VERSION			_T("")
+#define PRODUCT_VERSION			_T("Dev16")
 #define PRODUCT_ROMING_NAME		_T("CrystalDiskMark")
 
 #ifdef UWP
@@ -108,11 +108,11 @@
 #endif
 
 /// Beta
-#define PRODUCT_EDITION			_T("-Marginality-")
+// #define PRODUCT_EDITION			_T("-Marginality-")
 
-#define PRODUCT_RELEASE			_T("2018/07/01")
-#define PRODUCT_COPY_YEAR		_T("2007-2018")
-#define PRODUCT_COPYRIGHT		_T("© hiyohiyo 2007-2018 ")
+#define PRODUCT_RELEASE			_T("2019/03/06")
+#define PRODUCT_COPY_YEAR		_T("2007-2019")
+#define PRODUCT_COPYRIGHT		_T("© hiyohiyo 2007-2019 ")
 #define PRODUCT_LICENSE			_T("The MIT License")
 
 #define URL_CRYSTAL_DEW_WORLD_JA	_T("https://crystalmark.info/ja/")

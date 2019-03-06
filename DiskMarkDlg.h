@@ -45,14 +45,19 @@ public:
 
 	double m_SequentialReadScore1;
 	double m_SequentialWriteScore1;
+	double m_SequentialMixScore1;
 	double m_SequentialReadScore2;
 	double m_SequentialWriteScore2;
+	double m_SequentialMixScore2;
 	double m_RandomRead4KBScore1;
 	double m_RandomWrite4KBScore1;
+	double m_RandomMix4KBScore1;
 	double m_RandomRead4KBScore2;
 	double m_RandomWrite4KBScore2;
+	double m_RandomMix4KBScore2;
 	double m_RandomRead4KBScore3;
 	double m_RandomWrite4KBScore3;
+	double m_RandomMix4KBScore3;
 
 	void SetMeter(CStaticCx* control, double score);
 	void UpdateMessage(CString elementName, CString message);
@@ -168,6 +173,12 @@ protected:
 	CStaticCx m_RandomWrite2;
 	CStaticCx m_RandomWrite3;
 
+	CStaticCx m_SequentialMix1;
+	CStaticCx m_SequentialMix2;
+	CStaticCx m_RandomMix1;
+	CStaticCx m_RandomMix2;
+	CStaticCx m_RandomMix3;
+
 	CEditEx m_Comment;
 
 	CComboBoxCx m_ComboCount;
@@ -176,7 +187,8 @@ protected:
 
 	CStaticCx m_ReadMbps;
 	CStaticCx m_WriteMbps;
-	
+	CStaticCx m_MixMbps;
+
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 	virtual void OnCancel();

@@ -15,6 +15,8 @@ public:
 	CComboBoxCx();
 	virtual ~CComboBoxCx();
 
+	// 初期化
+	BOOL InitControl(int x, int y, int width, int height, double zoomRatio);
 	void SetFontEx(CString face, int size, double zoomRatio);
 	BOOL IsHighContrast();
 

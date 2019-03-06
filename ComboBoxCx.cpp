@@ -30,6 +30,14 @@ CComboBoxCx::~CComboBoxCx()
 BEGIN_MESSAGE_MAP(CComboBoxCx, CComboBox)
 END_MESSAGE_MAP()
 
+
+BOOL CComboBoxCx::InitControl(int x, int y, int width, int height, double zoomRatio)
+{
+	MoveWindow((int)(x * zoomRatio), (int)(y * zoomRatio), (int)(width * zoomRatio), (int)(height * zoomRatio));
+
+	return TRUE;
+}
+
 void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio)
 {
 	LOGFONT logFont = {0};
