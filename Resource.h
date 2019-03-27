@@ -81,6 +81,7 @@
 #define IDC_LABEL_BLOCK_SIZE			1321
 #define IDC_LABEL_QUEUES				1322
 #define IDC_LABEL_THREADS				1323
+#define IDC_SET_DEFAULT					1324
 
 #define ID_FILE_EXIT                    32771
 #define ID_HELP_ABOUT                   32772

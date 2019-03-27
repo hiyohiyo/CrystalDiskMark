@@ -16,7 +16,7 @@ class CSettingsDlg : public CDialogCx
 	DECLARE_DYNCREATE(CSettingsDlg)
 
 	static const int SIZE_X = 560;
-	static const int SIZE_Y = 248;
+	static const int SIZE_Y = 288;
 
 public:
 	CSettingsDlg(CWnd* pParent = NULL);
@@ -57,10 +57,9 @@ protected:
 	CComboBoxCx m_ComboRandomThreads2;
 	CComboBoxCx m_ComboRandomThreads3;
 
-	HRESULT OnDefaultSetting();
-
-	void InitSelectBoxQ(CString ElementName, int currentValue, int maxValue, long *index);
-	void InitSelectBoxT(CString ElementName, int currentValue, int maxValue, long *index);
+	CButtonCx m_ButtonSetDefault;
+	void OnSetDefault();
+	void InitComboBox();
 
 	CString m_ValueSequentialSize1;
 	CString m_ValueSequentialQueues1;
