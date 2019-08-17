@@ -16,6 +16,7 @@ class CStaticCx : public CStatic
 	static const int OwnerDrawImage       = 0x0004;
 	static const int OwnerDrawGlass       = 0x0008;
 	static const int OwnerDrawTransparent = 0x0010;
+	static const int OwnerDrawGlassImage  = 0x0020;
 
 	static const int FT_AUTO              = 0x0000;
 	static const int FT_GDI               = 0x0001;
@@ -32,6 +33,7 @@ public:
 	// 初期化
 	BOOL InitControl(int x, int y, int width, int height, double zoomRatio, LPCWSTR imagePath, UINT imageCount, UINT textAlign = SS_LEFT, UINT renderMode = OwnerDrawImage);
 	BOOL ReloadImage(LPCWSTR imagePath, UINT imageCount);
+	void SetMeter(double meterRatio);
 
 	// 画像関係
 	BOOL LoadBitmap(UINT nIDResource, LPCTSTR pResourceType);// リソースからビットマップを割り当てる。

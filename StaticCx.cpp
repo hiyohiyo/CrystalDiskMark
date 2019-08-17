@@ -954,11 +954,101 @@ BOOL CStaticCx::InitControl(int x, int y, int width, int height, double zoomRati
 			ModifyStyle(BS_OWNERDRAW, m_TextAlign);
 		}
 	}
+	else if (renderMode & OwnerDrawGlassImage)
+	{
+		m_CtrlImage.Destroy();
+		m_CtrlImage.Create(m_CtrlSize.cx, m_CtrlSize.cy, 32);
+		RECT rect;
+		rect.left = rect.top = 0;
+		rect.right = m_CtrlSize.cx;
+		rect.bottom = m_CtrlSize.cy;
+		CDC* pDC = CDC::FromHandle(m_CtrlImage.GetDC());
+		pDC->SetDCPenColor(RGB(128, 128, 128));
+		pDC->SelectObject(GetStockObject(DC_PEN));
+		pDC->Rectangle(&rect);
+		m_CtrlImage.ReleaseDC();
+		m_CtrlBitmap.Detach();
+		m_CtrlBitmap.Attach((HBITMAP)m_CtrlImage);
+
+		DWORD length = m_CtrlSize.cx * m_CtrlSize.cy * 4;
+		BYTE* bitmapBits = new BYTE[length];
+		m_CtrlBitmap.GetBitmapBits(length, bitmapBits);
+
+		for (int y = 0; y < m_CtrlSize.cy; y++)
+		{
+			for (int x = 0; x < m_CtrlSize.cx; x++)
+			{
+			//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = 255;
+			//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = 255;
+			//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = 255;
+				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = 128;
+			}
+		}		
+
+		m_CtrlBitmap.SetBitmapBits(length, bitmapBits);
+		delete[] bitmapBits;
+	}
 
 	// 再描画
 	Invalidate();
 	return TRUE;
 }
+
+void CStaticCx::SetMeter(double meterRatio)
+{
+	if (m_CtrlSize.cx == 0)
+	{
+		return;
+	}
+
+	m_CtrlImage.Destroy();
+	m_CtrlImage.Create(m_CtrlSize.cx, m_CtrlSize.cy, 32);
+	RECT rect;
+	rect.left = rect.top = 0;
+	rect.right = m_CtrlSize.cx;
+	rect.bottom = m_CtrlSize.cy;
+	CDC* pDC = CDC::FromHandle(m_CtrlImage.GetDC());
+	pDC->SetDCPenColor(RGB(128, 128, 128));
+	pDC->SelectObject(GetStockObject(DC_PEN));
+	pDC->Rectangle(&rect);
+	m_CtrlImage.ReleaseDC();
+	m_CtrlBitmap.Detach();
+	m_CtrlBitmap.Attach((HBITMAP)m_CtrlImage);
+
+	DWORD length = m_CtrlSize.cx * m_CtrlSize.cy * 4;
+	BYTE* bitmapBits = new BYTE[length];
+	m_CtrlBitmap.GetBitmapBits(length, bitmapBits);
+
+	int meter = (int)(m_CtrlSize.cx * meterRatio);
+
+	for (int y = 0; y < m_CtrlSize.cy; y++)
+	{
+		for (int x = 0; x < m_CtrlSize.cx; x++)
+		{
+			//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = 255;
+			//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = 255;
+			//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = 255;
+			bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = 128;
+		}
+	}
+
+	for (int y = 1; y < m_CtrlSize.cy - 1; y++)
+	{
+		for (int x = 1; x < meter; x++)
+		{
+			bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = 0;
+			bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = 255;
+			bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = 0;
+			bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = 64;
+		}
+	}
+
+	m_CtrlBitmap.SetBitmapBits(length, bitmapBits);
+	delete[] bitmapBits;
+
+	Invalidate();
+}
+
 
 BOOL CStaticCx::ReloadImage(LPCWSTR imagePath, UINT imageCount)
 {

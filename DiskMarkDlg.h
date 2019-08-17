@@ -60,13 +60,9 @@ public:
 	double m_RandomMix4KBScore3;
 
 	void SetMeter(CStaticCx* control, double score);
-	void UpdateMessage(CString elementName, CString message);
 	void ChangeLang(CString LangName);
 	void UpdateDialogSize();
 	void ChangeButtonStatus(BOOL status);
-	void ChangeButton(CString elementName, CString className, CString title, CString html);
-	void ChangeSelectStatus(CString elementName, VARIANT_BOOL status);
-	void ChangeSelectTitle(CString elementName, CString title);
 
 	CString m_CurrentLocalID;
 	CString m_ValueTestDrive;
@@ -244,4 +240,6 @@ public:
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnCbnSelchangeComboDrive();
+	afx_msg void MoveForcus();
+
 };

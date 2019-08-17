@@ -162,6 +162,10 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	ON_BN_CLICKED(IDC_BUTTON_RANDOM_2, &CDiskMarkDlg::OnRandom4KB2)
 	ON_BN_CLICKED(IDC_BUTTON_RANDOM_3, &CDiskMarkDlg::OnRandom4KB3)
 	ON_CBN_SELCHANGE(IDC_COMBO_DRIVE, &CDiskMarkDlg::OnCbnSelchangeComboDrive)
+
+	ON_CBN_CLOSEUP(IDC_COMBO_COUNT, &CDiskMarkDlg::MoveForcus)
+	ON_CBN_CLOSEUP(IDC_COMBO_SIZE, &CDiskMarkDlg::MoveForcus)
+	ON_CBN_CLOSEUP(IDC_COMBO_DRIVE, &CDiskMarkDlg::MoveForcus)
 END_MESSAGE_MAP()
 
 LRESULT CDiskMarkDlg::OnQueryEndSession(WPARAM wParam, LPARAM lParam)
@@ -351,14 +355,31 @@ void CDiskMarkDlg::UpdateDialogSize()
 	{
 		m_SizeY = SIZE_Y;
 	}
-	SetClientRect((DWORD)(m_SizeX * m_ZoomRatio), (DWORD)(m_SizeY * m_ZoomRatio), 1);
 	SetControlFont();
-	
-	SetLayeredWindow(m_Comment.m_hWnd, 192);
-//	SetLayeredWindow(m_ComboCount.m_hWnd, 192);
-//	SetLayeredWindow(m_ComboSize.m_hWnd, 192);
-//	SetLayeredWindow(m_ComboDrive.m_hWnd, 192);
 
+	m_ComboCount.SetFontHeight(24, m_ZoomRatio);
+	m_ComboCount.SetFontEx(m_FontFace, 24, m_ZoomRatio);
+	m_ComboCount.SetItemHeight(-1, (UINT)(36 * m_ZoomRatio));
+	m_ComboSize.SetFontHeight(24, m_ZoomRatio);
+	m_ComboSize.SetFontEx(m_FontFace, 24, m_ZoomRatio);
+	m_ComboSize.SetItemHeight(-1, (UINT)(36 * m_ZoomRatio));
+	m_ComboDrive.SetFontHeight(24, m_ZoomRatio);
+	m_ComboDrive.SetFontEx(m_FontFace, 24, m_ZoomRatio);
+	m_ComboDrive.SetItemHeight(-1, (UINT)(36 * m_ZoomRatio));
+
+	for (int i = 0; i < m_ComboCount.GetCount(); i++)
+	{
+		m_ComboCount.SetItemHeight(i, (UINT)(24 * m_ZoomRatio));
+	}
+	for (int i = 0; i < m_ComboSize.GetCount(); i++)
+	{
+		m_ComboSize.SetItemHeight(i, (UINT)(24 * m_ZoomRatio));
+	}
+	for (int i = 0; i < m_ComboDrive.GetCount(); i++)
+	{
+		m_ComboDrive.SetItemHeight(i, (UINT)(24 * m_ZoomRatio));
+	}
+	
 #ifdef PRO_MODE
 	m_ButtonAll.InitControl(        8 + OFFSET_X,  8, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
 	m_ButtonSequential1.InitControl(8 + OFFSET_X, 96, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
@@ -416,7 +437,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ButtonRandom2.SetHandCursor(TRUE);
 	m_ButtonRandom3.SetHandCursor(TRUE);
 
-	m_SequentialRead1.InitControl(136 + OFFSET_X, 96, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
+	m_SequentialRead1.InitControl(136 + OFFSET_X, 96, 260, 80, m_ZoomRatio, IP(L"meter"), 1, SS_RIGHT, CStaticCx::OwnerDrawGlassImage);
 	m_SequentialRead2.InitControl(136 + OFFSET_X, 184, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
 	m_RandomRead1.InitControl(136 + OFFSET_X, 272, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
 	m_RandomRead2.InitControl(136 + OFFSET_X, 360, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
@@ -440,7 +461,6 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_RandomMix2.ShowWindow(FALSE);
 	m_RandomMix3.ShowWindow(FALSE);
 
-
 	m_Comment.MoveWindow((int)((8 + OFFSET_X) * m_ZoomRatio), (int)(536 * m_ZoomRatio), (int)(656 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
 
 	m_ReadMbps.InitControl(136 + OFFSET_X, 56, 260, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
@@ -449,15 +469,63 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_MixMbps.InitControl(492 + OFFSET_X, 56, 172, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_MixMbps.ShowWindow(FALSE);
 
-	m_ComboCount.MoveWindow((int)((136 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(60 * m_ZoomRatio), (int)(48 * m_ZoomRatio));
-	m_ComboSize.MoveWindow((int)((204 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(140 * m_ZoomRatio), (int)(48 * m_ZoomRatio));
-	m_ComboDrive.MoveWindow((int)((352 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(312 * m_ZoomRatio), (int)(48 * m_ZoomRatio));
+	m_ComboCount.MoveWindow((int)((136 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(60 * m_ZoomRatio), (int)(320 * m_ZoomRatio));
+	m_ComboSize.MoveWindow((int)((204 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(140 * m_ZoomRatio), (int)(320 * m_ZoomRatio));
+	m_ComboDrive.MoveWindow((int)((352 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(312 * m_ZoomRatio), (int)(320 * m_ZoomRatio));
 #endif
-
-
+	
+//	SetClientRect((DWORD)(m_SizeX* m_ZoomRatio), 100, 1);
 
 	Invalidate();
 	ShowWindow(SW_SHOW);
+
+	m_ComboCount.ShowWindow(SW_HIDE);
+	m_ComboSize.ShowWindow(SW_HIDE);
+	m_ComboDrive.ShowWindow(SW_HIDE);
+
+	SetLayeredWindow(m_Comment.m_hWnd, 192);
+	SetLayeredWindow(m_ComboCount.m_hWnd, 192);
+	SetLayeredWindow(m_ComboSize.m_hWnd, 192);
+	SetLayeredWindow(m_ComboDrive.m_hWnd, 192);
+
+	COMBOBOXINFO info = { sizeof(COMBOBOXINFO) };
+	m_ComboCount.GetComboBoxInfo(&info);
+	SetLayeredWindow(info.hwndList, 240);
+	m_ComboSize.GetComboBoxInfo(&info);
+	SetLayeredWindow(info.hwndList, 240);
+	m_ComboDrive.GetComboBoxInfo(&info);
+	SetLayeredWindow(info.hwndList, 240);
+
+
+
+	/*
+	// Count
+	for (int i = 1; i < 10; i++)
+	{
+		CString cstr;
+		cstr.Format(L"%d", i);
+		int j = m_ComboCount.AddString(cstr);
+	}
+
+	m_ComboCount.SetCurSel(0);
+
+	for (int i = 0; i < m_ComboCount.GetCount(); i++)
+	{
+		m_ComboCount.SetItemHeight(i, (UINT)(20 * m_ZoomRatio));
+		m_ComboSize.SetItemHeight(i, (UINT)(20 * m_ZoomRatio));
+		m_ComboDrive.SetItemHeight(i, (UINT)(20 * m_ZoomRatio));
+	}
+	*/
+
+
+	m_ComboCount.ShowWindow(SW_SHOW);
+	m_ComboSize.ShowWindow(SW_SHOW);
+	m_ComboDrive.ShowWindow(SW_SHOW);
+
+	SetClientRect((DWORD)(m_SizeX* m_ZoomRatio), (DWORD)(m_SizeY* m_ZoomRatio), 1);
+
+	ShowWindow(SW_SHOW);
+
 }
 
 void CDiskMarkDlg::SetLayeredWindow(HWND hWnd, BYTE alpha)
@@ -1073,7 +1141,6 @@ void CDiskMarkDlg::Stop()
 	if(m_DiskBenchStatus)
 	{
 		m_DiskBenchStatus = FALSE;
-		UpdateMessage(_T("Message"), _T("Stopping..."));
 	}
 	EnableMenus();
 }
@@ -1156,23 +1223,6 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 	}
 }
 
-void CDiskMarkDlg::ChangeButton(CString elementName, CString className, CString title, CString innerHtml)
-{
-//	SetElementPropertyEx(elementName, DISPID_IHTMLELEMENT_CLASSNAME, className);
-//	SetElementPropertyEx(elementName, DISPID_IHTMLELEMENT_TITLE, title);
-//	SetElementInnerHtmlEx(elementName, innerHtml);
-}
-
-void CDiskMarkDlg::ChangeSelectStatus(CString ElementName, VARIANT_BOOL status)
-{
-
-}
-
-void CDiskMarkDlg::ChangeSelectTitle(CString ElementName, CString title)
-{
-
-}
-
 LRESULT CDiskMarkDlg::OnUpdateMessage(WPARAM wParam, LPARAM lParam)
 {
 	CString wstr = _T("");
@@ -1192,37 +1242,24 @@ LRESULT CDiskMarkDlg::OnUpdateMessage(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-void CDiskMarkDlg::UpdateMessage(CString ElementName, CString message)
-{
-	CComBSTR bstr;
-	bstr = _T("&nbsp;") + message;
-//	SetElementHtml(ElementName, bstr);
-}
-
 void CDiskMarkDlg::SetMeter(CStaticCx* control, double Score)
 {
 	CString cstr;
 
-	int meterLength;
+	double meterRatio = 0.0;
 	if(Score > 0.1)
 	{
-		meterLength = (int)(MAX_METER_LENGTH / 5 * log10(Score * 10));
+		meterRatio = 0.2 * log10(Score * 10);
 	}
 	else
 	{
-		meterLength = 0;
+		meterRatio = 0;
 	}
 
-	if(meterLength > MAX_METER_LENGTH)
+	if (meterRatio > 1.0)
 	{
-		meterLength = MAX_METER_LENGTH;
+		meterRatio = 1.0;
 	}
-	else if(meterLength < 1)
-	{
-		meterLength = 0;
-	}
-
-	cstr.Format(_T("%dpx"), -1 * (MAX_METER_LENGTH - meterLength));
 
 	if(Score >= 1000000.0)
 	{
@@ -1238,7 +1275,7 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double Score)
 	}
 
 	UpdateData(FALSE);
-
+	control->SetMeter(meterRatio);
 	control->SetWindowTextW(cstr);
 }
 
@@ -1682,6 +1719,7 @@ void CDiskMarkDlg::OnZoom75()
 	if (CheckRadioZoomType(ID_ZOOM_75, 75))
 	{
 		UpdateDialogSize();
+		UpdateDialogSize();
 	}
 }
 
@@ -1996,4 +2034,9 @@ void CDiskMarkDlg::OnFontSetting()
 void CDiskMarkDlg::OnCbnSelchangeComboDrive()
 {
 	SelectDrive();
+}
+
+void CDiskMarkDlg::MoveForcus()
+{
+	GotoDlgCtrl(GetDlgItem(IDOK));
 }

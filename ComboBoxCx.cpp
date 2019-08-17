@@ -28,6 +28,7 @@ CComboBoxCx::~CComboBoxCx()
 }
 
 BEGIN_MESSAGE_MAP(CComboBoxCx, CComboBox)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 
@@ -56,6 +57,11 @@ void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio)
 	m_Font.DeleteObject();
 	m_Font.CreateFontIndirect(&logFont);
 	SetFont(&m_Font);
+
+	if (m_ToolTip.m_hWnd != NULL)
+	{
+		m_ToolTip.SetFont(&m_Font);
+	}
 
 	SetItemHeight(-1, (UINT)(size * zoomRatio * 1.25));
 }
@@ -142,4 +148,82 @@ void CComboBoxCx::SetToolTipWindowText(LPCTSTR pText)
 {
 	SetToolTipText(pText);
 	SetWindowText(pText);
+}
+
+
+void CComboBoxCx::SetFontHeight(int height, double zoomRatio)
+{
+	m_FontHeight = (LONG)(-1 * height * zoomRatio);
+}
+
+void CComboBoxCx::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	lpMeasureItemStruct->itemHeight = abs(m_FontHeight);
+}
+
+void CComboBoxCx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+	CString cstr = L"";
+	if (lpDrawItemStruct->itemID == -1)
+		return;
+	GetLBText(lpDrawItemStruct->itemID, cstr);
+	CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
+
+	/*
+	CFont font;
+	LOGFONT logfont;
+	memset(&logfont, 0, sizeof(logfont));
+	logfont.lfHeight = m_FontHeight;
+	logfont.lfWidth = 0;
+	logfont.lfWeight = 400;
+	logfont.lfCharSet = DEFAULT_CHARSET;
+	pDC->SelectObject(&font);
+	_tcscpy_s(logfont.lfFaceName, 32, (LPCTSTR)L"メイリオ");
+	font.CreateFontIndirect(&logfont);
+	pDC->SelectObject(&font);
+	*/
+
+	CBrush* pBrush;
+	COLORREF color;
+	CRect rc(lpDrawItemStruct->rcItem);
+	color = RGB(255, 255, 255);
+
+	if (lpDrawItemStruct->itemState & ODS_SELECTED) {
+		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)GetStockObject(LTGRAY_BRUSH));
+		SetTextColor(lpDrawItemStruct->hDC, RGB(255, 0, 0));
+	}
+	else {
+		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)GetStockObject(WHITE_BRUSH));
+		SetTextColor(lpDrawItemStruct->hDC, RGB(0, 0, 0));
+	}
+
+	pDC->SetTextColor(RGB(0, 0, 0));
+	pDC->SetBkMode(TRANSPARENT);
+	pDC->DrawText(cstr, &lpDrawItemStruct->rcItem, DT_SINGLELINE | DT_VCENTER);
+}
+
+
+int CComboBoxCx::CompareItem(LPCOMPAREITEMSTRUCT lpCompareItemStruct)
+{
+	/*
+	LPCTSTR lpszText1 = (LPCTSTR) lpCompareItemStruct->itemData1;
+	ASSERT(lpszText1 != NULL);
+	LPCTSTR lpszText2 = (LPCTSTR) lpCompareItemStruct->itemData2;
+	ASSERT(lpszText2 != NULL);
+
+	return _tcscmp(lpszText2, lpszText1);
+	*/
+	return -1;
+}
+
+HBRUSH CComboBoxCx::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
+	switch (nCtlColor) {
+	case CTLCOLOR_EDIT:
+		pDC->SetBkMode(TRANSPARENT);
+		return hbr;
+	default:
+		return hbr;
+	}
 }
