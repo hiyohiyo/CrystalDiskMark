@@ -37,6 +37,14 @@ public:
 		RESULT_TEXT_FILE
 	};
 
+	enum SCORE_UNIT
+	{
+		SCORE_MBS = 0,
+		SCORE_GBS,
+		SCORE_IOPS,
+		SCORE_US,
+	};
+
 	volatile CWinThread* m_WinThread;
 	volatile BOOL m_DiskBenchStatus;
 
@@ -59,23 +67,27 @@ public:
 	double m_RandomWrite4KBScore3;
 	double m_RandomMix4KBScore3;
 
-	void SetMeter(CStaticCx* control, double score);
+	void SetMeter(CStaticCx* control, double score, int blockSize);
 	void ChangeLang(CString LangName);
 	void UpdateDialogSize();
 	void ChangeButtonStatus(BOOL status);
+	void SetScoreToolTip(CStaticCx* cx, double score, int blockSize);
 
 	CString m_CurrentLocalID;
-	CString m_ValueTestDrive;
+
+	CString m_ValueTestUnit;
 	CString m_ValueTestCount;
 	CString m_ValueTestSize;
+	CString m_ValueTestDrive;
 	CString m_TestDriveInfo;
 	CString m_TestTargetPath;
 	long m_TestDriveLetter;
 
 	int m_MaxIndexTestDrive;
-	int m_IndexTestDrive;
+	int m_IndexTestUnit;
 	int m_IndexTestCount;
 	int m_IndexTestSize;
+	int m_IndexTestDrive;
 
 	int m_SequentialMultiQueues1;
 	int m_SequentialMultiThreads1;
@@ -177,13 +189,14 @@ protected:
 
 	CEditEx m_Comment;
 
+	CComboBoxCx m_ComboUnit;
 	CComboBoxCx m_ComboCount;
 	CComboBoxCx m_ComboSize;
 	CComboBoxCx m_ComboDrive;
 
-	CStaticCx m_ReadMbps;
-	CStaticCx m_WriteMbps;
-	CStaticCx m_MixMbps;
+	CStaticCx m_WriteUnit;
+	CStaticCx m_ReadUnit;
+	CStaticCx m_MixUnit;
 
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
@@ -196,7 +209,6 @@ protected:
 	afx_msg LRESULT OnUpdateScore(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnUpdateMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnExitBenchmark(WPARAM wParam, LPARAM lParam);
-	afx_msg void OnZoom75();
 	afx_msg void OnZoom100();
 	afx_msg void OnZoom125();
 	afx_msg void OnZoom150();
@@ -240,6 +252,8 @@ public:
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnCbnSelchangeComboDrive();
+	afx_msg void OnCbnSelchangeComboUnit();
 	afx_msg void MoveForcus();
+	afx_msg void UpdateUnitLabel();
 
 };

@@ -49,6 +49,7 @@ public:
 	void SetToolTipWindowText(LPCTSTR pText);		// コントロールとツールチップのメッセージを設定する。
 	// フォント関係
 	void SetFontEx(CString face, int size, double zoomRatio, BYTE textAlpha = 255, COLORREF textColor = RGB(0, 0, 0), LONG fontWeight = FW_NORMAL, int fontType = FT_GDI); // フォントを設定します。
+
 	void SetMargin(int top, int left, int bottom, int right, double zoomRatio); // テキスト描画用のマージンを設定します。
 	// カーソル関係
 	void SetHandCursor(BOOL bHandCuror = TRUE);	// カーソルモードを設定します。

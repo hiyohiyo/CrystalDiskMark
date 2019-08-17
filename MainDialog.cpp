@@ -61,7 +61,7 @@ void CMainDialog::SetWindowTitle(CString message, CString mode)
 	}
 	else if(! mode.IsEmpty())
 	{
-		title.Format(_T("%s %s %s"), PRODUCT_NAME, PRODUCT_VERSION, mode);
+		title.Format(_T("%s %s %s %s"), PRODUCT_NAME, PRODUCT_VERSION, PRODUCT_EDITION, mode);
 	}
 	else
 	{

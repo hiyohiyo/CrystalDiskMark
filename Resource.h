@@ -38,12 +38,13 @@
 #define IDC_RANDOM_MIX_2                1022
 #define IDC_RANDOM_MIX_3                1023
 #define IDC_COMMENT                     1024
-#define IDC_COMBO_COUNT                 1025
-#define IDC_COMBO_DRIVE                 1026
-#define IDC_COMBO_SIZE                  1027
-#define IDC_READ_MBS                    1028
-#define IDC_WRITE_MBS                   1029
-#define IDC_MIX_MBS                     1030
+#define IDC_COMBO_UNIT                  1025
+#define IDC_COMBO_COUNT                 1026
+#define IDC_COMBO_DRIVE                 1027
+#define IDC_COMBO_SIZE                  1028
+#define IDC_READ_UNIT                   1029
+#define IDC_WRITE_UNIT                  1030
+#define IDC_MIX_UNIT                    1031
 #define IDC_CRYSTAL_DEW_WORLD           1100
 #define IDC_PROJECT_SITE_1              1101
 #define IDC_PROJECT_SITE_2              1102
@@ -96,7 +97,6 @@
 #define ID_BACK_PAGE                    32787
 #define ID_PRINT                        32790
 #define ID_FUNCTION_ZOOM                32799
-#define ID_ZOOM_75                      32800
 #define ID_ZOOM_100                     32801
 #define ID_ZOOM_125                     32802
 #define ID_ZOOM_150                     32803

@@ -804,7 +804,7 @@ void CStaticCx::SetDrawFrame(BOOL bDrawFrame)
 // フォント関連
 //------------------------------------------------
 
-void CStaticCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlpha, COLORREF textColor, LONG fontWeight, INT fontType)
+void CStaticCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlpha, COLORREF textColor, LONG fontWeight, int fontType)
 {
 	LOGFONT logFont = {0};
 	logFont.lfCharSet = DEFAULT_CHARSET;
@@ -1032,7 +1032,7 @@ void CStaticCx::SetMeter(double meterRatio)
 		}
 	}
 
-	for (int y = 1; y < m_CtrlSize.cy - 1; y++)
+	for (int y = (int)(m_CtrlSize.cy * 0.9); y < m_CtrlSize.cy - 1; y++)
 	{
 		for (int x = 1; x < meter; x++)
 		{

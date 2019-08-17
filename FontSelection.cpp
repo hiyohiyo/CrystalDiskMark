@@ -26,7 +26,7 @@ CFontSelection::CFontSelection(CWnd* pParent)
 	m_DefaultLangPath = ((CMainDialog*)pParent)->m_DefaultLangPath;
 	m_ZoomType = ((CMainDialog*)pParent)->GetZoomType();
 	m_FontFace = ((CMainDialog*)pParent)->m_FontFace;
-	m_FontType = ((CMainDialog*) pParent)->m_FontType;
+	m_FontType = ((CMainDialog*)pParent)->m_FontType;
 
 	m_CxThemeDir = ((CDiskMarkApp*)AfxGetApp())->m_ThemeDir;
 	m_CxCurrentTheme = ((CMainDialog*)pParent)->m_CurrentTheme;

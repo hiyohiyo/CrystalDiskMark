@@ -267,7 +267,14 @@ void GetOsName(CString& OsFullName)
 		{
 			if (osvi.wProductType != VER_NT_WORKSTATION)
 			{
-				osName = _T("Windows Server 2016");
+				if(osvi.dwBuildNumber >= 17763)
+				{
+					osName = _T("Windows Server 2019");
+				}
+				else
+				{
+					osName = _T("Windows Server 2016");
+				}
 			}
 			else
 			{
@@ -397,8 +404,13 @@ void GetOsName(CString& OsFullName)
 						osType = (_T("Professional N"));
 					}
 					break;
+				case PRODUCT_PRO_WORKSTATION:
+				case PRODUCT_PRO_WORKSTATION_N:
+				case PRODUCT_PRO_FOR_EDUCATION:
+				case PRODUCT_PRO_FOR_EDUCATION_N:
+					osType = (_T("Pro for Workstation"));
+					break;
 
-				case RRODUCT_ESSENTIALBUSINESS_SERVER_MGMT:
 				case PRODUCT_ESSENTIALBUSINESS_SERVER_ADDL:
 				case PRODUCT_ESSENTIALBUSINESS_SERVER_MGMTSVC:
 				case PRODUCT_ESSENTIALBUSINESS_SERVER_ADDLSVC:

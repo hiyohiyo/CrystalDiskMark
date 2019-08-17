@@ -117,8 +117,10 @@ UINT ExecDiskBenchAll(LPVOID dlg)
 	{
 		DiskSpd(dlg, TEST_SEQUENTIAL_READ1);
 		Interval(dlg);
+#ifdef PRO_MODE
 		DiskSpd(dlg, TEST_SEQUENTIAL_READ2);
 		Interval(dlg);
+#endif
 		DiskSpd(dlg, TEST_RANDOM_READ_4KB1);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_RANDOM_READ_4KB2);
@@ -127,8 +129,10 @@ UINT ExecDiskBenchAll(LPVOID dlg)
 		Interval(dlg);
 		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE1);
 		Interval(dlg);
+#ifdef PRO_MODE
 		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE2);
 		Interval(dlg);
+#endif
 		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB1);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB2);
@@ -168,12 +172,14 @@ UINT ExecDiskBenchSequential1(LPVOID dlg)
 
 UINT ExecDiskBenchSequential2(LPVOID dlg)
 {
+
 	if (Init(dlg))
 	{
+#ifdef PRO_MODE
 		DiskSpd(dlg, TEST_SEQUENTIAL_READ2);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE2);
-#ifdef PRO_MODE
+
 		Interval(dlg);
 		DiskSpd(dlg, TEST_SEQUENTIAL_MIX2);
 #endif
