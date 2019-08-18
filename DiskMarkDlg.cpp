@@ -1410,7 +1410,7 @@ void CDiskMarkDlg::InitDrive()
 
 void CDiskMarkDlg::ChangeLang(CString LangName)
 {
-	m_CurrentLangPath.Format(_T("%s\\%s.lang"), m_LangDir.GetString(), LangName);
+	m_CurrentLangPath.Format(_T("%s\\%s.lang"), m_LangDir, LangName);
 
 	CString cstr;
 	CMenu *menu = GetMenu();

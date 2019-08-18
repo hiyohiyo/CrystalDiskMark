@@ -179,7 +179,7 @@ void GetOsName(CString& OsFullName)
 		osVersion.Format(_T("%d.%d"), osvi.dwMajorVersion, osvi.dwMinorVersion);
 		osBuild.Format(_T("%d"), LOWORD(osvi.dwBuildNumber));
 
-		OsFullName.Format(_T("%s [%s Build %s]"), osName.GetString(), osVersion, osBuild);
+		OsFullName.Format(_T("%s [%s Build %s]"), osName, osVersion, osBuild);
 		break;
 
 	case VER_PLATFORM_WIN32_NT:
@@ -405,16 +405,21 @@ void GetOsName(CString& OsFullName)
 					}
 					break;
 				case PRODUCT_PRO_WORKSTATION:
-				case PRODUCT_PRO_WORKSTATION_N:
-				case PRODUCT_PRO_FOR_EDUCATION:
-				case PRODUCT_PRO_FOR_EDUCATION_N:
 					osType = (_T("Pro for Workstation"));
 					break;
-
+				case PRODUCT_PRO_WORKSTATION_N:
+					osType = (_T("Pro for Workstation N"));
+					break;
+				case PRODUCT_PRO_FOR_EDUCATION:
+					osType = (_T("Pro for Education"));
+					break;
+				case PRODUCT_PRO_FOR_EDUCATION_N:
+					osType = (_T("Pro for Education N"));
+					break;
 				case PRODUCT_ESSENTIALBUSINESS_SERVER_ADDL:
 				case PRODUCT_ESSENTIALBUSINESS_SERVER_MGMTSVC:
 				case PRODUCT_ESSENTIALBUSINESS_SERVER_ADDLSVC:
-					osType = (_T("Essentials"));
+					osType = (_T("Essentials Server"));
 					break;
 				}
 			}

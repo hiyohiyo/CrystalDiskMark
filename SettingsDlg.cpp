@@ -62,6 +62,7 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_RANDOM_THREAD_2, m_ComboRandomThreads2);
 	DDX_Control(pDX, IDC_COMBO_RANDOM_THREAD_3, m_ComboRandomThreads3);
 	
+	/*
 	DDX_CBIndex(pDX, IDC_COMBO_SEQUENTIAL_SIZE_1, m_IndexSequentialSize1);
 //	DDX_CBIndex(pDX, IDC_COMBO_SEQUENTIAL_SIZE_2, m_IndexSequentialSize2);
 	DDX_CBIndex(pDX, IDC_COMBO_RANDOM_SIZE_1, m_IndexRandomSize1);
@@ -93,6 +94,7 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_COMBO_RANDOM_THREAD_1, m_ValueRandomThreads1);
 	DDX_Text(pDX, IDC_COMBO_RANDOM_THREAD_2, m_ValueRandomThreads2);
 	DDX_Text(pDX, IDC_COMBO_RANDOM_THREAD_3, m_ValueRandomThreads3);
+	*/
 }
 
 
@@ -208,29 +210,29 @@ void CSettingsDlg::InitComboBox()
 	m_ComboRandomSize3.AddString(L"4KiB");
 	m_ComboRandomSize3.SetCurSel(0);
 
-	// Queues
 	m_ComboSequentialSize1.EnableWindow(FALSE);
 //	m_ComboSequentialSize2.EnableWindow(FALSE);
 	m_ComboRandomSize1.EnableWindow(FALSE);
 	m_ComboRandomSize2.EnableWindow(FALSE);
 	m_ComboRandomSize3.EnableWindow(FALSE);
 
+	// Queues
 	m_ComboSequentialQueues1.ResetContent();
 //	m_ComboSequentialQueues2.ResetContent();
 	m_ComboRandomQueues1.ResetContent();
 	m_ComboRandomQueues2.ResetContent();
 	m_ComboRandomQueues3.ResetContent();
 
-	TCHAR queues[10][8] = { L"1", L"2", L"4", L"8", L"16", L"32", L"64", L"128", L"256", L"512" };
+	int queues[10] = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512 };
 	for (int i = 0; i < 10; i++)
 	{
 		CString cstr;
-		cstr.Format(L"%s", queues[i]);
-		m_ComboSequentialQueues1.AddString(cstr); if (_ttoi(cstr.GetString()) == m_SequentialQueues1) { m_ComboSequentialQueues1.SetCurSel(i); }
-		//	m_ComboSequentialQueues2.AddString(cstr); if (_ttoi(cstr.GetString()) == m_SequentialQueues2) { m_ComboSequentialQueues2.SetCurSel(i); }
-		m_ComboRandomQueues1.AddString(cstr);     if (_ttoi(cstr.GetString()) == m_RandomQueues1) { m_ComboRandomQueues1.SetCurSel(i); }
-		m_ComboRandomQueues2.AddString(cstr);     if (_ttoi(cstr.GetString()) == m_RandomQueues2) { m_ComboRandomQueues2.SetCurSel(i); }
-		m_ComboRandomQueues3.AddString(cstr);     if (_ttoi(cstr.GetString()) == m_RandomQueues3) { m_ComboRandomQueues3.SetCurSel(i); }
+		cstr.Format(L"%d", queues[i]);
+		m_ComboSequentialQueues1.AddString(cstr); if (m_SequentialQueues1 == queues[i]) { m_ComboSequentialQueues1.SetCurSel(i); }
+	//	m_ComboSequentialQueues2.AddString(cstr); if (m_SequentialQueues2 == queues[i]) { m_ComboSequentialQueues2.SetCurSel(i); }
+		m_ComboRandomQueues1.AddString(cstr);     if (m_RandomQueues1 == queues[i]) { m_ComboRandomQueues1.SetCurSel(i); }
+		m_ComboRandomQueues2.AddString(cstr);     if (m_RandomQueues2 == queues[i]) { m_ComboRandomQueues2.SetCurSel(i); }
+		m_ComboRandomQueues3.AddString(cstr);     if (m_RandomQueues3 == queues[i]) { m_ComboRandomQueues3.SetCurSel(i); }
 	}
 //	m_ComboSequentialQueues2.EnableWindow(FALSE);
 
@@ -240,35 +242,44 @@ void CSettingsDlg::InitComboBox()
 	m_ComboRandomThreads1.ResetContent();
 	m_ComboRandomThreads2.ResetContent();
 	m_ComboRandomThreads3.ResetContent();
+
 	for (int i = 1; i <= 64; i++)
 	{
 		CString cstr;
 		cstr.Format(L"%d", i);
-		m_ComboSequentialThreads1.AddString(cstr); if (_ttoi(cstr.GetString()) == m_SequentialThreads1) { m_ComboSequentialThreads1.SetCurSel(i - 1); }
-		//	m_ComboSequentialThreads2.AddString(cstr); if (_ttoi(cstr.GetString()) == m_SequentialThreads2) { m_ComboSequentialThreads2.SetCurSel(i - 1); }
-		m_ComboRandomThreads1.AddString(cstr);     if (_ttoi(cstr.GetString()) == m_RandomThreads1) { m_ComboRandomThreads1.SetCurSel(i - 1); }
-		m_ComboRandomThreads2.AddString(cstr);     if (_ttoi(cstr.GetString()) == m_RandomThreads2) { m_ComboRandomThreads2.SetCurSel(i - 1); }
-		m_ComboRandomThreads3.AddString(cstr);     if (_ttoi(cstr.GetString()) == m_RandomThreads3) { m_ComboRandomThreads3.SetCurSel(i - 1); }
+		m_ComboSequentialThreads1.AddString(cstr); if (m_SequentialThreads1 == i) { m_ComboSequentialThreads1.SetCurSel(i - 1); }
+	//	m_ComboSequentialThreads2.AddString(cstr); if (m_SequentialThreads2 == i) { m_ComboSequentialThreads2.SetCurSel(i - 1); }
+		m_ComboRandomThreads1.AddString(cstr);     if (m_RandomThreads1 == i) { m_ComboRandomThreads1.SetCurSel(i - 1); }
+		m_ComboRandomThreads2.AddString(cstr);     if (m_RandomThreads2 == i) { m_ComboRandomThreads2.SetCurSel(i - 1); }
+		m_ComboRandomThreads3.AddString(cstr);     if (m_RandomThreads3 == i) { m_ComboRandomThreads3.SetCurSel(i - 1); }
 	}
-//	m_ComboSequentialThreads2.EnableWindow(FALSE);
-	UpdateData(FALSE);
 
+//	m_ComboSequentialThreads2.EnableWindow(FALSE);
+//	UpdateData(FALSE);
 }
 
 void CSettingsDlg::OnCancel()
 {
-	UpdateData(TRUE);
+	CString cstr;
 
-	WritePrivateProfileString(_T("Settings"), _T("SequentialMultiQueues1"), m_ValueSequentialQueues1, m_Ini);
-	WritePrivateProfileString(_T("Settings"), _T("SequentialMultiThreads1"), m_ValueSequentialThreads1, m_Ini);
-	WritePrivateProfileString(_T("Settings"), _T("SequentialMultiQueues2"), m_ValueSequentialQueues2, m_Ini);
-	WritePrivateProfileString(_T("Settings"), _T("SequentialMultiThreads2"), m_ValueSequentialThreads2, m_Ini);
-	WritePrivateProfileString(_T("Settings"), _T("RandomMultiQueues1"), m_ValueRandomQueues1, m_Ini);
-	WritePrivateProfileString(_T("Settings"), _T("RandomMultiThreads1"), m_ValueRandomThreads1, m_Ini);
-	WritePrivateProfileString(_T("Settings"), _T("RandomMultiQueues2"), m_ValueRandomQueues2, m_Ini);
-	WritePrivateProfileString(_T("Settings"), _T("RandomMultiThreads2"), m_ValueRandomThreads2, m_Ini);
-	WritePrivateProfileString(_T("Settings"), _T("RandomMultiQueues3"), m_ValueRandomQueues3, m_Ini);
-	WritePrivateProfileString(_T("Settings"), _T("RandomMultiThreads3"), m_ValueRandomThreads3, m_Ini);
+	m_ComboSequentialQueues1.GetWindowTextW(cstr);
+	WritePrivateProfileString(_T("Settings"), _T("SequentialMultiQueues1"), cstr, m_Ini);
+	m_ComboSequentialThreads1.GetWindowTextW(cstr);
+	WritePrivateProfileString(_T("Settings"), _T("SequentialMultiThreads1"), cstr, m_Ini);
+//	WritePrivateProfileString(_T("Settings"), _T("SequentialMultiQueues2"), m_ValueSequentialQueues2, m_Ini);
+//	WritePrivateProfileString(_T("Settings"), _T("SequentialMultiThreads2"), m_ValueSequentialThreads2, m_Ini);
+	m_ComboRandomQueues1.GetWindowTextW(cstr);
+	WritePrivateProfileString(_T("Settings"), _T("RandomMultiQueues1"), cstr, m_Ini);
+	m_ComboRandomThreads1.GetWindowTextW(cstr);
+	WritePrivateProfileString(_T("Settings"), _T("RandomMultiThreads1"), cstr, m_Ini);
+	m_ComboRandomQueues2.GetWindowTextW(cstr);
+	WritePrivateProfileString(_T("Settings"), _T("RandomMultiQueues2"), cstr, m_Ini);
+	m_ComboRandomThreads2.GetWindowTextW(cstr);
+	WritePrivateProfileString(_T("Settings"), _T("RandomMultiThreads2"), cstr, m_Ini);
+	m_ComboRandomQueues3.GetWindowTextW(cstr);
+	WritePrivateProfileString(_T("Settings"), _T("RandomMultiQueues3"), cstr, m_Ini);
+	m_ComboRandomThreads3.GetWindowTextW(cstr);
+	WritePrivateProfileString(_T("Settings"), _T("RandomMultiThreads3"), cstr, m_Ini);
 
 	CDialogCx::OnCancel();
 }

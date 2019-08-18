@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiskMark", "DiskMark.vcxproj", "{CDF33C67-147E-4C50-BC76-99A6BCB214D9}"
 EndProject
@@ -35,8 +34,8 @@ Global
 		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.Debug|ARM64.Build.0 = Debug|ARM64
 		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.Debug|Win32.ActiveCfg = Debug|Win32
 		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.Debug|Win32.Build.0 = Debug|Win32
-		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.Debug|x64.ActiveCfg = Release|x64
-		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.Debug|x64.Build.0 = Release|x64
+		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.Debug|x64.ActiveCfg = Debug|x64
+		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.Debug|x64.Build.0 = Debug|x64
 		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.Release(UWP)|ARM.ActiveCfg = Release(UWP)|ARM
 		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.Release(UWP)|ARM.Build.0 = Release(UWP)|ARM
 		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.Release(UWP)|ARM64.ActiveCfg = Release(UWP)|ARM64

@@ -61,28 +61,12 @@ protected:
 	void OnSetDefault();
 	void InitComboBox();
 
-	CString m_ValueSequentialSize1;
-	CString m_ValueSequentialQueues1;
-	CString m_ValueSequentialThreads1;
-	CString m_ValueSequentialSize2;
-	CString m_ValueSequentialQueues2;
-	CString m_ValueSequentialThreads2;
-	CString m_ValueRandomSize1;
-	CString m_ValueRandomQueues1;
-	CString m_ValueRandomThreads1;
-	CString m_ValueRandomSize2;
-	CString m_ValueRandomQueues2;
-	CString m_ValueRandomThreads2;
-	CString m_ValueRandomSize3;
-	CString m_ValueRandomQueues3;
-	CString m_ValueRandomThreads3;
-
 	int m_SequentialSize1;
 	int m_SequentialQueues1;
 	int m_SequentialThreads1;
-	int m_SequentialSize2;
-	int m_SequentialQueues2;
-	int m_SequentialThreads2;
+	//	int m_SequentialSize2;
+	//	int m_SequentialQueues2;
+	//	int m_SequentialThreads2;
 	int m_RandomSize1;
 	int m_RandomQueues1;
 	int m_RandomThreads1;
@@ -93,12 +77,29 @@ protected:
 	int m_RandomQueues3;
 	int m_RandomThreads3;
 
+	/*
+	CString m_ValueSequentialSize1;
+	CString m_ValueSequentialQueues1;
+	CString m_ValueSequentialThreads1;
+//	CString m_ValueSequentialSize2;
+//	CString m_ValueSequentialQueues2;
+//	CString m_ValueSequentialThreads2;
+	CString m_ValueRandomSize1;
+	CString m_ValueRandomQueues1;
+	CString m_ValueRandomThreads1;
+	CString m_ValueRandomSize2;
+	CString m_ValueRandomQueues2;
+	CString m_ValueRandomThreads2;
+	CString m_ValueRandomSize3;
+	CString m_ValueRandomQueues3;
+	CString m_ValueRandomThreads3;
+
 	int m_IndexSequentialSize1;
 	int m_IndexSequentialQueues1;
 	int m_IndexSequentialThreads1;
-	int m_IndexSequentialSize2;
-	int m_IndexSequentialQueues2;
-	int m_IndexSequentialThreads2;
+//	int m_IndexSequentialSize2;
+//	int m_IndexSequentialQueues2;
+//	int m_IndexSequentialThreads2;
 	int m_IndexRandomSize1;
 	int m_IndexRandomQueues1;
 	int m_IndexRandomThreads1;
@@ -108,6 +109,7 @@ protected:
 	int m_IndexRandomSize3;
 	int m_IndexRandomQueues3;
 	int m_IndexRandomThreads3;
+	*/
 
 	DECLARE_MESSAGE_MAP()
 };
