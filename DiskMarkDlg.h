@@ -103,6 +103,7 @@ public:
 	int m_IntervalTime;
 
 	DWORD m_TestData;
+	BOOL m_AdminMode;
 
 	// Message //
 	CString m_MesDiskCapacityError;
@@ -111,6 +112,8 @@ public:
 	CString m_MesStopBenchmark;
 	CString m_MesDiskCreateFileError;
 	CString m_MesDiskSpdNotFound;
+
+	void SetWindowTitle(CString message, CString mode);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support

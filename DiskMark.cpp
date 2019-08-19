@@ -35,6 +35,7 @@ CDiskMarkApp theApp;
 // Prototypes
 //-----------------------------------------------------------------------------
 static BOOL IsFileExistEx(const TCHAR* path, const TCHAR* fileName);
+static BOOL RunAsRestart();
 
 BOOL CDiskMarkApp::InitInstance()
 {
@@ -100,23 +101,19 @@ BOOL CDiskMarkApp::InitInstance()
 	DefaultTheme.Format(_T("%s\\%s"), tmp, DEFAULT_THEME);
 	DefaultLanguage.Format(_T("%s\\%s"), tmp, DEFAULT_LANGUAGE);
 
-	// No Server Busy Dialog!!
-	if(!AfxOleInit())
-	{
-		AfxMessageBox(_T("Unsupported OLE version."));
-		return FALSE;
-	}
-
-	// No Server Busy Dialog!!
-	AfxOleGetMessageFilter()->SetMessagePendingDelay(60 * 1000);
-	AfxOleGetMessageFilter()->EnableNotRespondingDialog(FALSE);
-	AfxOleGetMessageFilter()->EnableBusyDialog(FALSE);
-
 	CString cstr;
 	DWORD debugMode = GetPrivateProfileInt(_T("Settings"), _T("DebugMode"), 0, m_Ini);
 	SetDebugMode(debugMode);
 	cstr.Format(_T("%d"), debugMode);
 	WritePrivateProfileString(_T("Settings"), _T("DebugMode"), cstr, m_Ini);
+
+	if (! IsUserAnAdmin())
+	{
+		if (RunAsRestart())
+		{
+			return FALSE;
+		}
+	}
 
 	// Multimedia Timer Setting
 	TIMECAPS tc;
@@ -155,4 +152,27 @@ BOOL IsFileExistEx(const TCHAR* path, const TCHAR* fileName)
 		return FALSE;
 	}
 	return TRUE;
+}
+
+BOOL RunAsRestart()
+{
+	int count;
+#ifdef _UNICODE
+	TCHAR** cmd = ::CommandLineToArgvW(::GetCommandLine(), &count);
+#else
+	TCHAR** cmd = ::__argv;
+	count = ::__argc;
+#endif
+
+	if (count < 2 || _tcscmp(cmd[1], _T("runas")) != 0)
+	{
+		TCHAR path[MAX_PATH];
+		::GetModuleFileName(NULL, path, MAX_PATH);
+		if (::ShellExecute(NULL, _T("runas"), path, _T("runas"), NULL, SW_SHOWNORMAL)
+	> (HINSTANCE)32)
+		{
+			return TRUE;
+		}
+	}
+	return FALSE;
 }

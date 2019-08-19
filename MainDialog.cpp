@@ -57,16 +57,17 @@ void CMainDialog::SetWindowTitle(CString message, CString mode)
 
 	if(! message.IsEmpty())
 	{
-		title.Format(_T("%s - %s"), PRODUCT_SHORT_NAME, message);
+		title.Format(_T("%s - %s"), PRODUCT_SHORT_NAME, message.GetString());
 	}
 	else if(! mode.IsEmpty())
 	{
-		title.Format(_T("%s %s %s %s"), PRODUCT_NAME, PRODUCT_VERSION, PRODUCT_EDITION, mode);
+		title.Format(_T("%s %s %s %s"), PRODUCT_NAME, PRODUCT_VERSION, PRODUCT_EDITION, mode.GetString());
 	}
 	else
 	{
 		title.Format(_T("%s %s %s"), PRODUCT_NAME, PRODUCT_VERSION, PRODUCT_EDITION);
 	}
+
 	SetWindowText(title);
 }
 

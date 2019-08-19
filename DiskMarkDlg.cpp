@@ -37,8 +37,8 @@
 //#define MAIN_CSS_FILE_NAME	_T("MainS.css")
 #else
 #define SIZE_X		672
-#define SIZE_Y		584
-#define SIZE_MIN_Y	584
+#define SIZE_Y		496
+#define SIZE_MIN_Y	496
 #define OFFSET_X    0
 //#define MAIN_CSS_FILE_NAME	_T("Main.css")
 #endif
@@ -62,6 +62,8 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 
 	m_ExeDir = ((CDiskMarkApp*)AfxGetApp())->m_ExeDir;
 	_tcscpy_s(m_Ini, MAX_PATH, ((CDiskMarkApp*)AfxGetApp())->m_Ini);
+
+	m_AdminMode = IsUserAnAdmin();
 }
 
 void CDiskMarkDlg::DoDataExchange(CDataExchange* pDX)
@@ -362,6 +364,8 @@ BOOL CDiskMarkDlg::OnInitDialog()
 
 	m_FlagInitializing = FALSE;
 
+	SetForegroundWindow();
+
 	return TRUE;
 }
 
@@ -455,12 +459,22 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ComboSize.MoveWindow((int)((204 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(140 * m_ZoomRatio), (int)(48 * m_ZoomRatio));
 	m_ComboDrive.MoveWindow((int)((352 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(312 * m_ZoomRatio), (int)(48 * m_ZoomRatio));
 #else
+
+#ifdef SUISHO_SHIZUKU_SUPPORT
 	m_ButtonAll.InitControl(        8 + OFFSET_X,  8, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonSequential1.InitControl(8 + OFFSET_X, 96, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonSequential2.InitControl(8 + OFFSET_X,184, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonRandom1.InitControl(    8 + OFFSET_X,184, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonRandom2.InitControl(    8 + OFFSET_X,272, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonRandom3.InitControl(    8 + OFFSET_X,360, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+#else
+	m_ButtonAll.InitControl(8 + OFFSET_X, 8, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonSequential1.InitControl(8 + OFFSET_X, 96, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonSequential2.InitControl(8 + OFFSET_X, 184, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonRandom1.InitControl(8 + OFFSET_X, 184, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonRandom2.InitControl(8 + OFFSET_X, 272, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonRandom3.InitControl(8 + OFFSET_X, 360, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+#endif
 
 	m_ButtonAll.SetHandCursor(TRUE);
 	m_ButtonSequential1.SetHandCursor(TRUE);
@@ -2164,4 +2178,29 @@ void CDiskMarkDlg::UpdateUnitLabel()
 		m_WriteUnit.SetWindowTextW(L"Write [MB/s]");
 		m_MixUnit.SetWindowTextW(L"Mix [MB/s]");
 	}
+}
+
+void CDiskMarkDlg::SetWindowTitle(CString message, CString mode)
+{
+	CString title;
+
+	if (!message.IsEmpty())
+	{
+		title.Format(_T("%s - %s"), PRODUCT_SHORT_NAME, message.GetString());
+	}
+	else if (!mode.IsEmpty())
+	{
+		title.Format(_T("%s %s %s %s"), PRODUCT_NAME, PRODUCT_VERSION, PRODUCT_EDITION, mode.GetString());
+	}
+	else
+	{
+		title.Format(_T("%s %s %s"), PRODUCT_NAME, PRODUCT_VERSION, PRODUCT_EDITION);
+	}
+
+	if (m_AdminMode)
+	{
+		title += L" [ADMIN]";
+	}
+
+	SetWindowText(title);
 }

@@ -183,7 +183,6 @@ void CComboBoxCx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	pDC->SelectObject(&font);
 	*/
 
-	CBrush* pBrush;
 	COLORREF color;
 	CRect rc(lpDrawItemStruct->rcItem);
 	color = RGB(255, 255, 255);
