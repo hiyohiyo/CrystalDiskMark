@@ -134,7 +134,7 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	ON_COMMAND(ID_ZOOM_200, &CDiskMarkDlg::OnZoom200)
 	ON_COMMAND(ID_ZOOM_250, &CDiskMarkDlg::OnZoom250)
 	ON_COMMAND(ID_ZOOM_300, &CDiskMarkDlg::OnZoom300)
-	ON_COMMAND(ID_ZOOM_400, &CDiskMarkDlg::OnZoom400)
+//	ON_COMMAND(ID_ZOOM_400, &CDiskMarkDlg::OnZoom400)
 	ON_COMMAND(ID_ZOOM_AUTO, &CDiskMarkDlg::OnZoomAuto)
 
 	ON_COMMAND(ID_INTERVAL_TIME_0, &CDiskMarkDlg::OnIntervalTime0)
@@ -282,9 +282,9 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	m_ComboCount.SetToolTipText(str);
 
 	// Size
-	TCHAR size[9][8] = { L"64MiB", L"128MiB", L"512MiB", L"1GiB", L"2GiB", L"4GiB",  L"8GiB", L"16GiB", L"32GiB" };
+	TCHAR size[11][8] = { L"16MiB", L"32MiB", L"64MiB", L"128MiB", L"512MiB", L"1GiB", L"2GiB", L"4GiB",  L"8GiB", L"16GiB", L"32GiB" };
 
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < 11; i++)
 	{
 		CString cstr;
 		cstr.Format(L"%s", size[i]);
@@ -315,7 +315,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	case 200:  CheckRadioZoomType(ID_ZOOM_200, 200); break;
 	case 250:  CheckRadioZoomType(ID_ZOOM_250, 250); break;
 	case 300:  CheckRadioZoomType(ID_ZOOM_300, 300); break;
-	case 400:  CheckRadioZoomType(ID_ZOOM_400, 400); break;
+//	case 400:  CheckRadioZoomType(ID_ZOOM_400, 400); break;
 	default:   CheckRadioZoomType(ID_ZOOM_AUTO, 0); break;
 	}
 
@@ -461,12 +461,20 @@ void CDiskMarkDlg::UpdateDialogSize()
 #else
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
+	m_ButtonAll.InitControl(8 + OFFSET_X, 8, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonSequential1.InitControl(8 + OFFSET_X, 96, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonSequential2.InitControl(8 + OFFSET_X, 184, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonRandom1.InitControl(8 + OFFSET_X, 184, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonRandom2.InitControl(8 + OFFSET_X, 272, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonRandom3.InitControl(8 + OFFSET_X, 360, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	/*
 	m_ButtonAll.InitControl(        8 + OFFSET_X,  8, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonSequential1.InitControl(8 + OFFSET_X, 96, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonSequential2.InitControl(8 + OFFSET_X,184, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonRandom1.InitControl(    8 + OFFSET_X,184, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonRandom2.InitControl(    8 + OFFSET_X,272, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonRandom3.InitControl(    8 + OFFSET_X,360, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	*/
 #else
 	m_ButtonAll.InitControl(8 + OFFSET_X, 8, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
 	m_ButtonSequential1.InitControl(8 + OFFSET_X, 96, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
@@ -718,16 +726,16 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 	m_SequentialMultiQueues2 = 1;
 	m_SequentialMultiThreads2 = 1;
 
-	m_RandomMultiQueues1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues1"), 8, m_Ini);
+	m_RandomMultiQueues1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues1"), 32, m_Ini);
 	if (m_RandomMultiQueues1 <= 0 || m_RandomMultiQueues1 > MAX_QUEUES)
 	{
-		m_RandomMultiQueues1 = 8;
+		m_RandomMultiQueues1 = 32;
 	}
 
-	m_RandomMultiThreads1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiThreads1"), 8, m_Ini);
+	m_RandomMultiThreads1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiThreads1"), 16, m_Ini);
 	if (m_RandomMultiThreads1 <= 0 || m_RandomMultiThreads1 > MAX_THREADS)
 	{
-		m_RandomMultiThreads1 = 8;
+		m_RandomMultiThreads1 = 16;
 	}
 
 	m_RandomMultiQueues2 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues2"), 32, m_Ini);
@@ -1873,6 +1881,7 @@ void CDiskMarkDlg::OnZoom300()
 	}
 }
 
+/*
 void CDiskMarkDlg::OnZoom400()
 {
 	if (CheckRadioZoomType(ID_ZOOM_400, 400))
@@ -1880,6 +1889,7 @@ void CDiskMarkDlg::OnZoom400()
 		UpdateDialogSize();
 	}
 }
+*/
 
 void CDiskMarkDlg::OnZoomAuto()
 {
@@ -1924,7 +1934,7 @@ void CDiskMarkDlg::CheckRadioZoomType()
 	case 200: id = ID_ZOOM_200;	break;
 	case 250: id = ID_ZOOM_250;	break;
 	case 300: id = ID_ZOOM_300;	break;
-	case 400: id = ID_ZOOM_400;	break;
+//	case 400: id = ID_ZOOM_400;	break;
 	default:  id = ID_ZOOM_AUTO;	break;
 	}
 

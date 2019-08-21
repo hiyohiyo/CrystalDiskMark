@@ -108,8 +108,8 @@ void CSettingsDlg::OnSetDefault()
 	m_SequentialThreads1 = 1;
 //	m_SequentialQueues2 = 8;
 //	m_SequentialThreads2 = 1;
-	m_RandomQueues1 = 8;
-	m_RandomThreads1 = 8;
+	m_RandomQueues1 = 32;
+	m_RandomThreads1 = 16;
 	m_RandomQueues2 = 32;
 	m_RandomThreads2 = 1;
 	m_RandomQueues3 = 1;
@@ -143,15 +143,15 @@ BOOL CSettingsDlg::OnInitDialog()
 		m_SequentialThreads2 = 1;
 	}
 	*/
-	m_RandomQueues1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues1"), 8, m_Ini);
+	m_RandomQueues1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues1"), 32, m_Ini);
 	if (m_RandomQueues1 <= 0 || m_RandomQueues1 > MAX_QUEUES)
 	{
-		m_RandomQueues1 = 8;
+		m_RandomQueues1 = 32;
 	}
-	m_RandomThreads1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiThreads1"), 8, m_Ini);
+	m_RandomThreads1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiThreads1"), 16, m_Ini);
 	if (m_RandomThreads1 <= 0 || m_RandomThreads1 > MAX_THREADS)
 	{
-		m_RandomThreads1 = 8;
+		m_RandomThreads1 = 16;
 	}
 	m_RandomQueues2 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues2"), 32, m_Ini);
 	if (m_RandomQueues2 <= 0 || m_RandomQueues2 > MAX_QUEUES)

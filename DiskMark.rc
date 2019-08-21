@@ -303,7 +303,7 @@ BEGIN
             MENUITEM "200%",                        ID_ZOOM_200
             MENUITEM "250%",                        ID_ZOOM_250
             MENUITEM "300%",                        ID_ZOOM_300
-            MENUITEM "400%",                        ID_ZOOM_400
+//            MENUITEM "400%",                        ID_ZOOM_400
             MENUITEM "Auto",                        ID_ZOOM_AUTO
         END
         MENUITEM "Font Settings",               ID_FONT_SETTING

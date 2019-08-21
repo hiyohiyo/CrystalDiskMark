@@ -218,7 +218,7 @@ protected:
 	afx_msg void OnZoom200();
 	afx_msg void OnZoom250();
 	afx_msg void OnZoom300();
-	afx_msg void OnZoom400();
+//	afx_msg void OnZoom400();
 	afx_msg void OnZoomAuto();
 
 	afx_msg void OnIntervalTime0();

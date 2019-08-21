@@ -103,7 +103,7 @@
 #define ID_ZOOM_200                     32804
 #define ID_ZOOM_250                     32805
 #define ID_ZOOM_300                     32806
-#define ID_ZOOM_400                     32807
+// #define ID_ZOOM_400                     32807
 #define ID_ZOOM_AUTO                    33808
 #define ID_HELP_HELP                    32810
 #define ID_HELP_CRYSTALDEWWORLD         32811
