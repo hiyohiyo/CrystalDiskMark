@@ -53,19 +53,22 @@ public:
 
 	double m_SequentialReadScore1;
 	double m_SequentialWriteScore1;
-	double m_SequentialMixScore1;
 	double m_SequentialReadScore2;
 	double m_SequentialWriteScore2;
-	double m_SequentialMixScore2;
 	double m_RandomRead4KBScore1;
 	double m_RandomWrite4KBScore1;
-	double m_RandomMix4KBScore1;
 	double m_RandomRead4KBScore2;
 	double m_RandomWrite4KBScore2;
-	double m_RandomMix4KBScore2;
 	double m_RandomRead4KBScore3;
 	double m_RandomWrite4KBScore3;
+
+#ifdef PRO_MODE
+	double m_SequentialMixScore1;
+	double m_SequentialMixScore2;
+	double m_RandomMix4KBScore1;
+	double m_RandomMix4KBScore2;
 	double m_RandomMix4KBScore3;
+#endif
 
 	void SetMeter(CStaticCx* control, double score, int blockSize);
 	void ChangeLang(CString LangName);
@@ -166,6 +169,14 @@ protected:
 
 	void SetLayeredWindow(HWND hWnd, BYTE alpha);
 
+#ifdef PRO_MODE
+	CStaticCx m_SequentialMix1;
+	CStaticCx m_SequentialMix2;
+	CStaticCx m_RandomMix1;
+	CStaticCx m_RandomMix2;
+	CStaticCx m_RandomMix3;
+	CStaticCx m_MixUnit;
+#endif
 
 	CButtonCx m_ButtonAll;
 	CButtonCx m_ButtonSequential1;
@@ -186,12 +197,6 @@ protected:
 	CStaticCx m_RandomWrite2;
 	CStaticCx m_RandomWrite3;
 
-	CStaticCx m_SequentialMix1;
-	CStaticCx m_SequentialMix2;
-	CStaticCx m_RandomMix1;
-	CStaticCx m_RandomMix2;
-	CStaticCx m_RandomMix3;
-
 	CEditEx m_Comment;
 
 	CComboBoxCx m_ComboUnit;
@@ -201,7 +206,6 @@ protected:
 
 	CStaticCx m_WriteUnit;
 	CStaticCx m_ReadUnit;
-	CStaticCx m_MixUnit;
 
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
@@ -233,8 +237,7 @@ protected:
 	afx_msg void OnIntervalTime180();
 	afx_msg void OnIntervalTime300();
 	afx_msg void OnIntervalTime600();
-
-
+	
 	afx_msg void OnExit();
 	afx_msg void OnAbout();
 	afx_msg void OnFontSetting();
