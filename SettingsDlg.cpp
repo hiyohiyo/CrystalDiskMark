@@ -185,6 +185,12 @@ void CSettingsDlg::InitComboBox()
 	}
 	*/
 
+	m_ComboSequentialSize1.ResetContent();
+	m_ComboSequentialSize2.ResetContent();
+	m_ComboRandomSize1.ResetContent();
+	m_ComboRandomSize2.ResetContent();
+	m_ComboRandomSize3.ResetContent();
+
 	int blocksize[] = { 1, 2, 4, 8 };
 	for (int i = 0; i < 4; i++)
 	{
@@ -250,6 +256,7 @@ void CSettingsDlg::InitComboBox()
 		m_ComboRandomThreads3.AddString(cstr);     if (m_RandomThreads3 == i) { m_ComboRandomThreads3.SetCurSel(i - 1); }
 	}
 
+	m_ComboAffinity.ResetContent();
 	m_ComboAffinity.AddString(L"OFF (-n)");
 	m_ComboAffinity.AddString(L"ON (-ag)");
 

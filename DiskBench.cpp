@@ -338,6 +338,10 @@ BOOL Init(void* dlg)
 		return FALSE;
 	}
 
+	CString title;
+	title.Format(L"Preparing... Create Test File");
+	::PostMessage(((CDiskMarkDlg*)dlg)->GetSafeHwnd(), WM_USER_UPDATE_MESSAGE, (WPARAM)& title, 0);
+
 // Preapare Test File
 	hFile = ::CreateFile(TestFilePath, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
 			FILE_ATTRIBUTE_NORMAL|FILE_FLAG_NO_BUFFERING|FILE_FLAG_SEQUENTIAL_SCAN, NULL);

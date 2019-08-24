@@ -24,9 +24,9 @@
 
 
 #ifdef PRO_MODE
-	#define MAX_METER_LENGTH	260
+	#define MAX_METER_LENGTH	320
 #else
-	#define MAX_METER_LENGTH	280
+	#define MAX_METER_LENGTH	320
 #endif
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
@@ -34,13 +34,11 @@
 #define SIZE_Y		588
 #define SIZE_MIN_Y	588
 #define OFFSET_X    328
-//#define MAIN_CSS_FILE_NAME	_T("MainS.css")
 #else
-#define SIZE_X		672
+#define SIZE_X		792
 #define SIZE_Y		588
 #define SIZE_MIN_Y	588
 #define OFFSET_X    0
-//#define MAIN_CSS_FILE_NAME	_T("Main.css")
 #endif
 
 #ifdef _DEBUG
@@ -396,34 +394,34 @@ void CDiskMarkDlg::UpdateDialogSize()
 	}
 	SetControlFont();
 
-	m_ComboUnit.SetFontHeight(22, m_ZoomRatio);
-	m_ComboUnit.SetFontEx(m_FontFace, 22, m_ZoomRatio);
+	m_ComboUnit.SetFontHeight(24, m_ZoomRatio);
+	m_ComboUnit.SetFontEx(m_FontFace, 24, m_ZoomRatio);
 	m_ComboUnit.SetItemHeight(-1, (UINT)(36 * m_ZoomRatio));
-	m_ComboCount.SetFontHeight(22, m_ZoomRatio);
-	m_ComboCount.SetFontEx(m_FontFace, 22, m_ZoomRatio);
+	m_ComboCount.SetFontHeight(24, m_ZoomRatio);
+	m_ComboCount.SetFontEx(m_FontFace, 24, m_ZoomRatio);
 	m_ComboCount.SetItemHeight(-1, (UINT)(36 * m_ZoomRatio));
-	m_ComboSize.SetFontHeight(22, m_ZoomRatio);
-	m_ComboSize.SetFontEx(m_FontFace, 22, m_ZoomRatio);
+	m_ComboSize.SetFontHeight(24, m_ZoomRatio);
+	m_ComboSize.SetFontEx(m_FontFace, 24, m_ZoomRatio);
 	m_ComboSize.SetItemHeight(-1, (UINT)(36 * m_ZoomRatio));
-	m_ComboDrive.SetFontHeight(22, m_ZoomRatio);
-	m_ComboDrive.SetFontEx(m_FontFace, 22, m_ZoomRatio);
+	m_ComboDrive.SetFontHeight(24, m_ZoomRatio);
+	m_ComboDrive.SetFontEx(m_FontFace, 24, m_ZoomRatio);
 	m_ComboDrive.SetItemHeight(-1, (UINT)(36 * m_ZoomRatio));
 
 	for (int i = 0; i < m_ComboUnit.GetCount(); i++)
 	{
-		m_ComboUnit.SetItemHeight(i, (UINT)(28 * m_ZoomRatio));
+		m_ComboUnit.SetItemHeight(i, (UINT)(32 * m_ZoomRatio));
 	}
 	for (int i = 0; i < m_ComboCount.GetCount(); i++)
 	{
-		m_ComboCount.SetItemHeight(i, (UINT)(28 * m_ZoomRatio));
+		m_ComboCount.SetItemHeight(i, (UINT)(32 * m_ZoomRatio));
 	}
 	for (int i = 0; i < m_ComboSize.GetCount(); i++)
 	{
-		m_ComboSize.SetItemHeight(i, (UINT)(28 * m_ZoomRatio));
+		m_ComboSize.SetItemHeight(i, (UINT)(32 * m_ZoomRatio));
 	}
 	for (int i = 0; i < m_ComboDrive.GetCount(); i++)
 	{
-		m_ComboDrive.SetItemHeight(i, (UINT)(28 * m_ZoomRatio));
+		m_ComboDrive.SetItemHeight(i, (UINT)(32 * m_ZoomRatio));
 	}
 	
 #ifdef PRO_MODE
@@ -503,27 +501,27 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ButtonRandom2.SetHandCursor(TRUE);
 	m_ButtonRandom3.SetHandCursor(TRUE);
 
-	m_SequentialRead1.InitControl(136 + OFFSET_X, 96, 260, 80, m_ZoomRatio, IP(L"meter"), 1, SS_RIGHT, CStaticCx::OwnerDrawGlassImage);
-	m_SequentialRead2.InitControl(136 + OFFSET_X, 184, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_RandomRead1.InitControl(136 + OFFSET_X, 272, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_RandomRead2.InitControl(136 + OFFSET_X, 360, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_RandomRead3.InitControl(136 + OFFSET_X, 448, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
+	m_SequentialRead1.InitControl(136 + OFFSET_X, 96, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlassImage);
+	m_SequentialRead2.InitControl(136 + OFFSET_X, 184, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
+	m_RandomRead1.InitControl(136 + OFFSET_X, 272, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
+	m_RandomRead2.InitControl(136 + OFFSET_X, 360, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
+	m_RandomRead3.InitControl(136 + OFFSET_X, 448, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
 
-	m_SequentialWrite1.InitControl(404 + OFFSET_X, 96, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_SequentialWrite2.InitControl(404 + OFFSET_X, 184, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_RandomWrite1.InitControl(404 + OFFSET_X, 272, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_RandomWrite2.InitControl(404 + OFFSET_X, 360, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_RandomWrite3.InitControl(404 + OFFSET_X, 448, 260, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
+	m_SequentialWrite1.InitControl(464 + OFFSET_X, 96, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
+	m_SequentialWrite2.InitControl(464 + OFFSET_X, 184, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
+	m_RandomWrite1.InitControl(464 + OFFSET_X, 272, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
+	m_RandomWrite2.InitControl(464 + OFFSET_X, 360, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
+	m_RandomWrite3.InitControl(464 + OFFSET_X, 448, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
 
-	m_Comment.MoveWindow((int)((8 + OFFSET_X) * m_ZoomRatio), (int)(536 * m_ZoomRatio), (int)(656 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
+	m_Comment.MoveWindow((int)((8 + OFFSET_X) * m_ZoomRatio), (int)(536 * m_ZoomRatio), (int)(776 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
 
-	m_ReadUnit.InitControl(136 + OFFSET_X, 56, 260, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_WriteUnit.InitControl(404 + OFFSET_X, 56, 260, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_ReadUnit.InitControl(136 + OFFSET_X, 56, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_WriteUnit.InitControl(464 + OFFSET_X, 56, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
-	m_ComboCount.MoveWindow((int)((136 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(40 * m_ZoomRatio), (int)(500 * m_ZoomRatio));
-	m_ComboSize.MoveWindow((int)((180 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(112 * m_ZoomRatio), (int)(500 * m_ZoomRatio));
-	m_ComboDrive.MoveWindow((int)((296 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(280 * m_ZoomRatio), (int)(500 * m_ZoomRatio));
-	m_ComboUnit.MoveWindow((int)((580 + OFFSET_X)* m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(84 * m_ZoomRatio), (int)(500 * m_ZoomRatio));
+	m_ComboCount.MoveWindow((int)((136 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(60 * m_ZoomRatio), (int)(500 * m_ZoomRatio));
+	m_ComboSize.MoveWindow((int)((200 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(140 * m_ZoomRatio), (int)(500 * m_ZoomRatio));
+	m_ComboDrive.MoveWindow((int)((344 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(336 * m_ZoomRatio), (int)(500 * m_ZoomRatio));
+	m_ComboUnit.MoveWindow((int)((684 + OFFSET_X)* m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(100 * m_ZoomRatio), (int)(500 * m_ZoomRatio));
 #endif
 
 	UpdateScore();
@@ -535,11 +533,11 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ComboSize.ShowWindow(SW_HIDE);
 	m_ComboDrive.ShowWindow(SW_HIDE);
 
-	SetLayeredWindow(m_Comment.m_hWnd, 192);
-	SetLayeredWindow(m_ComboUnit.m_hWnd, 192);
-	SetLayeredWindow(m_ComboCount.m_hWnd, 192);
-	SetLayeredWindow(m_ComboSize.m_hWnd, 192);
-	SetLayeredWindow(m_ComboDrive.m_hWnd, 192);
+	SetLayeredWindow(m_Comment.m_hWnd, 240);
+	SetLayeredWindow(m_ComboUnit.m_hWnd, 240);
+	SetLayeredWindow(m_ComboCount.m_hWnd, 240);
+	SetLayeredWindow(m_ComboSize.m_hWnd, 240);
+	SetLayeredWindow(m_ComboDrive.m_hWnd, 240);
 
 	COMBOBOXINFO info = { sizeof(COMBOBOXINFO) };
 	m_ComboUnit.GetComboBoxInfo(&info);
@@ -636,17 +634,17 @@ void CDiskMarkDlg::SetControlFont()
 	m_ButtonRandom2.SetFontEx(m_FontFace, 20, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 	m_ButtonRandom3.SetFontEx(m_FontFace, 20, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 
-	m_SequentialRead1.SetFontEx(m_FontFace, 48, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_SequentialRead2.SetFontEx(m_FontFace, 48, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomRead1.SetFontEx(m_FontFace, 48, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomRead2.SetFontEx(m_FontFace, 48, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomRead3.SetFontEx(m_FontFace, 48, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_SequentialRead1.SetFontEx(m_FontFace, 56, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_SequentialRead2.SetFontEx(m_FontFace, 56, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_RandomRead1.SetFontEx(m_FontFace, 56, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_RandomRead2.SetFontEx(m_FontFace, 56, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_RandomRead3.SetFontEx(m_FontFace, 56, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 
-	m_SequentialWrite1.SetFontEx(m_FontFace, 48, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_SequentialWrite2.SetFontEx(m_FontFace, 48, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomWrite1.SetFontEx(m_FontFace, 48, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomWrite2.SetFontEx(m_FontFace, 48, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomWrite3.SetFontEx(m_FontFace, 48, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_SequentialWrite1.SetFontEx(m_FontFace, 56, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_SequentialWrite2.SetFontEx(m_FontFace, 56, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_RandomWrite1.SetFontEx(m_FontFace, 56, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_RandomWrite2.SetFontEx(m_FontFace, 56, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_RandomWrite3.SetFontEx(m_FontFace, 56, m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 
 	m_Comment.SetFontEx(m_FontFace, 24, m_ZoomRatio, FW_BOLD);
 
@@ -1274,7 +1272,7 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, int blockSize)
 	double meterRatio = 0.0;
 	if(score > 0.1)
 	{
-		meterRatio = 0.2 * log10(score * 10);
+		meterRatio = 0.16666666666666 * log10(score*10);
 	}
 	else
 	{
