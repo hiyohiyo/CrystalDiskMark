@@ -19,9 +19,9 @@ class CAboutDlg : public CDialogCx
 	static const int SIZE_Y = 660;
 #else
 	static const int SIZE_X = 640;
-	static const int SIZE_Y = 160;
+	static const int SIZE_Y = 172;
 #endif
-	static const int SIZE_HC_Y = 170; // for HighContrast Mode
+	static const int SIZE_HC_Y = 172; // for HighContrast Mode
 
 public:
 	CAboutDlg(CWnd* pParent = NULL);
@@ -45,7 +45,6 @@ public:
 	afx_msg void OnBnClickedProjectSite5();
 
 	CButtonCx m_CtrlCrystalDewWorld;
-	CButtonCx m_CtrlSecretVoice;
 	CButtonCx m_CtrlProjectSite1;
 	CButtonCx m_CtrlProjectSite2;
 	CButtonCx m_CtrlProjectSite3;

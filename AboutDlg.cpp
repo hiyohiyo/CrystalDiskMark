@@ -73,7 +73,6 @@ BOOL CAboutDlg::OnInitDialog()
 	m_CtrlProjectSite3.ShowWindow(SW_HIDE);
 	m_CtrlProjectSite4.ShowWindow(SW_HIDE);
 	m_CtrlProjectSite5.ShowWindow(SW_HIDE);
-	m_CtrlSecretVoice.ShowWindow(SW_HIDE);
 #endif
 
 	UpdateDialogSize();

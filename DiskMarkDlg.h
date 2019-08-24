@@ -89,6 +89,7 @@ public:
 	int m_IndexTestSize;
 	int m_IndexTestDrive;
 
+	int m_SequentialMultiSize1;
 	int m_SequentialMultiQueues1;
 	int m_SequentialMultiThreads1;
 	int m_SequentialMultiQueues2;
@@ -101,6 +102,7 @@ public:
 	int m_RandomMultiThreads3;
 	int m_FragmenteCounts;
 	int m_IntervalTime;
+	int m_Affinity;
 
 	DWORD m_TestData;
 	BOOL m_AdminMode;

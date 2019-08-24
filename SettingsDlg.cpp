@@ -43,6 +43,7 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RANDOM_LABEL_1, m_RandomLabel1);
 	DDX_Control(pDX, IDC_RANDOM_LABEL_2, m_RandomLabel2);
 	DDX_Control(pDX, IDC_RANDOM_LABEL_3, m_RandomLabel3);
+	DDX_Control(pDX, IDC_AFFINITY_LABEL, m_LabelAffinity);
 
 	DDX_Control(pDX, IDC_SET_DEFAULT, m_ButtonSetDefault);
 
@@ -61,6 +62,9 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_RANDOM_THREAD_1, m_ComboRandomThreads1);
 	DDX_Control(pDX, IDC_COMBO_RANDOM_THREAD_2, m_ComboRandomThreads2);
 	DDX_Control(pDX, IDC_COMBO_RANDOM_THREAD_3, m_ComboRandomThreads3);
+
+	DDX_Control(pDX, IDC_COMBO_AFFINITY, m_ComboAffinity);
+
 }
 
 
@@ -70,6 +74,7 @@ END_MESSAGE_MAP()
 
 void CSettingsDlg::OnSetDefault()
 {
+	m_SequentialSize1 = 8;
 	m_SequentialQueues1 = 1;
 	m_SequentialThreads1 = 1;
 	m_SequentialQueues2 = 32;
@@ -80,6 +85,7 @@ void CSettingsDlg::OnSetDefault()
 	m_RandomThreads2 = 1;
 	m_RandomQueues3 = 1;
 	m_RandomThreads3 = 1;
+	m_Affinity = 0;
 	InitComboBox();
 }
 
@@ -87,54 +93,66 @@ BOOL CSettingsDlg::OnInitDialog()
 {
 	CDialogCx::OnInitDialog();
 
-	m_SequentialQueues1 = GetPrivateProfileInt(_T("Settings"), _T("SequentialMultiQueues1"), 1, m_Ini);
+	m_Affinity = GetPrivateProfileInt(_T("Setting"), _T("Affinity"), 0, m_Ini);
+	if (m_Affinity < 0 || m_Affinity > 1)
+	{
+		m_Affinity = 0;
+	}
+
+	m_SequentialSize1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiSize1"), 8, m_Ini);
+	if (m_SequentialSize1 <= 0 || m_SequentialSize1 > 8)
+	{
+		m_SequentialSize1 = 8;
+	}
+	
+	m_SequentialQueues1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiQueues1"), 1, m_Ini);
 	// if (m_SequentialQueues1 <= 0 || m_SequentialQueues1 > MAX_QUEUES)
 	{
 		m_SequentialQueues1 = 1;
 	}
-	m_SequentialThreads1 = GetPrivateProfileInt(_T("Settings"), _T("SequentialMultiThreads1"), 1, m_Ini);
+	m_SequentialThreads1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiThreads1"), 1, m_Ini);
 	if (m_SequentialThreads1 <= 0 || m_SequentialThreads1 > MAX_THREADS)
 	{
 		m_SequentialThreads1 = 1;
 	}
 
-	m_SequentialQueues2 = GetPrivateProfileInt(_T("Settings"), _T("SequentialMultiQueues2"), 32, m_Ini);
+	m_SequentialQueues2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiQueues2"), 32, m_Ini);
 	if (m_SequentialQueues2 <= 0 || m_SequentialQueues2 > MAX_QUEUES)
 	{
 		m_SequentialQueues2 = 32;
 	}
-	m_SequentialThreads2 = GetPrivateProfileInt(_T("Settings"), _T("SequentialMultiThreads2"), 1, m_Ini);
+	m_SequentialThreads2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiThreads2"), 1, m_Ini);
 	if (m_SequentialThreads2 <= 0 || m_SequentialThreads2 > MAX_THREADS)
 	{
 		m_SequentialThreads2 = 1;
 	}
 
-	m_RandomQueues1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues1"), 32, m_Ini);
+	m_RandomQueues1 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiQueues1"), 32, m_Ini);
 	if (m_RandomQueues1 <= 0 || m_RandomQueues1 > MAX_QUEUES)
 	{
 		m_RandomQueues1 = 32;
 	}
-	m_RandomThreads1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiThreads1"), 16, m_Ini);
+	m_RandomThreads1 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiThreads1"), 16, m_Ini);
 	if (m_RandomThreads1 <= 0 || m_RandomThreads1 > MAX_THREADS)
 	{
 		m_RandomThreads1 = 16;
 	}
-	m_RandomQueues2 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues2"), 32, m_Ini);
+	m_RandomQueues2 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiQueues2"), 32, m_Ini);
 	if (m_RandomQueues2 <= 0 || m_RandomQueues2 > MAX_QUEUES)
 	{
 		m_RandomQueues2 = 32;
 	}
-	m_RandomThreads2 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiThreads2"), 1, m_Ini);
+	m_RandomThreads2 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiThreads2"), 1, m_Ini);
 	if (m_RandomThreads2 <= 0 || m_RandomThreads2 > MAX_THREADS)
 	{
 		m_RandomThreads2 = 1;
 	}
-	m_RandomQueues3 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues3"), 1, m_Ini);
+	m_RandomQueues3 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiQueues3"), 1, m_Ini);
 	if (m_RandomQueues3 <= 0 || m_RandomQueues3 > MAX_QUEUES)
 	{
 		m_RandomQueues3 = 1;
 	}
-	m_RandomThreads3 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiThreads3"), 1, m_Ini);
+	m_RandomThreads3 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiThreads3"), 1, m_Ini);
 	if (m_RandomThreads3 <= 0 || m_RandomThreads3 > MAX_THREADS)
 	{
 		m_RandomThreads3 = 1;
@@ -167,8 +185,15 @@ void CSettingsDlg::InitComboBox()
 	}
 	*/
 
-	m_ComboSequentialSize1.AddString(L"8MiB");
-	m_ComboSequentialSize1.SetCurSel(0);
+	int blocksize[] = { 1, 2, 4, 8 };
+	for (int i = 0; i < 4; i++)
+	{
+		CString cstr;
+		cstr.Format(L"%dMiB", blocksize[i]);
+		m_ComboSequentialSize1.AddString(cstr);
+		if (m_SequentialSize1 == blocksize[i]) { m_ComboSequentialSize1.SetCurSel(i); }
+	}
+	
 	m_ComboSequentialSize2.AddString(L"128KiB");
 	m_ComboSequentialSize2.SetCurSel(0);
 	m_ComboRandomSize1.AddString(L"4KiB");
@@ -178,7 +203,7 @@ void CSettingsDlg::InitComboBox()
 	m_ComboRandomSize3.AddString(L"4KiB");
 	m_ComboRandomSize3.SetCurSel(0);
 
-	m_ComboSequentialSize1.EnableWindow(FALSE);
+//	m_ComboSequentialSize1.EnableWindow(FALSE);
 	m_ComboSequentialSize2.EnableWindow(FALSE);
 	m_ComboRandomSize1.EnableWindow(FALSE);
 	m_ComboRandomSize2.EnableWindow(FALSE);
@@ -224,32 +249,49 @@ void CSettingsDlg::InitComboBox()
 		m_ComboRandomThreads2.AddString(cstr);     if (m_RandomThreads2 == i) { m_ComboRandomThreads2.SetCurSel(i - 1); }
 		m_ComboRandomThreads3.AddString(cstr);     if (m_RandomThreads3 == i) { m_ComboRandomThreads3.SetCurSel(i - 1); }
 	}
+
+	m_ComboAffinity.AddString(L"OFF (-n)");
+	m_ComboAffinity.AddString(L"ON (-ag)");
+
+	if (m_Affinity == 1)
+	{
+		m_ComboAffinity.SetCurSel(1);
+	}
+	else
+	{
+		m_ComboAffinity.SetCurSel(0);
+	}
 }
 
 void CSettingsDlg::OnCancel()
 {
 	CString cstr;
-
+	m_ComboSequentialSize1.GetWindowTextW(cstr);
+	cstr.Format(L"%d", _wtoi64(cstr.GetString()));
+	WritePrivateProfileString(_T("Setting"), _T("SequentialMultiSize1"), cstr, m_Ini);
 	m_ComboSequentialQueues1.GetWindowTextW(cstr);
-	WritePrivateProfileString(_T("Settings"), _T("SequentialMultiQueues1"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("SequentialMultiQueues1"), cstr, m_Ini);
 	m_ComboSequentialThreads1.GetWindowTextW(cstr);
-	WritePrivateProfileString(_T("Settings"), _T("SequentialMultiThreads1"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("SequentialMultiThreads1"), cstr, m_Ini);
 	m_ComboSequentialQueues2.GetWindowTextW(cstr);
-	WritePrivateProfileString(_T("Settings"), _T("SequentialMultiQueues2"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("SequentialMultiQueues2"), cstr, m_Ini);
 	m_ComboSequentialThreads2.GetWindowTextW(cstr);
-	WritePrivateProfileString(_T("Settings"), _T("SequentialMultiThreads2"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("SequentialMultiThreads2"), cstr, m_Ini);
 	m_ComboRandomQueues1.GetWindowTextW(cstr);
-	WritePrivateProfileString(_T("Settings"), _T("RandomMultiQueues1"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("RandomMultiQueues1"), cstr, m_Ini);
 	m_ComboRandomThreads1.GetWindowTextW(cstr);
-	WritePrivateProfileString(_T("Settings"), _T("RandomMultiThreads1"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("RandomMultiThreads1"), cstr, m_Ini);
 	m_ComboRandomQueues2.GetWindowTextW(cstr);
-	WritePrivateProfileString(_T("Settings"), _T("RandomMultiQueues2"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("RandomMultiQueues2"), cstr, m_Ini);
 	m_ComboRandomThreads2.GetWindowTextW(cstr);
-	WritePrivateProfileString(_T("Settings"), _T("RandomMultiThreads2"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("RandomMultiThreads2"), cstr, m_Ini);
 	m_ComboRandomQueues3.GetWindowTextW(cstr);
-	WritePrivateProfileString(_T("Settings"), _T("RandomMultiQueues3"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("RandomMultiQueues3"), cstr, m_Ini);
 	m_ComboRandomThreads3.GetWindowTextW(cstr);
-	WritePrivateProfileString(_T("Settings"), _T("RandomMultiThreads3"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("RandomMultiThreads3"), cstr, m_Ini);
+
+	cstr.Format(L"%d", m_ComboAffinity.GetCurSel());
+	WritePrivateProfileString(_T("Setting"), _T("Affinity"), cstr, m_Ini);
 
 	CDialogCx::OnCancel();
 }
@@ -264,6 +306,8 @@ void CSettingsDlg::UpdateDialogSize()
 	m_LabelBlockSize.SetFontEx(m_FontFace, 16, m_ZoomRatio);
 	m_LabelQueues.SetFontEx(m_FontFace, 16, m_ZoomRatio);
 	m_LabelThreads.SetFontEx(m_FontFace, 16, m_ZoomRatio);
+	m_LabelAffinity.SetFontEx(m_FontFace, 16, m_ZoomRatio);
+
 	m_SequentialLabel1.SetFontEx(m_FontFace, 16, m_ZoomRatio);
 	m_SequentialLabel2.SetFontEx(m_FontFace, 16, m_ZoomRatio);
 	m_RandomLabel1.SetFontEx(m_FontFace, 16, m_ZoomRatio);
@@ -284,35 +328,39 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboRandomThreads1.SetFontEx(m_FontFace, 16, m_ZoomRatio);
 	m_ComboRandomThreads2.SetFontEx(m_FontFace, 16, m_ZoomRatio);
 	m_ComboRandomThreads3.SetFontEx(m_FontFace, 16, m_ZoomRatio);
+	m_ComboAffinity.SetFontEx(m_FontFace, 16, m_ZoomRatio);
 	m_ButtonSetDefault.SetFontEx(m_FontFace, 16, m_ZoomRatio);
 
-	m_LabelBlockSize.InitControl(176, 8, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_LabelQueues.InitControl(304, 8, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_LabelThreads.InitControl(432, 8, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_LabelBlockSize.InitControl(176, 8, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_LabelQueues.InitControl(304, 8, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_LabelThreads.InitControl(432, 8, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
-	m_SequentialLabel1.InitControl(8, 48, 160, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_SequentialLabel2.InitControl(8, 88, 160, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_RandomLabel1.InitControl(8, 128, 160, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_RandomLabel2.InitControl(8, 168, 160, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_RandomLabel3.InitControl(8, 208, 160, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_SequentialLabel1.InitControl(8, 40, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_SequentialLabel2.InitControl(8, 80, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_RandomLabel1.InitControl(8, 120, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_RandomLabel2.InitControl(8, 160, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_RandomLabel3.InitControl(8, 200, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_LabelAffinity.InitControl(8, 240, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
-	m_ComboSequentialSize1.InitControl(176, 48, 120, 32, m_ZoomRatio);
-	m_ComboSequentialSize2.InitControl(176, 88, 120, 32, m_ZoomRatio);
-	m_ComboRandomSize1.InitControl(176, 128, 120, 32, m_ZoomRatio);
-	m_ComboRandomSize2.InitControl(176, 168, 120, 32, m_ZoomRatio);
-	m_ComboRandomSize3.InitControl(176, 208, 120, 32, m_ZoomRatio);
-	m_ComboSequentialQueues1.InitControl(304, 48, 120, 32, m_ZoomRatio);
-	m_ComboSequentialQueues2.InitControl(304, 88, 120, 32, m_ZoomRatio);
-	m_ComboRandomQueues1.InitControl(304, 128, 120, 32, m_ZoomRatio);
-	m_ComboRandomQueues2.InitControl(304, 168, 120, 32, m_ZoomRatio);
-	m_ComboRandomQueues3.InitControl(304, 208, 120, 32, m_ZoomRatio);
-	m_ComboSequentialThreads1.InitControl(432, 48, 120, 32, m_ZoomRatio);
-	m_ComboSequentialThreads2.InitControl(432, 88, 120, 32, m_ZoomRatio);
-	m_ComboRandomThreads1.InitControl(432, 128, 120, 32, m_ZoomRatio);
-	m_ComboRandomThreads2.InitControl(432, 168, 120, 32, m_ZoomRatio);
-	m_ComboRandomThreads3.InitControl(432, 208, 120, 32, m_ZoomRatio);
+	m_ComboSequentialSize1.InitControl(176, 40, 120, 32, m_ZoomRatio);
+	m_ComboSequentialSize2.InitControl(176, 80, 120, 32, m_ZoomRatio);
+	m_ComboRandomSize1.InitControl(176, 120, 120, 32, m_ZoomRatio);
+	m_ComboRandomSize2.InitControl(176, 160, 120, 32, m_ZoomRatio);
+	m_ComboRandomSize3.InitControl(176, 200, 120, 32, m_ZoomRatio);
+	m_ComboSequentialQueues1.InitControl(304, 40, 120, 32, m_ZoomRatio);
+	m_ComboSequentialQueues2.InitControl(304, 80, 120, 32, m_ZoomRatio);
+	m_ComboRandomQueues1.InitControl(304, 120, 120, 32, m_ZoomRatio);
+	m_ComboRandomQueues2.InitControl(304, 160, 120, 32, m_ZoomRatio);
+	m_ComboRandomQueues3.InitControl(304, 200, 120, 32, m_ZoomRatio);
+	m_ComboSequentialThreads1.InitControl(432, 40, 120, 32, m_ZoomRatio);
+	m_ComboSequentialThreads2.InitControl(432, 80, 120, 32, m_ZoomRatio);
+	m_ComboRandomThreads1.InitControl(432, 120, 120, 32, m_ZoomRatio);
+	m_ComboRandomThreads2.InitControl(432, 160, 120, 32, m_ZoomRatio);
+	m_ComboRandomThreads3.InitControl(432, 200, 120, 32, m_ZoomRatio);
 
-	m_ButtonSetDefault.InitControl(432, 248, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ComboAffinity.InitControl(176, 240, 120, 32, m_ZoomRatio);
+
+	m_ButtonSetDefault.InitControl(432, 240, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
 	m_ButtonSetDefault.SetHandCursor(TRUE);
 	m_ButtonSetDefault.SetWindowTextW(i18n(_T("Dialog"), _T("DEFAULT")));
 	

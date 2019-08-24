@@ -37,8 +37,8 @@
 //#define MAIN_CSS_FILE_NAME	_T("MainS.css")
 #else
 #define SIZE_X		672
-#define SIZE_Y		496
-#define SIZE_MIN_Y	496
+#define SIZE_Y		588
+#define SIZE_MIN_Y	588
 #define OFFSET_X    0
 //#define MAIN_CSS_FILE_NAME	_T("Main.css")
 #endif
@@ -236,7 +236,13 @@ BOOL CDiskMarkDlg::OnInitDialog()
 		m_FontType = FT_AUTO;
 	}
 
-	m_TestData = (BOOL)GetPrivateProfileInt(_T("Settings"), _T("TestData"), TEST_DATA_RANDOM, m_Ini);
+	m_TestData = (BOOL)GetPrivateProfileInt(_T("Setting"), _T("TestData"), TEST_DATA_RANDOM, m_Ini);
+
+	m_Affinity = (BOOL)GetPrivateProfileInt(_T("Setting"), _T("Affinity"), AFFINITY_OFF, m_Ini);
+	if (m_Affinity < 0 || m_Affinity > 1)
+	{
+		m_Affinity = AFFINITY_OFF;
+	}
 
 	// Unit
 	m_ComboUnit.AddString(L"MB/s");
@@ -263,7 +269,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	ChangeTheme(m_CurrentTheme);
 	ChangeLang(m_CurrentLang);
 
-	m_IndexTestUnit = GetPrivateProfileInt(_T("Settings"), _T("TestUnit"), 0, m_Ini);
+	m_IndexTestUnit = GetPrivateProfileInt(_T("Setting"), _T("TestUnit"), 0, m_Ini);
 	if (m_IndexTestUnit < 0 || m_IndexTestUnit >= 3)
 	{
 		m_IndexTestUnit = 0;
@@ -272,7 +278,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	GetPrivateProfileString(L"Title", L"TEST_Unit", L"Test Unit", str, 256, m_CurrentLangPath);
 	m_ComboUnit.SetToolTipText(str);
 
-	m_IndexTestCount = GetPrivateProfileInt(_T("Settings"), _T("TestCount"), 4, m_Ini);
+	m_IndexTestCount = GetPrivateProfileInt(_T("Setting"), _T("TestCount"), 4, m_Ini);
 	if (m_IndexTestCount < 0 || m_IndexTestCount >= 9)
 	{
 		m_IndexTestCount = 4;	// default value is 5.
@@ -290,7 +296,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 		cstr.Format(L"%s", size[i]);
 		m_ComboSize.AddString(cstr);
 	}
-	m_IndexTestSize = GetPrivateProfileInt(_T("Settings"), _T("TestSize"), 6, m_Ini);
+	m_IndexTestSize = GetPrivateProfileInt(_T("Setting"), _T("TestSize"), 6, m_Ini);
 	if (m_IndexTestSize < 0 || m_IndexTestSize > 13)
 	{
 		m_IndexTestSize = 6;	// default value is 1GiB;
@@ -307,7 +313,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	InitScore();
 	UpdateUnitLabel();
 	
-	switch(GetPrivateProfileInt(_T("Settings"), _T("ZoomType"), 0, m_Ini))
+	switch(GetPrivateProfileInt(_T("Setting"), _T("ZoomType"), 0, m_Ini))
 	{
 	case 100:  CheckRadioZoomType(ID_ZOOM_100, 100); break;
 	case 125:  CheckRadioZoomType(ID_ZOOM_125, 125); break;
@@ -323,7 +329,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	
 	m_SizeX = SIZE_X;
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	int sizeY = GetPrivateProfileInt(_T("Settings"), _T("Height"), 0, m_Ini);
+	int sizeY = GetPrivateProfileInt(_T("Setting"), _T("Height"), 0, m_Ini);
 	if (sizeY == 0)
 	{
 		m_SizeY = SIZE_Y;
@@ -696,64 +702,77 @@ CString CDiskMarkDlg::IP(CString imageName)
 void CDiskMarkDlg::UpdateQueuesThreads()
 {
 	CString cstr;
-	m_SequentialMultiQueues1 = GetPrivateProfileInt(_T("Settings"), _T("SequentialMultiQueues1"), 1, m_Ini);
+
+	m_SequentialMultiSize1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiSize1"), 8, m_Ini);
+	 if (m_SequentialMultiSize1 <= 0 || m_SequentialMultiSize1 > 8)
+	{
+		m_SequentialMultiSize1 = 8;
+	}
+
+	m_SequentialMultiQueues1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiQueues1"), 1, m_Ini);
 	// if (m_SequentialMultiQueues1 <= 0 || m_SequentialMultiQueues1 > MAX_QUEUES)
 	{
 		m_SequentialMultiQueues1 = 1;
 	}
 
-	m_SequentialMultiThreads1 = GetPrivateProfileInt(_T("Settings"), _T("SequentialMultiThreads1"), 1, m_Ini);
+	m_SequentialMultiThreads1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiThreads1"), 1, m_Ini);
 	if (m_SequentialMultiThreads1 <= 0 || m_SequentialMultiThreads1 > MAX_THREADS)
 	{
 		m_SequentialMultiThreads1 = 1;
 	}
 
-	m_SequentialMultiQueues2 = GetPrivateProfileInt(_T("Settings"), _T("SequentialMultiQueues2"), 32, m_Ini);
+	m_SequentialMultiQueues2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiQueues2"), 32, m_Ini);
 	if (m_SequentialMultiQueues2 <= 0 || m_SequentialMultiQueues2 > MAX_QUEUES)
 	{
 		m_SequentialMultiQueues2 = 32;
 	}
 
-	m_SequentialMultiThreads2 = GetPrivateProfileInt(_T("Settings"), _T("SequentialMultiThreads2"), 1, m_Ini);
+	m_SequentialMultiThreads2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiThreads2"), 1, m_Ini);
 	if (m_SequentialMultiThreads2 <= 0 || m_SequentialMultiThreads2 > MAX_THREADS)
 	{
 		m_SequentialMultiThreads2 = 1;
 	}
 	
-	m_RandomMultiQueues1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues1"), 32, m_Ini);
+	m_RandomMultiQueues1 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiQueues1"), 32, m_Ini);
 	if (m_RandomMultiQueues1 <= 0 || m_RandomMultiQueues1 > MAX_QUEUES)
 	{
 		m_RandomMultiQueues1 = 32;
 	}
 
-	m_RandomMultiThreads1 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiThreads1"), 16, m_Ini);
+	m_RandomMultiThreads1 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiThreads1"), 16, m_Ini);
 	if (m_RandomMultiThreads1 <= 0 || m_RandomMultiThreads1 > MAX_THREADS)
 	{
 		m_RandomMultiThreads1 = 16;
 	}
 
-	m_RandomMultiQueues2 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues2"), 32, m_Ini);
+	m_RandomMultiQueues2 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiQueues2"), 32, m_Ini);
 	if (m_RandomMultiQueues2 <= 0 || m_RandomMultiQueues2 > MAX_QUEUES)
 	{
 		m_RandomMultiQueues2 = 32;
 	}
 
-	m_RandomMultiThreads2 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiThreads2"), 1, m_Ini);
+	m_RandomMultiThreads2 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiThreads2"), 1, m_Ini);
 	if (m_RandomMultiThreads2 <= 0 || m_RandomMultiThreads2 > MAX_THREADS)
 	{
 		m_RandomMultiThreads2 = 1;
 	}
 
-	m_RandomMultiQueues3 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiQueues3"), 1, m_Ini);
+	m_RandomMultiQueues3 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiQueues3"), 1, m_Ini);
 	if (m_RandomMultiQueues3 <= 0 || m_RandomMultiQueues3 > MAX_QUEUES)
 	{
 		m_RandomMultiQueues3 = 1;
 	}
 
-	m_RandomMultiThreads3 = GetPrivateProfileInt(_T("Settings"), _T("RandomMultiThreads3"), 1, m_Ini);
+	m_RandomMultiThreads3 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiThreads3"), 1, m_Ini);
 	if (m_RandomMultiThreads3 <= 0 || m_RandomMultiThreads3 > MAX_THREADS)
 	{
 		m_RandomMultiThreads3 = 1;
+	}
+
+	m_Affinity = GetPrivateProfileInt(_T("Setting"), _T("Affinity"), 0, m_Ini);
+	if (m_Affinity < 0 || m_Affinity > 1)
+	{
+		m_Affinity = 0;
 	}
 }
 
@@ -814,7 +833,7 @@ void CDiskMarkDlg::SelectDrive()
 		{
 			if (SHGetPathFromIDList(idl, szTmp) != FALSE)
 			{
-				WritePrivateProfileString(_T("Settings"), _T("TargetPath"), szTmp, m_Ini);
+				WritePrivateProfileString(_T("Setting"), _T("TargetPath"), szTmp, m_Ini);
 				m_TestTargetPath = szTmp;
 			}
 			g_pMalloc->Free(idl);
@@ -903,11 +922,11 @@ void CDiskMarkDlg::OnCancel()
 	UpdateData(TRUE);
 	CString cstr;
 	cstr.Format(_T("%d"), m_IndexTestUnit);
-	WritePrivateProfileString(_T("Settings"), _T("TestUnit"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("TestUnit"), cstr, m_Ini);
 	cstr.Format(_T("%d"), m_IndexTestCount);
-	WritePrivateProfileString(_T("Settings"), _T("TestCount"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("TestCount"), cstr, m_Ini);
 	cstr.Format(_T("%d"), m_IndexTestSize);
-	WritePrivateProfileString(_T("Settings"), _T("TestSize"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("TestSize"), cstr, m_Ini);
 
 	if(m_IndexTestDrive != m_MaxIndexTestDrive)
 	{ 
@@ -917,7 +936,7 @@ void CDiskMarkDlg::OnCancel()
 	{
 		cstr.Format(_T("%d"), 99);
 	}
-	WritePrivateProfileString(_T("Settings"), _T("DriveLetter"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("DriveLetter"), cstr, m_Ini);
 
 	CMainDialog::OnCancel();
 }
@@ -1183,7 +1202,7 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 		m_ButtonAll.SetWindowTextW(L"All");
 
 		CString title;
-		title.Format(L"SEQ8M\r\nT%d", m_SequentialMultiThreads1);
+		title.Format(L"SEQ%dM\r\nT%d", m_SequentialMultiSize1, m_SequentialMultiThreads1);
 		m_ButtonSequential1.SetWindowTextW(title);
 		title.Format(L"SEQ128K\r\nQ%dT%d", m_SequentialMultiQueues2, m_SequentialMultiThreads2);
 		m_ButtonSequential2.SetWindowTextW(title);
@@ -1442,7 +1461,7 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 
 	cstr = i18n(_T("Menu"), _T("FILE"));
 	menu->ModifyMenu(0, MF_BYPOSITION | MF_STRING, 0, cstr);
-	cstr = i18n(_T("Menu"), _T("SETTINGS"));
+	cstr = i18n(_T("Menu"), _T("Settings"));
 	menu->ModifyMenu(1, MF_BYPOSITION | MF_STRING, 1, cstr);
 	cstr = i18n(_T("Menu"), _T("THEME"));
 	menu->ModifyMenu(2, MF_BYPOSITION | MF_STRING, 2, cstr);
@@ -1535,7 +1554,7 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	m_MesDiskReadError = i18n(_T("Message"), _T("DISK_READ_ERROR"));
 	m_MesDiskSpdNotFound = i18n(_T("Message"), _T("DISK_SPD_NOT_FOUND"));
 
-	WritePrivateProfileString(_T("Settings"), _T("Language"), LangName, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("Language"), LangName, m_Ini);
 }
 
 BOOL CDiskMarkDlg::OnCommand(WPARAM wParam, LPARAM lParam) 
@@ -1656,7 +1675,7 @@ void CDiskMarkDlg::ResultText(RESULT_TEXT type)
 %RandomRead4KB3%\r\n\
 %RandomWrite4KB3%\r\n\
 \r\n\
-   Test: %TestSize% (x%TestCount%)%TestMode% [%IntervalTime%]\r\n\
+   Test: %TestSize% (x%TestCount%)%TestMode% [%IntervalTime%] %Affinity%\r\n\
    Date: %Date%\r\n\
      OS: %OS%\r\n\
 %Comment%\
@@ -1691,9 +1710,9 @@ void CDiskMarkDlg::ResultText(RESULT_TEXT type)
 	double iops = 0.0;
 	double latency = 0.0;
 
-	cstr.Format(_T("   Sequential Read 8MiB (T=%2d): %8.3f MB/s"), m_SequentialMultiThreads1, m_SequentialReadScore1);
+	cstr.Format(_T("   Sequential Read %dMiB (T=%2d): %8.3f MB/s"), m_SequentialMultiSize1, m_SequentialMultiThreads1, m_SequentialReadScore1);
 	clip.Replace(_T("%SequentialRead1%"), cstr);
-	cstr.Format(_T("  Sequential Write 8MiB (T=%2d): %8.3f MB/s"), m_SequentialMultiThreads1, m_SequentialWriteScore1);
+	cstr.Format(_T("  Sequential Write %dMiB (T=%2d): %8.3f MB/s"), m_SequentialMultiSize1, m_SequentialMultiThreads1, m_SequentialWriteScore1);
 	clip.Replace(_T("%SequentialWrite1%"), cstr);
 
 	iops = 0.0; latency = 0.0; iops = m_SequentialReadScore2 * 1000 * 1000 / (128 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
@@ -1748,6 +1767,16 @@ void CDiskMarkDlg::ResultText(RESULT_TEXT type)
 	clip.Replace(_T("%TestSize%"), cstr);
 	cstr.Format(_T("%d"), _tstoi(m_ValueTestCount));
 	clip.Replace(_T("%TestCount%"), cstr);
+
+	if (m_Affinity == AFFINITY_OFF)
+	{
+		cstr = L"<Affinity=OFF>";
+	}
+	else
+	{
+		cstr = L"<Affinity=ON>";
+	}
+	clip.Replace(_T("%Affinity%"), cstr);
 
 	m_Comment.GetWindowText(cstr);
 	if (cstr.IsEmpty())
@@ -1925,7 +1954,7 @@ BOOL CDiskMarkDlg::CheckRadioZoomType(int id, int value)
 
 	CString cstr;
 	cstr.Format(_T("%d"), value);
-	WritePrivateProfileString(_T("Settings"), _T("ZoomType"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("ZoomType"), cstr, m_Ini);
 
 	ChangeZoomType(m_ZoomType);
 
@@ -1987,7 +2016,7 @@ BOOL CDiskMarkDlg::CheckRadioIntervalTime(int id, int value)
 
 	CString cstr;
 	cstr.Format(_T("%d"), value);
-	WritePrivateProfileString(_T("Settings"), _T("IntervalTime"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("IntervalTime"), cstr, m_Ini);
 
 	return TRUE;
 }
@@ -1995,7 +2024,7 @@ BOOL CDiskMarkDlg::CheckRadioIntervalTime(int id, int value)
 void CDiskMarkDlg::CheckIntervalTime()
 {
 	int id;
-	m_IntervalTime = GetPrivateProfileInt(_T("Settings"), _T("IntervalTime"), 5, m_Ini);
+	m_IntervalTime = GetPrivateProfileInt(_T("Setting"), _T("IntervalTime"), 5, m_Ini);
 
 	switch (m_IntervalTime)
 	{
@@ -2011,7 +2040,7 @@ void CDiskMarkDlg::CheckIntervalTime()
 	case 600: id = ID_INTERVAL_TIME_600;break;
 	default:
 		id = ID_INTERVAL_TIME_5;
-		WritePrivateProfileString(_T("Settings"), _T("IntervalTime"), L"5", m_Ini); 
+		WritePrivateProfileString(_T("Setting"), _T("IntervalTime"), L"5", m_Ini); 
 		break;
 	}
 
@@ -2053,7 +2082,7 @@ void CDiskMarkDlg::OnModeDefault()
 	DrawMenuBar();
 
 	m_TestData = TEST_DATA_RANDOM;
-	WritePrivateProfileString(_T("Settings"), _T("TestData"), _T("0"), m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("TestData"), _T("0"), m_Ini);
 	SetWindowTitle(_T(""), _T(""));
 }
 
@@ -2065,7 +2094,7 @@ void CDiskMarkDlg::OnModeAll0x00()
 	DrawMenuBar();
 
 	m_TestData = TEST_DATA_ALL0X00;
-	WritePrivateProfileString(_T("Settings"), _T("TestData"), _T("1"), m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("TestData"), _T("1"), m_Ini);
 	SetWindowTitle(_T(""), ALL_0X00_0FILL);
 }
 
@@ -2083,7 +2112,7 @@ void CDiskMarkDlg::OnSize(UINT nType, int cx, int cy)
 		{
 			m_SizeY = (DWORD)((rect.bottom - rect.top) / m_ZoomRatio);
 			cstr.Format(_T("%d"), m_SizeY);
-			WritePrivateProfileString(_T("Settings"), _T("Height"), cstr, m_Ini);
+			WritePrivateProfileString(_T("Setting"), _T("Height"), cstr, m_Ini);
 		}
 	}
 }

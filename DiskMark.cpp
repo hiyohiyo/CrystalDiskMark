@@ -72,14 +72,14 @@ BOOL CDiskMarkApp::InitInstance()
 	}
 
 	// UAC support for Vista/7 or later
-	if(osvi.dwMajorVersion >= 6 && WritePrivateProfileString(_T("Settings"), _T("WriteCheck"), _T("0"), m_Ini) == 0)
+	if(osvi.dwMajorVersion >= 6 && WritePrivateProfileString(_T("Setting"), _T("WriteCheck"), _T("0"), m_Ini) == 0)
 	{
 		CString path;
 		SHGetSpecialFolderPath(NULL, ini, CSIDL_LOCAL_APPDATA, TRUE);
 		path.Format(_T("%s\\%s"), ini, PRODUCT_ROMING_NAME);
 		CreateDirectory(path, NULL);
 		m_Ini.Format(_T("%s\\%s.%s"), path, exeName, _T("ini"));
-		if(WritePrivateProfileString(_T("Settings"), _T("WriteCheck"), _T("0"), m_Ini) == 0)
+		if(WritePrivateProfileString(_T("Setting"), _T("WriteCheck"), _T("0"), m_Ini) == 0)
 		{
 			m_Ini.Format(_T("%s\\%s.%s"), ini, exeName, _T("ini"));
 		}
@@ -102,10 +102,10 @@ BOOL CDiskMarkApp::InitInstance()
 	DefaultLanguage.Format(_T("%s\\%s"), tmp, DEFAULT_LANGUAGE);
 
 	CString cstr;
-	DWORD debugMode = GetPrivateProfileInt(_T("Settings"), _T("DebugMode"), 0, m_Ini);
+	DWORD debugMode = GetPrivateProfileInt(_T("Setting"), _T("DebugMode"), 0, m_Ini);
 	SetDebugMode(debugMode);
 	cstr.Format(_T("%d"), debugMode);
-	WritePrivateProfileString(_T("Settings"), _T("DebugMode"), cstr, m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("DebugMode"), cstr, m_Ini);
 
 	if (! IsUserAnAdmin())
 	{

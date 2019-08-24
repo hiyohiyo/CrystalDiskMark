@@ -16,7 +16,7 @@ class CSettingsDlg : public CDialogCx
 	DECLARE_DYNCREATE(CSettingsDlg)
 
 	static const int SIZE_X = 560;
-	static const int SIZE_Y = 288;
+	static const int SIZE_Y = 280;
 
 public:
 	CSettingsDlg(CWnd* pParent = NULL);
@@ -34,6 +34,7 @@ protected:
 	CStaticCx m_LabelBlockSize;
 	CStaticCx m_LabelQueues;
 	CStaticCx m_LabelThreads;
+	CStaticCx m_LabelAffinity;
 
 	CStaticCx m_SequentialLabel1;
 	CStaticCx m_SequentialLabel2;
@@ -57,6 +58,8 @@ protected:
 	CComboBoxCx m_ComboRandomThreads2;
 	CComboBoxCx m_ComboRandomThreads3;
 
+	CComboBoxCx m_ComboAffinity;
+
 	CButtonCx m_ButtonSetDefault;
 	void OnSetDefault();
 	void InitComboBox();
@@ -76,6 +79,7 @@ protected:
 	int m_RandomSize3;
 	int m_RandomQueues3;
 	int m_RandomThreads3;
+	int m_Affinity;
 
 	DECLARE_MESSAGE_MAP()
 };

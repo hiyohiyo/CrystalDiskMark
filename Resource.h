@@ -83,6 +83,9 @@
 #define IDC_LABEL_QUEUES				1322
 #define IDC_LABEL_THREADS				1323
 #define IDC_SET_DEFAULT					1324
+#define IDC_AFFINITY_LABEL				1325
+#define IDC_COMBO_AFFINITY		        1326
+
 
 #define ID_FILE_EXIT                    32771
 #define ID_HELP_ABOUT                   32772
