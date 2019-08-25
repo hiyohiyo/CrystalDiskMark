@@ -16,7 +16,7 @@ class CSettingsDlg : public CDialogCx
 	DECLARE_DYNCREATE(CSettingsDlg)
 
 	static const int SIZE_X = 560;
-	static const int SIZE_Y = 280;
+	static const int SIZE_Y = 288;
 
 public:
 	CSettingsDlg(CWnd* pParent = NULL);

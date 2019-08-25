@@ -106,6 +106,7 @@ public:
 	int m_FragmenteCounts;
 	int m_IntervalTime;
 	int m_Affinity;
+	int m_FontScale;
 
 	DWORD m_TestData;
 	BOOL m_AdminMode;

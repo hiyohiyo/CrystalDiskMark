@@ -160,6 +160,17 @@ BOOL CSettingsDlg::OnInitDialog()
 
 	InitComboBox();
 
+	m_LabelBlockSize.SetWindowTextW(i18n(L"Dialog", L"BLOCK_SIZE"));
+	m_LabelQueues.SetWindowTextW(i18n(L"Dialog", L"QUEUES"));
+	m_LabelThreads.SetWindowTextW(i18n(L"Dialog", L"THREADS"));
+	m_LabelAffinity.SetWindowTextW(i18n(L"Dialog", L"THREAD_AFFINITY"));
+
+	m_SequentialLabel1.SetWindowTextW(i18n(L"Dialog", L"SEQUENTIAL_1"));
+	m_SequentialLabel2.SetWindowTextW(i18n(L"Dialog", L"SEQUENTIAL_2"));
+	m_RandomLabel1.SetWindowTextW(i18n(L"Dialog", L"RANDOM_1"));
+	m_RandomLabel2.SetWindowTextW(i18n(L"Dialog", L"RANDOM_2"));
+	m_RandomLabel3.SetWindowTextW(i18n(L"Dialog", L"RANDOM_3"));
+
 	SetWindowText(i18n(_T("WindowTitle"), _T("QUEUES_THREADS")));
 
 	UpdateDialogSize();
@@ -274,7 +285,7 @@ void CSettingsDlg::OnCancel()
 {
 	CString cstr;
 	m_ComboSequentialSize1.GetWindowTextW(cstr);
-	cstr.Format(L"%d", _wtoi64(cstr.GetString()));
+	cstr.Format(L"%d", _wtoi(cstr.GetString()));
 	WritePrivateProfileString(_T("Setting"), _T("SequentialMultiSize1"), cstr, m_Ini);
 	m_ComboSequentialQueues1.GetWindowTextW(cstr);
 	WritePrivateProfileString(_T("Setting"), _T("SequentialMultiQueues1"), cstr, m_Ini);
@@ -349,26 +360,26 @@ void CSettingsDlg::UpdateDialogSize()
 	m_RandomLabel3.InitControl(8, 200, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_LabelAffinity.InitControl(8, 240, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
-	m_ComboSequentialSize1.InitControl(176, 40, 120, 32, m_ZoomRatio);
-	m_ComboSequentialSize2.InitControl(176, 80, 120, 32, m_ZoomRatio);
-	m_ComboRandomSize1.InitControl(176, 120, 120, 32, m_ZoomRatio);
-	m_ComboRandomSize2.InitControl(176, 160, 120, 32, m_ZoomRatio);
-	m_ComboRandomSize3.InitControl(176, 200, 120, 32, m_ZoomRatio);
-	m_ComboSequentialQueues1.InitControl(304, 40, 120, 32, m_ZoomRatio);
-	m_ComboSequentialQueues2.InitControl(304, 80, 120, 32, m_ZoomRatio);
-	m_ComboRandomQueues1.InitControl(304, 120, 120, 32, m_ZoomRatio);
-	m_ComboRandomQueues2.InitControl(304, 160, 120, 32, m_ZoomRatio);
-	m_ComboRandomQueues3.InitControl(304, 200, 120, 32, m_ZoomRatio);
-	m_ComboSequentialThreads1.InitControl(432, 40, 120, 32, m_ZoomRatio);
-	m_ComboSequentialThreads2.InitControl(432, 80, 120, 32, m_ZoomRatio);
-	m_ComboRandomThreads1.InitControl(432, 120, 120, 32, m_ZoomRatio);
-	m_ComboRandomThreads2.InitControl(432, 160, 120, 32, m_ZoomRatio);
-	m_ComboRandomThreads3.InitControl(432, 200, 120, 32, m_ZoomRatio);
+	m_ComboSequentialSize1.InitControl(176, 40, 120, 200, m_ZoomRatio);
+	m_ComboSequentialSize2.InitControl(176, 80, 120, 200, m_ZoomRatio);
+	m_ComboRandomSize1.InitControl(176, 120, 120, 200, m_ZoomRatio);
+	m_ComboRandomSize2.InitControl(176, 160, 120, 200, m_ZoomRatio);
+	m_ComboRandomSize3.InitControl(176, 200, 120, 200, m_ZoomRatio);
+	m_ComboSequentialQueues1.InitControl(304, 40, 120, 200, m_ZoomRatio);
+	m_ComboSequentialQueues2.InitControl(304, 80, 120, 200, m_ZoomRatio);
+	m_ComboRandomQueues1.InitControl(304, 120, 120, 200, m_ZoomRatio);
+	m_ComboRandomQueues2.InitControl(304, 160, 120, 200, m_ZoomRatio);
+	m_ComboRandomQueues3.InitControl(304, 200, 120, 200, m_ZoomRatio);
+	m_ComboSequentialThreads1.InitControl(432, 40, 120, 200, m_ZoomRatio);
+	m_ComboSequentialThreads2.InitControl(432, 80, 120, 200, m_ZoomRatio);
+	m_ComboRandomThreads1.InitControl(432, 120, 120, 200, m_ZoomRatio);
+	m_ComboRandomThreads2.InitControl(432, 160, 120, 200, m_ZoomRatio);
+	m_ComboRandomThreads3.InitControl(432, 200, 120, 200, m_ZoomRatio);
 
 	m_ComboAffinity.InitControl(176, 240, 120, 32, m_ZoomRatio);
 
 	m_ButtonSetDefault.InitControl(432, 240, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	m_ButtonSetDefault.SetHandCursor(TRUE);
+	m_ButtonSetDefault.SetHandCursor();
 	m_ButtonSetDefault.SetWindowTextW(i18n(_T("Dialog"), _T("DEFAULT")));
 	
 	Invalidate();

@@ -54,7 +54,7 @@
 
 // Version Information
 #define PRODUCT_NAME			_T("CrystalDiskMark 7")
-#define PRODUCT_VERSION			_T("Alpha7")
+#define PRODUCT_VERSION			_T("Beta0")
 #define PRODUCT_ROMING_NAME		_T("CrystalDiskMark")
 
 #ifdef UWP
@@ -110,7 +110,7 @@
 /// Beta
 // #define PRODUCT_EDITION			_T("-Marginality-")
 
-#define PRODUCT_RELEASE			_T("2019/08/24")
+#define PRODUCT_RELEASE			_T("2019/08/25")
 #define PRODUCT_COPY_YEAR		_T("2007-2019")
 #define PRODUCT_COPYRIGHT		_T("© hiyohiyo 2007-2019 ")
 #define PRODUCT_LICENSE			_T("The MIT License")

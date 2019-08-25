@@ -16,8 +16,8 @@ class CFontSelection : public CDialogCx
 {
 	DECLARE_DYNAMIC(CFontSelection)
 
-	static const int SIZE_X = 320;
-	static const int SIZE_Y = 120;
+	static const int SIZE_X = 424;
+	static const int SIZE_Y = 160;
 
 public:
 	CFontSelection(CWnd* pParent = NULL);
@@ -25,6 +25,7 @@ public:
 
 	CString GetFontFace();
 	INT GetFontType();
+	INT GetFontScale();
 
 	enum { IDD = IDD_FONT };
 
@@ -34,14 +35,24 @@ protected:
 //	CString m_FontFace;
 //	CString m_WindowTitle;
 
+	int m_FontScale;
+
 	CButtonCx m_CtrlOk;
+	void OnSetDefault();
 
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	virtual void UpdateDialogSize();
 
+	CStaticCx m_LabelFontFace;
+	CStaticCx m_LabelFontScale;
+	CStaticCx m_LabelFontType;
+
 	CFontComboBox m_FontComboBox;
-	afx_msg void OnBnClickedOk();
+	CComboBoxCx m_FontScaleComboBox;
 	CComboBoxCx m_FontTypeComboBox;
+	CButtonCx m_ButtonSetDefault;
+	afx_msg void OnBnClickedOk();
+
 };

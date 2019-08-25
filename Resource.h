@@ -59,6 +59,11 @@
 #define ID_OK                           1200
 #define IDC_FONT_COMBO                  1201
 #define IDC_FONT_TYPE_COMBO				1202
+#define IDC_FONT_SCALE_COMBO			1203
+#define IDC_FONT_FACE					1204
+#define IDC_FONT_SCALE					1205
+#define IDC_FONT_TYPE					1206		
+
 #define IDC_SEQUENTIAL_LABEL_1			1301
 #define IDC_SEQUENTIAL_LABEL_2			1302
 #define IDC_RANDOM_LABEL_1				1303
