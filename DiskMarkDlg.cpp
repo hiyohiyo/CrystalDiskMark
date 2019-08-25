@@ -466,12 +466,12 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ButtonRandom3.InitControl(    8 + OFFSET_X,360, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	*/
 #else
-	m_ButtonAll.InitControl(12 + OFFSET_X, 12, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	m_ButtonSequential1.InitControl(12 + OFFSET_X, 100, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	m_ButtonSequential2.InitControl(12 + OFFSET_X, 188, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	m_ButtonRandom1.InitControl(12 + OFFSET_X, 276, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	m_ButtonRandom2.InitControl(12 + OFFSET_X, 364, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	m_ButtonRandom3.InitControl(12 + OFFSET_X, 452, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonAll.InitControl(12 + OFFSET_X, 12, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonSequential1.InitControl(12 + OFFSET_X, 100, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonSequential2.InitControl(12 + OFFSET_X, 188, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonRandom1.InitControl(12 + OFFSET_X, 276, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonRandom2.InitControl(12 + OFFSET_X, 364, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonRandom3.InitControl(12 + OFFSET_X, 452, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 #endif
 
 	m_ButtonAll.SetHandCursor(TRUE);
@@ -481,17 +481,17 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ButtonRandom2.SetHandCursor(TRUE);
 	m_ButtonRandom3.SetHandCursor(TRUE);
 
-	m_SequentialRead1.InitControl(140 + OFFSET_X, 100, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlassImage);
-	m_SequentialRead2.InitControl(140 + OFFSET_X, 188, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_RandomRead1.InitControl(140 + OFFSET_X, 276, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_RandomRead2.InitControl(140 + OFFSET_X, 364, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_RandomRead3.InitControl(140 + OFFSET_X, 452, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
+	m_SequentialRead1.InitControl(140 + OFFSET_X, 100, 320, 80, m_ZoomRatio, IP(L"meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_SequentialRead2.InitControl(140 + OFFSET_X, 188, 320, 80, m_ZoomRatio, IP(L"meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_RandomRead1.InitControl(140 + OFFSET_X, 276, 320, 80, m_ZoomRatio, IP(L"meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_RandomRead2.InitControl(140 + OFFSET_X, 364, 320, 80, m_ZoomRatio, IP(L"meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_RandomRead3.InitControl(140 + OFFSET_X, 452, 320, 80, m_ZoomRatio, IP(L"meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
-	m_SequentialWrite1.InitControl(468 + OFFSET_X, 100, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_SequentialWrite2.InitControl(468 + OFFSET_X, 188, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_RandomWrite1.InitControl(468 + OFFSET_X, 276, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_RandomWrite2.InitControl(468 + OFFSET_X, 364, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
-	m_RandomWrite3.InitControl(468 + OFFSET_X, 452, 320, 80, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawGlass | m_IsHighContrast);
+	m_SequentialWrite1.InitControl(468 + OFFSET_X, 100, 320, 80, m_ZoomRatio, IP(L"meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_SequentialWrite2.InitControl(468 + OFFSET_X, 188, 320, 80, m_ZoomRatio, IP(L"meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_RandomWrite1.InitControl(468 + OFFSET_X, 276, 320, 80, m_ZoomRatio, IP(L"meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_RandomWrite2.InitControl(468 + OFFSET_X, 364, 320, 80, m_ZoomRatio, IP(L"meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_RandomWrite3.InitControl(468 + OFFSET_X, 452, 320, 80, m_ZoomRatio, IP(L"meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
 	m_Comment.MoveWindow((int)((12 + OFFSET_X) * m_ZoomRatio), (int)(544 * m_ZoomRatio), (int)(776 * m_ZoomRatio), (int)(44 * m_ZoomRatio));
 
@@ -1380,7 +1380,7 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, int blockSize)
 	}
 
 	UpdateData(FALSE);
-	control->SetMeter(meterRatio);
+	control->SetMeter(TRUE, meterRatio);
 	control->SetWindowTextW(cstr);
 
 	SetScoreToolTip(control, score, blockSize);

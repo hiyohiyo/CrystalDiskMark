@@ -336,25 +336,6 @@ void CStaticCx::DrawControl(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, CBit
 
 	if (drawDC->GetDeviceCaps(BITSPIXEL) * drawDC->GetDeviceCaps(PLANES) < 32)
 	{
-		/*
-		BLENDFUNCTION blendfunc = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
-
-		// 取り込んでいた背景を描画
-		drawDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pBgDC, 0, m_CtrlSize.cy * no, SRCCOPY);
-		if (!m_CtrlImage.IsNull())
-		{
-			if (m_CtrlImage.GetBPP() == 32)
-			{
-				// コントロールをAlpha合成
-				drawDC->AlphaBlend(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pMemDC, 0, m_CtrlSize.cy * no, m_CtrlSize.cx, m_CtrlSize.cy, blendfunc);
-			}
-			else
-			{
-				// コントロールをそのまま描画
-				drawDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pMemDC, 0, m_CtrlSize.cy * no, SRCCOPY);
-			}
-		}
-		*/
 		// 取り込んでいた背景を描画
 		drawDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pBgDC, 0, m_CtrlSize.cy * no, SRCCOPY);
 		// コントロールをそのまま描画
@@ -454,24 +435,66 @@ void CStaticCx::DrawControl(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, CBit
 				}
 				else
 				{
-					// 背景とコントロールをアルファ合成する。
-					int baseY = m_CtrlSize.cy * no;
-					for (LONG py = 0; py < DstBmpInfo.bmHeight; py++)
+					if (m_bMeter)
 					{
-						int dn = py * DstLineBytes;
-						int cn = (baseY + py) * CtlLineBytes;
-						for (LONG px = 0; px < DstBmpInfo.bmWidth; px++)
+						int meter = (int)(m_CtrlSize.cx * m_MeterRatio);
+						// 背景とコントロールをアルファ合成する。
+						int baseY;
+						baseY = m_CtrlSize.cy;
+						for (LONG py = 0; py < DstBmpInfo.bmHeight; py++)
 						{
-							// 画像のアルファ値を得る。
-							int a = CtlBuffer[cn + 3];
-							int na = 255 - a;
-							// 背景と合成する。
-							DstBuffer[dn + 0] = (CtlBuffer[cn + 0] * a + DstBuffer[dn + 0] * na) / 255;
-							DstBuffer[dn + 1] = (CtlBuffer[cn + 1] * a + DstBuffer[dn + 1] * na) / 255;
-							DstBuffer[dn + 2] = (CtlBuffer[cn + 2] * a + DstBuffer[dn + 2] * na) / 255;
-							// 次のデータ。
-							dn += (DstBmpInfo.bmBitsPixel / 8);
-							cn += (CtlBmpInfo.bmBitsPixel / 8);
+							int dn = py * DstLineBytes;
+							int cn = (baseY + py) * CtlLineBytes;
+							for (LONG px = 0; px < meter; px++)
+							{
+								// 画像のアルファ値を得る。
+								int a = CtlBuffer[cn + 3];
+								int na = 255 - a;
+								// 背景と合成する。
+								DstBuffer[dn + 0] = (CtlBuffer[cn + 0] * a + DstBuffer[dn + 0] * na) / 255;
+								DstBuffer[dn + 1] = (CtlBuffer[cn + 1] * a + DstBuffer[dn + 1] * na) / 255;
+								DstBuffer[dn + 2] = (CtlBuffer[cn + 2] * a + DstBuffer[dn + 2] * na) / 255;
+								// 次のデータ。
+								dn += (DstBmpInfo.bmBitsPixel / 8);
+								cn += (CtlBmpInfo.bmBitsPixel / 8);
+							}
+							cn -= baseY * CtlLineBytes;
+							for (LONG px = meter; px < DstBmpInfo.bmWidth; px++)
+							{
+								// 画像のアルファ値を得る。
+								int a = CtlBuffer[cn + 3];
+								int na = 255 - a;
+								// 背景と合成する。
+								DstBuffer[dn + 0] = (CtlBuffer[cn + 0] * a + DstBuffer[dn + 0] * na) / 255;
+								DstBuffer[dn + 1] = (CtlBuffer[cn + 1] * a + DstBuffer[dn + 1] * na) / 255;
+								DstBuffer[dn + 2] = (CtlBuffer[cn + 2] * a + DstBuffer[dn + 2] * na) / 255;
+								// 次のデータ。
+								dn += (DstBmpInfo.bmBitsPixel / 8);
+								cn += (CtlBmpInfo.bmBitsPixel / 8);
+							}
+						}
+					}
+					else
+					{
+						// 背景とコントロールをアルファ合成する。
+						int baseY = m_CtrlSize.cy * no;
+						for (LONG py = 0; py < DstBmpInfo.bmHeight; py++)
+						{
+							int dn = py * DstLineBytes;
+							int cn = (baseY + py) * CtlLineBytes;
+							for (LONG px = 0; px < DstBmpInfo.bmWidth; px++)
+							{
+								// 画像のアルファ値を得る。
+								int a = CtlBuffer[cn + 3];
+								int na = 255 - a;
+								// 背景と合成する。
+								DstBuffer[dn + 0] = (CtlBuffer[cn + 0] * a + DstBuffer[dn + 0] * na) / 255;
+								DstBuffer[dn + 1] = (CtlBuffer[cn + 1] * a + DstBuffer[dn + 1] * na) / 255;
+								DstBuffer[dn + 2] = (CtlBuffer[cn + 2] * a + DstBuffer[dn + 2] * na) / 255;
+								// 次のデータ。
+								dn += (DstBmpInfo.bmBitsPixel / 8);
+								cn += (CtlBmpInfo.bmBitsPixel / 8);
+							}
 						}
 					}
 				}
@@ -994,61 +1017,13 @@ BOOL CStaticCx::InitControl(int x, int y, int width, int height, double zoomRati
 	return TRUE;
 }
 
-void CStaticCx::SetMeter(double meterRatio)
+void CStaticCx::SetMeter(BOOL bMeter, double meterRatio)
 {
-	if (m_CtrlSize.cx == 0)
-	{
-		return;
-	}
-
-	m_CtrlImage.Destroy();
-	m_CtrlImage.Create(m_CtrlSize.cx, m_CtrlSize.cy, 32);
-	RECT rect;
-	rect.left = rect.top = 0;
-	rect.right = m_CtrlSize.cx;
-	rect.bottom = m_CtrlSize.cy;
-	CDC* pDC = CDC::FromHandle(m_CtrlImage.GetDC());
-	pDC->SetDCPenColor(RGB(128, 128, 128));
-	pDC->SelectObject(GetStockObject(DC_PEN));
-	pDC->Rectangle(&rect);
-	m_CtrlImage.ReleaseDC();
-	m_CtrlBitmap.Detach();
-	m_CtrlBitmap.Attach((HBITMAP)m_CtrlImage);
-
-	DWORD length = m_CtrlSize.cx * m_CtrlSize.cy * 4;
-	BYTE* bitmapBits = new BYTE[length];
-	m_CtrlBitmap.GetBitmapBits(length, bitmapBits);
-
-	int meter = (int)(m_CtrlSize.cx * meterRatio);
-
-	for (int y = 0; y < m_CtrlSize.cy; y++)
-	{
-		for (int x = 0; x < m_CtrlSize.cx; x++)
-		{
-			//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = 255;
-			//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = 255;
-			//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = 255;
-			bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = 128;
-		}
-	}
-
-	for (int y = (int)(m_CtrlSize.cy * 0.9); y < m_CtrlSize.cy - 1; y++)
-	{
-		for (int x = 1; x < meter; x++)
-		{
-			bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = 0;
-			bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = 255;
-			bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = 0;
-			bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = 64;
-		}
-	}
-
-	m_CtrlBitmap.SetBitmapBits(length, bitmapBits);
-	delete[] bitmapBits;
+	m_bMeter = bMeter;
+	m_MeterRatio = meterRatio;
 
 	Invalidate();
 }
-
 
 BOOL CStaticCx::ReloadImage(LPCWSTR imagePath, UINT imageCount)
 {

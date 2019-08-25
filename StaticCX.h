@@ -33,7 +33,7 @@ public:
 	// 初期化
 	BOOL InitControl(int x, int y, int width, int height, double zoomRatio, LPCWSTR imagePath, UINT imageCount, UINT textAlign = SS_LEFT, UINT renderMode = OwnerDrawImage);
 	BOOL ReloadImage(LPCWSTR imagePath, UINT imageCount);
-	void SetMeter(double meterRatio);
+	void SetMeter(BOOL bMeter, double meterRatio);
 
 	// 画像関係
 	BOOL LoadBitmap(UINT nIDResource, LPCTSTR pResourceType);// リソースからビットマップを割り当てる。
@@ -56,6 +56,10 @@ public:
 
 // 内部変数。
 private:
+	// Meter描画
+	BOOL m_bMeter;
+	double m_MeterRatio;
+
 	// ホバー制御
 	BOOL m_bHover;			// ホバー中のフラグ。
 	BOOL m_bFocas;			// フォーカス中のフラグ。
