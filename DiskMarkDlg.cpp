@@ -1899,6 +1899,7 @@ void CDiskMarkDlg::OnZoom100()
 	if (CheckRadioZoomType(ID_ZOOM_100, 100))
 	{
 		UpdateDialogSize();
+		UpdateDialogSize();
 	}
 }
 
@@ -1906,6 +1907,7 @@ void CDiskMarkDlg::OnZoom125()
 {
 	if (CheckRadioZoomType(ID_ZOOM_125, 125))
 	{
+		UpdateDialogSize();
 		UpdateDialogSize();
 	}
 }
@@ -1915,6 +1917,7 @@ void CDiskMarkDlg::OnZoom150()
 	if (CheckRadioZoomType(ID_ZOOM_150, 150))
 	{
 		UpdateDialogSize();
+		UpdateDialogSize();
 	}
 }
 
@@ -1922,6 +1925,7 @@ void CDiskMarkDlg::OnZoom200()
 {
 	if (CheckRadioZoomType(ID_ZOOM_200, 200))
 	{
+		UpdateDialogSize();
 		UpdateDialogSize();
 	}
 }
@@ -1931,6 +1935,7 @@ void CDiskMarkDlg::OnZoom250()
 	if (CheckRadioZoomType(ID_ZOOM_250, 250))
 	{
 		UpdateDialogSize();
+		UpdateDialogSize();
 	}
 }
 
@@ -1938,6 +1943,7 @@ void CDiskMarkDlg::OnZoom300()
 {
 	if (CheckRadioZoomType(ID_ZOOM_300, 300))
 	{
+		UpdateDialogSize();
 		UpdateDialogSize();
 	}
 }
@@ -1956,6 +1962,7 @@ void CDiskMarkDlg::OnZoomAuto()
 {
 	if (CheckRadioZoomType(ID_ZOOM_AUTO, 0))
 	{
+		UpdateDialogSize();
 		UpdateDialogSize();
 	}
 }
