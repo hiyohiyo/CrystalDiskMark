@@ -253,10 +253,6 @@ public:
 	afx_msg void OnCrystalDewWorld();
 	afx_msg void OnModeDefault();
 	afx_msg void OnModeAll0x00();
-#ifdef SUISHO_SHIZUKU_SUPPORT
-	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-#endif
 	afx_msg void OnResultSave();
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
@@ -264,5 +260,4 @@ public:
 	afx_msg void OnCbnSelchangeComboUnit();
 	afx_msg void MoveForcus();
 	afx_msg void UpdateUnitLabel();
-
 };

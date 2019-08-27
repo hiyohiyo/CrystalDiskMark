@@ -341,27 +341,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	ChangeZoomType(m_ZoomType);
 	
 	m_SizeX = SIZE_X;
-#ifdef SUISHO_SHIZUKU_SUPPORT
-	int sizeY = GetPrivateProfileInt(_T("Setting"), _T("Height"), 0, m_Ini);
-	if (sizeY == 0)
-	{
-		m_SizeY = SIZE_Y;
-	}
-	else if (sizeY <= SIZE_MIN_Y)
-	{
-		m_SizeY = SIZE_MIN_Y;
-	}
-	else if (SIZE_Y <= sizeY)
-	{
-		m_SizeY = SIZE_Y;
-	}
-	else
-	{
-		m_SizeY = sizeY;
-	}
-#else
 	m_SizeY = SIZE_Y;
-#endif
 
 	if(m_TestData == TEST_DATA_ALL0X00)
 	{
@@ -394,14 +374,8 @@ void CDiskMarkDlg::UpdateDialogSize()
 	UpdateBackground(true);
 
 	m_SizeX = SIZE_X;
-	if (GetPrivateProfileInt(_T("Setting"), _T("Height"), 0, m_Ini) > 0)
-	{
-		m_SizeY = GetPrivateProfileInt(_T("Setting"), _T("Height"), 0, m_Ini);
-	}
-	else
-	{
-		m_SizeY = SIZE_Y;
-	}
+	m_SizeY = SIZE_Y;
+
 	SetControlFont();
 	
 #ifdef PRO_MODE
@@ -450,29 +424,12 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ComboDrive.MoveWindow((int)((352 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(312 * m_ZoomRatio), (int)(48 * m_ZoomRatio));
 #else
 
-#ifdef SUISHO_SHIZUKU_SUPPORT
-	m_ButtonAll.InitControl(12 + OFFSET_X, 12, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	m_ButtonSequential1.InitControl(12 + OFFSET_X, 100, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	m_ButtonSequential2.InitControl(12 + OFFSET_X, 188, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	m_ButtonRandom1.InitControl(12 + OFFSET_X, 276, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	m_ButtonRandom2.InitControl(12 + OFFSET_X, 364, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	m_ButtonRandom3.InitControl(12 + OFFSET_X, 452, 120, 80, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	/*
-	m_ButtonAll.InitControl(        8 + OFFSET_X,  8, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonSequential1.InitControl(8 + OFFSET_X, 96, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonSequential2.InitControl(8 + OFFSET_X,184, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonRandom1.InitControl(    8 + OFFSET_X,184, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonRandom2.InitControl(    8 + OFFSET_X,272, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonRandom3.InitControl(    8 + OFFSET_X,360, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	*/
-#else
 	m_ButtonAll.InitControl(12 + OFFSET_X, 12, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonSequential1.InitControl(12 + OFFSET_X, 100, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonSequential2.InitControl(12 + OFFSET_X, 188, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonRandom1.InitControl(12 + OFFSET_X, 276, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonRandom2.InitControl(12 + OFFSET_X, 364, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_ButtonRandom3.InitControl(12 + OFFSET_X, 452, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-#endif
 
 	m_ButtonAll.SetHandCursor(TRUE);
 	m_ButtonSequential1.SetHandCursor(TRUE);
@@ -2126,39 +2083,6 @@ void CDiskMarkDlg::OnModeAll0x00()
 	WritePrivateProfileString(_T("Setting"), _T("TestData"), _T("1"), m_Ini);
 	SetWindowTitle(_T(""), ALL_0X00_0FILL);
 }
-
-#ifdef SUISHO_SHIZUKU_SUPPORT
-void CDiskMarkDlg::OnSize(UINT nType, int cx, int cy)
-{
-	CMainDialog::OnSize(nType, cx, cy);
-
-	if(! m_FlagInitializing)
-	{
-		RECT rect;
-		CString cstr;
-		GetClientRect(&rect);
-		if(rect.bottom - rect.top > 0)
-		{
-			m_SizeY = (DWORD)((rect.bottom - rect.top) / m_ZoomRatio);
-			cstr.Format(_T("%d"), m_SizeY);
-			WritePrivateProfileString(_T("Setting"), _T("Height"), cstr, m_Ini);
-		}
-	}
-}
-
-void CDiskMarkDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
-{
-	lpMMI->ptMinTrackSize.x = (LONG) (SIZE_X * m_ZoomRatio + (GetSystemMetrics(SM_CXFRAME) + GetSystemMetrics(92/*SM_CXPADDEDBORDER*/)) * 2);
-	lpMMI->ptMinTrackSize.y = (LONG)(SIZE_MIN_Y * m_ZoomRatio + GetSystemMetrics(SM_CYMENU)
-							+ GetSystemMetrics(SM_CYSIZEFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(92/*SM_CXPADDEDBORDER*/) * 2);
-
-	lpMMI->ptMaxTrackSize.x = (LONG) (SIZE_X * m_ZoomRatio + (GetSystemMetrics(SM_CXFRAME) + GetSystemMetrics(92/*SM_CXPADDEDBORDER*/)) * 2);
-	lpMMI->ptMaxTrackSize.y = (LONG)(SIZE_Y * m_ZoomRatio + GetSystemMetrics(SM_CYMENU)
-							+ GetSystemMetrics(SM_CYSIZEFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(92/*SM_CXPADDEDBORDER*/) * 2);
-
-	CMainDialog::OnGetMinMaxInfo(lpMMI);
-}
-#endif
 
 
 void CDiskMarkDlg::OnSettingsQueuesThreads()
