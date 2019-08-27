@@ -598,10 +598,10 @@ void CDiskMarkDlg::SetControlFont()
 	m_ReadUnit.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 	m_WriteUnit.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 
-	m_ComboUnit.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio);
-	m_ComboCount.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio);
-	m_ComboSize.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio);
-	m_ComboDrive.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio);
+	m_ComboUnit.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, textColor, FW_NORMAL, m_FontType);
+	m_ComboCount.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, textColor, FW_NORMAL, m_FontType);
+	m_ComboSize.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, textColor, FW_NORMAL, m_FontType);
+	m_ComboDrive.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, textColor, FW_NORMAL, m_FontType);
 
 	m_ButtonRandom1.SetMargin(8, 0, 8, 0, m_ZoomRatio);
 	m_ButtonSequential1.SetMargin(8, 0, 8, 0, m_ZoomRatio);
@@ -611,16 +611,12 @@ void CDiskMarkDlg::SetControlFont()
 #endif
 
 	m_ComboUnit.SetFontHeight((int)(24 * scale), m_ZoomRatio);
-	m_ComboUnit.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio);
 	m_ComboUnit.SetItemHeight(-1, (UINT)(36 * m_ZoomRatio * scale));
 	m_ComboCount.SetFontHeight((int)(24 * scale), m_ZoomRatio);
-	m_ComboCount.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio);
 	m_ComboCount.SetItemHeight(-1, (UINT)(36 * m_ZoomRatio * scale));
 	m_ComboSize.SetFontHeight((int)(24 * scale), m_ZoomRatio);
-	m_ComboSize.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio);
 	m_ComboSize.SetItemHeight(-1, (UINT)(36 * m_ZoomRatio * scale));
 	m_ComboDrive.SetFontHeight((int)(24 * scale), m_ZoomRatio);
-	m_ComboDrive.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio);
 	m_ComboDrive.SetItemHeight(-1, (UINT)(36 * m_ZoomRatio * scale));
 
 	for (int i = 0; i < m_ComboUnit.GetCount(); i++)
