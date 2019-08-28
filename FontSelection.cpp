@@ -103,8 +103,10 @@ BOOL CFontSelection::OnInitDialog()
 	m_FontTypeComboBox.AddString(i18n(_T("Dialog"), _T("Auto")));
 	m_FontTypeComboBox.AddString(L"GDI");
 	m_FontTypeComboBox.AddString(L"GDI+");
+	m_FontTypeComboBox.AddString(L"GDI+ w/o Descent");
+
 //	m_FontTypeComboBox.AddString(L"DirectWrite");
-	if (0 <= m_FontType && m_FontType <= 2)
+	if (0 <= m_FontType && m_FontType <= 3)
 	{
 		m_FontTypeComboBox.SetCurSel(m_FontType);
 	}
@@ -140,45 +142,45 @@ void CFontSelection::UpdateDialogSize()
 
 	UpdateBackground();
 	
-	m_LabelFontFace.SetFontEx(m_FontFace, 16, m_ZoomRatio);
-	m_LabelFontScale.SetFontEx(m_FontFace, 16, m_ZoomRatio);
-	m_LabelFontType.SetFontEx(m_FontFace, 16, m_ZoomRatio);
+	m_LabelFontFace.SetFontEx(m_FontFace, 20, m_ZoomRatio);
+	m_LabelFontScale.SetFontEx(m_FontFace, 20, m_ZoomRatio);
+	m_LabelFontType.SetFontEx(m_FontFace, 20, m_ZoomRatio);
 
-	m_FontComboBox.SetFontHeight(16, m_ZoomRatio);
-	m_FontComboBox.SetFontEx(m_FontFace, 40, m_ZoomRatio);
+	m_FontComboBox.SetFontHeight(20, m_ZoomRatio);
+	m_FontComboBox.SetFontEx(m_FontFace, 20, m_ZoomRatio);
 	m_FontComboBox.SetItemHeight(-1, (UINT)(24 * m_ZoomRatio));
 	for (int i = 0; i < m_FontComboBox.GetCount(); i++)
 	{
 		m_FontComboBox.SetItemHeight(i, (UINT)(20 * m_ZoomRatio));
 	}
 
-	m_FontScaleComboBox.SetFontEx(m_FontFace, 16, m_ZoomRatio);
+	m_FontScaleComboBox.SetFontEx(m_FontFace, 20, m_ZoomRatio);
 	m_FontScaleComboBox.SetItemHeight(-1, (UINT)(24 * m_ZoomRatio));
 	for (int i = 0; i < m_FontScaleComboBox.GetCount(); i++)
 	{
 		m_FontScaleComboBox.SetItemHeight(i, (UINT)(20 * m_ZoomRatio));
 	}
 
-	m_FontTypeComboBox.SetFontEx(m_FontFace, 16, m_ZoomRatio);
+	m_FontTypeComboBox.SetFontEx(m_FontFace, 20, m_ZoomRatio);
 	m_FontTypeComboBox.SetItemHeight(-1, (UINT) (24 * m_ZoomRatio));
 	for (int i = 0; i < m_FontTypeComboBox.GetCount(); i++)
 	{
 		m_FontTypeComboBox.SetItemHeight(i, (UINT) (20 * m_ZoomRatio));
 	}
 
-	m_ButtonSetDefault.SetFontEx(m_FontFace, 16, m_ZoomRatio);
-	m_CtrlOk.SetFontEx(m_FontFace, 16, m_ZoomRatio);
+	m_ButtonSetDefault.SetFontEx(m_FontFace, 20, m_ZoomRatio);
+	m_CtrlOk.SetFontEx(m_FontFace, 20, m_ZoomRatio);
 
 	
 	m_LabelFontFace.InitControl(8, 8, 160, 28, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_LabelFontScale.InitControl(8, 44, 160, 28, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_LabelFontType.InitControl(8, 80, 160, 28, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_FontComboBox.MoveWindow((DWORD)(176 * m_ZoomRatio), (DWORD)(8 * m_ZoomRatio), (DWORD)(240 * m_ZoomRatio), (DWORD)(200 * m_ZoomRatio));
-	m_FontScaleComboBox.MoveWindow((DWORD)(176 * m_ZoomRatio), (DWORD)(44 * m_ZoomRatio), (DWORD)(240 * m_ZoomRatio), (DWORD)(200 * m_ZoomRatio));
-	m_FontTypeComboBox.MoveWindow((DWORD)(176 * m_ZoomRatio), (DWORD)(80 * m_ZoomRatio), (DWORD)(240 * m_ZoomRatio), (DWORD)(200 * m_ZoomRatio));
+	m_FontComboBox.MoveWindow((DWORD)(176 * m_ZoomRatio), (DWORD)(8 * m_ZoomRatio), (DWORD)(320 * m_ZoomRatio), (DWORD)(200 * m_ZoomRatio));
+	m_FontScaleComboBox.MoveWindow((DWORD)(176 * m_ZoomRatio), (DWORD)(44 * m_ZoomRatio), (DWORD)(320 * m_ZoomRatio), (DWORD)(200 * m_ZoomRatio));
+	m_FontTypeComboBox.MoveWindow((DWORD)(176 * m_ZoomRatio), (DWORD)(80 * m_ZoomRatio), (DWORD)(320 * m_ZoomRatio), (DWORD)(200 * m_ZoomRatio));
 
-	m_ButtonSetDefault.InitControl(32, 120, 160, 28, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
-	m_CtrlOk.InitControl(232, 120, 160, 28, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonSetDefault.InitControl(72, 120, 160, 28, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_CtrlOk.InitControl(272, 120, 160, 28, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
 
 	m_ButtonSetDefault.SetHandCursor();
 	m_CtrlOk.SetHandCursor();

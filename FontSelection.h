@@ -16,7 +16,7 @@ class CFontSelection : public CDialogCx
 {
 	DECLARE_DYNAMIC(CFontSelection)
 
-	static const int SIZE_X = 424;
+	static const int SIZE_X = 504;
 	static const int SIZE_Y = 160;
 
 public:

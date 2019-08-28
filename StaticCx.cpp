@@ -62,6 +62,7 @@ CStaticCx::CStaticCx()
 	, m_bHighContrast(FALSE)
 	, m_Alpha(255)
 	, m_FontType(FT_GDI)
+	, m_ZoomRatio(1.0)
 {
 	m_Margin.top = 0;
 	m_Margin.left = 0;
@@ -250,13 +251,13 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 	// 透過モードにする。
 	drawDC->SetBkMode(TRANSPARENT);
 
-	if (m_FontType == FT_GDI_PLUS || m_FontType == FT_AUTO) // GDI+
+	if (m_FontType == FT_GDI_PLUS || m_FontType == FT_GDI_PLUS_WO_DESCENT || m_FontType == FT_AUTO) // GDI+
 	{
 		Gdiplus::Graphics g(drawDC->m_hDC);
 
 		const Gdiplus::PointF pointF(0.0, 0.0);
 		Gdiplus::RectF extentF;
-		g.MeasureString(title, title.GetLength() + 1, m_GpFont, pointF, &extentF); // "+ 1" for workdaround 
+		g.MeasureString(title, title.GetLength() + 1, m_GpFont, pointF, &extentF); // "+ 1" for workaround 
 
 		// 描画位置の設定
 		REAL x = 0.0, y = 0.0;
@@ -283,13 +284,19 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		REAL descent = (REAL) ff.GetCellDescent(FontStyleRegular);
 		REAL lineSpacing = (REAL) ff.GetLineSpacing(FontStyleRegular);
 
+		if (m_FontType == FT_GDI_PLUS_WO_DESCENT)
+		{
+			descent = 0;
+		}
 		y = rect.CenterPoint().y - (extentF.Height * (ascent + descent) / lineSpacing) / 2;
 
 		Gdiplus::PointF pt(x, y);
 		Gdiplus::RectF rectF(pt.X, pt.Y, (REAL) extentF.Width, (REAL) extentF.Height);
+		// Gdiplus::RectF rectF(rect.left, rect.top, rect.Width(), rect.Height());
 
 		g.SetTextRenderingHint(TextRenderingHintAntiAlias);
 		g.DrawString(title, title.GetLength(), m_GpFont, rectF, m_GpStringformat, m_GpBrush);
+
 	}
 	else // GDI
 	{
@@ -304,10 +311,12 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		}
 		else if (m_TextAlign == SS_RIGHT)
 		{
+			rect.right -= 8 * m_ZoomRatio;
 			DrawText(drawDC->m_hDC, title, title.GetLength(), rect, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
 		}
 		else
 		{
+			rect.left += 8 * m_ZoomRatio;
 			DrawText(drawDC->m_hDC, title, title.GetLength(), rect, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
 		}
 		drawDC->SelectObject(oldFont);
@@ -829,6 +838,7 @@ void CStaticCx::SetDrawFrame(BOOL bDrawFrame)
 
 void CStaticCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlpha, COLORREF textColor, LONG fontWeight, int fontType)
 {
+	m_ZoomRatio = zoomRatio;
 	LOGFONT logFont = {0};
 	logFont.lfCharSet = DEFAULT_CHARSET;
 	logFont.lfHeight = (LONG)(-1 * size * zoomRatio);
@@ -848,7 +858,7 @@ void CStaticCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlp
 	SetFont(&m_Font);
 
 	// フォント描画方法を設定します。
-	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS)
+	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS_WO_DESCENT)
 	{
 		m_FontType = fontType;
 	}
@@ -871,8 +881,8 @@ void CStaticCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlp
 	m_GpBrush= new Gdiplus::SolidBrush(
 		Gdiplus::Color(textAlpha, GetRValue(textColor), GetGValue(textColor), GetBValue(textColor)));
 	m_GpStringformat = new Gdiplus::StringFormat;
-	m_GpStringformat->SetAlignment(StringAlignmentCenter);
-//	m_GpStringformat->SetLineAlignment(StringAlignmentCenter);
+	m_GpStringformat->SetAlignment(StringAlignmentFar);
+	m_GpStringformat->SetLineAlignment(StringAlignmentCenter);
 	m_GpStringformat->SetFormatFlags(StringFormatFlagsNoClip);
 	ReleaseDC(pDC);
 }
@@ -885,6 +895,7 @@ void CStaticCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlp
 // 画像ファイルで初期化
 BOOL CStaticCx::InitControl(int x, int y, int width, int height, double zoomRatio, LPCWSTR imagePath, UINT imageCount, UINT textAlign, UINT renderMode)
 {
+	m_ZoomRatio = zoomRatio;
 	m_ImagePath = imagePath;
 	m_ImageCount = imageCount;
 	MoveWindow((int)(x * zoomRatio), (int)(y * zoomRatio), (int)(width * zoomRatio), (int)(height * zoomRatio));

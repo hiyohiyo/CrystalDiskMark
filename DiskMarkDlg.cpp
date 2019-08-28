@@ -234,7 +234,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	GetPrivateProfileString(_T("Setting"), _T("FontFace"), defaultFontFace, str, 256, m_Ini);
 	m_FontFace = str;
 	m_FontType = GetPrivateProfileInt(_T("Setting"), _T("FontType"), 0, m_Ini);
-	if (m_FontType < FT_AUTO || FT_GDI_PLUS < m_FontType)
+	if (m_FontType < FT_AUTO || FT_GDI_PLUS_WO_DESCENT < m_FontType)
 	{
 		m_FontType = FT_AUTO;
 	}

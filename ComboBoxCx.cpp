@@ -434,6 +434,7 @@ void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio)
 
 void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlpha, COLORREF textColor, LONG fontWeight, INT fontType)
 {
+	m_ZoomRatio = zoomRatio;
 	LOGFONT logFont = { 0 };
 	logFont.lfCharSet = DEFAULT_CHARSET;
 	logFont.lfHeight = (LONG)(-1 * size * zoomRatio);
@@ -482,7 +483,6 @@ void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textA
 	ReleaseDC(pDC);
 
 	SetItemHeight(-1, (UINT)(size * zoomRatio * 1.25));
-	m_ZoomRatio = zoomRatio;
 }
 
 int CComboBoxCx::CompareItem(LPCOMPAREITEMSTRUCT lpCompareItemStruct)
