@@ -293,7 +293,7 @@ void CButtonCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		resToken = title.Tokenize(L"\r\n", curPos);
 	}
 
-	if (m_FontType == FT_GDI_PLUS || m_FontType == FT_AUTO)	// GDI+
+	if (m_FontType == FT_GDI_PLUS || m_FontType == FT_GDI_PLUS_WO_DESCENT || m_FontType == FT_AUTO) // GDI+
 	{
 		Gdiplus::Graphics g(drawDC->m_hDC);
 
@@ -313,10 +313,15 @@ void CButtonCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 			REAL y;
 			FontFamily ff;
 			m_GpFont->GetFamily(&ff);
-			REAL ascent = (REAL) ff.GetCellAscent(FontStyleRegular);
-			REAL lineSpacing = (REAL) ff.GetLineSpacing(FontStyleRegular);
+			REAL ascent = (REAL)ff.GetCellAscent(FontStyleRegular);
+			REAL descent = (REAL)ff.GetCellDescent(FontStyleRegular);
+			REAL lineSpacing = (REAL)ff.GetLineSpacing(FontStyleRegular);
 
-			y = r.CenterPoint().y - (extentF.Height * ascent / lineSpacing) / 2;
+			if (m_FontType == FT_GDI_PLUS_WO_DESCENT)
+			{
+				descent = 0;
+			}
+			y = r.CenterPoint().y - (extentF.Height * (ascent + descent) / lineSpacing) / 2;
 
 			Gdiplus::PointF pt(rect.CenterPoint().x - (extentF.Width / 2), y);
 			Gdiplus::RectF rectF(pt.X, pt.Y, (REAL) extentF.Width, (REAL) extentF.Height);
@@ -858,7 +863,7 @@ void CButtonCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlp
 	SetFont(&m_Font);
 
 	// フォント描画方法を設定します。
-	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS)
+	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS_WO_DESCENT)
 	{
 		m_FontType = fontType;
 	}
@@ -882,7 +887,7 @@ void CButtonCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlp
 		Gdiplus::Color(textAlpha, GetRValue(textColor), GetGValue(textColor), GetBValue(textColor)));
 	m_GpStringformat = new Gdiplus::StringFormat;
 	m_GpStringformat->SetAlignment(StringAlignmentCenter);
-//	m_GpStringformat->SetLineAlignment(StringAlignmentCenter);
+	m_GpStringformat->SetLineAlignment(StringAlignmentCenter);
 	m_GpStringformat->SetFormatFlags(StringFormatFlagsNoClip);
 	ReleaseDC(pDC);
 }
