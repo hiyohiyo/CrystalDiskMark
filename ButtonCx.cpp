@@ -207,6 +207,19 @@ void CButtonCx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 				DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, 0);//1);
 			}
 		}
+		else if (lpDrawItemStruct->itemState & ODS_FOCUS)
+		{
+			// フォーカスがある場合
+			if (m_ImageCount >= 3)
+			{
+
+				DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, 2);//2);
+			}
+			else
+			{
+				DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, 0);//1);
+			}
+		}
 		else
 		{
 			// ホバー状態？
@@ -234,20 +247,24 @@ void CButtonCx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 					DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, 1);//1);
 				}
 			}
-
-			else
-			{
-				// フォーカスしている？
-				if(m_bFocas)
+			// フォーカスしている？
+			else if(m_bFocas)
+			{	
+				if (m_ImageCount >= 3)
 				{
 					// フォーカス状態の描画。
-					DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, 0);//4);
+					DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, 2);//4);
 				}
 				else
 				{
 					// 通常状態の描画。
 					DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, 0);
 				}
+			}
+			else
+			{
+				// 通常状態の描画。
+				DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, 0);
 			}
 		}
 	}
@@ -293,7 +310,7 @@ void CButtonCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		resToken = title.Tokenize(L"\r\n", curPos);
 	}
 
-	if (m_FontType == FT_GDI_PLUS || m_FontType == FT_GDI_PLUS_WO_DESCENT || m_FontType == FT_AUTO) // GDI+
+	if (m_FontType >= FT_GDI_PLUS_1) // GDI+
 	{
 		Gdiplus::Graphics g(drawDC->m_hDC);
 
@@ -317,11 +334,18 @@ void CButtonCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 			REAL descent = (REAL)ff.GetCellDescent(FontStyleRegular);
 			REAL lineSpacing = (REAL)ff.GetLineSpacing(FontStyleRegular);
 
-			if (m_FontType == FT_GDI_PLUS_WO_DESCENT)
+			switch (m_FontType)
 			{
-				descent = 0;
+			case FT_GDI_PLUS_2:
+				y = r.CenterPoint().y - (extentF.Height * (ascent) / lineSpacing) / 2;
+				break;
+			case FT_GDI_PLUS_3:
+				y = r.CenterPoint().y - (extentF.Height * (ascent) / (ascent + descent)) / 2;
+				break;
+			default:
+				y = r.CenterPoint().y - (extentF.Height * (ascent + descent) / lineSpacing) / 2;
+				break;
 			}
-			y = r.CenterPoint().y - (extentF.Height * (ascent + descent) / lineSpacing) / 2;
 
 			Gdiplus::PointF pt(rect.CenterPoint().x - (extentF.Width / 2), y);
 			Gdiplus::RectF rectF(pt.X, pt.Y, (REAL) extentF.Width, (REAL) extentF.Height);
@@ -863,7 +887,7 @@ void CButtonCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlp
 	SetFont(&m_Font);
 
 	// フォント描画方法を設定します。
-	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS_WO_DESCENT)
+	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS_3)
 	{
 		m_FontType = fontType;
 	}
@@ -952,9 +976,10 @@ BOOL CButtonCx::InitControl(int x, int y, int width, int height, double zoomRati
 
 	if(renderMode & OwnerDrawGlass)
 	{
-		m_ImageCount = 2;
+		m_ImageCount = 3;
 		m_CtrlImage.Destroy();
-		m_CtrlImage.Create(m_CtrlSize.cx, m_CtrlSize.cy * 2, 32);
+		m_CtrlImage.Create(m_CtrlSize.cx, m_CtrlSize.cy * m_ImageCount, 32);
+
 		RECT rect;
 		rect.left = rect.top = 0;
 		rect.right = m_CtrlSize.cx;
@@ -969,7 +994,17 @@ BOOL CButtonCx::InitControl(int x, int y, int width, int height, double zoomRati
 		rect.right = m_CtrlSize.cx;
 		rect.bottom = m_CtrlSize.cy * 2;
 
-		pDC->SetDCPenColor(RGB(32, 32, 255));
+		pDC->SetDCPenColor(RGB(64, 64, 255));
+		pDC->SelectObject(GetStockObject(DC_PEN));
+		pDC->Rectangle(&rect);
+
+
+		rect.top = m_CtrlSize.cy * 2;
+		rect.left = 0;
+		rect.right = m_CtrlSize.cx;
+		rect.bottom = m_CtrlSize.cy * 3;
+
+		pDC->SetDCPenColor(RGB(255, 64, 64));
 		pDC->SelectObject(GetStockObject(DC_PEN));
 		pDC->Rectangle(&rect);
 
@@ -978,28 +1013,17 @@ BOOL CButtonCx::InitControl(int x, int y, int width, int height, double zoomRati
 		m_CtrlBitmap.Detach();
 		m_CtrlBitmap.Attach((HBITMAP)m_CtrlImage);
 	
-		DWORD length = m_CtrlSize.cx * m_CtrlSize.cy * 2 * 4;
+		DWORD length = m_CtrlSize.cx * m_CtrlSize.cy * m_ImageCount * 4;
 		BYTE *bitmapBits = new BYTE[length];
 		m_CtrlBitmap.GetBitmapBits(length, bitmapBits);
 		
-		for(int y = 0; y < m_CtrlSize.cy; y++)
+		for(int y = 0; y < (int)(m_CtrlSize.cy * m_ImageCount); y++)
 		{
 			for(int x = 0; x < m_CtrlSize.cx; x++)
 			{
 			//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = 255;
 			//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = 255;
 			//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = 255;
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = (BYTE)128;
-			}
-		}
-
-		for (int y = m_CtrlSize.cy; y < m_CtrlSize.cy * 2; y++)
-		{
-			for (int x = 0; x < m_CtrlSize.cx; x++)
-			{
-				//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = 255;
-				//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = 255;
-				//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = 255;
 				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = (BYTE)128;
 			}
 		}

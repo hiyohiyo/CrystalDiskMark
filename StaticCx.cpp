@@ -251,7 +251,7 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 	// 透過モードにする。
 	drawDC->SetBkMode(TRANSPARENT);
 
-	if (m_FontType == FT_GDI_PLUS || m_FontType == FT_GDI_PLUS_WO_DESCENT || m_FontType == FT_AUTO) // GDI+
+	if (m_FontType >= FT_GDI_PLUS_1) // GDI+
 	{
 		Gdiplus::Graphics g(drawDC->m_hDC);
 
@@ -284,11 +284,18 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		REAL descent = (REAL) ff.GetCellDescent(FontStyleRegular);
 		REAL lineSpacing = (REAL) ff.GetLineSpacing(FontStyleRegular);
 
-		if (m_FontType == FT_GDI_PLUS_WO_DESCENT)
+		switch (m_FontType)
 		{
-			descent = 0;
+		case FT_GDI_PLUS_2:
+			y = rect.CenterPoint().y - (extentF.Height * (ascent) / lineSpacing) / 2;
+			break;
+		case FT_GDI_PLUS_3:
+			y = rect.CenterPoint().y - (extentF.Height * (ascent) / (ascent + descent)) / 2;
+			break;
+		default:
+			y = rect.CenterPoint().y - (extentF.Height * (ascent + descent) / lineSpacing) / 2;
+			break;
 		}
-		y = rect.CenterPoint().y - (extentF.Height * (ascent + descent) / lineSpacing) / 2;
 
 		Gdiplus::PointF pt(x, y);
 		Gdiplus::RectF rectF(pt.X, pt.Y, (REAL) extentF.Width, (REAL) extentF.Height);
@@ -311,12 +318,12 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		}
 		else if (m_TextAlign == SS_RIGHT)
 		{
-			rect.right -= 8 * m_ZoomRatio;
+			rect.right -= (LONG)(8 * m_ZoomRatio);
 			DrawText(drawDC->m_hDC, title, title.GetLength(), rect, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
 		}
 		else
 		{
-			rect.left += 8 * m_ZoomRatio;
+			rect.left += (LONG)(4 * m_ZoomRatio);
 			DrawText(drawDC->m_hDC, title, title.GetLength(), rect, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
 		}
 		drawDC->SelectObject(oldFont);
@@ -858,7 +865,7 @@ void CStaticCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlp
 	SetFont(&m_Font);
 
 	// フォント描画方法を設定します。
-	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS_WO_DESCENT)
+	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS_3)
 	{
 		m_FontType = fontType;
 	}

@@ -224,7 +224,7 @@ void CComboBoxCx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	pDC->SetBkMode(TRANSPARENT);
 	// pDC->DrawText(cstr, &rc, DT_SINGLELINE | DT_VCENTER);
 
-	lpDrawItemStruct->rcItem.left = 4 * m_ZoomRatio;
+	lpDrawItemStruct->rcItem.left = (LONG)(4 * m_ZoomRatio);
 	DrawString(cstr, pDC, lpDrawItemStruct);
 }
 
@@ -260,7 +260,7 @@ void CComboBoxCx::DrawString(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDraw
 		resToken = title.Tokenize(L"\r\n", curPos);
 	}
 
-	if (m_FontType == FT_GDI_PLUS || m_FontType == FT_GDI_PLUS_WO_DESCENT || m_FontType == FT_AUTO) // GDI+
+	if (m_FontType >= FT_GDI_PLUS_1) // GDI+
 	{
 		Gdiplus::Graphics g(drawDC->m_hDC);
 
@@ -284,13 +284,20 @@ void CComboBoxCx::DrawString(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDraw
 			REAL descent = (REAL)ff.GetCellDescent(FontStyleRegular);
 			REAL lineSpacing = (REAL)ff.GetLineSpacing(FontStyleRegular);
 
-			if (m_FontType == FT_GDI_PLUS_WO_DESCENT)
+			switch (m_FontType)
 			{
-				descent = 0;
+			case FT_GDI_PLUS_2:
+				y = rect.CenterPoint().y - (extentF.Height * (ascent) / lineSpacing) / 2;
+				break;
+			case FT_GDI_PLUS_3:
+				y = rect.CenterPoint().y - (extentF.Height * (ascent) / (ascent + descent)) / 2;
+				break;
+			default:
+				y = rect.CenterPoint().y - (extentF.Height * (ascent + descent) / lineSpacing) / 2;
+				break;
 			}
-			y = r.CenterPoint().y - (extentF.Height * (ascent + descent) / lineSpacing) / 2;
 
-			Gdiplus::PointF pt(rect.left, y);
+			Gdiplus::PointF pt((REAL)rect.left, y);
 			Gdiplus::RectF rectF(pt.X, pt.Y, (REAL)extentF.Width, (REAL)extentF.Height);
 
 			g.SetTextRenderingHint(TextRenderingHintAntiAlias);
@@ -459,7 +466,7 @@ void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textA
 	SetFont(&m_Font);
 
 	// フォント描画方法を設定します。
-	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS_WO_DESCENT)
+	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS_3)
 	{
 		m_FontType = fontType;
 	}

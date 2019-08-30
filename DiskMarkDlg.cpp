@@ -131,6 +131,8 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	ON_MESSAGE(WM_USER_UPDATE_SCORE, OnUpdateScore)
 	ON_MESSAGE(WM_USER_UPDATE_MESSAGE, OnUpdateMessage)
 	ON_MESSAGE(WM_USER_EXIT_BENCHMARK, OnExitBenchmark)
+	ON_COMMAND(ID_ZOOM_050, &CDiskMarkDlg::OnZoom050)
+	ON_COMMAND(ID_ZOOM_075, &CDiskMarkDlg::OnZoom075)
 	ON_COMMAND(ID_ZOOM_100, &CDiskMarkDlg::OnZoom100)
 	ON_COMMAND(ID_ZOOM_125, &CDiskMarkDlg::OnZoom125)
 	ON_COMMAND(ID_ZOOM_150, &CDiskMarkDlg::OnZoom150)
@@ -234,9 +236,9 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	GetPrivateProfileString(_T("Setting"), _T("FontFace"), defaultFontFace, str, 256, m_Ini);
 	m_FontFace = str;
 	m_FontType = GetPrivateProfileInt(_T("Setting"), _T("FontType"), 0, m_Ini);
-	if (m_FontType < FT_AUTO || FT_GDI_PLUS_WO_DESCENT < m_FontType)
+	if (m_FontType == FT_AUTO || FT_GDI_PLUS_3 < m_FontType)
 	{
-		m_FontType = FT_AUTO;
+		m_FontType = FT_GDI;
 	}
 
 	m_TestData = (BOOL)GetPrivateProfileInt(_T("Setting"), _T("TestData"), TEST_DATA_RANDOM, m_Ini);
@@ -328,6 +330,8 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	
 	switch(GetPrivateProfileInt(_T("Setting"), _T("ZoomType"), 0, m_Ini))
 	{
+	case  50:  CheckRadioZoomType(ID_ZOOM_050,  50); break;
+	case  75:  CheckRadioZoomType(ID_ZOOM_075,  75); break;
 	case 100:  CheckRadioZoomType(ID_ZOOM_100, 100); break;
 	case 125:  CheckRadioZoomType(ID_ZOOM_125, 125); break;
 	case 150:  CheckRadioZoomType(ID_ZOOM_150, 150); break;
@@ -424,12 +428,12 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ComboDrive.MoveWindow((int)((352 + OFFSET_X) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(312 * m_ZoomRatio), (int)(48 * m_ZoomRatio));
 #else
 
-	m_ButtonAll.InitControl(12 + OFFSET_X, 12, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonSequential1.InitControl(12 + OFFSET_X, 100, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonSequential2.InitControl(12 + OFFSET_X, 188, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonRandom1.InitControl(12 + OFFSET_X, 276, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonRandom2.InitControl(12 + OFFSET_X, 364, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonRandom3.InitControl(12 + OFFSET_X, 452, 120, 80, m_ZoomRatio, IP(L"button"), 2, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonAll.InitControl(12 + OFFSET_X, 12, 120, 80, m_ZoomRatio, IP(L"button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonSequential1.InitControl(12 + OFFSET_X, 100, 120, 80, m_ZoomRatio, IP(L"button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonSequential2.InitControl(12 + OFFSET_X, 188, 120, 80, m_ZoomRatio, IP(L"button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonRandom1.InitControl(12 + OFFSET_X, 276, 120, 80, m_ZoomRatio, IP(L"button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonRandom2.InitControl(12 + OFFSET_X, 364, 120, 80, m_ZoomRatio, IP(L"button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonRandom3.InitControl(12 + OFFSET_X, 452, 120, 80, m_ZoomRatio, IP(L"button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 
 	m_ButtonAll.SetHandCursor(TRUE);
 	m_ButtonSequential1.SetHandCursor(TRUE);
@@ -457,8 +461,8 @@ void CDiskMarkDlg::UpdateDialogSize()
 
 	m_ComboCount.InitControl(140 + OFFSET_X, 12, 60, 500, m_ZoomRatio);
 	m_ComboSize.InitControl(204 + OFFSET_X, 12, 140, 500, m_ZoomRatio);
-	m_ComboDrive.InitControl(348 + OFFSET_X, 12, 336, 500, m_ZoomRatio);
-	m_ComboUnit.InitControl(688 + OFFSET_X, 12, 100, 500, m_ZoomRatio);
+	m_ComboDrive.InitControl(348 + OFFSET_X, 12, 320, 500, m_ZoomRatio);
+	m_ComboUnit.InitControl(672 + OFFSET_X, 12, 116, 500, m_ZoomRatio);
 #endif
 
 	UpdateScore();
@@ -593,7 +597,7 @@ void CDiskMarkDlg::SetControlFont()
 	m_RandomWrite2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 	m_RandomWrite3.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 
-	m_Comment.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, FW_BOLD);
+	m_Comment.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, FW_BOLD);
 
 	m_ReadUnit.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
 	m_WriteUnit.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
@@ -640,12 +644,12 @@ void CDiskMarkDlg::SetControlFont()
 CString CDiskMarkDlg::IP(CString imageName)
 {
 	CString imagePath;
-	imagePath.Format(L"%s%s\\%s-%3d.png", m_ThemeDir.GetString(), m_CurrentTheme.GetString(), imageName.GetString(), (DWORD)(m_ZoomRatio * 100));
+	imagePath.Format(L"%s%s\\%s-%03d.png", m_ThemeDir.GetString(), m_CurrentTheme.GetString(), imageName.GetString(), (DWORD)(m_ZoomRatio * 100));
 	if (IsFileExist(imagePath))
 	{
 		return imagePath;
 	}
-	imagePath.Format(L"%s%s\\%s-%3d.png", m_ThemeDir.GetString(), m_DefaultTheme.GetString(), imageName.GetString(), (DWORD)(m_ZoomRatio * 100));
+	imagePath.Format(L"%s%s\\%s-%03d.png", m_ThemeDir.GetString(), m_DefaultTheme.GetString(), imageName.GetString(), (DWORD)(m_ZoomRatio * 100));
 	if (IsFileExist(imagePath))
 	{
 		return imagePath;
@@ -1500,7 +1504,7 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	cstr = i18n(_T("Menu"), _T("AUTO"));
 	menu->ModifyMenu(ID_ZOOM_AUTO, MF_STRING, ID_ZOOM_AUTO, cstr);
 
-	cstr = i18n(_T("Menu"), _T("FONT_SETTING"));
+	cstr = i18n(_T("Menu"), _T("FONT_SETTING")) + _T("\tCtrl + F");
 	menu->ModifyMenu(ID_FONT_SETTING, MF_STRING, ID_FONT_SETTING, cstr);
 
 	CheckRadioZoomType();
@@ -1524,6 +1528,8 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	m_MesDiskWriteError = i18n(_T("Message"), _T("DISK_WRITE_ERROR"));
 	m_MesDiskReadError = i18n(_T("Message"), _T("DISK_READ_ERROR"));
 	m_MesDiskSpdNotFound = i18n(_T("Message"), _T("DISK_SPD_NOT_FOUND"));
+
+	InitDrive();
 
 	WritePrivateProfileString(_T("Setting"), _T("Language"), LangName, m_Ini);
 }
@@ -1846,6 +1852,22 @@ void CDiskMarkDlg::ResultText(RESULT_TEXT type)
 		}
 	}
 }
+void CDiskMarkDlg::OnZoom050()
+{
+	if (CheckRadioZoomType(ID_ZOOM_050, 50))
+	{
+		UpdateDialogSize();
+		UpdateDialogSize();
+	}
+}
+void CDiskMarkDlg::OnZoom075()
+{
+	if (CheckRadioZoomType(ID_ZOOM_075, 75))
+	{
+		UpdateDialogSize();
+		UpdateDialogSize();
+	}
+}
 
 void CDiskMarkDlg::OnZoom100()
 {
@@ -1928,7 +1950,7 @@ BOOL CDiskMarkDlg::CheckRadioZoomType(int id, int value)
 	}
 
 	CMenu *menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_ZOOM_100, ID_ZOOM_AUTO, id, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_ZOOM_050, ID_ZOOM_AUTO, id, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
@@ -1949,6 +1971,8 @@ void CDiskMarkDlg::CheckRadioZoomType()
 
 	switch(m_ZoomType)
 	{
+	case  50: id = ID_ZOOM_050;	break;
+	case  75: id = ID_ZOOM_075;	break;
 	case 100: id = ID_ZOOM_100;	break;
 	case 125: id = ID_ZOOM_125;	break;
 	case 150: id = ID_ZOOM_150;	break;
@@ -1960,7 +1984,7 @@ void CDiskMarkDlg::CheckRadioZoomType()
 	}
 
 	CMenu *menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_ZOOM_100, ID_ZOOM_AUTO, id, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_ZOOM_050, ID_ZOOM_AUTO, id, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 }
@@ -2132,7 +2156,7 @@ void CDiskMarkDlg::OnFontSetting()
 		WritePrivateProfileString(_T("Setting"), _T("FontType"), cstr, m_Ini);
 		cstr.Format(L"%d", m_FontScale);
 		WritePrivateProfileString(_T("Setting"), _T("FontScale"), cstr, m_Ini);
-	
+
 		UpdateDialogSize();
 	}
 }

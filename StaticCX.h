@@ -18,11 +18,12 @@ class CStaticCx : public CStatic
 	static const int OwnerDrawTransparent = 0x0010;
 	static const int OwnerDrawGlassImage  = 0x0020;
 
-	static const int FT_AUTO               = 0x0000;
-	static const int FT_GDI                = 0x0001;
-	static const int FT_GDI_PLUS           = 0x0002;
-	static const int FT_GDI_PLUS_WO_DESCENT= 0x0003;
-	static const int FT_D_WRITE            = 0x0004;
+	static const int FT_AUTO              = 0x0000;
+	static const int FT_GDI               = 0x0001;
+	static const int FT_GDI_PLUS_1        = 0x0002;
+	static const int FT_GDI_PLUS_2        = 0x0003;
+	static const int FT_GDI_PLUS_3		  = 0x0004;
+	static const int FT_D_WRITE           = 0x0005;
 
 // 基本
 public:

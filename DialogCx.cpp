@@ -109,7 +109,7 @@ DWORD CDialogCx::ChangeZoomType(DWORD zoomType)
 
 	if(zoomType == ZOOM_TYPE_AUTO)
 	{
-		if(current >= 300)
+		if (current >= 300)
 		{
 			zoomType = ZOOM_TYPE_300;
 		}
@@ -414,12 +414,12 @@ void CDialogCx::UpdateBackground(bool resize)
 CString CDialogCx::IP(CString imageName)
 {
 	CString imagePath;
-	imagePath.Format(L"%s%s\\%s-%3d.png", m_CxThemeDir.GetString(), m_CxCurrentTheme.GetString(), imageName.GetString(), (DWORD)(m_ZoomRatio * 100));
+	imagePath.Format(L"%s%s\\%s-%03d.png", m_CxThemeDir.GetString(), m_CxCurrentTheme.GetString(), imageName.GetString(), (DWORD)(m_ZoomRatio * 100));
 	if(IsFileExist(imagePath))
 	{
 		return imagePath;
 	}
-	imagePath.Format(L"%s%s\\%s-%3d.png", m_CxThemeDir.GetString(), m_CxDefaultTheme.GetString(), imageName.GetString(), (DWORD)(m_ZoomRatio * 100));
+	imagePath.Format(L"%s%s\\%s-%03d.png", m_CxThemeDir.GetString(), m_CxDefaultTheme.GetString(), imageName.GetString(), (DWORD)(m_ZoomRatio * 100));
 	if(IsFileExist(imagePath))
 	{
 		return imagePath;

@@ -20,7 +20,7 @@ CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
 	m_ZoomType = ((CMainDialog*)pParent)->GetZoomType();
 
 	m_FontFace = ((CMainDialog*)pParent)->m_FontFace;
-	m_FontType = FT_GDI_PLUS;//((CMainDialog*) pParent)->m_FontType;
+	m_FontType = FT_GDI;//((CMainDialog*) pParent)->m_FontType;
 	m_CxThemeDir = ((CDiskMarkApp*)AfxGetApp())->m_ThemeDir;
 	m_CxCurrentTheme = ((CMainDialog*)pParent)->m_CurrentTheme;
 	m_CxDefaultTheme = ((CMainDialog*)pParent)->m_DefaultTheme;

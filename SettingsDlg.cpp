@@ -64,12 +64,13 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_RANDOM_THREAD_3, m_ComboRandomThreads3);
 
 	DDX_Control(pDX, IDC_COMBO_AFFINITY, m_ComboAffinity);
+	DDX_Control(pDX, ID_OK, m_ButtonOk);
 
 }
 
-
 BEGIN_MESSAGE_MAP(CSettingsDlg, CDialogCx)
 	ON_BN_CLICKED(IDC_SET_DEFAULT, &CSettingsDlg::OnSetDefault)
+	ON_BN_CLICKED(ID_OK, &CSettingsDlg::OnOk)
 END_MESSAGE_MAP()
 
 void CSettingsDlg::OnSetDefault()
@@ -180,22 +181,6 @@ BOOL CSettingsDlg::OnInitDialog()
 
 void CSettingsDlg::InitComboBox()
 {
-	// Size
-	/*
-	TCHAR blocksize[13][8] = { L"4KiB", L"8KiB", L"16KiB", L"32KiB", L"64KiB", L"128KiB",  L"256KiB", L"512KiB", L"1MiB", L"2MiB", L"4MiB", L"8MiB", L"16MiB" };
-	for (int i = 0; i < 13; i++)
-	{
-		CString cstr;
-		cstr.Format(L"%s", blocksize[i]);
-	//	m_ComboSequentialSize1.AddString(cstr);
-	//	m_ComboSequentialSize2.AddString(cstr);
-	//	if (_ttoi(cstr.GetString()) == m_SequentialQueues1) { m_ComboSequentialSize1.SetCurSel(i); }
-	//	m_ComboRandomSize1.AddString(cstr);
-	//	m_ComboRandomSize2.AddString(cstr);
-	//	m_ComboRandomSize3.AddString(cstr);
-	}
-	*/
-
 	m_ComboSequentialSize1.ResetContent();
 	m_ComboSequentialSize2.ResetContent();
 	m_ComboRandomSize1.ResetContent();
@@ -281,7 +266,7 @@ void CSettingsDlg::InitComboBox()
 	}
 }
 
-void CSettingsDlg::OnCancel()
+void CSettingsDlg::OnOk()
 {
 	CString cstr;
 	m_ComboSequentialSize1.GetWindowTextW(cstr);
@@ -311,6 +296,11 @@ void CSettingsDlg::OnCancel()
 	cstr.Format(L"%d", m_ComboAffinity.GetCurSel());
 	WritePrivateProfileString(_T("Setting"), _T("Affinity"), cstr, m_Ini);
 
+	CDialogCx::OnCancel();
+}
+
+void CSettingsDlg::OnCancel()
+{
 	CDialogCx::OnCancel();
 }
 
@@ -348,6 +338,8 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboRandomThreads3.SetFontEx(m_FontFace, 16, m_ZoomRatio);
 	m_ComboAffinity.SetFontEx(m_FontFace, 16, m_ZoomRatio);
 	m_ButtonSetDefault.SetFontEx(m_FontFace, 16, m_ZoomRatio);
+	m_ButtonOk.SetFontEx(m_FontFace, 16, m_ZoomRatio);
+
 
 	m_LabelBlockSize.InitControl(176, 8, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_LabelQueues.InitControl(304, 8, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
@@ -378,9 +370,12 @@ void CSettingsDlg::UpdateDialogSize()
 
 	m_ComboAffinity.InitControl(176, 240, 120, 32, m_ZoomRatio);
 
-	m_ButtonSetDefault.InitControl(432, 240, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonSetDefault.InitControl(120, 280, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
 	m_ButtonSetDefault.SetHandCursor();
 	m_ButtonSetDefault.SetWindowTextW(i18n(_T("Dialog"), _T("DEFAULT")));
+
+	m_ButtonOk.InitControl(320, 280, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonOk.SetHandCursor();
 	
 	Invalidate();
 }

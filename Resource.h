@@ -103,16 +103,17 @@
 #define ID_A_DUMMY                      32781
 #define ID_O_DUMMY                      32782
 #define ID_BACK_PAGE                    32787
-#define ID_PRINT                        32790
-#define ID_FUNCTION_ZOOM                32799
-#define ID_ZOOM_100                     32801
-#define ID_ZOOM_125                     32802
-#define ID_ZOOM_150                     32803
-#define ID_ZOOM_200                     32804
-#define ID_ZOOM_250                     32805
-#define ID_ZOOM_300                     32806
-// #define ID_ZOOM_400                     32807
-#define ID_ZOOM_AUTO                    33808
+#define ID_PRINT                        32788
+#define ID_FUNCTION_ZOOM                32789
+#define ID_ZOOM_050                     32801
+#define ID_ZOOM_075                     32802
+#define ID_ZOOM_100                     32803
+#define ID_ZOOM_125                     32804
+#define ID_ZOOM_150                     32805
+#define ID_ZOOM_200                     32806
+#define ID_ZOOM_250                     32807
+#define ID_ZOOM_300                     32808
+#define ID_ZOOM_AUTO                    33809
 #define ID_HELP_HELP                    32810
 #define ID_HELP_CRYSTALDEWWORLD         32811
 #define ID_FILE_BENCHMARKMODE           32812

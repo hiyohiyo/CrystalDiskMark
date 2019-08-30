@@ -219,6 +219,8 @@ protected:
 	afx_msg LRESULT OnUpdateScore(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnUpdateMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnExitBenchmark(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnZoom050();
+	afx_msg void OnZoom075();
 	afx_msg void OnZoom100();
 	afx_msg void OnZoom125();
 	afx_msg void OnZoom150();

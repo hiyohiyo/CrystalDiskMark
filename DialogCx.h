@@ -13,11 +13,12 @@ class CDialogCx : public CDialogEx
 {
 public:
 	// Font Type
-	static const int FT_AUTO      = 0x0000;
-	static const int FT_GDI       = 0x0001;
-	static const int FT_GDI_PLUS  = 0x0002;
-	static const int FT_GDI_PLUS_WO_DESCENT = 0x0003;
-	static const int FT_D_WRITE   = 0x0004;
+	static const int FT_AUTO              = 0x0000;
+	static const int FT_GDI               = 0x0001;
+	static const int FT_GDI_PLUS_1        = 0x0002;
+	static const int FT_GDI_PLUS_2        = 0x0003;
+	static const int FT_GDI_PLUS_3		  = 0x0004;
+	static const int FT_D_WRITE           = 0x0005;
 
 	CDialogCx(UINT dlgResouce, CWnd* pParent = NULL);
 	virtual ~CDialogCx();
@@ -34,7 +35,9 @@ public:
 
 	enum ZOOM_TYPE
 	{
-		ZOOM_TYPE_AUTO = 0,
+		ZOOM_TYPE_AUTO=   0,
+		ZOOM_TYPE_050 =  50,
+		ZOOM_TYPE_075 =  75,
 		ZOOM_TYPE_100 = 100,
 		ZOOM_TYPE_125 = 125,
 		ZOOM_TYPE_150 = 150,
