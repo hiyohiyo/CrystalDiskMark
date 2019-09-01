@@ -36,8 +36,6 @@ public:
 	enum ZOOM_TYPE
 	{
 		ZOOM_TYPE_AUTO=   0,
-		ZOOM_TYPE_050 =  50,
-		ZOOM_TYPE_075 =  75,
 		ZOOM_TYPE_100 = 100,
 		ZOOM_TYPE_125 = 125,
 		ZOOM_TYPE_150 = 150,

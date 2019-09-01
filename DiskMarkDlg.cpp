@@ -126,8 +126,6 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	ON_MESSAGE(WM_USER_UPDATE_SCORE, OnUpdateScore)
 	ON_MESSAGE(WM_USER_UPDATE_MESSAGE, OnUpdateMessage)
 	ON_MESSAGE(WM_USER_EXIT_BENCHMARK, OnExitBenchmark)
-	ON_COMMAND(ID_ZOOM_050, &CDiskMarkDlg::OnZoom050)
-	ON_COMMAND(ID_ZOOM_075, &CDiskMarkDlg::OnZoom075)
 	ON_COMMAND(ID_ZOOM_100, &CDiskMarkDlg::OnZoom100)
 	ON_COMMAND(ID_ZOOM_125, &CDiskMarkDlg::OnZoom125)
 	ON_COMMAND(ID_ZOOM_150, &CDiskMarkDlg::OnZoom150)
@@ -231,24 +229,24 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	GetPrivateProfileString(_T("Setting"), _T("FontFace"), defaultFontFace, str, 256, m_Ini);
 	m_FontFace = str;
 	m_FontType = GetPrivateProfileInt(_T("Setting"), _T("FontType"), 0, m_Ini);
-	if (m_FontType == FT_AUTO || FT_GDI_PLUS_3 < m_FontType)
+	if (m_FontType < FT_AUTO || FT_GDI_PLUS_3 < m_FontType)
 	{
 		m_FontType = FT_GDI;
 	}
 
-	m_TestData = (BOOL)GetPrivateProfileInt(_T("Setting"), _T("TestData"), TEST_DATA_RANDOM, m_Ini);
+	m_TestData = GetPrivateProfileInt(_T("Setting"), _T("TestData"), TEST_DATA_RANDOM, m_Ini);
 	if (m_TestData != TEST_DATA_ALL0X00)
 	{
 		m_TestData = TEST_DATA_RANDOM;
 	}
 
-	m_FontScale = (BOOL)GetPrivateProfileInt(_T("Setting"), _T("FontScale"), 100, m_Ini);
+	m_FontScale = GetPrivateProfileInt(_T("Setting"), _T("FontScale"), 100, m_Ini);
 	if (m_FontScale > 200 || m_FontScale < 50)
 	{
 		m_FontScale = 100;
 	}
 
-	m_Affinity = (BOOL)GetPrivateProfileInt(_T("Setting"), _T("Affinity"), AFFINITY_OFF, m_Ini);
+	m_Affinity = GetPrivateProfileInt(_T("Setting"), _T("Affinity"), AFFINITY_OFF, m_Ini);
 	if (m_Affinity < 0 || m_Affinity > 1)
 	{
 		m_Affinity = AFFINITY_OFF;
@@ -285,8 +283,6 @@ BOOL CDiskMarkDlg::OnInitDialog()
 		m_IndexTestUnit = 0;
 	}
 	m_ComboUnit.SetCurSel(m_IndexTestUnit);
-	GetPrivateProfileString(L"Title", L"TEST_Unit", L"Test Unit", str, 256, m_CurrentLangPath);
-	m_ComboUnit.SetToolTipText(str);
 
 	m_IndexTestCount = GetPrivateProfileInt(_T("Setting"), _T("TestCount"), 4, m_Ini);
 	if (m_IndexTestCount < 0 || m_IndexTestCount >= 9)
@@ -294,9 +290,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 		m_IndexTestCount = 4;	// default value is 5.
 	}
 	m_ComboCount.SetCurSel(m_IndexTestCount);
-	GetPrivateProfileString(L"Title", L"TEST_COUNT", L"Test Count", str, 256, m_CurrentLangPath);
-	m_ComboCount.SetToolTipText(str);
-
+	
 	// Size
 	TCHAR size[13][8] = { L"16MiB", L"32MiB", L"64MiB", L"128MiB", L"256MiB", L"512MiB", L"1GiB", L"2GiB", L"4GiB",  L"8GiB", L"16GiB", L"32GiB", L"64GiB" };
 
@@ -312,6 +306,11 @@ BOOL CDiskMarkDlg::OnInitDialog()
 		m_IndexTestSize = 6;	// default value is 1GiB;
 	}
 	m_ComboSize.SetCurSel(m_IndexTestSize);
+
+	GetPrivateProfileString(L"Title", L"TEST_UNIT", L"Test Unit", str, 256, m_CurrentLangPath);
+	m_ComboUnit.SetToolTipText(str);
+	GetPrivateProfileString(L"Title", L"TEST_COUNT", L"Test Count", str, 256, m_CurrentLangPath);
+	m_ComboCount.SetToolTipText(str);
 	GetPrivateProfileString(L"Title", L"TEST_SIZE", L"Test Size", str, 256, m_CurrentLangPath);
 	m_ComboSize.SetToolTipText(str);
 
@@ -325,8 +324,6 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	
 	switch(GetPrivateProfileInt(_T("Setting"), _T("ZoomType"), 0, m_Ini))
 	{
-	case  50:  CheckRadioZoomType(ID_ZOOM_050,  50); break;
-	case  75:  CheckRadioZoomType(ID_ZOOM_075,  75); break;
 	case 100:  CheckRadioZoomType(ID_ZOOM_100, 100); break;
 	case 125:  CheckRadioZoomType(ID_ZOOM_125, 125); break;
 	case 150:  CheckRadioZoomType(ID_ZOOM_150, 150); break;
@@ -1525,6 +1522,13 @@ void CDiskMarkDlg::InitDrive()
 	GetPrivateProfileString(L"Title", L"TEST_DRIVE", L"Test Drive", str, 256, m_CurrentLangPath);
 	m_ComboDrive.SetToolTipText(str);
 
+	GetPrivateProfileString(L"Title", L"TEST_UNIT", L"Test Unit", str, 256, m_CurrentLangPath);
+	m_ComboUnit.SetToolTipText(str);
+	GetPrivateProfileString(L"Title", L"TEST_COUNT", L"Test Count", str, 256, m_CurrentLangPath);
+	m_ComboCount.SetToolTipText(str);
+	GetPrivateProfileString(L"Title", L"TEST_SIZE", L"Test Size", str, 256, m_CurrentLangPath);
+	m_ComboSize.SetToolTipText(str);
+
 	UpdateData(FALSE);
 }
 
@@ -1954,22 +1958,6 @@ void CDiskMarkDlg::ResultText(RESULT_TEXT type)
 		}
 	}
 }
-void CDiskMarkDlg::OnZoom050()
-{
-	if (CheckRadioZoomType(ID_ZOOM_050, 50))
-	{
-		UpdateDialogSize();
-		UpdateDialogSize();
-	}
-}
-void CDiskMarkDlg::OnZoom075()
-{
-	if (CheckRadioZoomType(ID_ZOOM_075, 75))
-	{
-		UpdateDialogSize();
-		UpdateDialogSize();
-	}
-}
 
 void CDiskMarkDlg::OnZoom100()
 {
@@ -2052,7 +2040,7 @@ BOOL CDiskMarkDlg::CheckRadioZoomType(int id, int value)
 	}
 
 	CMenu *menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_ZOOM_050, ID_ZOOM_AUTO, id, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_ZOOM_100, ID_ZOOM_AUTO, id, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
@@ -2073,8 +2061,6 @@ void CDiskMarkDlg::CheckRadioZoomType()
 
 	switch(m_ZoomType)
 	{
-	case  50: id = ID_ZOOM_050;	break;
-	case  75: id = ID_ZOOM_075;	break;
 	case 100: id = ID_ZOOM_100;	break;
 	case 125: id = ID_ZOOM_125;	break;
 	case 150: id = ID_ZOOM_150;	break;
@@ -2086,7 +2072,7 @@ void CDiskMarkDlg::CheckRadioZoomType()
 	}
 
 	CMenu *menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_ZOOM_050, ID_ZOOM_AUTO, id, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_ZOOM_100, ID_ZOOM_AUTO, id, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 }

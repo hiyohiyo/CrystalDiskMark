@@ -108,8 +108,6 @@ void CAboutDlg::UpdateDialogSize()
 
 	UpdateBackground(true);
 
-	m_CtrlCrystalDewWorld.InitControl(24, 24, 128, 128, m_ZoomRatio, IP(L"logo"), 1, 0, CButtonCx::OwnerDrawImage);
-	m_CtrlCrystalDewWorld.SetHandCursor();
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	m_CtrlProjectSite1.InitControl(340, 324, 292, 20, m_ZoomRatio, NULL, 0, 0, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
@@ -125,21 +123,23 @@ void CAboutDlg::UpdateDialogSize()
 	m_CtrlProjectSite5.SetHandCursor();
 #endif
 
-	m_CtrlVersion.SetFontEx(m_FontFace, 28, m_ZoomRatio, 255, RGB(0, 0, 0), FW_BOLD, m_FontType);
-	m_CtrlEdition.SetFontEx(m_FontFace, 28, m_ZoomRatio, 255, RGB(0, 0, 0), FW_BOLD, m_FontType);
+	m_CtrlCrystalDewWorld.InitControl(12, 12, 128, 128, m_ZoomRatio, IP(L"logo"), 1, 0, CButtonCx::OwnerDrawImage);
+	m_CtrlCrystalDewWorld.SetHandCursor();
+
+	m_CtrlVersion.SetFontEx(m_FontFace, 24, m_ZoomRatio, 255, RGB(0, 0, 0), FW_BOLD, m_FontType);
+	m_CtrlEdition.SetFontEx(m_FontFace, 24, m_ZoomRatio, 255, RGB(0, 0, 0), FW_BOLD, m_FontType);
 	m_CtrlRelease.SetFontEx(m_FontFace, 16, m_ZoomRatio, 255, RGB(0, 0, 0), FW_NORMAL, m_FontType);
 	m_CtrlCopyright.SetFontEx(m_FontFace, 16, m_ZoomRatio, 255, RGB(0, 0, 0), FW_NORMAL, m_FontType);
 	m_CtrlLicense.SetFontEx(m_FontFace, 16, m_ZoomRatio, 255, RGB(0, 0, 0), FW_NORMAL, m_FontType);
 
-	m_CtrlVersion.InitControl(200, 12, 420, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlEdition.InitControl(200, 48, 420, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlRelease.InitControl(200, 88, 420, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlCopyright.InitControl(200, 112, 420, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlLicense.InitControl(200, 136, 420, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlVersion.InitControl(152, 12, 316, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlEdition.InitControl(152, 48, 316, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlRelease.InitControl(152, 88, 316, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlCopyright.InitControl(152, 112, 316, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlLicense.InitControl(152, 136, 316, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
 	Invalidate();
 }
-
 
 void CAboutDlg::OnCrystalDewWorld()
 {

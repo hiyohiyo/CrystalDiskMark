@@ -18,7 +18,7 @@ class CAboutDlg : public CDialogCx
 	static const int SIZE_X = 640;
 	static const int SIZE_Y = 660;
 #else
-	static const int SIZE_X = 640;
+	static const int SIZE_X = 480;
 	static const int SIZE_Y = 172;
 #endif
 	static const int SIZE_HC_Y = 172; // for HighContrast Mode

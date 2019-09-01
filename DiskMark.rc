@@ -322,9 +322,6 @@ BEGIN
             MENUITEM "300%",                        ID_ZOOM_300
 //            MENUITEM "400%",                        ID_ZOOM_400
             MENUITEM "Auto",                        ID_ZOOM_AUTO
-			MENUITEM SEPARATOR
-			MENUITEM " 50%",						ID_ZOOM_050
-			MENUITEM " 75%",						ID_ZOOM_075
         END
         MENUITEM "Font Setting",               ID_FONT_SETTING
         MENUITEM SEPARATOR

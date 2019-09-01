@@ -105,8 +105,6 @@
 #define ID_BACK_PAGE                    32787
 #define ID_PRINT                        32788
 #define ID_FUNCTION_ZOOM                32789
-#define ID_ZOOM_050                     32801
-#define ID_ZOOM_075                     32802
 #define ID_ZOOM_100                     32803
 #define ID_ZOOM_125                     32804
 #define ID_ZOOM_150                     32805
