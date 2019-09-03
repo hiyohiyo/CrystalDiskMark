@@ -111,6 +111,7 @@ private:
 	CString m_ToolTipText;  // ツールチップ用テキスト
 	// フォント関係
 	CFont m_Font;
+	COLORREF m_TextColor;
 	// GDI+ 関連
 	Gdiplus::Font *m_GpFont;
 	Gdiplus::SolidBrush *m_GpBrush;

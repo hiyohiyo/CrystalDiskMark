@@ -56,6 +56,17 @@ public:
 	DWORD GetZoomType();
 	void SetZoomType(DWORD zoomType);
 
+	COLORREF m_LabelText;
+	COLORREF m_MeterText;
+	COLORREF m_ComboText;
+	COLORREF m_ComboBg;
+	COLORREF m_ComboSelected;
+	COLORREF m_ButtonText;
+	COLORREF m_EditText;
+	COLORREF m_EditBg;
+	void UpdateControlColor();
+	COLORREF GetControlColor(CString name, BYTE defaultColor = 0);
+
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);

@@ -67,8 +67,10 @@ CComboBoxCx::CComboBoxCx()
 	m_Margin.left = 0;
 	m_Margin.bottom = 0;
 	m_Margin.right = 0;
-}
 
+	m_BgColor = RGB(255, 255, 255);
+	m_SelectedColor = RGB(128, 128, 128);
+}
 
 CComboBoxCx::~CComboBoxCx()
 {
@@ -194,33 +196,22 @@ void CComboBoxCx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	GetLBText(lpDrawItemStruct->itemID, cstr);
 	CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
 
-	/*
-	CFont font;
-	LOGFONT logfont;
-	memset(&logfont, 0, sizeof(logfont));
-	logfont.lfHeight = m_FontHeight;
-	logfont.lfWidth = 0;
-	logfont.lfWeight = 400;
-	logfont.lfCharSet = DEFAULT_CHARSET;
-	pDC->SelectObject(&font);
-	_tcscpy_s(logfont.lfFaceName, 32, (LPCTSTR)L"メイリオ");
-	font.CreateFontIndirect(&logfont);
-	pDC->SelectObject(&font);
-	*/
-
-	COLORREF color;
-	color = RGB(255, 255, 255);
+	CBrush Brush;
+	CBrush* pOldBrush;
 
 	if (lpDrawItemStruct->itemState & ODS_SELECTED) {
-		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)GetStockObject(LTGRAY_BRUSH));
-		SetTextColor(lpDrawItemStruct->hDC, RGB(255, 0, 0));
+		Brush.CreateSolidBrush(m_SelectedColor);
+		pOldBrush = pDC->SelectObject(&Brush);
+		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
 	}
 	else {
-		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)GetStockObject(WHITE_BRUSH));
-		SetTextColor(lpDrawItemStruct->hDC, RGB(0, 0, 0));
+		Brush.CreateSolidBrush(m_BgColor);
+		pOldBrush = pDC->SelectObject(&Brush);
+		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
 	}
+	pDC->SelectObject(pOldBrush);
+	Brush.DeleteObject();
 
-	pDC->SetTextColor(RGB(0, 0, 0));
 	pDC->SetBkMode(TRANSPARENT);
 	// pDC->DrawText(cstr, &rc, DT_SINGLELINE | DT_VCENTER);
 
@@ -317,6 +308,7 @@ void CComboBoxCx::DrawString(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDraw
 			CRect rectI;
 			CSize extent;
 			HGDIOBJ oldFont = drawDC->SelectObject(m_Font);
+			SetTextColor(drawDC->m_hDC, m_TextColor);
 			GetTextExtentPoint32(drawDC->m_hDC, arr.GetAt(i), arr.GetAt(i).GetLength() + 1, &extent);
 			rectI.top = r.top + (r.Height() - extent.cy) / 2;
 			rectI.bottom = rectI.top + extent.cy;
@@ -465,6 +457,8 @@ void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textA
 	m_Font.CreateFontIndirect(&logFont);
 	SetFont(&m_Font);
 
+	m_TextColor = textColor;
+
 	// フォント描画方法を設定します。
 	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS_3)
 	{
@@ -535,4 +529,10 @@ BOOL CComboBoxCx::InitControl(int x, int y, int width, int height, double zoomRa
 	MoveWindow((int)(x * zoomRatio), (int)(y * zoomRatio), (int)(width * zoomRatio), (int)(height * zoomRatio));
 
 	return TRUE;
+}
+
+void CComboBoxCx::SetBgColor(COLORREF bgColor, COLORREF selectedColor)
+{
+	m_BgColor = bgColor;
+	m_SelectedColor = selectedColor;
 }

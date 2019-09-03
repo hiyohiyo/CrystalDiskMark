@@ -367,6 +367,7 @@ void CButtonCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 			CRect rectI;
 			CSize extent;
 			HGDIOBJ oldFont = drawDC->SelectObject(m_Font);
+			SetTextColor(drawDC->m_hDC, m_TextColor);
 			GetTextExtentPoint32(drawDC->m_hDC, arr.GetAt(i), arr.GetAt(i).GetLength() + 1, &extent);
 			rectI.top = r.top + (r.Height() - extent.cy) / 2;
 			rectI.bottom = rectI.top + extent.cy;
@@ -885,6 +886,8 @@ void CButtonCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlp
 	m_Font.DeleteObject();
 	m_Font.CreateFontIndirect(&logFont);
 	SetFont(&m_Font);
+
+	m_TextColor = textColor;
 
 	// フォント描画方法を設定します。
 	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS_3)

@@ -107,6 +107,7 @@ BOOL CDiskMarkApp::InitInstance()
 	cstr.Format(_T("%d"), debugMode);
 	WritePrivateProfileString(_T("Setting"), _T("DebugMode"), cstr, m_Ini);
 
+#ifndef UWP
 	if (! IsUserAnAdmin())
 	{
 		if (RunAsRestart())
@@ -114,6 +115,7 @@ BOOL CDiskMarkApp::InitInstance()
 			return FALSE;
 		}
 	}
+#endif
 
 	// Multimedia Timer Setting
 	TIMECAPS tc;

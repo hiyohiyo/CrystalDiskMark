@@ -28,7 +28,7 @@ CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	m_BackgroundName = L"ShizukuAbout";
 #else
-	m_BackgroundName = L"background";
+	m_BackgroundName = L"";
 #endif
 }
 
@@ -132,11 +132,19 @@ void CAboutDlg::UpdateDialogSize()
 	m_CtrlCopyright.SetFontEx(m_FontFace, 16, m_ZoomRatio, 255, RGB(0, 0, 0), FW_NORMAL, m_FontType);
 	m_CtrlLicense.SetFontEx(m_FontFace, 16, m_ZoomRatio, 255, RGB(0, 0, 0), FW_NORMAL, m_FontType);
 
+#ifdef SUISHO_SHIZUKU_SUPPORT
+	m_CtrlVersion.InitControl(152, 12, 476, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlEdition.InitControl(152, 48, 476, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlRelease.InitControl(152, 88, 476, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlCopyright.InitControl(152, 112, 476, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlLicense.InitControl(152, 136, 476, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+#else
 	m_CtrlVersion.InitControl(152, 12, 316, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_CtrlEdition.InitControl(152, 48, 316, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_CtrlRelease.InitControl(152, 88, 316, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_CtrlCopyright.InitControl(152, 112, 316, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_CtrlLicense.InitControl(152, 136, 316, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+#endif
 
 	Invalidate();
 }

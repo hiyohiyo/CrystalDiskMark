@@ -57,6 +57,16 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 	_tcscpy_s(m_Ini, MAX_PATH, ((CDiskMarkApp*)AfxGetApp())->m_Ini);
 
 	m_AdminMode = IsUserAnAdmin();
+	m_EditBrush = new CBrush;
+}
+
+CDiskMarkDlg::~CDiskMarkDlg()
+{
+	if (m_EditBrush != NULL)
+	{
+		m_EditBrush->DeleteObject();
+		delete m_EditBrush;
+	}
 }
 
 void CDiskMarkDlg::DoDataExchange(CDataExchange* pDX)
@@ -120,6 +130,7 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	ON_WM_GETMINMAXINFO()
 	ON_WM_SIZE()
 #endif
+	ON_WM_CTLCOLOR()
 	ON_COMMAND(ID_FILE_EXIT, OnExit)
 	ON_COMMAND(ID_HELP_ABOUT, OnAbout)
 	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
@@ -204,7 +215,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	m_BackgroundName = L"ShizukuBackground";
 #endif
 #else
-	m_BackgroundName = L"mainBackground";
+	m_BackgroundName = L"Background";
 #endif
 
 	TCHAR str[256];
@@ -355,6 +366,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 //	ChangeButtonStatus(TRUE);
 	CenterWindow();
 	ChangeButtonStatus(TRUE);
+
 	UpdateDialogSize();
 
 	m_FlagInitializing = FALSE;
@@ -496,6 +508,12 @@ void CDiskMarkDlg::UpdateDialogSize()
 #endif
 #endif
 
+	if (m_EditBrush != NULL)
+	{
+		m_EditBrush->DeleteObject();
+		m_EditBrush->CreateSolidBrush(m_EditBg);
+	}
+
 	UpdateScore();
 	Invalidate();
 	ShowWindow(SW_SHOW);
@@ -611,34 +629,34 @@ void CDiskMarkDlg::SetControlFont()
 #else
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	m_ButtonAll.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonSequential1.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonSequential2.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonRandom1.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonRandom2.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonRandom3.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonAll.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonSequential1.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonSequential2.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonRandom1.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonRandom2.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonRandom3.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
 
-	m_SequentialRead1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_SequentialRead2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomRead1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomRead2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomRead3.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_SequentialRead1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_SequentialRead2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_RandomRead1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_RandomRead2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_RandomRead3.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
-	m_SequentialWrite1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_SequentialWrite2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomWrite1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomWrite2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomWrite3.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_SequentialWrite1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_SequentialWrite2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_RandomWrite1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_RandomWrite2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_RandomWrite3.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
 	m_Comment.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, FW_BOLD);
 
-	m_ReadUnit.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_WriteUnit.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ReadUnit.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, textAlpha, m_LabelText, FW_BOLD, m_FontType);
+	m_WriteUnit.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, textAlpha, m_LabelText, FW_BOLD, m_FontType);
 
-	m_ComboUnit.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, textColor, FW_NORMAL, m_FontType);
-	m_ComboCount.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, textColor, FW_NORMAL, m_FontType);
-	m_ComboSize.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, textColor, FW_NORMAL, m_FontType);
-	m_ComboDrive.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, textColor, FW_NORMAL, m_FontType);
+	m_ComboUnit.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, m_ComboText, FW_NORMAL, m_FontType);
+	m_ComboCount.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, m_ComboText, FW_NORMAL, m_FontType);
+	m_ComboSize.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, m_ComboText, FW_NORMAL, m_FontType);
+	m_ComboDrive.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, m_ComboText, FW_NORMAL, m_FontType);
 
 	m_ButtonRandom1.SetMargin(8, 0, 8, 0, m_ZoomRatio);
 	m_ButtonSequential1.SetMargin(8, 0, 8, 0, m_ZoomRatio);
@@ -674,34 +692,34 @@ void CDiskMarkDlg::SetControlFont()
 
 #else
 
-	m_ButtonAll.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonSequential1.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonSequential2.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonRandom1.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonRandom2.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_ButtonRandom3.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ButtonAll.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonSequential1.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonSequential2.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonRandom1.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonRandom2.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonRandom3.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
 
-	m_SequentialRead1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_SequentialRead2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomRead1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomRead2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomRead3.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_SequentialRead1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_SequentialRead2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_RandomRead1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_RandomRead2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_RandomRead3.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
-	m_SequentialWrite1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_SequentialWrite2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomWrite1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomWrite2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_RandomWrite3.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_SequentialWrite1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_SequentialWrite2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_RandomWrite1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_RandomWrite2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_RandomWrite3.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
 	m_Comment.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, FW_BOLD);
 
-	m_ReadUnit.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
-	m_WriteUnit.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, textColor, FW_BOLD, m_FontType);
+	m_ReadUnit.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_LabelText, FW_BOLD, m_FontType);
+	m_WriteUnit.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_LabelText, FW_BOLD, m_FontType);
 
-	m_ComboUnit.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, textColor, FW_NORMAL, m_FontType);
-	m_ComboCount.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, textColor, FW_NORMAL, m_FontType);
-	m_ComboSize.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, textColor, FW_NORMAL, m_FontType);
-	m_ComboDrive.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, textColor, FW_NORMAL, m_FontType);
+	m_ComboUnit.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_ComboText, FW_NORMAL, m_FontType);
+	m_ComboCount.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_ComboText, FW_NORMAL, m_FontType);
+	m_ComboSize.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_ComboText, FW_NORMAL, m_FontType);
+	m_ComboDrive.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_ComboText, FW_NORMAL, m_FontType);
 
 	m_ButtonRandom1.SetMargin(4, 0, 4, 0, m_ZoomRatio);
 	m_ButtonSequential1.SetMargin(4, 0, 4, 0, m_ZoomRatio);
@@ -738,6 +756,10 @@ void CDiskMarkDlg::SetControlFont()
 
 #endif
 
+	m_ComboUnit.SetBgColor(m_ComboBg, m_ComboSelected);
+	m_ComboCount.SetBgColor(m_ComboBg, m_ComboSelected);
+	m_ComboSize.SetBgColor(m_ComboBg, m_ComboSelected);
+	m_ComboDrive.SetBgColor(m_ComboBg, m_ComboSelected);
 }
 
 CString CDiskMarkDlg::IP(CString imageName)
@@ -2324,4 +2346,20 @@ void CDiskMarkDlg::SetWindowTitle(CString message, CString mode)
 	}
 
 	SetWindowText(title);
+}
+
+HBRUSH CDiskMarkDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogCx::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	switch (pWnd->GetDlgCtrlID()) {
+	case IDC_COMMENT:
+		pDC->SetTextColor(m_EditText);
+		pDC->SetBkColor(m_EditBg);
+		hbr = (HBRUSH)m_EditBrush->GetSafeHandle();
+		break;
+	default:
+		break;
+	}
+	return hbr;
 }

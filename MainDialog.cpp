@@ -41,6 +41,14 @@ CMainDialog::CMainDialog(UINT dlgResouce,
 	m_FlagInitializing = TRUE;
 	m_FlagWindoowMinimizeOnce = TRUE;
 	m_FlagResidentMinimize = FALSE;
+
+	m_LabelText = RGB(0, 0, 0);
+	m_MeterText = RGB(0, 0, 0);
+	m_ComboText = RGB(0, 0, 0);
+	m_ComboBg = RGB(255, 255, 255);
+	m_ButtonText = RGB(0, 0, 0);
+	m_EditText = RGB(0, 0, 0);
+	m_EditBg = RGB(255, 255, 255);
 }
 
 CMainDialog::~CMainDialog()
@@ -173,6 +181,8 @@ void CMainDialog::InitThemeLang()
 			}	
 		}
 	}
+
+	UpdateControlColor();
 }
 
 void CMainDialog::InitMenu()
@@ -397,6 +407,7 @@ BOOL CMainDialog::OnCommand(WPARAM wParam, LPARAM lParam)
 		subMenu.Detach();
 		menu.Detach();
 
+		UpdateControlColor();
 		UpdateDialogSize();
 	}
 
@@ -433,6 +444,32 @@ void CMainDialog::SetZoomType(DWORD zoomType)
 	cstr.Format(_T("%d"), m_ZoomType);
 	WritePrivateProfileString(_T("Setting"), _T("ZoomType"), cstr, m_Ini);
 }
+
+void CMainDialog::UpdateControlColor()
+{
+	m_LabelText = GetControlColor(L"LabelText", 0);
+	m_MeterText = GetControlColor(L"MeterText", 0);
+	m_ComboText = GetControlColor(L"ComboText", 0);
+	m_ComboBg   = GetControlColor(L"ComboBg", 255);
+	m_ComboSelected = GetControlColor(L"ComboSelected", 128);
+	m_ButtonText= GetControlColor(L"ButtonText", 0);
+	m_EditText  = GetControlColor(L"EditText", 0);
+	m_EditBg    = GetControlColor(L"EditBg", 255);
+}
+
+COLORREF CMainDialog::GetControlColor(CString name, BYTE defaultColor)
+{
+	CString theme = m_ThemeDir + m_CurrentTheme + L"\\theme.ini";
+
+	COLORREF reverseColor;
+
+	reverseColor = GetPrivateProfileInt(L"Color", name, RGB(defaultColor, defaultColor, defaultColor), theme);
+	
+	COLORREF color = RGB(GetBValue(reverseColor), GetGValue(reverseColor), GetRValue(reverseColor));
+
+	return color;
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //

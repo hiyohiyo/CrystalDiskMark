@@ -312,13 +312,15 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		HGDIOBJ oldFont = drawDC->SelectObject(m_Font);
 		GetTextExtentPoint32(drawDC->m_hDC, title, title.GetLength() + 1, &extent);
 
+		SetTextColor(drawDC->m_hDC, m_TextColor);
+
 		if (m_TextAlign == SS_CENTER)
 		{
 			DrawTextW(drawDC->m_hDC, title, title.GetLength(), rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 		}
 		else if (m_TextAlign == SS_RIGHT)
 		{
-			rect.right -= (LONG)(8 * m_ZoomRatio);
+			rect.right -= (LONG)(4 * m_ZoomRatio);
 			DrawText(drawDC->m_hDC, title, title.GetLength(), rect, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
 		}
 		else
@@ -863,6 +865,8 @@ void CStaticCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlp
 	m_Font.DeleteObject();
 	m_Font.CreateFontIndirect(&logFont);
 	SetFont(&m_Font);
+
+	m_TextColor = textColor;
 
 	// フォント描画方法を設定します。
 	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS_3)

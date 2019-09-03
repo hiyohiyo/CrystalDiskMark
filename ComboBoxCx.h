@@ -53,6 +53,8 @@ public:
 	// カーソル関係
 	void SetHandCursor(BOOL bHandCuror = TRUE);	// カーソルモードを設定します。
 
+	void SetBgColor(COLORREF bgColor, COLORREF selectedColor);
+
 protected:
 	// ホバー制御
 	BOOL m_bHover;			// ホバー中のフラグ。
@@ -66,6 +68,9 @@ protected:
 	CString m_ToolTipText;  // ツールチップ用テキスト
 	// フォント関係
 	CFont m_Font;
+	COLORREF m_TextColor;
+	COLORREF m_BgColor;
+	COLORREF m_SelectedColor;
 	// GDI+ 関連
 	Gdiplus::Font* m_GpFont;
 	Gdiplus::SolidBrush* m_GpBrush;

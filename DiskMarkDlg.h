@@ -22,6 +22,7 @@ class CDiskMarkDlg : public CMainDialog
 {
 public:
 	CDiskMarkDlg(CWnd* pParent = NULL);
+	~CDiskMarkDlg();
 
 	enum { IDD = IDD_DISKMARK_DIALOG };
 
@@ -244,6 +245,9 @@ protected:
 	afx_msg void OnFontSetting();
 
 	LRESULT OnQueryEndSession(WPARAM wParam, LPARAM lParam);
+
+	CBrush *m_EditBrush;
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 
 	DECLARE_MESSAGE_MAP()
 

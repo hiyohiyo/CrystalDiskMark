@@ -341,16 +341,16 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ButtonOk.SetFontEx(m_FontFace, 16, m_ZoomRatio);
 
 
-	m_LabelBlockSize.InitControl(176, 8, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_LabelQueues.InitControl(304, 8, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_LabelThreads.InitControl(432, 8, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_LabelBlockSize.InitControl(176, 12, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_LabelQueues.InitControl(304, 12, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_LabelThreads.InitControl(432, 12, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
-	m_SequentialLabel1.InitControl(8, 40, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_SequentialLabel2.InitControl(8, 80, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_RandomLabel1.InitControl(8, 120, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_RandomLabel2.InitControl(8, 160, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_RandomLabel3.InitControl(8, 200, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_LabelAffinity.InitControl(8, 240, 160, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_SequentialLabel1.InitControl(0, 40, 176, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_SequentialLabel2.InitControl(0, 80, 176, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_RandomLabel1.InitControl(0, 120, 176, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_RandomLabel2.InitControl(0, 160, 176, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_RandomLabel3.InitControl(0, 200, 176, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_LabelAffinity.InitControl(0, 240, 176, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
 	m_ComboSequentialSize1.InitControl(176, 40, 120, 200, m_ZoomRatio);
 	m_ComboSequentialSize2.InitControl(176, 80, 120, 200, m_ZoomRatio);
@@ -368,7 +368,7 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboRandomThreads2.InitControl(432, 160, 120, 200, m_ZoomRatio);
 	m_ComboRandomThreads3.InitControl(432, 200, 120, 200, m_ZoomRatio);
 
-	m_ComboAffinity.InitControl(176, 240, 120, 32, m_ZoomRatio);
+	m_ComboAffinity.InitControl(176, 240, 120, 100, m_ZoomRatio);
 
 	m_ButtonSetDefault.InitControl(120, 280, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
 	m_ButtonSetDefault.SetHandCursor();
