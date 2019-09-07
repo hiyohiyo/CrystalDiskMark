@@ -451,7 +451,7 @@ void CMainDialog::UpdateControlColor()
 	m_MeterText = GetControlColor(L"MeterText", 0);
 	m_ComboText = GetControlColor(L"ComboText", 0);
 	m_ComboBg   = GetControlColor(L"ComboBg", 255);
-	m_ComboSelected = GetControlColor(L"ComboSelected", 128);
+	m_ComboSelected = GetControlColor(L"ComboSelected", 192);
 	m_ButtonText= GetControlColor(L"ButtonText", 0);
 	m_EditText  = GetControlColor(L"EditText", 0);
 	m_EditBg    = GetControlColor(L"EditBg", 255);

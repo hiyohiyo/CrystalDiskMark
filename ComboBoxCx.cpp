@@ -69,7 +69,7 @@ CComboBoxCx::CComboBoxCx()
 	m_Margin.right = 0;
 
 	m_BgColor = RGB(255, 255, 255);
-	m_SelectedColor = RGB(128, 128, 128);
+	m_SelectedColor = RGB(192, 192, 192);
 }
 
 CComboBoxCx::~CComboBoxCx()

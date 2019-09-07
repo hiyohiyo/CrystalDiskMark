@@ -52,11 +52,33 @@ void CFontComboBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     logfont.lfHeight = m_FontHeight;
     logfont.lfWidth = 0;
     logfont.lfWeight = 400;
+	logfont.lfQuality = 6;
 	logfont.lfCharSet = DEFAULT_CHARSET;
     pDC->SelectObject(&font);
     _tcscpy_s(logfont.lfFaceName, 32, (LPCTSTR)cstr);
     font.CreateFontIndirect(&logfont);
     pDC->SelectObject(&font);
+
+
+	CBrush Brush;
+	CBrush* pOldBrush;
+
+	if (lpDrawItemStruct->itemState & ODS_SELECTED) {
+		Brush.CreateSolidBrush(m_SelectedColor);
+		pOldBrush = pDC->SelectObject(&Brush);
+		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
+	}
+	else {
+		Brush.CreateSolidBrush(m_BgColor);
+		pOldBrush = pDC->SelectObject(&Brush);
+		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
+	}
+	pDC->SelectObject(pOldBrush);
+	Brush.DeleteObject();
+
+	pDC->SetBkMode(TRANSPARENT);
+
+	lpDrawItemStruct->rcItem.left = (LONG)(4 * m_ZoomRatio);
 
     pDC->DrawText(cstr, &lpDrawItemStruct->rcItem, DT_SINGLELINE | DT_VCENTER);
 }

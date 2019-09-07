@@ -33,6 +33,8 @@ CFontSelection::CFontSelection(CWnd* pParent)
 	m_CxDefaultTheme = ((CMainDialog*)pParent)->m_DefaultTheme;
 
 	m_FontScale = ((CDiskMarkDlg*)pParent)->m_FontScale;
+
+	m_BackgroundName = L"";
 }
 
 CFontSelection::~CFontSelection()
@@ -129,6 +131,8 @@ BOOL CFontSelection::OnInitDialog()
 
 	UpdateDialogSize();
 
+	m_FontComboBox.SetBgColor(RGB(255, 255, 255), RGB(128, 128, 255));
+
 	return TRUE;
 }
 
@@ -157,11 +161,11 @@ void CFontSelection::UpdateDialogSize()
 	m_LabelFontType.SetFontEx(m_FontFace, 20, m_ZoomRatio);
 
 	m_FontComboBox.SetFontHeight(28, m_ZoomRatio);
-	m_FontComboBox.SetFontEx(m_FontFace, 28, m_ZoomRatio);
-	m_FontComboBox.SetItemHeight(-1, (UINT)(40 * m_ZoomRatio));
+	m_FontComboBox.SetFontEx(m_FontFace, 28, m_ZoomRatio, textAlpha, textColor, FW_NORMAL, FT_GDI);
+	m_FontComboBox.SetItemHeight(-1, (UINT)(44 * m_ZoomRatio));
 	for (int i = 0; i < m_FontComboBox.GetCount(); i++)
 	{
-		m_FontComboBox.SetItemHeight(i, (UINT)(40 * m_ZoomRatio));
+		m_FontComboBox.SetItemHeight(i, (UINT)(44 * m_ZoomRatio));
 	}
 
 	m_FontScaleComboBox.SetFontEx(m_FontFace, 20, m_ZoomRatio, textAlpha, textColor, FW_NORMAL, FT_GDI);
