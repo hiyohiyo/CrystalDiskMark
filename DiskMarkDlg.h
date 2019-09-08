@@ -71,7 +71,7 @@ public:
 	double m_RandomMix4KBScore3;
 #endif
 
-	void SetMeter(CStaticCx* control, double score, int blockSize);
+	void SetMeter(CStaticCx* control, double score, int blockSize, int unit);
 	void ChangeLang(CString LangName);
 	void UpdateDialogSize();
 	void ChangeButtonStatus(BOOL status);
@@ -111,6 +111,8 @@ public:
 
 	DWORD m_TestData;
 	BOOL m_AdminMode;
+	DWORD m_Profile;
+
 
 	// Message //
 	CString m_MesDiskCapacityError;
@@ -132,6 +134,9 @@ protected:
 	void OnRandom4KB2();
 	void OnRandom4KB3();
 	void Stop();
+	void OnSequentialReal();
+	void OnRandomReal();
+
 	void SelectDrive();
 
 	CString m_TitleTestDrive;
@@ -257,6 +262,8 @@ public:
 	afx_msg void OnCrystalDewWorld();
 	afx_msg void OnModeDefault();
 	afx_msg void OnModeAll0x00();
+	afx_msg void OnProfileReal();
+	afx_msg void OnProfileIdeal();
 	afx_msg void OnResultSave();
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);

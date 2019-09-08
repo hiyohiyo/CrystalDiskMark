@@ -23,6 +23,8 @@ CSettingsDlg::CSettingsDlg(CWnd* pParent /*=NULL*/)
 	m_ZoomType = ((CMainDialog*)pParent)->GetZoomType();
 	m_FontFace = ((CMainDialog*)pParent)->m_FontFace;
 
+	m_Profile = ((CDiskMarkDlg*)pParent)->m_Profile;
+
 	_tcscpy_s(m_Ini, MAX_PATH, ((CDiskMarkApp*) AfxGetApp())->m_Ini);
 }
 
@@ -164,7 +166,7 @@ BOOL CSettingsDlg::OnInitDialog()
 	m_LabelBlockSize.SetWindowTextW(i18n(L"Dialog", L"BLOCK_SIZE"));
 	m_LabelQueues.SetWindowTextW(i18n(L"Dialog", L"QUEUES"));
 	m_LabelThreads.SetWindowTextW(i18n(L"Dialog", L"THREADS"));
-	m_LabelAffinity.SetWindowTextW(i18n(L"Dialog", L"THREAD_AFFINITY"));
+	m_LabelAffinity.SetWindowTextW(i18n(L"Dialog", L"DEFAULT_AFFINITY"));
 
 	m_SequentialLabel1.SetWindowTextW(i18n(L"Dialog", L"SEQUENTIAL_1"));
 	m_SequentialLabel2.SetWindowTextW(i18n(L"Dialog", L"SEQUENTIAL_2"));
@@ -205,12 +207,6 @@ void CSettingsDlg::InitComboBox()
 	m_ComboRandomSize3.AddString(L"4KiB");
 	m_ComboRandomSize3.SetCurSel(0);
 
-//	m_ComboSequentialSize1.EnableWindow(FALSE);
-	m_ComboSequentialSize2.EnableWindow(FALSE);
-	m_ComboRandomSize1.EnableWindow(FALSE);
-	m_ComboRandomSize2.EnableWindow(FALSE);
-	m_ComboRandomSize3.EnableWindow(FALSE);
-
 	// Queues
 	m_ComboSequentialQueues1.ResetContent();
 	m_ComboSequentialQueues2.ResetContent();
@@ -232,8 +228,6 @@ void CSettingsDlg::InitComboBox()
 	m_ComboSequentialQueues1.AddString(L"1");
 	m_ComboSequentialQueues1.SetCurSel(0);
 
-	m_ComboSequentialQueues1.EnableWindow(FALSE);
-
 	// Threads
 	m_ComboSequentialThreads1.ResetContent();
 	m_ComboSequentialThreads2.ResetContent();
@@ -253,8 +247,8 @@ void CSettingsDlg::InitComboBox()
 	}
 
 	m_ComboAffinity.ResetContent();
-	m_ComboAffinity.AddString(L"OFF (-n)");
-	m_ComboAffinity.AddString(L"ON (-ag)");
+	m_ComboAffinity.AddString(i18n(L"Dialog", L"DISABLED") + L" (-n)");
+	m_ComboAffinity.AddString(i18n(L"Dialog", L"ENABLED") + L" (-ag)");
 
 	if (m_Affinity == 1)
 	{
@@ -263,6 +257,33 @@ void CSettingsDlg::InitComboBox()
 	else
 	{
 		m_ComboAffinity.SetCurSel(0);
+	}
+
+	if (m_Profile == 0/*PROFILE_IDEAL*/)
+	{
+		m_ComboSequentialSize2.EnableWindow(FALSE);
+		m_ComboRandomSize1.EnableWindow(FALSE);
+		m_ComboRandomSize2.EnableWindow(FALSE);
+		m_ComboRandomSize3.EnableWindow(FALSE);
+		m_ComboSequentialQueues1.EnableWindow(FALSE);
+	}
+	else
+	{
+		m_ComboSequentialSize1.EnableWindow(FALSE);
+		m_ComboSequentialSize2.EnableWindow(FALSE);
+		m_ComboRandomSize1.EnableWindow(FALSE);
+		m_ComboRandomSize2.EnableWindow(FALSE);
+		m_ComboRandomSize3.EnableWindow(FALSE);
+		m_ComboSequentialQueues1.EnableWindow(FALSE);
+		m_ComboSequentialQueues2.EnableWindow(FALSE);
+		m_ComboRandomQueues1.EnableWindow(FALSE);
+		m_ComboRandomQueues2.EnableWindow(FALSE);
+		m_ComboRandomQueues3.EnableWindow(FALSE);
+		m_ComboSequentialThreads1.EnableWindow(FALSE);
+		m_ComboSequentialThreads2.EnableWindow(FALSE);
+		m_ComboRandomThreads1.EnableWindow(FALSE);
+		m_ComboRandomThreads2.EnableWindow(FALSE);
+		m_ComboRandomThreads3.EnableWindow(FALSE);
 	}
 }
 
@@ -368,7 +389,7 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboRandomThreads2.InitControl(432, 160, 120, 200, m_ZoomRatio);
 	m_ComboRandomThreads3.InitControl(432, 200, 120, 200, m_ZoomRatio);
 
-	m_ComboAffinity.InitControl(176, 240, 120, 100, m_ZoomRatio);
+	m_ComboAffinity.InitControl(176, 240, 248, 100, m_ZoomRatio);
 
 	m_ButtonSetDefault.InitControl(120, 280, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
 	m_ButtonSetDefault.SetHandCursor();

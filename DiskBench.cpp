@@ -12,6 +12,7 @@
 #include "DiskMarkDlg.h"
 #include "DiskBench.h"
 #include "GetFileVersion.h"
+#include "GetOsInfo.h"
 
 #include <winioctl.h>
 #include <mmsystem.h>
@@ -39,17 +40,20 @@ static UINT Exit(LPVOID dlg);
 static void CALLBACK TimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
 static volatile BOOL WaitFlag;
 
-#define DISK_SPD_EXE_32    L"CdmResource\\diskspd\\diskspd32.exe"
-#define DISK_SPD_EXE_64    L"CdmResource\\diskspd\\diskspd64.exe"
-#define DISK_SPD_EXE_ARM32 L"CdmResource\\diskspd\\diskspdA32.exe"
-#define DISK_SPD_EXE_ARM64 L"CdmResource\\diskspd\\diskspdA64.exe"
+#define DISK_SPD_EXE_32           L"CdmResource\\diskspd\\diskspd32.exe"
+#define DISK_SPD_EXE_64           L"CdmResource\\diskspd\\diskspd64.exe"
+#define DISK_SPD_EXE_32_LEGACY    L"CdmResource\\diskspd\\diskspd32L.exe"
+#define DISK_SPD_EXE_64_LEGACY    L"CdmResource\\diskspd\\diskspd64L.exe"
+#define DISK_SPD_EXE_ARM32        L"CdmResource\\diskspd\\diskspdA32.exe"
+#define DISK_SPD_EXE_ARM64        L"CdmResource\\diskspd\\diskspdA64.exe"
+
+PROCESS_INFORMATION pi;
 
 int ExecAndWait(TCHAR *pszCmd, BOOL bNoWindow)
 {
 	DWORD Code;
 	BOOL bSuccess;
 	STARTUPINFO si;
-	PROCESS_INFORMATION pi;
 
 	memset(&si, 0, sizeof(STARTUPINFO));
 	si.cb = sizeof(STARTUPINFO);
@@ -80,6 +84,8 @@ int ExecAndWait(TCHAR *pszCmd, BOOL bNoWindow)
 	CloseHandle(pi.hThread);
 	CloseHandle(pi.hProcess);
 
+	pi.hProcess = NULL;
+
 	return Code;
 }
 
@@ -104,13 +110,13 @@ VOID Interval(LPVOID dlg)
 
 	for (int i = 0; i < intervalTime; i++)
 	{
-		title.Format(L"Interval Time %d/%d sec", i, intervalTime);
-		::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_USER_UPDATE_MESSAGE, (WPARAM) &title, 0);
-		Sleep(1000);
 		if (!((CDiskMarkDlg*) dlg)->m_DiskBenchStatus)
 		{
 			return;
 		}
+		title.Format(L"Interval Time %d/%d sec", i, intervalTime);
+		::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_USER_UPDATE_MESSAGE, (WPARAM) &title, 0);
+		Sleep(1000);
 	}
 }
 
@@ -148,6 +154,29 @@ UINT ExecDiskBenchAll(LPVOID dlg)
 		DiskSpd(dlg, TEST_RANDOM_MIX_4KB2);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_RANDOM_MIX_4KB3);
+#endif
+	}
+
+	return Exit(dlg);
+}
+
+UINT ExecDiskBenchAllReal(LPVOID dlg)
+{
+	if (Init(dlg))
+	{
+		DiskSpd(dlg, TEST_SEQUENTIAL_READ_REAL);
+		Interval(dlg);
+		DiskSpd(dlg, TEST_RANDOM_READ_4KB_REAL);
+		Interval(dlg);
+		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE_REAL);
+		Interval(dlg);
+		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB_REAL);
+
+#ifdef PRO_MODE
+		Interval(dlg);
+		DiskSpd(dlg, TEST_SEQUENTIAL_MIX_REAL);
+		Interval(dlg);
+		DiskSpd(dlg, TEST_RANDOM_MIX_4KB_REAL);
 #endif
 	}
 
@@ -229,6 +258,37 @@ UINT ExecDiskBenchRandom4KB3(LPVOID dlg)
 	return Exit(dlg);
 }
 
+UINT ExecDiskBenchSequentialReal(LPVOID dlg)
+{
+
+	if (Init(dlg))
+	{
+		DiskSpd(dlg, TEST_SEQUENTIAL_READ_REAL);
+		Interval(dlg);
+		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE_REAL);
+#ifdef PRO_MODE
+		Interval(dlg);
+		DiskSpd(dlg, TEST_SEQUENTIAL_MIX_REAL);
+#endif
+	}
+	return Exit(dlg);
+}
+
+UINT ExecDiskBenchRandom4KBReal(LPVOID dlg)
+{
+	if (Init(dlg))
+	{
+		DiskSpd(dlg, TEST_RANDOM_READ_4KB_REAL);
+		Interval(dlg);
+		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB_REAL);
+#ifdef PRO_MODE
+		Interval(dlg);
+		DiskSpd(dlg, TEST_RANDOM_MIX_4KB_REAL);
+#endif
+	}
+	return Exit(dlg);
+}
+
 BOOL Init(void* dlg)
 {
 	BOOL FlagArc;
@@ -249,14 +309,30 @@ BOOL Init(void* dlg)
 		*ptrEnd = '\0';
 	}
 
+	pi.hProcess = NULL;
+
 #ifdef _M_ARM
 	DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_ARM32);
 #elif _M_ARM64
 	DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_ARM64);
 #elif _M_X64
-	DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_64);
+	if(Is7orLater())
+	{
+		DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_64);
+	}
+	else
+	{
+		DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_64_LEGACY);
+	}
 #else
-	DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_32);
+	if (Is7orLater())
+	{
+		DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_32);
+	}
+	else
+	{
+		DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_32_LEGACY);
+	}
 #endif
 
 	if (! IsFileExist(DiskSpdExe))
@@ -499,6 +575,12 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 #endif
 			bufOption += L" -Z4K";
 			break;
+		case TEST_SEQUENTIAL_WRITE_REAL:
+#ifdef PRO_MODE
+		case TEST_SEQUENTIAL_MIX_REAL:
+#endif
+			bufOption += L" -Z1M";
+			break;
 		}
 	}
 
@@ -557,6 +639,28 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-b128k -d%d -o%d -t%d -W0 -S -w30", duration, ((CDiskMarkDlg*)dlg)->m_SequentialMultiQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialMultiThreads2);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialMixScore2);
+		break;
+#endif
+	case TEST_SEQUENTIAL_READ_REAL:
+		title.Format(L"Sequential Read");
+		qt.Format(L"[T=1]");
+		option.Format(L"-b1M -d%d -o1 -t1 -W0 -S -w0", duration);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialReadScore1);
+		break;
+	case TEST_SEQUENTIAL_WRITE_REAL:
+		title.Format(L"Sequential Write");
+		qt.Format(L"[T=1]");
+		option.Format(L"-b1M -d%d -o1 -t1 -W0 -S -w100", duration);
+		option += bufOption;
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialWriteScore1);
+		break;
+#ifdef PRO_MODE
+	case TEST_SEQUENTIAL_MIX_REAL:
+		title.Format(L"Sequential Mix");
+		qt.Format(L"[T=1]");
+		option.Format(L"-b1M -d%d -o1 -t1 -W0 -S -w30", duration);
+		option += bufOption;
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialMixScore1);
 		break;
 #endif
 	case TEST_RANDOM_READ_4KB1:
@@ -624,6 +728,27 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMix4KBScore3);
 		break;
 #endif
+	case TEST_RANDOM_READ_4KB_REAL:
+		title.Format(L"Random Read 4KiB");
+		qt.Format(L"[Q=1/T=1]");
+		option.Format(L"-b4K -d%d -o1 -t1 -W0 -r -S -w0", duration);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomRead4KBScore1);
+		break;
+	case TEST_RANDOM_WRITE_4KB_REAL:
+		title.Format(L"Random Write 4KiB");
+		qt.Format(L"[Q=1/T=1]");
+		option.Format(L"-b4K -d%d -o1 -t1 -W0 -r -S -w100", duration);
+		option += bufOption;
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomWrite4KBScore1);
+		break;
+#ifdef PRO_MODE
+	case TEST_RANDOM_MIX_4KB_REAL:
+		title.Format(L"Random Mix 4KiB");
+		qt.Format(L"[Q=1/T=1]");
+		option.Format(L"-b4K -d%d -o1 -t1 -W0 -r -S -w30", duration);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMix4KBScore1);
+		break;
+#endif
 	}
 
 	if (Affinity == 0)
@@ -634,7 +759,6 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	else
 	{
 	//	AfxMessageBox(L"Affinity ON/-ag");
-
 		option += L" -ag";
 	}
 

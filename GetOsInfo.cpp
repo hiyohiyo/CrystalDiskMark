@@ -17,6 +17,33 @@ typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE hProcess,PBOOL Wow64Process);
 _GetProductInfo pGetProductInfo = NULL;
 _GetNativeSystemInfo pGetNativeSystemInfo = NULL;
 
+BOOL Is7orLater()
+{
+	OSVERSIONINFOEX osvi;
+	BOOL bosVersionInfoEx;
+
+	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	if (!(bosVersionInfoEx = GetVersionEx((OSVERSIONINFO*)& osvi)))
+	{
+		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+		GetVersionEx((OSVERSIONINFO*)& osvi);
+	}
+
+	if (osvi.dwMajorVersion <= 5)
+	{
+		return FALSE;
+	}
+	else if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 0)
+	{
+		return FALSE;
+	}
+	else
+	{
+		return TRUE;
+	}
+}
+
 BOOL IsWow64()
 {
 	BOOL bIsWow64 = FALSE;

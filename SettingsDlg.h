@@ -83,6 +83,7 @@ protected:
 	int m_RandomQueues3;
 	int m_RandomThreads3;
 	int m_Affinity;
+	DWORD m_Profile;
 
 	DECLARE_MESSAGE_MAP()
 };

@@ -287,7 +287,7 @@ BEGIN
         MENUITEM "Save",                        ID_RESULT_SAVE
         MENUITEM "Exit",                        ID_FILE_EXIT
     END
-    POPUP "Settings"
+    POPUP "&Settings"
     BEGIN
         POPUP "Test Mode"
         BEGIN
@@ -307,8 +307,13 @@ BEGIN
             MENUITEM "300 sec",                     ID_INTERVAL_TIME_300
             MENUITEM "600 sec",                     ID_INTERVAL_TIME_600
         END
-        MENUITEM "Queues && Threads",           ID_SETTINGS_QUEUESTHREADS
+        MENUITEM "Queues && Threads",				ID_SETTINGS_QUEUESTHREADS
     END
+	POPUP "&Profile"
+	BEGIN
+		MENUITEM "Ideal (Server)",					ID_PROFILE_IDEAL
+		MENUITEM "Real (Client PC/Workstation)",	ID_PROFILE_REAL
+	END
     POPUP "&Theme"
     BEGIN
         POPUP "Zoom"

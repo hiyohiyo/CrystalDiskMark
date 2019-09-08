@@ -14,10 +14,10 @@
 #define LANGUAGE_DIR				_T("CdmResource\\language\\")
 #define DIALOG_DIR					_T("CdmResource\\dialog\\")
 
-#define MENU_THEME_INDEX			2
-#define MENU_LANG_INDEX				4
+#define MENU_THEME_INDEX			3
+#define MENU_LANG_INDEX				5
 
-#define DEFAULT_THEME				THEME_DIR _T("default")
+#define DEFAULT_THEME				THEME_DIR _T("Default")
 #define DEFAULT_LANGUAGE			LANGUAGE_DIR _T("English.lang")
 
 class CDiskMarkApp : public CWinApp
