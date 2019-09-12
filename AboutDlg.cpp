@@ -123,7 +123,7 @@ void CAboutDlg::UpdateDialogSize()
 	m_CtrlProjectSite5.SetHandCursor();
 #endif
 
-	m_CtrlCrystalDewWorld.InitControl(12, 12, 128, 128, m_ZoomRatio, IP(L"logo"), 1, 0, CButtonCx::OwnerDrawImage);
+	m_CtrlCrystalDewWorld.InitControl(12, 12, 128, 128, m_ZoomRatio, IP(L"Logo"), 1, 0, CButtonCx::OwnerDrawImage);
 	m_CtrlCrystalDewWorld.SetHandCursor();
 
 	m_CtrlVersion.SetFontEx(m_FontFace, 24, m_ZoomRatio, 255, RGB(0, 0, 0), FW_BOLD, m_FontType);
