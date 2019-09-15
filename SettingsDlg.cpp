@@ -277,7 +277,7 @@ void CSettingsDlg::InitComboBox()
 	m_ComboRandomSize2.EnableWindow(FALSE);
 	m_ComboRandomSize3.EnableWindow(FALSE);
 
-	if (m_Profile == 0/*PROFILE_PEAK*/)
+	if (m_Profile == 0/*PROFILE_PEAK*/ || m_Profile == 2/*PROFILE_PEAK_MIX*/)
 	{
 
 	}

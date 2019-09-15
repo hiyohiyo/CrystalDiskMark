@@ -45,6 +45,7 @@
 #define IDC_READ_UNIT                   1029
 #define IDC_WRITE_UNIT                  1030
 #define IDC_MIX_UNIT                    1031
+#define IDC_COMBO_MIX                   1032
 #define IDC_CRYSTAL_DEW_WORLD           1100
 #define IDC_PROJECT_SITE_1              1101
 #define IDC_PROJECT_SITE_2              1102
@@ -131,9 +132,10 @@
 #define ID_INTERVAL_TIME_180            33827
 #define ID_INTERVAL_TIME_300            33828
 #define ID_INTERVAL_TIME_600            33829
-#define ID_PROFILE_REAL					33830
-#define ID_PROFILE_PEAK					33831
-
+#define ID_PROFILE_PEAK					33830
+#define ID_PROFILE_REAL					33831
+#define ID_PROFILE_PEAK_MIX				33832
+#define ID_PROFILE_REAL_MIX				33833
 
 // Next default values for new objects
 // 

@@ -63,7 +63,7 @@ public:
 	double m_RandomRead4KBScore3;
 	double m_RandomWrite4KBScore3;
 
-#ifdef PRO_MODE
+#ifdef MIX_MODE
 	double m_SequentialMixScore1;
 	double m_SequentialMixScore2;
 	double m_RandomMix4KBScore1;
@@ -92,6 +92,7 @@ public:
 	int m_IndexTestCount;
 	int m_IndexTestSize;
 	int m_IndexTestDrive;
+	int m_IndexTestMix;
 
 	int m_SequentialSize1;
 	int m_SequentialQueues1;
@@ -110,9 +111,11 @@ public:
 	int m_Affinity;
 	int m_FontScale;
 
-	DWORD m_TestData;
+	int m_TestData;
 	BOOL m_AdminMode;
-	DWORD m_Profile;
+	int m_Profile;
+	BOOL m_MixMode;
+	int m_MixRatio;
 
 
 	// Message //
@@ -177,7 +180,7 @@ protected:
 
 	void SetLayeredWindow(HWND hWnd, BYTE alpha);
 
-#ifdef PRO_MODE
+#ifdef MIX_MODE
 	CStaticCx m_SequentialMix1;
 	CStaticCx m_SequentialMix2;
 	CStaticCx m_RandomMix1;
@@ -211,6 +214,7 @@ protected:
 	CComboBoxCx m_ComboCount;
 	CComboBoxCx m_ComboSize;
 	CComboBoxCx m_ComboDrive;
+	CComboBoxCx m_ComboMix;
 
 	CStaticCx m_WriteUnit;
 	CStaticCx m_ReadUnit;
@@ -265,11 +269,16 @@ public:
 	afx_msg void OnModeAll0x00();
 	afx_msg void OnProfileReal();
 	afx_msg void OnProfilePeak();
+	afx_msg void OnProfileRealMix();
+	afx_msg void OnProfilePeakMix();
 	afx_msg void OnResultSave();
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnCbnSelchangeComboDrive();
 	afx_msg void OnCbnSelchangeComboUnit();
+#ifdef MIX_MODE
+	afx_msg void OnCbnSelchangeComboMix();
+#endif
 	afx_msg void MoveForcus();
 	afx_msg void UpdateUnitLabel();
 };
