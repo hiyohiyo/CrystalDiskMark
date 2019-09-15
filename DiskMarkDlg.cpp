@@ -164,7 +164,7 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	ON_COMMAND(ID_MODE_DEFAULT, &CDiskMarkDlg::OnModeDefault)
 	ON_COMMAND(ID_MODE_ALL0X00, &CDiskMarkDlg::OnModeAll0x00)
 	ON_COMMAND(ID_PROFILE_REAL, &CDiskMarkDlg::OnProfileReal)
-	ON_COMMAND(ID_PROFILE_IDEAL, &CDiskMarkDlg::OnProfileIdeal)
+	ON_COMMAND(ID_PROFILE_PEAK, &CDiskMarkDlg::OnProfilePeak)
 
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_RESULT_SAVE, &CDiskMarkDlg::OnResultSave)
@@ -256,10 +256,10 @@ BOOL CDiskMarkDlg::OnInitDialog()
 		m_TestData = TEST_DATA_RANDOM;
 	}
 
-	m_Profile = GetPrivateProfileInt(_T("Setting"), _T("Profile"), PROFILE_IDEAL, m_Ini);
+	m_Profile = GetPrivateProfileInt(_T("Setting"), _T("Profile"), PROFILE_PEAK, m_Ini);
 	if (m_Profile != PROFILE_REAL)
 	{
-		m_Profile = PROFILE_IDEAL;
+		m_Profile = PROFILE_PEAK;
 	}
 
 	m_FontScale = GetPrivateProfileInt(_T("Setting"), _T("FontScale"), 100, m_Ini);
@@ -825,70 +825,76 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 {
 	CString cstr;
 
-	m_SequentialMultiSize1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiSize1"), 8, m_Ini);
-	 if (m_SequentialMultiSize1 <= 0 || m_SequentialMultiSize1 > 8)
+	m_SequentialSize1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialSize1"), 1, m_Ini);
+	 if (m_SequentialSize1 <= 0 || m_SequentialSize1 > 8)
 	{
-		m_SequentialMultiSize1 = 8;
+		m_SequentialSize1 = 1;
 	}
 
-	m_SequentialMultiQueues1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiQueues1"), 1, m_Ini);
-	// if (m_SequentialMultiQueues1 <= 0 || m_SequentialMultiQueues1 > MAX_QUEUES)
+	m_SequentialQueues1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialQueues1"), 8, m_Ini);
+	 if (m_SequentialQueues1 <= 0 || m_SequentialQueues1 > MAX_QUEUES)
 	{
-		m_SequentialMultiQueues1 = 1;
+		m_SequentialQueues1 = 8;
 	}
 
-	m_SequentialMultiThreads1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiThreads1"), 1, m_Ini);
-	if (m_SequentialMultiThreads1 <= 0 || m_SequentialMultiThreads1 > MAX_THREADS)
+	m_SequentialThreads1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialThreads1"), 1, m_Ini);
+	if (m_SequentialThreads1 <= 0 || m_SequentialThreads1 > MAX_THREADS)
 	{
-		m_SequentialMultiThreads1 = 1;
+		m_SequentialThreads1 = 1;
 	}
 
-	m_SequentialMultiQueues2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiQueues2"), 32, m_Ini);
-	if (m_SequentialMultiQueues2 <= 0 || m_SequentialMultiQueues2 > MAX_QUEUES)
+	m_SequentialSize2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialSize2"), 1, m_Ini);
+	if (m_SequentialSize2 <= 0 || m_SequentialSize2 > 8)
 	{
-		m_SequentialMultiQueues2 = 32;
+		m_SequentialSize2 = 1;
 	}
 
-	m_SequentialMultiThreads2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialMultiThreads2"), 1, m_Ini);
-	if (m_SequentialMultiThreads2 <= 0 || m_SequentialMultiThreads2 > MAX_THREADS)
+	m_SequentialQueues2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialQueues2"), 1, m_Ini);
+	if (m_SequentialQueues2 <= 0 || m_SequentialQueues2 > MAX_QUEUES)
 	{
-		m_SequentialMultiThreads2 = 1;
+		m_SequentialQueues2 = 1;
+	}
+
+	m_SequentialThreads2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialThreads2"), 1, m_Ini);
+	if (m_SequentialThreads2 <= 0 || m_SequentialThreads2 > MAX_THREADS)
+	{
+		m_SequentialThreads2 = 1;
 	}
 	
-	m_RandomMultiQueues1 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiQueues1"), 32, m_Ini);
-	if (m_RandomMultiQueues1 <= 0 || m_RandomMultiQueues1 > MAX_QUEUES)
+	m_RandomQueues1 = GetPrivateProfileInt(_T("Setting"), _T("RandomQueues1"), 32, m_Ini);
+	if (m_RandomQueues1 <= 0 || m_RandomQueues1 > MAX_QUEUES)
 	{
-		m_RandomMultiQueues1 = 32;
+		m_RandomQueues1 = 32;
 	}
 
-	m_RandomMultiThreads1 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiThreads1"), 16, m_Ini);
-	if (m_RandomMultiThreads1 <= 0 || m_RandomMultiThreads1 > MAX_THREADS)
+	m_RandomThreads1 = GetPrivateProfileInt(_T("Setting"), _T("RandomThreads1"), 16, m_Ini);
+	if (m_RandomThreads1 <= 0 || m_RandomThreads1 > MAX_THREADS)
 	{
-		m_RandomMultiThreads1 = 16;
+		m_RandomThreads1 = 16;
 	}
 
-	m_RandomMultiQueues2 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiQueues2"), 32, m_Ini);
-	if (m_RandomMultiQueues2 <= 0 || m_RandomMultiQueues2 > MAX_QUEUES)
+	m_RandomQueues2 = GetPrivateProfileInt(_T("Setting"), _T("RandomQueues2"), 32, m_Ini);
+	if (m_RandomQueues2 <= 0 || m_RandomQueues2 > MAX_QUEUES)
 	{
-		m_RandomMultiQueues2 = 32;
+		m_RandomQueues2 = 32;
 	}
 
-	m_RandomMultiThreads2 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiThreads2"), 1, m_Ini);
-	if (m_RandomMultiThreads2 <= 0 || m_RandomMultiThreads2 > MAX_THREADS)
+	m_RandomThreads2 = GetPrivateProfileInt(_T("Setting"), _T("RandomThreads2"), 1, m_Ini);
+	if (m_RandomThreads2 <= 0 || m_RandomThreads2 > MAX_THREADS)
 	{
-		m_RandomMultiThreads2 = 1;
+		m_RandomThreads2 = 1;
 	}
 
-	m_RandomMultiQueues3 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiQueues3"), 1, m_Ini);
-	if (m_RandomMultiQueues3 <= 0 || m_RandomMultiQueues3 > MAX_QUEUES)
+	m_RandomQueues3 = GetPrivateProfileInt(_T("Setting"), _T("RandomQueues3"), 1, m_Ini);
+	if (m_RandomQueues3 <= 0 || m_RandomQueues3 > MAX_QUEUES)
 	{
-		m_RandomMultiQueues3 = 1;
+		m_RandomQueues3 = 1;
 	}
 
-	m_RandomMultiThreads3 = GetPrivateProfileInt(_T("Setting"), _T("RandomMultiThreads3"), 1, m_Ini);
-	if (m_RandomMultiThreads3 <= 0 || m_RandomMultiThreads3 > MAX_THREADS)
+	m_RandomThreads3 = GetPrivateProfileInt(_T("Setting"), _T("RandomThreads3"), 1, m_Ini);
+	if (m_RandomThreads3 <= 0 || m_RandomThreads3 > MAX_THREADS)
 	{
-		m_RandomMultiThreads3 = 1;
+		m_RandomThreads3 = 1;
 	}
 
 	m_Affinity = GetPrivateProfileInt(_T("Setting"), _T("Affinity"), 0, m_Ini);
@@ -1122,8 +1128,8 @@ void CDiskMarkDlg::UpdateScore()
 	{
 		SetMeter(&m_SequentialRead1, m_SequentialReadScore1, -1, m_IndexTestUnit);
 		SetMeter(&m_SequentialWrite1, m_SequentialWriteScore1, -1, m_IndexTestUnit);
-		SetMeter(&m_SequentialRead2, m_SequentialReadScore2, 128 * 1024, m_IndexTestUnit);
-		SetMeter(&m_SequentialWrite2, m_SequentialWriteScore2, 128 * 1024, m_IndexTestUnit);
+		SetMeter(&m_SequentialRead2, m_SequentialReadScore2, -1, m_IndexTestUnit);
+		SetMeter(&m_SequentialWrite2, m_SequentialWriteScore2, -1, m_IndexTestUnit);
 		SetMeter(&m_RandomRead1, m_RandomRead4KBScore1, 4096, m_IndexTestUnit);
 		SetMeter(&m_RandomWrite1, m_RandomWrite4KBScore1, 4096, m_IndexTestUnit);
 		SetMeter(&m_RandomRead2, m_RandomRead4KBScore2, 4096, m_IndexTestUnit);
@@ -1133,7 +1139,7 @@ void CDiskMarkDlg::UpdateScore()
 
 #ifdef PRO_MODE
 		SetMeter(&m_SequentialMix1, m_SequentialMixScore1, -1, m_IndexTestUnit);
-		SetMeter(&m_SequentialMix2, m_SequentialMixScore2, 128 * 1024, m_IndexTestUnit);
+		SetMeter(&m_SequentialMix2, m_SequentialMixScore2, -1, m_IndexTestUnit);
 		SetMeter(&m_RandomMix1, m_RandomMix4KBScore1, 4096, m_IndexTestUnit);
 		SetMeter(&m_RandomMix2, m_RandomMix4KBScore2, 4096, m_IndexTestUnit);
 		SetMeter(&m_RandomMix3, m_RandomMix4KBScore3, 4096, m_IndexTestUnit);
@@ -1491,10 +1497,8 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 
 		if (m_Profile == PROFILE_REAL)
 		{
-			title.Format(L"SEQ%dM\r\nT%d", 1, 1);
+			title.Format(L"SEQ%dM\r\nQ%dT%d", 1, 1, 1);
 			m_ButtonSequential1.SetWindowTextW(title);
-			title.Format(L"SEQ%dM\r\n(GB/s)", 1);
-			m_ButtonSequential2.SetWindowTextW(title);
 			title.Format(L"RND4K\r\nQ%dT%d", 1, 1);
 			m_ButtonRandom1.SetWindowTextW(title);
 			title.Format(L"RND4K\r\n(μs)");
@@ -1502,43 +1506,39 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 			title.Format(L"RND4K\r\n(IOPS)");
 			m_ButtonRandom3.SetWindowTextW(title);
 
-			toolTip.Format(L"Sequential 1MiB, Threads = 1 (MB/s)");
+			toolTip.Format(L"Sequential 1MiB, Queues=1, Threads = 1 (MB/s)");
 			m_ButtonSequential1.SetToolTipText(toolTip);
-			toolTip.Format(L"Sequential 1MiB, Threads = 1 (GB/s)");
-			m_ButtonSequential2.SetToolTipText(toolTip);
 			toolTip.Format(L"Random 4KiB, Queues=1, Threads=1 (MB/s)");
 			m_ButtonRandom1.SetToolTipText(toolTip);
 			toolTip.Format(L"Random 4KiB, Queues=1, Threads=1 (μs)");
 			m_ButtonRandom2.SetToolTipText(toolTip);
 			toolTip.Format(L"Random 4KiB, Queues=1, Threads=1 (IOPS)");
 			m_ButtonRandom3.SetToolTipText(toolTip);
-
 		}
 		else
 		{
-			title.Format(L"SEQ%dM\r\nT%d", m_SequentialMultiSize1, m_SequentialMultiThreads1);
+			title.Format(L"SEQ%dM\r\nQ%dT%d", m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1);
 			m_ButtonSequential1.SetWindowTextW(title);
-			title.Format(L"SEQ128K\r\nQ%dT%d", m_SequentialMultiQueues2, m_SequentialMultiThreads2);
+			title.Format(L"SEQ%dM\r\nQ%dT%d", m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2);
 			m_ButtonSequential2.SetWindowTextW(title);
-			title.Format(L"RND4K\r\nQ%dT%d", m_RandomMultiQueues1, m_RandomMultiThreads1);
+			title.Format(L"RND4K\r\nQ%dT%d", m_RandomQueues1, m_RandomThreads1);
 			m_ButtonRandom1.SetWindowTextW(title);
-			title.Format(L"RND4K\r\nQ%dT%d", m_RandomMultiQueues2, m_RandomMultiThreads2);
+			title.Format(L"RND4K\r\nQ%dT%d", m_RandomQueues2, m_RandomThreads2);
 			m_ButtonRandom2.SetWindowTextW(title);
-			title.Format(L"RND4K\r\nQ%dT%d", m_RandomMultiQueues3, m_RandomMultiThreads3);
+			title.Format(L"RND4K\r\nQ%dT%d", m_RandomQueues3, m_RandomThreads3);
 			m_ButtonRandom3.SetWindowTextW(title);
 
-			toolTip.Format(L"Sequential 8MiB, Threads = %d", m_SequentialMultiThreads1);
+			toolTip.Format(L"Sequential %dMiB, Queues=%d, Threads = %d", m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1);
 			m_ButtonSequential1.SetToolTipText(toolTip);
-			toolTip.Format(L"Sequential 128KiB, Queues=%d, Threads=%d", m_SequentialMultiQueues2, m_SequentialMultiThreads2);
+			toolTip.Format(L"Sequential %dMiB, Queues=%d, Threads = %d", m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2);
 			m_ButtonSequential2.SetToolTipText(toolTip);
-			toolTip.Format(L"Random 4KiB, Queues=%d, Threads=%d", m_RandomMultiQueues1, m_RandomMultiThreads1);
+			toolTip.Format(L"Random 4KiB, Queues=%d, Threads=%d", m_RandomQueues1, m_RandomThreads1);
 			m_ButtonRandom1.SetToolTipText(toolTip);
-			toolTip.Format(L"Random 4KiB, Queues=%d, Threads=%d", m_RandomMultiQueues2, m_RandomMultiThreads2);
+			toolTip.Format(L"Random 4KiB, Queues=%d, Threads=%d", m_RandomQueues2, m_RandomThreads2);
 			m_ButtonRandom2.SetToolTipText(toolTip);
-			toolTip.Format(L"Random 4KiB, Queues=%d, Threads=%d", m_RandomMultiQueues3, m_RandomMultiThreads3);
+			toolTip.Format(L"Random 4KiB, Queues=%d, Threads=%d", m_RandomQueues3, m_RandomThreads3);
 			m_ButtonRandom3.SetToolTipText(toolTip);
 		}
-
 	}
 	else
 	{
@@ -1819,8 +1819,8 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	cstr = i18n(_T("Menu"), _T("QUEUES_THREADS")) + _T("\tCtrl + Q");
 	menu->ModifyMenu(ID_SETTINGS_QUEUESTHREADS, MF_STRING, ID_SETTINGS_QUEUESTHREADS, cstr);
 
-	cstr = i18n(_T("Menu"), _T("PROFILE_IDEAL"));
-	menu->ModifyMenu(ID_PROFILE_IDEAL, MF_STRING, ID_PROFILE_IDEAL, cstr);
+	cstr = i18n(_T("Menu"), _T("PROFILE_PEAK"));
+	menu->ModifyMenu(ID_PROFILE_PEAK, MF_STRING, ID_PROFILE_PEAK, cstr);
 	cstr = i18n(_T("Menu"), _T("PROFILE_REAL"));
 	menu->ModifyMenu(ID_PROFILE_REAL, MF_STRING, ID_PROFILE_REAL, cstr);
 	
@@ -1879,9 +1879,9 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 		OnModeDefault();
 	}
 
-	if (m_Profile == PROFILE_IDEAL)
+	if (m_Profile == PROFILE_PEAK)
 	{
-		OnProfileIdeal();
+		OnProfilePeak();
 	}
 	else
 	{
@@ -2014,9 +2014,12 @@ void CDiskMarkDlg::ResultText(RESULT_TEXT type)
 * MB/s = 1,000,000 bytes/s [SATA/600 = 600,000,000 bytes/s]\r\n\
 * KB = 1000 bytes, KiB = 1024 bytes\r\n\
 \r\n\
+[Read]\r\n\
 %SequentialRead1%\r\n\
-%SequentialWrite1%\r\n\
 %RandomRead4KB1%\r\n\
+\r\n\
+[Write]\r\n\
+%SequentialWrite1%\r\n\
 %RandomWrite4KB1%\r\n\
 \r\n\
 Profile: Real\r\n\
@@ -2036,18 +2039,21 @@ Profile: Real\r\n\
 * MB/s = 1,000,000 bytes/s [SATA/600 = 600,000,000 bytes/s]\r\n\
 * KB = 1000 bytes, KiB = 1024 bytes\r\n\
 \r\n\
+[Read]\r\n\
 %SequentialRead1%\r\n\
-%SequentialWrite1%\r\n\
 %SequentialRead2%\r\n\
-%SequentialWrite2%\r\n\
 %RandomRead4KB1%\r\n\
-%RandomWrite4KB1%\r\n\
 %RandomRead4KB2%\r\n\
-%RandomWrite4KB2%\r\n\
 %RandomRead4KB3%\r\n\
+\r\n\
+[Write]\r\n\
+%SequentialWrite1%\r\n\
+%SequentialWrite2%\r\n\
+%RandomWrite4KB1%\r\n\
+%RandomWrite4KB2%\r\n\
 %RandomWrite4KB3%\r\n\
 \r\n\
-Profile: Ideal\r\n\
+Profile: Peak\r\n\
    Test: %TestSize% (x%TestCount%)%TestMode% [%IntervalTime%] %Affinity%\r\n\
    Date: %Date%\r\n\
      OS: %OS%\r\n\
@@ -2072,83 +2078,80 @@ Profile: Ideal\r\n\
 	clip.Replace(_T("%COPY_YEAR%"), PRODUCT_COPY_YEAR);
 
 #ifdef PRO_MODE
-	cstr.Format(_T("  Sequential Mix 128KiB (Q=%3d,T=%2d) : %9.3f MB/s"), m_SequentialMultiQueues1, m_SequentialMultiThreads1, m_SequentialMixScore1);
+	cstr.Format(_T("  Sequential Mix 128KiB (Q=%3d,T=%2d) : %9.3f MB/s"), m_SequentialQueues1, m_SequentialThreads1, m_SequentialMixScore1);
 	clip.Replace(_T("%SequentialMix1%"), cstr);
-	cstr.Format(_T("   Sequential Read (Q=%3d,T=%2d) : %9.3f MB/s"), m_SequentialMultiQueues2, m_SequentialMultiThreads2, m_SequentialReadScore2);
+	cstr.Format(_T("   Sequential Read (Q=%3d,T=%2d) : %9.3f MB/s"), m_SequentialQueues2, m_SequentialThreads2, m_SequentialReadScore2);
 	clip.Replace(_T("%SequentialRead2%"), cstr);
-	cstr.Format(_T("  Sequential Write (Q=%3d,T=%2d) : %9.3f MB/s"), m_SequentialMultiQueues2, m_SequentialMultiThreads2, m_SequentialWriteScore2);
+	cstr.Format(_T("  Sequential Write (Q=%3d,T=%2d) : %9.3f MB/s"), m_SequentialQueues2, m_SequentialThreads2, m_SequentialWriteScore2);
 	clip.Replace(_T("%SequentialWrite2%"), cstr);
-	cstr.Format(_T("    Sequential Mix (Q=%3d,T=%2d) : %9.3f MB/s"), m_SequentialMultiQueues2, m_SequentialMultiThreads2, m_SequentialMixScore2);
+	cstr.Format(_T("    Sequential Mix (Q=%3d,T=%2d) : %9.3f MB/s"), m_SequentialQueues2, m_SequentialThreads2, m_SequentialMixScore2);
 	clip.Replace(_T("%SequentialMix2%"), cstr);
 #endif
 
 	double iops = 0.0;
 	double latency = 0.0;
 
+
+
 	if (m_Profile == PROFILE_REAL)
 	{
-		cstr.Format(_T("   Sequential Read %dMiB (T=%2d): %8.3f MB/s"), 1, 1, m_SequentialReadScore1);
+		cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), 1, 1, 1, m_SequentialReadScore1);
 		clip.Replace(_T("%SequentialRead1%"), cstr);
-		cstr.Format(_T("  Sequential Write %dMiB (T=%2d): %8.3f MB/s"), 1, 1, m_SequentialWriteScore1);
+		cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), 1, 1, 1, m_SequentialWriteScore1);
 		clip.Replace(_T("%SequentialWrite1%"), cstr);
 	}
 	else
 	{
-		cstr.Format(_T("   Sequential Read %dMiB (T=%2d): %8.3f MB/s"), m_SequentialMultiSize1, m_SequentialMultiThreads1, m_SequentialReadScore1);
+		cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1, m_SequentialReadScore1);
 		clip.Replace(_T("%SequentialRead1%"), cstr);
-		cstr.Format(_T("  Sequential Write %dMiB (T=%2d): %8.3f MB/s"), m_SequentialMultiSize1, m_SequentialMultiThreads1, m_SequentialWriteScore1);
+		cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1, m_SequentialWriteScore1);
 		clip.Replace(_T("%SequentialWrite1%"), cstr);
+		cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2, m_SequentialReadScore2);
+		clip.Replace(_T("%SequentialRead2%"), cstr);
+		cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2, m_SequentialWriteScore2);
+		clip.Replace(_T("%SequentialWrite2%"), cstr);
 	}
-
-
-	iops = 0.0; latency = 0.0; iops = m_SequentialReadScore2 * 1000 * 1000 / (128 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-	cstr.Format(_T("  Seq Read 128KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_SequentialMultiQueues2, m_SequentialMultiThreads2, m_SequentialReadScore2, iops, latency);
-	clip.Replace(_T("%SequentialRead2%"), cstr);
-	iops = 0.0; latency = 0.0; iops = m_SequentialWriteScore2 * 1000 * 1000 / (128 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-	cstr.Format(_T(" Seq Write 128KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_SequentialMultiQueues2, m_SequentialMultiThreads2, m_SequentialWriteScore2, iops, latency);
-	clip.Replace(_T("%SequentialWrite2%"), cstr);
 
 	if (m_Profile == PROFILE_REAL)
 	{
 		iops = 0.0; latency = 0.0; iops = m_RandomRead4KBScore1 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-		cstr.Format(_T(" Random Read 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), 1, 1, m_RandomRead4KBScore1, iops, latency);
+		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), 1, 1, m_RandomRead4KBScore1, iops, latency);
 		clip.Replace(_T("%RandomRead4KB1%"), cstr);
 		iops = 0.0; latency = 0.0; iops = m_RandomWrite4KBScore1 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-		cstr.Format(_T("Random Write 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), 1, 1, m_RandomWrite4KBScore1, iops, latency);
+		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), 1, 1, m_RandomWrite4KBScore1, iops, latency);
 		clip.Replace(_T("%RandomWrite4KB1%"), cstr);
 	}
 	else
 	{
 		iops = 0.0; latency = 0.0; iops = m_RandomRead4KBScore1 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-		cstr.Format(_T(" Random Read 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomMultiQueues1, m_RandomMultiThreads1, m_RandomRead4KBScore1, iops, latency);
+		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues1, m_RandomThreads1, m_RandomRead4KBScore1, iops, latency);
 		clip.Replace(_T("%RandomRead4KB1%"), cstr);
 		iops = 0.0; latency = 0.0; iops = m_RandomWrite4KBScore1 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-		cstr.Format(_T("Random Write 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomMultiQueues1, m_RandomMultiThreads1, m_RandomWrite4KBScore1, iops, latency);
+		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues1, m_RandomThreads1, m_RandomWrite4KBScore1, iops, latency);
 		clip.Replace(_T("%RandomWrite4KB1%"), cstr);
+		iops = 0.0; latency = 0.0; iops = m_RandomRead4KBScore2 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
+		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues2, m_RandomThreads2, m_RandomRead4KBScore2, iops, latency);
+		clip.Replace(_T("%RandomRead4KB2%"), cstr);
+		iops = 0.0; latency = 0.0; iops = m_RandomWrite4KBScore2 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
+		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues2, m_RandomThreads2, m_RandomWrite4KBScore2, iops, latency);
+		clip.Replace(_T("%RandomWrite4KB2%"), cstr);
+		iops = 0.0; latency = 0.0; iops = m_RandomRead4KBScore3 * 1000 * 1000 / 4096;if (iops > 0.0){latency = 1.0 * 1000 * 1000 / iops;}
+		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues3, m_RandomThreads3, m_RandomRead4KBScore3, iops, latency);
+		clip.Replace(_T("%RandomRead4KB3%"), cstr);
+		iops = 0.0; latency = 0.0; iops = m_RandomWrite4KBScore3 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
+		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues3, m_RandomThreads3, m_RandomWrite4KBScore3, iops, latency);
+		clip.Replace(_T("%RandomWrite4KB3%"), cstr);
 	}
-	iops = 0.0; latency = 0.0; iops = m_RandomRead4KBScore2 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-	cstr.Format(_T(" Random Read 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomMultiQueues2, m_RandomMultiThreads2, m_RandomRead4KBScore2, iops, latency);
-	clip.Replace(_T("%RandomRead4KB2%"), cstr);
-	iops = 0.0; latency = 0.0; iops = m_RandomWrite4KBScore2 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-	cstr.Format(_T("Random Write 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomMultiQueues2, m_RandomMultiThreads2, m_RandomWrite4KBScore2, iops, latency);
-	clip.Replace(_T("%RandomWrite4KB2%"), cstr);
-	iops = 0.0; latency = 0.0; iops = m_RandomRead4KBScore3 * 1000 * 1000 / 4096;if (iops > 0.0){latency = 1.0 * 1000 * 1000 / iops;}
-	cstr.Format(_T(" Random Read 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomMultiQueues3, m_RandomMultiThreads3, m_RandomRead4KBScore3, iops, latency);
-	clip.Replace(_T("%RandomRead4KB3%"), cstr);
-	iops = 0.0; latency = 0.0; iops = m_RandomWrite4KBScore3 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-	cstr.Format(_T("Random Write 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomMultiQueues3, m_RandomMultiThreads3, m_RandomWrite4KBScore3, iops, latency);
-	clip.Replace(_T("%RandomWrite4KB3%"), cstr);
-
 
 #ifdef PRO_MODE
 	iops = 0.0; latency = 0.0; iops = m_RandomMix4KBScore1 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-	cstr.Format(_T("  Random Mix 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomMultiQueues1, m_RandomMultiThreads1, m_RandomMix4KBScore1, iops, latency);
+	cstr.Format(_T("  Random Mix 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues1, m_RandomThreads1, m_RandomMix4KBScore1, iops, latency);
 	clip.Replace(_T("%RandomMix4KB1%"), cstr);
 	iops = 0.0; latency = 0.0; iops = m_RandomMix4KBScore2 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-	cstr.Format(_T("  Random Mix 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomMultiQueues2, m_RandomMultiThreads2, m_RandomMix4KBScore2, iops, latency);
+	cstr.Format(_T("  Random Mix 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues2, m_RandomThreads2, m_RandomMix4KBScore2, iops, latency);
 	clip.Replace(_T("%RandomMix4KB2%"), cstr);
 	iops = 0.0; latency = 0.0; iops = m_RandomMix4KBScore3 * 1000 * 1000 / 4096; if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-	cstr.Format(_T("  Random Mix 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomMultiQueues3, m_RandomMultiThreads3, m_RandomMix4KBScore3, iops, latency);
+	cstr.Format(_T("  Random Mix 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues3, m_RandomThreads3, m_RandomMix4KBScore3, iops, latency);
 	clip.Replace(_T("%RandomMix4KB3%"), cstr);
 
 	cstr.Format(_T("Read %d%%, Write %d%%"), 70, 30);
@@ -2507,14 +2510,14 @@ void CDiskMarkDlg::OnModeAll0x00()
 	SetWindowTitle(_T(""), ALL_0X00_0FILL);
 }
 
-void CDiskMarkDlg::OnProfileIdeal()
+void CDiskMarkDlg::OnProfilePeak()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_PROFILE_REAL, ID_PROFILE_IDEAL, ID_PROFILE_IDEAL, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_PROFILE_REAL, ID_PROFILE_PEAK, ID_PROFILE_PEAK, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
-	m_Profile = PROFILE_IDEAL;
+	m_Profile = PROFILE_PEAK;
 	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("0"), m_Ini);
 	ChangeButtonStatus(TRUE);
 	UpdateUnitLabel();
@@ -2526,7 +2529,7 @@ void CDiskMarkDlg::OnProfileIdeal()
 void CDiskMarkDlg::OnProfileReal()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_PROFILE_REAL, ID_PROFILE_IDEAL, ID_PROFILE_REAL, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_PROFILE_REAL, ID_PROFILE_PEAK, ID_PROFILE_REAL, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 

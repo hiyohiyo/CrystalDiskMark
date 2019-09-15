@@ -132,7 +132,7 @@
 #define ID_INTERVAL_TIME_300            33828
 #define ID_INTERVAL_TIME_600            33829
 #define ID_PROFILE_REAL					33830
-#define ID_PROFILE_IDEAL				33831
+#define ID_PROFILE_PEAK					33831
 
 
 // Next default values for new objects

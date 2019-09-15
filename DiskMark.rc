@@ -311,8 +311,8 @@ BEGIN
     END
 	POPUP "&Profile"
 	BEGIN
-		MENUITEM "Ideal (Server)",					ID_PROFILE_IDEAL
-		MENUITEM "Real (Client PC/Workstation)",	ID_PROFILE_REAL
+		MENUITEM "Peak Performance",				ID_PROFILE_PEAK
+		MENUITEM "Real World Performance",			ID_PROFILE_REAL
 	END
     POPUP "&Theme"
     BEGIN

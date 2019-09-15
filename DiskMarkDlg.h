@@ -93,17 +93,18 @@ public:
 	int m_IndexTestSize;
 	int m_IndexTestDrive;
 
-	int m_SequentialMultiSize1;
-	int m_SequentialMultiQueues1;
-	int m_SequentialMultiThreads1;
-	int m_SequentialMultiQueues2;
-	int m_SequentialMultiThreads2;
-	int m_RandomMultiQueues1;
-	int m_RandomMultiThreads1;
-	int m_RandomMultiQueues2;
-	int m_RandomMultiThreads2;
-	int m_RandomMultiQueues3;
-	int m_RandomMultiThreads3;
+	int m_SequentialSize1;
+	int m_SequentialQueues1;
+	int m_SequentialThreads1;
+	int m_SequentialSize2;
+	int m_SequentialQueues2;
+	int m_SequentialThreads2;
+	int m_RandomQueues1;
+	int m_RandomThreads1;
+	int m_RandomQueues2;
+	int m_RandomThreads2;
+	int m_RandomQueues3;
+	int m_RandomThreads3;
 	int m_FragmenteCounts;
 	int m_IntervalTime;
 	int m_Affinity;
@@ -263,7 +264,7 @@ public:
 	afx_msg void OnModeDefault();
 	afx_msg void OnModeAll0x00();
 	afx_msg void OnProfileReal();
-	afx_msg void OnProfileIdeal();
+	afx_msg void OnProfilePeak();
 	afx_msg void OnResultSave();
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
