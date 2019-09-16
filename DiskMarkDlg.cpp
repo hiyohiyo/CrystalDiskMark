@@ -931,7 +931,7 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 		m_RandomThreads1 = 16;
 	}
 
-	m_RandomSize2 = GetPrivateProfileInt(_T("Setting"), _T("RandomSize1"), 4, m_Ini);
+	m_RandomSize2 = GetPrivateProfileInt(_T("Setting"), _T("RandomSize2"), 4, m_Ini);
 	if (m_RandomSize2 <= 4 || m_RandomSize2 > 512)
 	{
 		m_RandomSize2 = 4;
@@ -949,7 +949,7 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 		m_RandomThreads2 = 1;
 	}
 
-	m_RandomSize3 = GetPrivateProfileInt(_T("Setting"), _T("RandomSize1"), 4, m_Ini);
+	m_RandomSize3 = GetPrivateProfileInt(_T("Setting"), _T("RandomSize3"), 4, m_Ini);
 	if (m_RandomSize3 <= 4 || m_RandomSize3 > 512)
 	{
 		m_RandomSize3 = 4;
@@ -1620,9 +1620,9 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 			m_ButtonSequential2.SetToolTipText(toolTip);
 			toolTip.Format(L"Random %dKiB, Queues=%d, Threads=%d", m_RandomSize1, m_RandomQueues1, m_RandomThreads1);
 			m_ButtonRandom1.SetToolTipText(toolTip);
-			toolTip.Format(L"Random %dKiB, Queues=%d, Threads=%d", m_RandomSize1, m_RandomQueues2, m_RandomThreads2);
+			toolTip.Format(L"Random %dKiB, Queues=%d, Threads=%d", m_RandomSize2, m_RandomQueues2, m_RandomThreads2);
 			m_ButtonRandom2.SetToolTipText(toolTip);
-			toolTip.Format(L"Random %dKiB, Queues=%d, Threads=%d", m_RandomSize1, m_RandomQueues3, m_RandomThreads3);
+			toolTip.Format(L"Random %dKiB, Queues=%d, Threads=%d", m_RandomSize3, m_RandomQueues3, m_RandomThreads3);
 			m_ButtonRandom3.SetToolTipText(toolTip);
 		}
 	}
