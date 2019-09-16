@@ -56,19 +56,19 @@ public:
 	double m_SequentialWriteScore1;
 	double m_SequentialReadScore2;
 	double m_SequentialWriteScore2;
-	double m_RandomRead4KBScore1;
-	double m_RandomWrite4KBScore1;
-	double m_RandomRead4KBScore2;
-	double m_RandomWrite4KBScore2;
-	double m_RandomRead4KBScore3;
-	double m_RandomWrite4KBScore3;
+	double m_RandomReadScore1;
+	double m_RandomWriteScore1;
+	double m_RandomReadScore2;
+	double m_RandomWriteScore2;
+	double m_RandomReadScore3;
+	double m_RandomWriteScore3;
 
 #ifdef MIX_MODE
 	double m_SequentialMixScore1;
 	double m_SequentialMixScore2;
-	double m_RandomMix4KBScore1;
-	double m_RandomMix4KBScore2;
-	double m_RandomMix4KBScore3;
+	double m_RandomMixScore1;
+	double m_RandomMixScore2;
+	double m_RandomMixScore3;
 #endif
 
 	void SetMeter(CStaticCx* control, double score, int blockSize, int unit);
@@ -100,10 +100,13 @@ public:
 	int m_SequentialSize2;
 	int m_SequentialQueues2;
 	int m_SequentialThreads2;
+	int m_RandomSize1;
 	int m_RandomQueues1;
 	int m_RandomThreads1;
+	int m_RandomSize2;
 	int m_RandomQueues2;
 	int m_RandomThreads2;
+	int m_RandomSize3;
 	int m_RandomQueues3;
 	int m_RandomThreads3;
 	int m_FragmenteCounts;
@@ -134,9 +137,9 @@ protected:
 	void OnAll();
 	void OnSequential1();
 	void OnSequential2();
-	void OnRandom4KB1();
-	void OnRandom4KB2();
-	void OnRandom4KB3();
+	void OnRandom1();
+	void OnRandom2();
+	void OnRandom3();
 	void Stop();
 	void OnSequentialReal();
 	void OnRandomReal();

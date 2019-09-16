@@ -27,8 +27,11 @@ static CString DiskSpdExe;
 static HANDLE hFile;
 static int DiskTestCount;
 static UINT64 DiskTestSize;
-static int Sequential1BlockSize;
-static int Sequential2BlockSize;
+static int SequentialSize1;
+static int SequentialSize2;
+static int RandomSize1;
+static int RandomSize2;
+static int RandomSize3;
 static int Affinity;
 static BOOL MixMode;
 static int MixRatio;
@@ -131,21 +134,21 @@ UINT ExecDiskBenchAll(LPVOID dlg)
 		Interval(dlg);
 		DiskSpd(dlg, TEST_SEQUENTIAL_READ2);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_READ_4KB1);
+		DiskSpd(dlg, TEST_RANDOM_READ_1);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_READ_4KB2);
+		DiskSpd(dlg, TEST_RANDOM_READ_2);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_READ_4KB3);
+		DiskSpd(dlg, TEST_RANDOM_READ_3);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE1);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE2);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB1);
+		DiskSpd(dlg, TEST_RANDOM_WRITE_1);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB2);
+		DiskSpd(dlg, TEST_RANDOM_WRITE_2);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB3);
+		DiskSpd(dlg, TEST_RANDOM_WRITE_3);
 #ifdef MIX_MODE
 		if (MixMode)
 		{
@@ -154,11 +157,11 @@ UINT ExecDiskBenchAll(LPVOID dlg)
 			Interval(dlg);
 			DiskSpd(dlg, TEST_SEQUENTIAL_MIX2);
 			Interval(dlg);
-			DiskSpd(dlg, TEST_RANDOM_MIX_4KB1);
+			DiskSpd(dlg, TEST_RANDOM_MIX_1);
 			Interval(dlg);
-			DiskSpd(dlg, TEST_RANDOM_MIX_4KB2);
+			DiskSpd(dlg, TEST_RANDOM_MIX_2);
 			Interval(dlg);
-			DiskSpd(dlg, TEST_RANDOM_MIX_4KB3);
+			DiskSpd(dlg, TEST_RANDOM_MIX_3);
 		}
 #endif
 	}
@@ -172,11 +175,11 @@ UINT ExecDiskBenchAllReal(LPVOID dlg)
 	{
 		DiskSpd(dlg, TEST_SEQUENTIAL_READ_REAL);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_READ_4KB_REAL);
+		DiskSpd(dlg, TEST_RANDOM_READ_REAL);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE_REAL);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB_REAL);
+		DiskSpd(dlg, TEST_RANDOM_WRITE_REAL);
 
 #ifdef MIX_MODE
 		if (MixMode)
@@ -184,7 +187,7 @@ UINT ExecDiskBenchAllReal(LPVOID dlg)
 			Interval(dlg);
 			DiskSpd(dlg, TEST_SEQUENTIAL_MIX_REAL);
 			Interval(dlg);
-			DiskSpd(dlg, TEST_RANDOM_MIX_4KB_REAL);
+			DiskSpd(dlg, TEST_RANDOM_MIX_REAL);
 		}
 #endif
 	}
@@ -229,53 +232,53 @@ UINT ExecDiskBenchSequential2(LPVOID dlg)
 	return Exit(dlg);
 }
 
-UINT ExecDiskBenchRandom4KB1(LPVOID dlg)
+UINT ExecDiskBenchRandom1(LPVOID dlg)
 {
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_RANDOM_READ_4KB1);
+		DiskSpd(dlg, TEST_RANDOM_READ_1);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB1);
+		DiskSpd(dlg, TEST_RANDOM_WRITE_1);
 #ifdef MIX_MODE
 		if (MixMode)
 		{
 			Interval(dlg);
-			DiskSpd(dlg, TEST_RANDOM_MIX_4KB1);
+			DiskSpd(dlg, TEST_RANDOM_MIX_1);
 		}
 #endif
 	}
 	return Exit(dlg);
 }
-UINT ExecDiskBenchRandom4KB2(LPVOID dlg)
+UINT ExecDiskBenchRandom2(LPVOID dlg)
 {
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_RANDOM_READ_4KB2);
+		DiskSpd(dlg, TEST_RANDOM_READ_2);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB2);
+		DiskSpd(dlg, TEST_RANDOM_WRITE_2);
 #ifdef MIX_MODE
 		if (MixMode)
 		{
 			Interval(dlg);
-			DiskSpd(dlg, TEST_RANDOM_MIX_4KB2);
+			DiskSpd(dlg, TEST_RANDOM_MIX_2);
 		}
 #endif
 	}
 	return Exit(dlg);
 }
 
-UINT ExecDiskBenchRandom4KB3(LPVOID dlg)
+UINT ExecDiskBenchRandom3(LPVOID dlg)
 {
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_RANDOM_READ_4KB3);
+		DiskSpd(dlg, TEST_RANDOM_READ_3);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB3);
+		DiskSpd(dlg, TEST_RANDOM_WRITE_3);
 #ifdef MIX_MODE
 		if (MixMode)
 		{
 			Interval(dlg);
-			DiskSpd(dlg, TEST_RANDOM_MIX_4KB3);
+			DiskSpd(dlg, TEST_RANDOM_MIX_3);
 		}
 #endif
 	}
@@ -301,18 +304,18 @@ UINT ExecDiskBenchSequentialReal(LPVOID dlg)
 	return Exit(dlg);
 }
 
-UINT ExecDiskBenchRandom4KBReal(LPVOID dlg)
+UINT ExecDiskBenchRandomReal(LPVOID dlg)
 {
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_RANDOM_READ_4KB_REAL);
+		DiskSpd(dlg, TEST_RANDOM_READ_REAL);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_WRITE_4KB_REAL);
+		DiskSpd(dlg, TEST_RANDOM_WRITE_REAL);
 #ifdef MIX_MODE
 		if (MixMode)
 		{
 			Interval(dlg);
-			DiskSpd(dlg, TEST_RANDOM_MIX_4KB_REAL);
+			DiskSpd(dlg, TEST_RANDOM_MIX_REAL);
 		}
 #endif
 	}
@@ -383,8 +386,12 @@ BOOL Init(void* dlg)
 		DiskTestSize = (UINT64)_tstoi(testSize);
 	}
 
-	Sequential1BlockSize = ((CDiskMarkDlg*)dlg)->m_SequentialSize1;
-	Sequential2BlockSize = ((CDiskMarkDlg*)dlg)->m_SequentialSize2;
+	SequentialSize1 = ((CDiskMarkDlg*)dlg)->m_SequentialSize1;
+	SequentialSize2 = ((CDiskMarkDlg*)dlg)->m_SequentialSize2;
+	RandomSize1 = ((CDiskMarkDlg*)dlg)->m_RandomSize1;
+	RandomSize2 = ((CDiskMarkDlg*)dlg)->m_RandomSize2;
+	RandomSize3 = ((CDiskMarkDlg*)dlg)->m_RandomSize3;
+
 	Affinity = ((CDiskMarkDlg*)dlg)->m_Affinity;
 	MixMode = ((CDiskMarkDlg*)dlg)->m_MixMode;
 	MixRatio = ((CDiskMarkDlg*)dlg)->m_MixRatio;
@@ -588,20 +595,31 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		{
 		case TEST_SEQUENTIAL_WRITE1:
 		case TEST_SEQUENTIAL_MIX1:
-			cstr.Format(L" -Z%dM", Sequential1BlockSize);
+			cstr.Format(L" -Z%dM", SequentialSize1);
 			bufOption += cstr;
 			break;
 		case TEST_SEQUENTIAL_WRITE2:
 		case TEST_SEQUENTIAL_MIX2:
-			cstr.Format(L" -Z%dM", Sequential2BlockSize);
+			cstr.Format(L" -Z%dM", SequentialSize2);
 			bufOption += cstr;
 			break;
-		case TEST_RANDOM_WRITE_4KB1:
-		case TEST_RANDOM_WRITE_4KB2:
-		case TEST_RANDOM_WRITE_4KB3:
-		case TEST_RANDOM_MIX_4KB1:
-		case TEST_RANDOM_MIX_4KB2:
-		case TEST_RANDOM_MIX_4KB3:
+		case TEST_RANDOM_WRITE_1:
+		case TEST_RANDOM_MIX_1:
+			cstr.Format(L" -Z%dK", RandomSize1);
+			bufOption += cstr;
+			break;
+		case TEST_RANDOM_WRITE_2:
+		case TEST_RANDOM_MIX_2:
+			cstr.Format(L" -Z%dK", RandomSize2);
+			bufOption += cstr;
+			break;
+		case TEST_RANDOM_WRITE_3:
+		case TEST_RANDOM_MIX_3:
+			cstr.Format(L" -Z%dK", RandomSize3);
+			bufOption += cstr;
+			break;
+		case TEST_RANDOM_WRITE_REAL:
+		case TEST_RANDOM_MIX_REAL:
 			bufOption += L" -Z4K";
 			break;
 		case TEST_SEQUENTIAL_WRITE_REAL:
@@ -627,13 +645,13 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	case TEST_SEQUENTIAL_READ1:
 		title.Format(L"Sequential Read");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
-		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w0", Sequential1BlockSize, duration, ((CDiskMarkDlg*) dlg)->m_SequentialQueues1, ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
+		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w0", SequentialSize1, duration, ((CDiskMarkDlg*) dlg)->m_SequentialQueues1, ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
 		maxScore = &(((CDiskMarkDlg*) dlg)->m_SequentialReadScore1);
 		break;
 	case TEST_SEQUENTIAL_WRITE1:
 		title.Format(L"Sequential Write");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
-		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w100", Sequential1BlockSize, duration, ((CDiskMarkDlg*) dlg)->m_SequentialQueues1, ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
+		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w100", SequentialSize1, duration, ((CDiskMarkDlg*) dlg)->m_SequentialQueues1, ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*) dlg)->m_SequentialWriteScore1);
 		break;
@@ -641,7 +659,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	case TEST_SEQUENTIAL_MIX1:
 		title.Format(L"Sequential Mix");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*)dlg)->m_SequentialThreads1);
-		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w%d", Sequential1BlockSize, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues1, ((CDiskMarkDlg*)dlg)->m_SequentialThreads1, MixRatio);
+		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w%d", SequentialSize1, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues1, ((CDiskMarkDlg*)dlg)->m_SequentialThreads1, MixRatio);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialMixScore1);
 		break;
@@ -649,13 +667,13 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	case TEST_SEQUENTIAL_READ2:
 		title.Format(L"Sequential Read");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
-		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w0", Sequential2BlockSize, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
+		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w0", SequentialSize2, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialReadScore2);
 		break;
 	case TEST_SEQUENTIAL_WRITE2:
 		title.Format(L"Sequential Write");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
-		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w100", Sequential2BlockSize, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
+		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w100", SequentialSize2, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialWriteScore2);
 		break;
@@ -663,7 +681,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	case TEST_SEQUENTIAL_MIX2:
 		title.Format(L"Sequential Mix");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
-		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w%d", Sequential2BlockSize, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialThreads2, MixRatio);
+		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w%d", SequentialSize2, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialThreads2, MixRatio);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialMixScore2);
 		break;
@@ -690,90 +708,90 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialMixScore1);
 		break;
 #endif
-	case TEST_RANDOM_READ_4KB1:
-		title.Format(L"Random Read 4KiB");
+	case TEST_RANDOM_READ_1:
+		title.Format(L"Random Read");
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*) dlg)->m_RandomQueues1, ((CDiskMarkDlg*) dlg)->m_RandomThreads1);
-		option.Format(L"-b4K -d%d -o%d -t%d -W0 -r -S -w0", duration, ((CDiskMarkDlg*) dlg)->m_RandomQueues1, ((CDiskMarkDlg*) dlg)->m_RandomThreads1);
-		maxScore = &(((CDiskMarkDlg*) dlg)->m_RandomRead4KBScore1);
+		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w0", RandomSize1, duration, ((CDiskMarkDlg*) dlg)->m_RandomQueues1, ((CDiskMarkDlg*) dlg)->m_RandomThreads1);
+		maxScore = &(((CDiskMarkDlg*) dlg)->m_RandomReadScore1);
 		break;
-	case TEST_RANDOM_WRITE_4KB1:
-		title.Format(L"Random Write 4KiB");
+	case TEST_RANDOM_WRITE_1:
+		title.Format(L"Random Write");
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*) dlg)->m_RandomQueues1, ((CDiskMarkDlg*) dlg)->m_RandomThreads1);
-		option.Format(L"-b4K -d%d -o%d -t%d -W0 -r -S -w100", duration, ((CDiskMarkDlg*) dlg)->m_RandomQueues1, ((CDiskMarkDlg*) dlg)->m_RandomThreads1);
+		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w100", RandomSize1, duration, ((CDiskMarkDlg*) dlg)->m_RandomQueues1, ((CDiskMarkDlg*) dlg)->m_RandomThreads1);
 		option += bufOption;
-		maxScore = &(((CDiskMarkDlg*) dlg)->m_RandomWrite4KBScore1);
+		maxScore = &(((CDiskMarkDlg*) dlg)->m_RandomWriteScore1);
 		break;
 #ifdef MIX_MODE
-	case TEST_RANDOM_MIX_4KB1:
-		title.Format(L"Random Mix 4KiB");
+	case TEST_RANDOM_MIX_1:
+		title.Format(L"Random Mix");
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_RandomQueues1, ((CDiskMarkDlg*)dlg)->m_RandomThreads1);
-		option.Format(L"-b4K -d%d -o%d -t%d -W0 -r -S -w%d", duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues1, ((CDiskMarkDlg*)dlg)->m_RandomThreads1, MixRatio);
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMix4KBScore1);
+		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w%d", RandomSize1, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues1, ((CDiskMarkDlg*)dlg)->m_RandomThreads1, MixRatio);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMixScore1);
 		break;
 #endif
-	case TEST_RANDOM_READ_4KB2:
-		title.Format(L"Random Read 4KiB");
+	case TEST_RANDOM_READ_2:
+		title.Format(L"Random Read");
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2);
-		option.Format(L"-b4K -d%d -o%d -t%d -W0 -r -S -w0", duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2);
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomRead4KBScore2);
+		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w0", RandomSize2, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomReadScore2);
 		break;
-	case TEST_RANDOM_WRITE_4KB2:
-		title.Format(L"Random Write 4KiB");
+	case TEST_RANDOM_WRITE_2:
+		title.Format(L"Random Write");
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2);
-		option.Format(L"-b4K -d%d -o%d -t%d -W0 -r -S -w100", duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2);
+		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w100", RandomSize2, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2);
 		option += bufOption;
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomWrite4KBScore2);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomWriteScore2);
 		break;
 #ifdef MIX_MODE
-	case TEST_RANDOM_MIX_4KB2:
-		title.Format(L"Random Mix 4KiB");
+	case TEST_RANDOM_MIX_2:
+		title.Format(L"Random Mix");
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2);
-		option.Format(L"-b4K -d%d -o%d -t%d -W0 -r -S -w%d", duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2, MixRatio);
+		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w%d", RandomSize2, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2, MixRatio);
 		option += bufOption;
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMix4KBScore2);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMixScore2);
 		break;
 #endif
-	case TEST_RANDOM_READ_4KB3:
-		title.Format(L"Random Read 4KiB");
+	case TEST_RANDOM_READ_3:
+		title.Format(L"Random Read");
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3);
-		option.Format(L"-b4K -d%d -o%d -t%d -W0 -r -S -w0", duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3);
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomRead4KBScore3);
+		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w0", RandomSize3, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomReadScore3);
 		break;
-	case TEST_RANDOM_WRITE_4KB3:
-		title.Format(L"Random Write 4KiB");
+	case TEST_RANDOM_WRITE_3:
+		title.Format(L"Random Write");
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3);
-		option.Format(L"-b4K -d%d -o%d -t%d -W0 -r -S -w100", duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3);
+		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w100", RandomSize3, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3);
 		option += bufOption;
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomWrite4KBScore3);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomWriteScore3);
 		break;
 #ifdef MIX_MODE
-	case TEST_RANDOM_MIX_4KB3:
-		title.Format(L"Random Mix 4KiB");
+	case TEST_RANDOM_MIX_3:
+		title.Format(L"Random Mix");
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3);
-		option.Format(L"-b4K -d%d -o%d -t%d -W0 -r -S -w%d", duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3, MixRatio);
+		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w%d", RandomSize3, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3, MixRatio);
 		option += bufOption;
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMix4KBScore3);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMixScore3);
 		break;
 #endif
-	case TEST_RANDOM_READ_4KB_REAL:
-		title.Format(L"Random Read 4KiB");
+	case TEST_RANDOM_READ_REAL:
+		title.Format(L"Random Read");
 		qt.Format(L"[Q=1/T=1]");
 		option.Format(L"-b4K -d%d -o1 -t1 -W0 -r -S -w0", duration);
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomRead4KBScore1);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomReadScore1);
 		break;
-	case TEST_RANDOM_WRITE_4KB_REAL:
-		title.Format(L"Random Write 4KiB");
+	case TEST_RANDOM_WRITE_REAL:
+		title.Format(L"Random Write");
 		qt.Format(L"[Q=1/T=1]");
 		option.Format(L"-b4K -d%d -o1 -t1 -W0 -r -S -w100", duration);
 		option += bufOption;
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomWrite4KBScore1);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomWriteScore1);
 		break;
 #ifdef MIX_MODE
-	case TEST_RANDOM_MIX_4KB_REAL:
-		title.Format(L"Random Mix 4KiB");
+	case TEST_RANDOM_MIX_REAL:
+		title.Format(L"Random Mix");
 		qt.Format(L"[Q=1/T=1]");
 		option.Format(L"-b4K -d%d -o1 -t1 -W0 -r -S -w%d", duration, MixRatio);
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMix4KBScore1);
+		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMixScore1);
 		break;
 #endif
 	}

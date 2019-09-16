@@ -51,18 +51,18 @@ enum DISK_SPD_CMD
 	TEST_SEQUENTIAL_READ_REAL,
 	TEST_SEQUENTIAL_WRITE_REAL,
 	TEST_SEQUENTIAL_MIX_REAL,
-	TEST_RANDOM_READ_4KB1,
-	TEST_RANDOM_WRITE_4KB1,
-	TEST_RANDOM_MIX_4KB1,
-	TEST_RANDOM_READ_4KB2,
-	TEST_RANDOM_WRITE_4KB2,
-	TEST_RANDOM_MIX_4KB2,
-	TEST_RANDOM_READ_4KB3,
-	TEST_RANDOM_WRITE_4KB3,
-	TEST_RANDOM_MIX_4KB3,
-	TEST_RANDOM_READ_4KB_REAL,
-	TEST_RANDOM_WRITE_4KB_REAL,
-	TEST_RANDOM_MIX_4KB_REAL,
+	TEST_RANDOM_READ_1,
+	TEST_RANDOM_WRITE_1,
+	TEST_RANDOM_MIX_1,
+	TEST_RANDOM_READ_2,
+	TEST_RANDOM_WRITE_2,
+	TEST_RANDOM_MIX_2,
+	TEST_RANDOM_READ_3,
+	TEST_RANDOM_WRITE_3,
+	TEST_RANDOM_MIX_3,
+	TEST_RANDOM_READ_REAL,
+	TEST_RANDOM_WRITE_REAL,
+	TEST_RANDOM_MIX_REAL,
 };
 
 UINT ExecDiskBenchAll(void* dlg);
@@ -70,7 +70,7 @@ UINT ExecDiskBenchAllReal(void* dlg);
 UINT ExecDiskBenchSequential1(void* dlg);
 UINT ExecDiskBenchSequential2(void* dlg);
 UINT ExecDiskBenchSequentialReal(void* dlg);
-UINT ExecDiskBenchRandom4KB1(void* dlg);
-UINT ExecDiskBenchRandom4KB2(void* dlg);
-UINT ExecDiskBenchRandom4KB3(void* dlg);
-UINT ExecDiskBenchRandom4KBReal(void* dlg);
+UINT ExecDiskBenchRandom1(void* dlg);
+UINT ExecDiskBenchRandom2(void* dlg);
+UINT ExecDiskBenchRandom3(void* dlg);
+UINT ExecDiskBenchRandomReal(void* dlg);

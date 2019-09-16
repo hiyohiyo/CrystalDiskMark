@@ -83,10 +83,13 @@ void CSettingsDlg::OnSetDefault()
 	m_SequentialSize2 = 1;
 	m_SequentialQueues2 = 1;
 	m_SequentialThreads2 = 1;
+	m_RandomSize1 = 4;
 	m_RandomQueues1 = 32;
 	m_RandomThreads1 = 16;
+	m_RandomSize2 = 4;
 	m_RandomQueues2 = 32;
 	m_RandomThreads2 = 1;
+	m_RandomSize3 = 4;
 	m_RandomQueues3 = 1;
 	m_RandomThreads3 = 1;
 	m_Affinity = 0;
@@ -120,12 +123,11 @@ BOOL CSettingsDlg::OnInitDialog()
 		m_SequentialThreads1 = 1;
 	}
 
-	m_SequentialSize2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialSize1"), 1, m_Ini);
+	m_SequentialSize2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialSize2"), 1, m_Ini);
 	if (m_SequentialSize2 <= 0 || m_SequentialSize2 > 8)
 	{
 		m_SequentialSize2 = 1;
 	}
-
 	m_SequentialQueues2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialQueues2"), 1, m_Ini);
 	if (m_SequentialQueues2 <= 0 || m_SequentialQueues2 > MAX_QUEUES)
 	{
@@ -137,6 +139,11 @@ BOOL CSettingsDlg::OnInitDialog()
 		m_SequentialThreads2 = 1;
 	}
 
+	m_RandomSize1 = GetPrivateProfileInt(_T("Setting"), _T("RandomSize1"), 4, m_Ini);
+	if (m_RandomSize1 <= 0 || m_RandomSize1 > 512)
+	{
+		m_RandomSize1 = 4;
+	}
 	m_RandomQueues1 = GetPrivateProfileInt(_T("Setting"), _T("RandomQueues1"), 32, m_Ini);
 	if (m_RandomQueues1 <= 0 || m_RandomQueues1 > MAX_QUEUES)
 	{
@@ -147,6 +154,12 @@ BOOL CSettingsDlg::OnInitDialog()
 	{
 		m_RandomThreads1 = 16;
 	}
+
+	m_RandomSize2 = GetPrivateProfileInt(_T("Setting"), _T("RandomSize2"), 4, m_Ini);
+	if (m_RandomSize2 <= 0 || m_RandomSize2 > 512)
+	{
+		m_RandomSize2 = 4;
+	}
 	m_RandomQueues2 = GetPrivateProfileInt(_T("Setting"), _T("RandomQueues2"), 32, m_Ini);
 	if (m_RandomQueues2 <= 0 || m_RandomQueues2 > MAX_QUEUES)
 	{
@@ -156,6 +169,12 @@ BOOL CSettingsDlg::OnInitDialog()
 	if (m_RandomThreads2 <= 0 || m_RandomThreads2 > MAX_THREADS)
 	{
 		m_RandomThreads2 = 1;
+	}
+
+	m_RandomSize3 = GetPrivateProfileInt(_T("Setting"), _T("RandomSize3"), 4, m_Ini);
+	if (m_RandomSize3 <= 0 || m_RandomSize3 > 512)
+	{
+		m_RandomSize3 = 4;
 	}
 	m_RandomQueues3 = GetPrivateProfileInt(_T("Setting"), _T("RandomQueues3"), 1, m_Ini);
 	if (m_RandomQueues3 <= 0 || m_RandomQueues3 > MAX_QUEUES)
@@ -196,23 +215,34 @@ void CSettingsDlg::InitComboBox()
 	m_ComboRandomSize2.ResetContent();
 	m_ComboRandomSize3.ResetContent();
 
-	int blocksize[] = { 1, 2, 4, 8 };
-	for (int i = 0; i < 4; i++)
 	{
-		CString cstr;
-		cstr.Format(L"%dMiB", blocksize[i]);
-		m_ComboSequentialSize1.AddString(cstr);
-		if (m_SequentialSize1 == blocksize[i]) { m_ComboSequentialSize1.SetCurSel(i); }
-		m_ComboSequentialSize2.AddString(cstr);
-		if (m_SequentialSize2 == blocksize[i]) { m_ComboSequentialSize2.SetCurSel(i); }
+		int blocksize[] = { 1, 2, 4, 8 };
+		for (int i = 0; i < 4; i++)
+		{
+			CString cstr;
+			cstr.Format(L"%dMiB", blocksize[i]);
+			m_ComboSequentialSize1.AddString(cstr);
+			if (m_SequentialSize1 == blocksize[i]) { m_ComboSequentialSize1.SetCurSel(i); }
+			m_ComboSequentialSize2.AddString(cstr);
+			if (m_SequentialSize2 == blocksize[i]) { m_ComboSequentialSize2.SetCurSel(i); }
+		}
 	}
 
-	m_ComboRandomSize1.AddString(L"4KiB");
-	m_ComboRandomSize1.SetCurSel(0);
-	m_ComboRandomSize2.AddString(L"4KiB");
-	m_ComboRandomSize2.SetCurSel(0);
-	m_ComboRandomSize3.AddString(L"4KiB");
-	m_ComboRandomSize3.SetCurSel(0);
+	{
+		int blocksize[] = { 4, 8, 16, 32, 64, 128, 256, 512 };
+		for (int i = 0; i < 8; i++)
+		{
+			CString cstr;
+			cstr.Format(L"%dKiB", blocksize[i]);
+			m_ComboRandomSize1.AddString(cstr);
+			if (m_RandomSize1 == blocksize[i]) { m_ComboRandomSize1.SetCurSel(i); }
+			m_ComboRandomSize2.AddString(cstr);
+			if (m_RandomSize2 == blocksize[i]) { m_ComboRandomSize2.SetCurSel(i); }
+			m_ComboRandomSize3.AddString(cstr);
+			if (m_RandomSize3 == blocksize[i]) { m_ComboRandomSize3.SetCurSel(i); }
+		}
+	}
+
 
 	// Queues
 	m_ComboSequentialQueues1.ResetContent();
@@ -271,11 +301,6 @@ void CSettingsDlg::InitComboBox()
 		m_ComboAffinity.SetCurSel(0);
 	}
 
-	m_ComboSequentialSize1.EnableWindow(FALSE);
-	m_ComboSequentialSize2.EnableWindow(FALSE);
-	m_ComboRandomSize1.EnableWindow(FALSE);
-	m_ComboRandomSize2.EnableWindow(FALSE);
-	m_ComboRandomSize3.EnableWindow(FALSE);
 
 	if (m_Profile == 0/*PROFILE_PEAK*/ || m_Profile == 2/*PROFILE_PEAK_MIX*/)
 	{
@@ -283,6 +308,11 @@ void CSettingsDlg::InitComboBox()
 	}
 	else
 	{
+		m_ComboSequentialSize1.EnableWindow(FALSE);
+		m_ComboSequentialSize2.EnableWindow(FALSE);
+		m_ComboRandomSize1.EnableWindow(FALSE);
+		m_ComboRandomSize2.EnableWindow(FALSE);
+		m_ComboRandomSize3.EnableWindow(FALSE);
 		m_ComboSequentialQueues1.EnableWindow(FALSE);
 		m_ComboSequentialQueues2.EnableWindow(FALSE);
 		m_ComboRandomQueues1.EnableWindow(FALSE);
@@ -306,18 +336,30 @@ void CSettingsDlg::OnOk()
 	WritePrivateProfileString(_T("Setting"), _T("SequentialQueues1"), cstr, m_Ini);
 	m_ComboSequentialThreads1.GetWindowTextW(cstr);
 	WritePrivateProfileString(_T("Setting"), _T("SequentialThreads1"), cstr, m_Ini);
+	m_ComboSequentialSize2.GetWindowTextW(cstr);
+	cstr.Format(L"%d", _wtoi(cstr.GetString()));
+	WritePrivateProfileString(_T("Setting"), _T("SequentialSize2"), cstr, m_Ini);
 	m_ComboSequentialQueues2.GetWindowTextW(cstr);
 	WritePrivateProfileString(_T("Setting"), _T("SequentialQueues2"), cstr, m_Ini);
 	m_ComboSequentialThreads2.GetWindowTextW(cstr);
 	WritePrivateProfileString(_T("Setting"), _T("SequentialThreads2"), cstr, m_Ini);
+	m_ComboRandomSize1.GetWindowTextW(cstr);
+	cstr.Format(L"%d", _wtoi(cstr.GetString()));
+	WritePrivateProfileString(_T("Setting"), _T("RandomSize1"), cstr, m_Ini);
 	m_ComboRandomQueues1.GetWindowTextW(cstr);
 	WritePrivateProfileString(_T("Setting"), _T("RandomQueues1"), cstr, m_Ini);
 	m_ComboRandomThreads1.GetWindowTextW(cstr);
 	WritePrivateProfileString(_T("Setting"), _T("RandomThreads1"), cstr, m_Ini);
+	m_ComboRandomSize2.GetWindowTextW(cstr);
+	cstr.Format(L"%d", _wtoi(cstr.GetString()));
+	WritePrivateProfileString(_T("Setting"), _T("RandomSize2"), cstr, m_Ini);
 	m_ComboRandomQueues2.GetWindowTextW(cstr);
 	WritePrivateProfileString(_T("Setting"), _T("RandomQueues2"), cstr, m_Ini);
 	m_ComboRandomThreads2.GetWindowTextW(cstr);
 	WritePrivateProfileString(_T("Setting"), _T("RandomThreads2"), cstr, m_Ini);
+	m_ComboRandomSize3.GetWindowTextW(cstr);
+	cstr.Format(L"%d", _wtoi(cstr.GetString()));
+	WritePrivateProfileString(_T("Setting"), _T("RandomSize3"), cstr, m_Ini);
 	m_ComboRandomQueues3.GetWindowTextW(cstr);
 	WritePrivateProfileString(_T("Setting"), _T("RandomQueues3"), cstr, m_Ini);
 	m_ComboRandomThreads3.GetWindowTextW(cstr);

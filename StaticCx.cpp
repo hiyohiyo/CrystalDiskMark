@@ -63,6 +63,7 @@ CStaticCx::CStaticCx()
 	, m_Alpha(255)
 	, m_FontType(FT_GDI)
 	, m_ZoomRatio(1.0)
+	, m_MeterRatio(0.0)
 {
 	m_Margin.top = 0;
 	m_Margin.left = 0;
@@ -1042,7 +1043,14 @@ BOOL CStaticCx::InitControl(int x, int y, int width, int height, double zoomRati
 void CStaticCx::SetMeter(BOOL bMeter, double meterRatio)
 {
 	m_bMeter = bMeter;
-	m_MeterRatio = meterRatio;
+	if(meterRatio > 0)
+	{ 
+		m_MeterRatio = meterRatio;
+	}
+	else
+	{
+		m_MeterRatio = 0.0;
+	}
 
 	Invalidate();
 }
