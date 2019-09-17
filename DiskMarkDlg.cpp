@@ -31,8 +31,8 @@
 #else
 #define SIZE_X		480
 #define SIZE_X_MIX	680
-#define SIZE_Y		360
-#define SIZE_MIN_Y	360
+#define SIZE_Y		300
+#define SIZE_MIN_Y	300
 #define OFFSET_X    0
 #define MAX_METER_LENGTH	192
 #endif
@@ -77,30 +77,26 @@ void CDiskMarkDlg::DoDataExchange(CDataExchange* pDX)
 	CMainDialog::DoDataExchange(pDX);
 
 	DDX_Control(pDX, IDC_BUTTON_ALL, m_ButtonAll);
-	DDX_Control(pDX, IDC_BUTTON_SEQUENTIAL_1, m_ButtonSequential1);
-	DDX_Control(pDX, IDC_BUTTON_SEQUENTIAL_2, m_ButtonSequential2);
-	DDX_Control(pDX, IDC_BUTTON_RANDOM_1, m_ButtonRandom1);
-	DDX_Control(pDX, IDC_BUTTON_RANDOM_2, m_ButtonRandom2);
-	DDX_Control(pDX, IDC_BUTTON_RANDOM_3, m_ButtonRandom3);
+	DDX_Control(pDX, IDC_BUTTON_TEST_1, m_ButtonTest1);
+	DDX_Control(pDX, IDC_BUTTON_TEST_2, m_ButtonTest2);
+	DDX_Control(pDX, IDC_BUTTON_TEST_3, m_ButtonTest3);
+	DDX_Control(pDX, IDC_BUTTON_TEST_4, m_ButtonTest4);
 
-	DDX_Control(pDX, IDC_SEQUENTIAL_READ_1, m_SequentialRead1);
-	DDX_Control(pDX, IDC_SEQUENTIAL_READ_2, m_SequentialRead2);
-	DDX_Control(pDX, IDC_RANDOM_READ_1, m_RandomRead1);
-	DDX_Control(pDX, IDC_RANDOM_READ_2, m_RandomRead2);
-	DDX_Control(pDX, IDC_RANDOM_READ_3, m_RandomRead3);
+	DDX_Control(pDX, IDC_TEST_READ_1, m_TestRead1);
+	DDX_Control(pDX, IDC_TEST_READ_2, m_TestRead2);
+	DDX_Control(pDX, IDC_TEST_READ_3, m_TestRead3);
+	DDX_Control(pDX, IDC_TEST_READ_4, m_TestRead4);
 
-	DDX_Control(pDX, IDC_SEQUENTIAL_WRITE_1, m_SequentialWrite1);
-	DDX_Control(pDX, IDC_SEQUENTIAL_WRITE_2, m_SequentialWrite2);
-	DDX_Control(pDX, IDC_RANDOM_WRITE_1, m_RandomWrite1);
-	DDX_Control(pDX, IDC_RANDOM_WRITE_2, m_RandomWrite2);
-	DDX_Control(pDX, IDC_RANDOM_WRITE_3, m_RandomWrite3);
+	DDX_Control(pDX, IDC_TEST_WRITE_1, m_TestWrite1);
+	DDX_Control(pDX, IDC_TEST_WRITE_2, m_TestWrite2);
+	DDX_Control(pDX, IDC_TEST_WRITE_3, m_TestWrite3);
+	DDX_Control(pDX, IDC_TEST_WRITE_4, m_TestWrite4);
 
 #ifdef MIX_MODE
-	DDX_Control(pDX, IDC_SEQUENTIAL_MIX_1, m_SequentialMix1);
-	DDX_Control(pDX, IDC_SEQUENTIAL_MIX_2, m_SequentialMix2);
-	DDX_Control(pDX, IDC_RANDOM_MIX_1, m_RandomMix1);
-	DDX_Control(pDX, IDC_RANDOM_MIX_2, m_RandomMix2);
-	DDX_Control(pDX, IDC_RANDOM_MIX_3, m_RandomMix3);
+	DDX_Control(pDX, IDC_TEST_MIX_1, m_TestMix1);
+	DDX_Control(pDX, IDC_TEST_MIX_2, m_TestMix2);
+	DDX_Control(pDX, IDC_TEST_MIX_3, m_TestMix3);
+	DDX_Control(pDX, IDC_TEST_MIX_4, m_TestMix4);
 	DDX_Control(pDX, IDC_COMBO_MIX, m_ComboMix);
 #endif
 
@@ -166,8 +162,10 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	ON_COMMAND(ID_HELP_CRYSTALDEWWORLD, &CDiskMarkDlg::OnCrystalDewWorld)
 	ON_COMMAND(ID_MODE_DEFAULT, &CDiskMarkDlg::OnModeDefault)
 	ON_COMMAND(ID_MODE_ALL0X00, &CDiskMarkDlg::OnModeAll0x00)
+	ON_COMMAND(ID_PROFILE_DEFAULT, &CDiskMarkDlg::OnProfileDefault)
 	ON_COMMAND(ID_PROFILE_REAL, &CDiskMarkDlg::OnProfileReal)
 	ON_COMMAND(ID_PROFILE_PEAK, &CDiskMarkDlg::OnProfilePeak)
+	ON_COMMAND(ID_PROFILE_DEFAULT_MIX, &CDiskMarkDlg::OnProfileDefaultMix)
 	ON_COMMAND(ID_PROFILE_REAL_MIX, &CDiskMarkDlg::OnProfileRealMix)
 	ON_COMMAND(ID_PROFILE_PEAK_MIX, &CDiskMarkDlg::OnProfilePeakMix)
 
@@ -179,11 +177,10 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	ON_MESSAGE(WM_QUERYENDSESSION, &CDiskMarkDlg::OnQueryEndSession)
 
 	ON_BN_CLICKED(IDC_BUTTON_ALL, &CDiskMarkDlg::OnAll)
-	ON_BN_CLICKED(IDC_BUTTON_SEQUENTIAL_1, &CDiskMarkDlg::OnSequential1)
-	ON_BN_CLICKED(IDC_BUTTON_SEQUENTIAL_2, &CDiskMarkDlg::OnSequential2)
-	ON_BN_CLICKED(IDC_BUTTON_RANDOM_1, &CDiskMarkDlg::OnRandom1)
-	ON_BN_CLICKED(IDC_BUTTON_RANDOM_2, &CDiskMarkDlg::OnRandom2)
-	ON_BN_CLICKED(IDC_BUTTON_RANDOM_3, &CDiskMarkDlg::OnRandom3)
+	ON_BN_CLICKED(IDC_BUTTON_TEST_1, &CDiskMarkDlg::OnTest1)
+	ON_BN_CLICKED(IDC_BUTTON_TEST_2, &CDiskMarkDlg::OnTest2)
+	ON_BN_CLICKED(IDC_BUTTON_TEST_3, &CDiskMarkDlg::OnTest3)
+	ON_BN_CLICKED(IDC_BUTTON_TEST_4, &CDiskMarkDlg::OnTest4)
 	ON_CBN_SELCHANGE(IDC_COMBO_DRIVE, &CDiskMarkDlg::OnCbnSelchangeComboDrive)
 	ON_CBN_SELCHANGE(IDC_COMBO_UNIT, &CDiskMarkDlg::OnCbnSelchangeComboUnit)
 
@@ -265,13 +262,13 @@ BOOL CDiskMarkDlg::OnInitDialog()
 		m_TestData = TEST_DATA_RANDOM;
 	}
 
-	m_Profile = GetPrivateProfileInt(_T("Setting"), _T("Profile"), PROFILE_PEAK, m_Ini);
+	m_Profile = GetPrivateProfileInt(_T("Setting"), _T("Profile"), PROFILE_DEFAULT, m_Ini);
 	if (m_Profile > PROFILE_REAL_MIX)
 	{
-		m_Profile = PROFILE_PEAK;
+		m_Profile = PROFILE_DEFAULT;
 	}
 
-	if (m_Profile == PROFILE_PEAK_MIX || m_Profile == PROFILE_REAL_MIX)
+	if (m_Profile == PROFILE_DEFAULT_MIX || m_Profile == PROFILE_PEAK_MIX || m_Profile == PROFILE_REAL_MIX)
 	{
 		m_MixMode = TRUE;
 	}
@@ -363,16 +360,6 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	m_MixRatio = (9 - m_IndexTestMix) * 10;
 	m_ComboMix.SetCurSel(m_IndexTestMix);
 
-
-	GetPrivateProfileString(L"Title", L"TEST_UNIT", L"Test Unit", str, 256, m_CurrentLangPath);
-	m_ComboUnit.SetToolTipText(str);
-	GetPrivateProfileString(L"Title", L"TEST_COUNT", L"Test Count", str, 256, m_CurrentLangPath);
-	m_ComboCount.SetToolTipText(str);
-	GetPrivateProfileString(L"Title", L"TEST_SIZE", L"Test Size", str, 256, m_CurrentLangPath);
-	m_ComboSize.SetToolTipText(str);
-	GetPrivateProfileString(L"Title", L"TEST_MIX", L"Mix Ratio", str, 256, m_CurrentLangPath);
-	m_ComboMix.SetToolTipText(str);
-
 	UpdateData(FALSE);
 
 	// Drive
@@ -434,7 +421,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 
 void CDiskMarkDlg::UpdateDialogSize()
 {
-	int offsetX, offsetY;
+	int offsetX;
 	ShowWindow(SW_HIDE);
 	UpdateBackground(true);
 
@@ -450,71 +437,43 @@ void CDiskMarkDlg::UpdateDialogSize()
 
 	SetControlFont();
 
-	if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+	if (m_Profile != PROFILE_DEFAULT && m_Profile != PROFILE_DEFAULT_MIX)
 	{
-		m_ButtonSequential2.ShowWindow(SW_HIDE);
-		m_SequentialRead2.ShowWindow(SW_HIDE);
-		m_SequentialWrite2.ShowWindow(SW_HIDE);
-		m_ComboUnit.ShowWindow(SW_HIDE);
-#ifdef MIX_MODE
-		if (m_MixMode)
-		{
-			m_SequentialMix2.ShowWindow(SW_HIDE);
-		}
-#endif
-
 #ifdef SUISHO_SHIZUKU_SUPPORT
 		offsetX = 120;
-		offsetY = 88;
 #else
 		offsetX = 72;
-		offsetY = 52;
 #endif
 	}
 	else
 	{
-		m_ButtonSequential2.ShowWindow(SW_SHOW);
-		m_SequentialRead2.ShowWindow(SW_SHOW);
-		m_SequentialWrite2.ShowWindow(SW_SHOW);
-		m_ComboUnit.ShowWindow(SW_SHOW);
-#ifdef MIX_MODE
-		if (m_MixMode)
-		{
-			m_SequentialMix2.ShowWindow(SW_SHOW);
-		}
-#endif
 		offsetX = 0;
-		offsetY = 0;
 	}
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	m_ButtonAll.InitControl(12 + OFFSET_X, 12, 120, 80, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonSequential1.InitControl(12 + OFFSET_X, 100, 120, 80, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonSequential2.InitControl(12 + OFFSET_X, 188, 120, 80, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonRandom1.InitControl(12 + OFFSET_X, 276 - offsetY, 120, 80, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonRandom2.InitControl(12 + OFFSET_X, 364 - offsetY, 120, 80, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonRandom3.InitControl(12 + OFFSET_X, 452 - offsetY, 120, 80, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest1.InitControl(12 + OFFSET_X, 100, 120, 80, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest2.InitControl(12 + OFFSET_X, 188, 120, 80, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest3.InitControl(12 + OFFSET_X, 276, 120, 80, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest4.InitControl(12 + OFFSET_X, 364, 120, 80, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 
 	m_ButtonAll.SetHandCursor(TRUE);
-	m_ButtonSequential1.SetHandCursor(TRUE);
-	m_ButtonSequential2.SetHandCursor(TRUE);
-	m_ButtonRandom1.SetHandCursor(TRUE);
-	m_ButtonRandom2.SetHandCursor(TRUE);
-	m_ButtonRandom3.SetHandCursor(TRUE);
+	m_ButtonTest1.SetHandCursor(TRUE);
+	m_ButtonTest2.SetHandCursor(TRUE);
+	m_ButtonTest3.SetHandCursor(TRUE);
+	m_ButtonTest4.SetHandCursor(TRUE);
 
-	m_SequentialRead1.InitControl(140 + OFFSET_X, 100, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_SequentialRead2.InitControl(140 + OFFSET_X, 188, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomRead1.InitControl(140 + OFFSET_X, 276 - offsetY, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomRead2.InitControl(140 + OFFSET_X, 364 - offsetY, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomRead3.InitControl(140 + OFFSET_X, 452 - offsetY, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead1.InitControl(140 + OFFSET_X, 100, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead2.InitControl(140 + OFFSET_X, 188, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead3.InitControl(140 + OFFSET_X, 276, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead4.InitControl(140 + OFFSET_X, 364, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
-	m_SequentialWrite1.InitControl(468 + OFFSET_X, 100, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_SequentialWrite2.InitControl(468 + OFFSET_X, 188, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomWrite1.InitControl(468 + OFFSET_X, 276 - offsetY, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomWrite2.InitControl(468 + OFFSET_X, 364 - offsetY, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomWrite3.InitControl(468 + OFFSET_X, 452 - offsetY, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite1.InitControl(468 + OFFSET_X, 100, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite2.InitControl(468 + OFFSET_X, 188, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite3.InitControl(468 + OFFSET_X, 276, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite4.InitControl(468 + OFFSET_X, 364, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
-	m_Comment.MoveWindow((int)((12 + OFFSET_X) * m_ZoomRatio), (int)((544 - offsetY) * m_ZoomRatio), (int)(776 * m_ZoomRatio), (int)(44 * m_ZoomRatio));
+	m_Comment.MoveWindow((int)((12 + OFFSET_X) * m_ZoomRatio), (int)(544 * m_ZoomRatio), (int)(776 * m_ZoomRatio), (int)(44 * m_ZoomRatio));
 
 	m_ReadUnit.InitControl(140 + OFFSET_X, 60, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_WriteUnit.InitControl(468 + OFFSET_X, 60, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
@@ -527,32 +486,28 @@ void CDiskMarkDlg::UpdateDialogSize()
 #else
 
 	m_ButtonAll.InitControl(8 + OFFSET_X, 8, 72, 48, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonSequential1.InitControl(8 + OFFSET_X, 60, 72, 48, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonSequential2.InitControl(8 + OFFSET_X, 112, 72, 48, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonRandom1.InitControl(8 + OFFSET_X, 164 - offsetY, 72, 48, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonRandom2.InitControl(8 + OFFSET_X, 216 - offsetY, 72, 48, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonRandom3.InitControl(8 + OFFSET_X, 268 - offsetY, 72, 48, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest1.InitControl(8 + OFFSET_X, 60, 72, 48, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest2.InitControl(8 + OFFSET_X, 112, 72, 48, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest3.InitControl(8 + OFFSET_X, 164, 72, 48, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest4.InitControl(8 + OFFSET_X, 216, 72, 48, m_ZoomRatio, IP(L"Button"), 3, SS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 
 	m_ButtonAll.SetHandCursor(TRUE);
-	m_ButtonSequential1.SetHandCursor(TRUE);
-	m_ButtonSequential2.SetHandCursor(TRUE);
-	m_ButtonRandom1.SetHandCursor(TRUE);
-	m_ButtonRandom2.SetHandCursor(TRUE);
-	m_ButtonRandom3.SetHandCursor(TRUE);
+	m_ButtonTest1.SetHandCursor(TRUE);
+	m_ButtonTest2.SetHandCursor(TRUE);
+	m_ButtonTest3.SetHandCursor(TRUE);
+	m_ButtonTest4.SetHandCursor(TRUE);
 
-	m_SequentialRead1.InitControl(84 + OFFSET_X, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_SequentialRead2.InitControl(84 + OFFSET_X, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomRead1.InitControl(84 + OFFSET_X, 164 - offsetY, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomRead2.InitControl(84 + OFFSET_X, 216 - offsetY, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomRead3.InitControl(84 + OFFSET_X, 268 - offsetY, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead1.InitControl(84 + OFFSET_X, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead2.InitControl(84 + OFFSET_X, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead3.InitControl(84 + OFFSET_X, 164, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead4.InitControl(84 + OFFSET_X, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
-	m_SequentialWrite1.InitControl(280 + OFFSET_X, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_SequentialWrite2.InitControl(280 + OFFSET_X, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomWrite1.InitControl(280 + OFFSET_X, 164 - offsetY, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomWrite2.InitControl(280 + OFFSET_X, 216 - offsetY, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomWrite3.InitControl(280 + OFFSET_X, 268 - offsetY, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite1.InitControl(280 + OFFSET_X, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite2.InitControl(280 + OFFSET_X, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite3.InitControl(280 + OFFSET_X, 164, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite4.InitControl(280 + OFFSET_X, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
-	m_Comment.MoveWindow((int)((8 + OFFSET_X) * m_ZoomRatio), (int)((324 - offsetY) * m_ZoomRatio), (int)(464 * m_ZoomRatio), (int)(28 * m_ZoomRatio));
+	m_Comment.MoveWindow((int)((8 + OFFSET_X) * m_ZoomRatio), (int)(268 * m_ZoomRatio), (int)(464 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
 
 	m_ReadUnit.InitControl(84 + OFFSET_X, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_WriteUnit.InitControl(280 + OFFSET_X, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
@@ -564,36 +519,30 @@ void CDiskMarkDlg::UpdateDialogSize()
 #endif
 
 #ifdef MIX_MODE
-	m_SequentialMix1.InitControl(480 + OFFSET_X, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_SequentialMix2.InitControl(480 + OFFSET_X, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomMix1.InitControl(480 + OFFSET_X, 164 - offsetY, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomMix2.InitControl(480 + OFFSET_X, 216 - offsetY, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_RandomMix3.InitControl(480 + OFFSET_X, 268 - offsetY, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestMix1.InitControl(480 + OFFSET_X, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestMix2.InitControl(480 + OFFSET_X, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestMix3.InitControl(480 + OFFSET_X, 164, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestMix4.InitControl(480 + OFFSET_X, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 	m_ComboMix.InitControl(480 + OFFSET_X, 8, 192, 300, m_ZoomRatio);
 	m_MixUnit.InitControl(480 + OFFSET_X, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
 	if (m_MixMode)
 	{
-		m_Comment.MoveWindow((int)((8 + OFFSET_X)* m_ZoomRatio), (int)((324 - offsetY)* m_ZoomRatio), (int)(664 * m_ZoomRatio), (int)(28 * m_ZoomRatio));
+		m_Comment.MoveWindow((int)((8 + OFFSET_X)* m_ZoomRatio), (int)(268* m_ZoomRatio), (int)(664 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
 
-		m_SequentialMix1.ShowWindow(SW_SHOW);
-		if (m_Profile == PROFILE_PEAK_MIX)
-		{
-			m_SequentialMix2.ShowWindow(SW_SHOW);
-		}
-		m_RandomMix1.ShowWindow(SW_SHOW);
-		m_RandomMix2.ShowWindow(SW_SHOW);
-		m_RandomMix3.ShowWindow(SW_SHOW);
+		m_TestMix1.ShowWindow(SW_SHOW);
+		m_TestMix2.ShowWindow(SW_SHOW);
+		m_TestMix3.ShowWindow(SW_SHOW);
+		m_TestMix4.ShowWindow(SW_SHOW);
 		m_ComboMix.ShowWindow(SW_SHOW);
 		m_MixUnit.ShowWindow(SW_SHOW);
 	}
 	else
 	{
-		m_SequentialMix1.ShowWindow(SW_HIDE);
-		m_SequentialMix2.ShowWindow(SW_HIDE);
-		m_RandomMix1.ShowWindow(SW_HIDE);
-		m_RandomMix2.ShowWindow(SW_HIDE);
-		m_RandomMix3.ShowWindow(SW_HIDE);
+		m_TestMix1.ShowWindow(SW_HIDE);
+		m_TestMix2.ShowWindow(SW_HIDE);
+		m_TestMix3.ShowWindow(SW_HIDE);
+		m_TestMix4.ShowWindow(SW_HIDE);
 		m_ComboMix.ShowWindow(SW_HIDE);
 		m_MixUnit.ShowWindow(SW_HIDE);
 	}
@@ -657,7 +606,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ComboDrive.ShowWindow(SW_SHOW);
 
 #ifdef MIX_MODE
-	if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+	if (m_Profile != PROFILE_DEFAULT && m_Profile != PROFILE_DEFAULT_MIX)
 	{
 		m_ComboUnit.ShowWindow(SW_HIDE);
 	}
@@ -667,11 +616,23 @@ void CDiskMarkDlg::UpdateDialogSize()
 	}
 #endif
 
-#ifdef SUISHO_SHIZUKU_SUPPORT
-	SetClientRect((DWORD)(m_SizeX* m_ZoomRatio), (DWORD)((m_SizeY) * m_ZoomRatio), 1);
-#else
-	SetClientRect((DWORD)(m_SizeX* m_ZoomRatio), (DWORD)((m_SizeY - offsetY)* m_ZoomRatio), 1);
+	SetClientRect((DWORD)(m_SizeX* m_ZoomRatio), (DWORD)(m_SizeY* m_ZoomRatio), 1);
+
+	TCHAR str[256];
+	GetPrivateProfileString(L"Title", L"TEST_UNIT", L"Test Unit", str, 256, m_CurrentLangPath);
+	m_ComboUnit.SetToolTipText(str);
+	GetPrivateProfileString(L"Title", L"TEST_COUNT", L"Test Count", str, 256, m_CurrentLangPath);
+	m_ComboCount.SetToolTipText(str);
+	GetPrivateProfileString(L"Title", L"TEST_SIZE", L"Test Size", str, 256, m_CurrentLangPath);
+	m_ComboSize.SetToolTipText(str);
+#ifdef MIX_MODE
+	if (m_MixMode)
+	{
+		GetPrivateProfileString(L"Title", L"TEST_MIX", L"Mix Ratio", str, 256, m_CurrentLangPath);
+		m_ComboMix.SetToolTipText(str);
+	}
 #endif
+
 	ShowWindow(SW_SHOW);
 }
 
@@ -704,23 +665,20 @@ void CDiskMarkDlg::SetControlFont()
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	m_ButtonAll.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
-	m_ButtonSequential1.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
-	m_ButtonSequential2.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
-	m_ButtonRandom1.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
-	m_ButtonRandom2.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
-	m_ButtonRandom3.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonTest1.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonTest2.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonTest3.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonTest4.SetFontEx(m_FontFace, (int)(20 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
 
-	m_SequentialRead1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_SequentialRead2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_RandomRead1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_RandomRead2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_RandomRead3.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestRead1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestRead2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestRead3.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestRead4.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
-	m_SequentialWrite1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_SequentialWrite2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_RandomWrite1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_RandomWrite2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_RandomWrite3.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestWrite1.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestWrite2.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestWrite3.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestWrite4.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
 	m_Comment.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, FW_BOLD);
 
@@ -732,11 +690,10 @@ void CDiskMarkDlg::SetControlFont()
 	m_ComboSize.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, m_ComboText, FW_NORMAL, m_FontType);
 	m_ComboDrive.SetFontEx(m_FontFace, (int)(24 * scale), m_ZoomRatio, textAlpha, m_ComboText, FW_NORMAL, m_FontType);
 
-	m_ButtonRandom1.SetMargin(8, 0, 8, 0, m_ZoomRatio);
-	m_ButtonSequential1.SetMargin(8, 0, 8, 0, m_ZoomRatio);
-	m_ButtonSequential2.SetMargin(8, 0, 8, 0, m_ZoomRatio);
-	m_ButtonRandom2.SetMargin(8, 0, 8, 0, m_ZoomRatio);
-	m_ButtonRandom3.SetMargin(8, 0, 8, 0, m_ZoomRatio);
+	m_ButtonTest3.SetMargin(8, 0, 8, 0, m_ZoomRatio);
+	m_ButtonTest1.SetMargin(8, 0, 8, 0, m_ZoomRatio);
+	m_ButtonTest2.SetMargin(8, 0, 8, 0, m_ZoomRatio);
+	m_ButtonTest4.SetMargin(8, 0, 8, 0, m_ZoomRatio);
 
 	m_ComboUnit.SetFontHeight((int)(24 * scale), m_ZoomRatio);
 	m_ComboUnit.SetItemHeight(-1, (UINT)(36 * m_ZoomRatio * scale));
@@ -767,23 +724,20 @@ void CDiskMarkDlg::SetControlFont()
 #else
 
 	m_ButtonAll.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
-	m_ButtonSequential1.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
-	m_ButtonSequential2.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
-	m_ButtonRandom1.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
-	m_ButtonRandom2.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
-	m_ButtonRandom3.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonTest1.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonTest2.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonTest3.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
+	m_ButtonTest4.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
 
-	m_SequentialRead1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_SequentialRead2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_RandomRead1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_RandomRead2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_RandomRead3.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestRead1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestRead2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestRead3.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestRead4.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
-	m_SequentialWrite1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_SequentialWrite2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_RandomWrite1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_RandomWrite2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_RandomWrite3.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestWrite1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestWrite2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestWrite3.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestWrite4.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
 	m_Comment.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, FW_BOLD);
 
@@ -795,11 +749,10 @@ void CDiskMarkDlg::SetControlFont()
 	m_ComboSize.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_ComboText, FW_NORMAL, m_FontType);
 	m_ComboDrive.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_ComboText, FW_NORMAL, m_FontType);
 
-	m_ButtonRandom1.SetMargin(4, 0, 4, 0, m_ZoomRatio);
-	m_ButtonSequential1.SetMargin(4, 0, 4, 0, m_ZoomRatio);
-	m_ButtonSequential2.SetMargin(4, 0, 4, 0, m_ZoomRatio);
-	m_ButtonRandom2.SetMargin(4, 0, 4, 0, m_ZoomRatio);
-	m_ButtonRandom3.SetMargin(4, 0, 4, 0, m_ZoomRatio);
+	m_ButtonTest3.SetMargin(4, 0, 4, 0, m_ZoomRatio);
+	m_ButtonTest1.SetMargin(4, 0, 4, 0, m_ZoomRatio);
+	m_ButtonTest2.SetMargin(4, 0, 4, 0, m_ZoomRatio);
+	m_ButtonTest4.SetMargin(4, 0, 4, 0, m_ZoomRatio);
 
 	m_ComboUnit.SetFontHeight((int)(16 * scale), m_ZoomRatio);
 	m_ComboUnit.SetItemHeight(-1, (UINT)(20 * m_ZoomRatio * scale));
@@ -841,11 +794,10 @@ void CDiskMarkDlg::SetControlFont()
 
 		m_MixUnit.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_LabelText, FW_BOLD, m_FontType);
 
-		m_SequentialMix1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-		m_SequentialMix2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-		m_RandomMix1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-		m_RandomMix2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-		m_RandomMix3.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+		m_TestMix1.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+		m_TestMix2.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+		m_TestMix3.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+		m_TestMix4.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 	}
 #endif
 
@@ -878,17 +830,15 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 	CString cstr;
 
 	m_SequentialSize1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialSize1"), 1, m_Ini);
-	 if (m_SequentialSize1 <= 0 || m_SequentialSize1 > 8)
+	if (m_SequentialSize1 <= 0 || m_SequentialSize1 > 8)
 	{
 		m_SequentialSize1 = 1;
 	}
-
 	m_SequentialQueues1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialQueues1"), 8, m_Ini);
-	 if (m_SequentialQueues1 <= 0 || m_SequentialQueues1 > MAX_QUEUES)
+	if (m_SequentialQueues1 <= 0 || m_SequentialQueues1 > MAX_QUEUES)
 	{
 		m_SequentialQueues1 = 8;
 	}
-
 	m_SequentialThreads1 = GetPrivateProfileInt(_T("Setting"), _T("SequentialThreads1"), 1, m_Ini);
 	if (m_SequentialThreads1 <= 0 || m_SequentialThreads1 > MAX_THREADS)
 	{
@@ -900,13 +850,11 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 	{
 		m_SequentialSize2 = 1;
 	}
-
 	m_SequentialQueues2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialQueues2"), 1, m_Ini);
 	if (m_SequentialQueues2 <= 0 || m_SequentialQueues2 > MAX_QUEUES)
 	{
 		m_SequentialQueues2 = 1;
 	}
-
 	m_SequentialThreads2 = GetPrivateProfileInt(_T("Setting"), _T("SequentialThreads2"), 1, m_Ini);
 	if (m_SequentialThreads2 <= 0 || m_SequentialThreads2 > MAX_THREADS)
 	{
@@ -914,17 +862,15 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 	}
 	
 	m_RandomSize1 = GetPrivateProfileInt(_T("Setting"), _T("RandomSize1"), 4, m_Ini);
-	if (m_RandomSize1 <= 4 || m_RandomSize1 > 512)
+	if (m_RandomSize1 < 4 || m_RandomSize1 > 512)
 	{
 		m_RandomSize1 = 4;
 	}
-
 	m_RandomQueues1 = GetPrivateProfileInt(_T("Setting"), _T("RandomQueues1"), 32, m_Ini);
 	if (m_RandomQueues1 <= 0 || m_RandomQueues1 > MAX_QUEUES)
 	{
 		m_RandomQueues1 = 32;
 	}
-
 	m_RandomThreads1 = GetPrivateProfileInt(_T("Setting"), _T("RandomThreads1"), 16, m_Ini);
 	if (m_RandomThreads1 <= 0 || m_RandomThreads1 > MAX_THREADS)
 	{
@@ -932,39 +878,19 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 	}
 
 	m_RandomSize2 = GetPrivateProfileInt(_T("Setting"), _T("RandomSize2"), 4, m_Ini);
-	if (m_RandomSize2 <= 4 || m_RandomSize2 > 512)
+	if (m_RandomSize2 < 4 || m_RandomSize2 > 512)
 	{
 		m_RandomSize2 = 4;
 	}
-
-	m_RandomQueues2 = GetPrivateProfileInt(_T("Setting"), _T("RandomQueues2"), 32, m_Ini);
+	m_RandomQueues2 = GetPrivateProfileInt(_T("Setting"), _T("RandomQueues2"), 1, m_Ini);
 	if (m_RandomQueues2 <= 0 || m_RandomQueues2 > MAX_QUEUES)
 	{
-		m_RandomQueues2 = 32;
+		m_RandomQueues2 = 1;
 	}
-
 	m_RandomThreads2 = GetPrivateProfileInt(_T("Setting"), _T("RandomThreads2"), 1, m_Ini);
 	if (m_RandomThreads2 <= 0 || m_RandomThreads2 > MAX_THREADS)
 	{
 		m_RandomThreads2 = 1;
-	}
-
-	m_RandomSize3 = GetPrivateProfileInt(_T("Setting"), _T("RandomSize3"), 4, m_Ini);
-	if (m_RandomSize3 <= 4 || m_RandomSize3 > 512)
-	{
-		m_RandomSize3 = 4;
-	}
-
-	m_RandomQueues3 = GetPrivateProfileInt(_T("Setting"), _T("RandomQueues3"), 1, m_Ini);
-	if (m_RandomQueues3 <= 0 || m_RandomQueues3 > MAX_QUEUES)
-	{
-		m_RandomQueues3 = 1;
-	}
-
-	m_RandomThreads3 = GetPrivateProfileInt(_T("Setting"), _T("RandomThreads3"), 1, m_Ini);
-	if (m_RandomThreads3 <= 0 || m_RandomThreads3 > MAX_THREADS)
-	{
-		m_RandomThreads3 = 1;
 	}
 
 	m_Affinity = GetPrivateProfileInt(_T("Setting"), _T("Affinity"), 0, m_Ini);
@@ -1017,7 +943,7 @@ void CDiskMarkDlg::SelectDrive()
 	{
 		BROWSEINFO  bi;
 		ZeroMemory(&bi, sizeof(BROWSEINFO));
-		ITEMIDLIST _unaligned *idl;
+		ITEMIDLIST __unaligned *idl;
 		LPMALLOC    g_pMalloc;
 		TCHAR       szTmp[MAX_PATH];
 
@@ -1163,15 +1089,12 @@ void CDiskMarkDlg::InitScore()
 	m_RandomWriteScore1 = 0.0;
 	m_RandomReadScore2 = 0.0;
 	m_RandomWriteScore2 = 0.0;
-	m_RandomReadScore3 = 0.0;
-	m_RandomWriteScore3 = 0.0;
 
 #ifdef MIX_MODE
 	m_SequentialMixScore1 = 0.0;
 	m_SequentialMixScore2 = 0.0;
 	m_RandomMixScore1 = 0.0;
 	m_RandomMixScore2 = 0.0;
-	m_RandomMixScore3 = 0.0;
 #endif
 
 	UpdateScore();
@@ -1180,51 +1103,66 @@ void CDiskMarkDlg::InitScore()
 void CDiskMarkDlg::UpdateScore()
 {
 	UpdateData(TRUE);
-	if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+	if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
 	{
-		SetMeter(&m_SequentialRead1, m_SequentialReadScore1, -1, SCORE_MBS);
-		SetMeter(&m_SequentialWrite1, m_SequentialWriteScore1, -1, SCORE_MBS);
-		//SetMeter(&m_SequentialRead2, m_SequentialReadScore1, -1, SCORE_GBS);
-		//SetMeter(&m_SequentialWrite2, m_SequentialWriteScore1, -1, SCORE_GBS);
-		SetMeter(&m_RandomRead1, m_RandomReadScore1, 4096, SCORE_MBS);
-		SetMeter(&m_RandomWrite1, m_RandomWriteScore1, 4096, SCORE_MBS);
-		SetMeter(&m_RandomRead2, m_RandomReadScore1, 4096, SCORE_US);
-		SetMeter(&m_RandomWrite2, m_RandomWriteScore1, 4096, SCORE_US);
-		SetMeter(&m_RandomRead3, m_RandomReadScore1, 4096, SCORE_IOPS);
-		SetMeter(&m_RandomWrite3, m_RandomWriteScore1, 4096, SCORE_IOPS);
+		SetMeter(&m_TestRead1, m_SequentialReadScore1, m_SequentialSize1 * 1024 * 1024, SCORE_MBS);
+		SetMeter(&m_TestRead2, m_RandomReadScore1, m_RandomSize1 * 1024, SCORE_MBS);
+		SetMeter(&m_TestRead3, m_RandomReadScore1, m_RandomSize1 * 1024, SCORE_IOPS);
+		SetMeter(&m_TestRead4, m_RandomReadScore1, m_RandomSize1 * 1024, SCORE_US);
+		SetMeter(&m_TestWrite1, m_SequentialWriteScore1, m_SequentialSize1 * 1024 * 1024, SCORE_MBS);
+		SetMeter(&m_TestWrite2, m_RandomWriteScore1, m_RandomSize1 * 1024, SCORE_MBS);
+		SetMeter(&m_TestWrite3, m_RandomWriteScore1, m_RandomSize1 * 1024, SCORE_IOPS);
+		SetMeter(&m_TestWrite4, m_RandomWriteScore1, m_RandomSize1 * 1024, SCORE_US);
 
 #ifdef MIX_MODE
 		if (m_MixMode)
 		{
-			SetMeter(&m_SequentialMix1, m_SequentialMixScore1, -1, SCORE_MBS);
-		//	SetMeter(&m_SequentialMix2, m_SequentialMixScore2, -1, SCORE_GBS);
-			SetMeter(&m_RandomMix1, m_RandomMixScore1, 4096, SCORE_MBS);
-			SetMeter(&m_RandomMix2, m_RandomMixScore1, 4096, SCORE_US);
-			SetMeter(&m_RandomMix3, m_RandomMixScore1, 4096, SCORE_IOPS);
+			SetMeter(&m_TestMix1, m_SequentialMixScore1, m_SequentialSize1 * 1024 * 1024, SCORE_MBS);
+			SetMeter(&m_TestMix2, m_RandomMixScore1, m_RandomSize1 * 1024, SCORE_MBS);
+			SetMeter(&m_TestMix3, m_RandomMixScore1, m_RandomSize1 * 1024, SCORE_IOPS);
+			SetMeter(&m_TestMix4, m_RandomMixScore1, m_RandomSize1 * 1024, SCORE_US);
 		}
 #endif
 	}
-	else if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
+	else if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
 	{
-		SetMeter(&m_SequentialRead1, m_SequentialReadScore1, -1, m_IndexTestUnit);
-		SetMeter(&m_SequentialWrite1, m_SequentialWriteScore1, -1, m_IndexTestUnit);
-		SetMeter(&m_SequentialRead2, m_SequentialReadScore2, -1, m_IndexTestUnit);
-		SetMeter(&m_SequentialWrite2, m_SequentialWriteScore2, -1, m_IndexTestUnit);
-		SetMeter(&m_RandomRead1, m_RandomReadScore1, m_RandomSize1 * 1024, m_IndexTestUnit);
-		SetMeter(&m_RandomWrite1, m_RandomWriteScore1, m_RandomSize1 * 1024, m_IndexTestUnit);
-		SetMeter(&m_RandomRead2, m_RandomReadScore2, m_RandomSize2 * 1024, m_IndexTestUnit);
-		SetMeter(&m_RandomWrite2, m_RandomWriteScore2, m_RandomSize2 * 1024, m_IndexTestUnit);
-		SetMeter(&m_RandomRead3, m_RandomReadScore3, m_RandomSize3 * 1024, m_IndexTestUnit);
-		SetMeter(&m_RandomWrite3, m_RandomWriteScore3, m_RandomSize3 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestRead1, m_SequentialReadScore1, 1 * 1024 * 1024, SCORE_MBS);
+		SetMeter(&m_TestRead2, m_RandomReadScore1, 4 * 1024, SCORE_MBS);
+		SetMeter(&m_TestRead3, m_RandomReadScore1, 4 * 1024, SCORE_IOPS);
+		SetMeter(&m_TestRead4, m_RandomReadScore1, 4 * 1024, SCORE_US);
+		SetMeter(&m_TestWrite1, m_SequentialWriteScore1, 1 * 1024 * 1024, SCORE_MBS);
+		SetMeter(&m_TestWrite2, m_RandomWriteScore1, 4 * 1024, SCORE_MBS);
+		SetMeter(&m_TestWrite3, m_RandomWriteScore1, 4 * 1024, SCORE_IOPS);
+		SetMeter(&m_TestWrite4, m_RandomWriteScore1, 4 * 1024, SCORE_US);
 
 #ifdef MIX_MODE
 		if (m_MixMode)
 		{
-			SetMeter(&m_SequentialMix1, m_SequentialMixScore1, -1, m_IndexTestUnit);
-			SetMeter(&m_SequentialMix2, m_SequentialMixScore2, -1, m_IndexTestUnit);
-			SetMeter(&m_RandomMix1, m_RandomMixScore1, m_RandomSize1 * 1024, m_IndexTestUnit);
-			SetMeter(&m_RandomMix2, m_RandomMixScore2, m_RandomSize2 * 1024, m_IndexTestUnit);
-			SetMeter(&m_RandomMix3, m_RandomMixScore3, m_RandomSize3 * 1024, m_IndexTestUnit);
+			SetMeter(&m_TestMix1, m_SequentialMixScore1, 1 * 1024 * 1024, SCORE_MBS);
+			SetMeter(&m_TestMix2, m_RandomMixScore1, 4 * 1024, SCORE_MBS);
+			SetMeter(&m_TestMix3, m_RandomMixScore1, 4 * 1024, SCORE_IOPS);
+			SetMeter(&m_TestMix4, m_RandomMixScore1, 4 * 1024, SCORE_US);
+		}
+#endif
+	}
+	else
+	{
+		SetMeter(&m_TestRead1, m_SequentialReadScore1, m_SequentialSize1 * 1024 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestRead2, m_SequentialReadScore2, m_SequentialSize2 * 1024 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestRead3, m_RandomReadScore1, m_RandomSize1 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestRead4, m_RandomReadScore2, m_RandomSize2 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestWrite1, m_SequentialWriteScore1, m_SequentialSize1 * 1024 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestWrite2, m_SequentialWriteScore2, m_SequentialSize2 * 1024 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestWrite3, m_RandomWriteScore1, m_RandomSize1 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestWrite4, m_RandomWriteScore2, m_RandomSize2 * 1024, m_IndexTestUnit);
+
+#ifdef MIX_MODE
+		if (m_MixMode)
+		{
+			SetMeter(&m_TestMix1, m_SequentialMixScore1, m_SequentialSize1 * 1024 * 1024, m_IndexTestUnit);
+			SetMeter(&m_TestMix2, m_SequentialMixScore2, m_SequentialSize2 * 1024 * 1024, m_IndexTestUnit);
+			SetMeter(&m_TestMix3, m_RandomMixScore1, m_RandomSize1 * 1024, m_IndexTestUnit);
+			SetMeter(&m_TestMix4, m_RandomMixScore2, m_RandomSize2 * 1024, m_IndexTestUnit);
 		}
 #endif
 	}
@@ -1249,6 +1187,64 @@ void CDiskMarkDlg::SetScoreToolTip(CStaticCx *control, double score, int blockSi
 	control->SetToolTipText(cstr);
 }
 
+void CDiskMarkDlg::OnSequentialPeak()
+{
+	if (m_WinThread == NULL)
+	{
+		UpdateData(TRUE);
+		m_SequentialReadScore1 = 0.0;
+		m_SequentialWriteScore1 = 0.0;
+#ifdef MIX_MODE
+		m_SequentialMixScore1 = 0.0;
+#endif
+		UpdateScore();
+		m_DiskBenchStatus = TRUE;
+		m_WinThread = AfxBeginThread(ExecDiskBenchSequential1, (void*)this);
+		if (m_WinThread == NULL)
+		{
+			m_DiskBenchStatus = FALSE;
+		}
+		else
+		{
+			ChangeButtonStatus(FALSE);
+		}
+		DisableMenus();
+	}
+	else
+	{
+		Stop();
+	}
+}
+
+void CDiskMarkDlg::OnRandomPeak()
+{
+	if (m_WinThread == NULL)
+	{
+		UpdateData(TRUE);
+		m_RandomReadScore1 = 0.0;
+		m_RandomWriteScore1 = 0.0;
+#ifdef MIX_MODE
+		m_RandomMixScore1 = 0.0;
+#endif
+		UpdateScore();
+		m_DiskBenchStatus = TRUE;
+		m_WinThread = AfxBeginThread(ExecDiskBenchRandom1, (void*)this);
+		if (m_WinThread == NULL)
+		{
+			m_DiskBenchStatus = FALSE;
+		}
+		else
+		{
+			ChangeButtonStatus(FALSE);
+		}
+		DisableMenus();
+	}
+	else
+	{
+		Stop();
+	}
+}
+
 void CDiskMarkDlg::OnSequentialReal()
 {
 	if (m_WinThread == NULL)
@@ -1256,11 +1252,8 @@ void CDiskMarkDlg::OnSequentialReal()
 		UpdateData(TRUE);
 		m_SequentialReadScore1 = 0.0;
 		m_SequentialWriteScore1 = 0.0;
-		m_SequentialReadScore2 = 0.0;
-		m_SequentialWriteScore2 = 0.0;
 #ifdef MIX_MODE
 		m_SequentialMixScore1 = 0.0;
-		m_SequentialMixScore2 = 0.0;
 #endif
 		UpdateScore();
 		m_DiskBenchStatus = TRUE;
@@ -1288,15 +1281,8 @@ void CDiskMarkDlg::OnRandomReal()
 		UpdateData(TRUE);
 		m_RandomReadScore1 = 0.0;
 		m_RandomWriteScore1 = 0.0;
-		m_RandomReadScore2 = 0.0;
-		m_RandomWriteScore2 = 0.0;
-		m_RandomReadScore3 = 0.0;
-		m_RandomWriteScore3 = 0.0;
-
 #ifdef MIX_MODE
 		m_RandomMixScore1 = 0.0;
-		m_RandomMixScore2 = 0.0;
-		m_RandomMixScore3 = 0.0;
 #endif
 		UpdateScore();
 		m_DiskBenchStatus = TRUE;
@@ -1317,10 +1303,14 @@ void CDiskMarkDlg::OnRandomReal()
 	}
 }
 
-
-void CDiskMarkDlg::OnSequential1()
+void CDiskMarkDlg::OnTest1()
 {
-	if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+	if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
+	{
+		OnSequentialPeak();
+		return;
+	}
+	else if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
 	{
 		OnSequentialReal();
 		return;
@@ -1353,11 +1343,16 @@ void CDiskMarkDlg::OnSequential1()
 	}
 }
 
-void CDiskMarkDlg::OnSequential2()
+void CDiskMarkDlg::OnTest2()
 {
-	if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+	if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
 	{
-		OnSequentialReal();
+		OnRandomPeak();
+		return;
+	}
+	else if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+	{
+		OnRandomReal();
 		return;
 	}
 
@@ -1388,9 +1383,14 @@ void CDiskMarkDlg::OnSequential2()
 	}
 }
 
-void CDiskMarkDlg::OnRandom1()
+void CDiskMarkDlg::OnTest3()
 {
-	if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+	if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
+	{
+		OnRandomPeak();
+		return;
+	}
+	else if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
 	{
 		OnRandomReal();
 		return;
@@ -1423,9 +1423,14 @@ void CDiskMarkDlg::OnRandom1()
 	}
 }
 
-void CDiskMarkDlg::OnRandom2()
+void CDiskMarkDlg::OnTest4()
 {
-	if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+	if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
+	{
+		OnRandomPeak();
+		return;
+	}
+	else if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
 	{
 		OnRandomReal();
 		return;
@@ -1458,41 +1463,6 @@ void CDiskMarkDlg::OnRandom2()
 	}
 }
 
-void CDiskMarkDlg::OnRandom3()
-{
-	if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
-	{
-		OnRandomReal();
-		return;
-	}
-
-	if (m_WinThread == NULL)
-	{
-		UpdateData(TRUE);
-		m_RandomReadScore3 = 0.0;
-		m_RandomWriteScore3 = 0.0;
-#ifdef MIX_MODE
-		m_RandomMixScore3 = 0.0;
-#endif
-		UpdateScore();
-		m_DiskBenchStatus = TRUE;
-		m_WinThread = AfxBeginThread(ExecDiskBenchRandom3, (void*)this);
-		if (m_WinThread == NULL)
-		{
-			m_DiskBenchStatus = FALSE;
-		}
-		else
-		{
-			ChangeButtonStatus(FALSE);
-		}
-		DisableMenus();
-	}
-	else
-	{
-		Stop();
-	}
-}
-
 void CDiskMarkDlg::OnAll()
 {
 	if(m_WinThread == NULL)
@@ -1500,7 +1470,11 @@ void CDiskMarkDlg::OnAll()
 		UpdateData(TRUE);
 		InitScore();
 		m_DiskBenchStatus = TRUE;
-		if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+		if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
+		{
+			m_WinThread = AfxBeginThread(ExecDiskBenchAllPeak, (void*)this);
+		}
+		else if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
 		{
 			m_WinThread = AfxBeginThread(ExecDiskBenchAllReal, (void*)this);
 		}
@@ -1581,49 +1555,65 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 		m_ButtonAll.SetWindowTextW(L"All");
 
 
-		if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+		if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
+		{
+			title.Format(L"SEQ%dM\r\nQ%dT%d", m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1);
+			m_ButtonTest1.SetWindowTextW(title);
+			title.Format(L"RND%dK\r\nQ%dT%d", m_RandomSize1, m_RandomQueues1, m_RandomThreads1);
+			m_ButtonTest2.SetWindowTextW(title);
+			title.Format(L"RND%dK\r\n(IOPS)", m_RandomSize1);
+			m_ButtonTest3.SetWindowTextW(title);
+			title.Format(L"RND%dK\r\n(μs)", m_RandomSize1);
+			m_ButtonTest4.SetWindowTextW(title);
+
+			toolTip.Format(L"Sequential %dMiB\r\nQueues=%d\r\nThreads=%d\r\n(MB/s)", m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1);
+			m_ButtonTest1.SetToolTipText(toolTip);
+			toolTip.Format(L"Random %dKiB\r\nQueues=%d\r\nThreads=%d\r\n(MB/s)", m_RandomSize1, m_RandomQueues1, m_RandomThreads1);
+			m_ButtonTest2.SetToolTipText(toolTip);
+			toolTip.Format(L"Random %dKiB\r\nQueues=%d\r\nThreads=%d\r\n(IOPS)", m_RandomSize1, m_RandomQueues1, m_RandomThreads1);
+			m_ButtonTest3.SetToolTipText(toolTip);
+			toolTip.Format(L"Random %dKiB\r\nQueues=%d\r\nThreads=%d\r\n(μs)", m_RandomSize1, m_RandomQueues1, m_RandomThreads1);
+			m_ButtonTest4.SetToolTipText(toolTip);
+		}
+		else if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
 		{
 			title.Format(L"SEQ%dM\r\nQ%dT%d", 1, 1, 1);
-			m_ButtonSequential1.SetWindowTextW(title);
+			m_ButtonTest1.SetWindowTextW(title);
 			title.Format(L"RND4K\r\nQ%dT%d", 1, 1);
-			m_ButtonRandom1.SetWindowTextW(title);
-			title.Format(L"RND4K\r\n(μs)");
-			m_ButtonRandom2.SetWindowTextW(title);
+			m_ButtonTest2.SetWindowTextW(title);
 			title.Format(L"RND4K\r\n(IOPS)");
-			m_ButtonRandom3.SetWindowTextW(title);
+			m_ButtonTest3.SetWindowTextW(title);
+			title.Format(L"RND4K\r\n(μs)");
+			m_ButtonTest4.SetWindowTextW(title);
 
-			toolTip.Format(L"Sequential 1MiB, Queues=1, Threads = 1 (MB/s)");
-			m_ButtonSequential1.SetToolTipText(toolTip);
-			toolTip.Format(L"Random 4KiB, Queues=1, Threads=1 (MB/s)");
-			m_ButtonRandom1.SetToolTipText(toolTip);
-			toolTip.Format(L"Random 4KiB, Queues=1, Threads=1 (μs)");
-			m_ButtonRandom2.SetToolTipText(toolTip);
-			toolTip.Format(L"Random 4KiB, Queues=1, Threads=1 (IOPS)");
-			m_ButtonRandom3.SetToolTipText(toolTip);
+			toolTip.Format(L"Sequential 1MiB\r\nQueues=1\r\nThreads=1\r\n(MB/s)");
+			m_ButtonTest1.SetToolTipText(toolTip);
+			toolTip.Format(L"Random 4KiB\r\nQueues=1\r\nThreads=1\r\n(MB/s)");
+			m_ButtonTest2.SetToolTipText(toolTip);
+			toolTip.Format(L"Random 4KiB\r\nQueues=1\r\nThreads=1\r\n(IOPS)");
+			m_ButtonTest3.SetToolTipText(toolTip);
+			toolTip.Format(L"Random 4KiB\r\nQueues=1\r\nThreads=1\r\n(μs)");
+			m_ButtonTest4.SetToolTipText(toolTip);
 		}
 		else
 		{
 			title.Format(L"SEQ%dM\r\nQ%dT%d", m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1);
-			m_ButtonSequential1.SetWindowTextW(title);
+			m_ButtonTest1.SetWindowTextW(title);
 			title.Format(L"SEQ%dM\r\nQ%dT%d", m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2);
-			m_ButtonSequential2.SetWindowTextW(title);
+			m_ButtonTest2.SetWindowTextW(title);
 			title.Format(L"RND%dK\r\nQ%dT%d", m_RandomSize1, m_RandomQueues1, m_RandomThreads1);
-			m_ButtonRandom1.SetWindowTextW(title);
+			m_ButtonTest3.SetWindowTextW(title);
 			title.Format(L"RND%dK\r\nQ%dT%d", m_RandomSize2, m_RandomQueues2, m_RandomThreads2);
-			m_ButtonRandom2.SetWindowTextW(title);
-			title.Format(L"RND%dK\r\nQ%dT%d", m_RandomSize3, m_RandomQueues3, m_RandomThreads3);
-			m_ButtonRandom3.SetWindowTextW(title);
+			m_ButtonTest4.SetWindowTextW(title);
 
-			toolTip.Format(L"Sequential %dMiB, Queues=%d, Threads = %d", m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1);
-			m_ButtonSequential1.SetToolTipText(toolTip);
-			toolTip.Format(L"Sequential %dMiB, Queues=%d, Threads = %d", m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2);
-			m_ButtonSequential2.SetToolTipText(toolTip);
-			toolTip.Format(L"Random %dKiB, Queues=%d, Threads=%d", m_RandomSize1, m_RandomQueues1, m_RandomThreads1);
-			m_ButtonRandom1.SetToolTipText(toolTip);
-			toolTip.Format(L"Random %dKiB, Queues=%d, Threads=%d", m_RandomSize2, m_RandomQueues2, m_RandomThreads2);
-			m_ButtonRandom2.SetToolTipText(toolTip);
-			toolTip.Format(L"Random %dKiB, Queues=%d, Threads=%d", m_RandomSize3, m_RandomQueues3, m_RandomThreads3);
-			m_ButtonRandom3.SetToolTipText(toolTip);
+			toolTip.Format(L"Sequential %dMiB\r\nQueues=%d\r\nThreads=%d", m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1);
+			m_ButtonTest1.SetToolTipText(toolTip);
+			toolTip.Format(L"Sequential %dMiB\r\nQueues=%d\r\nThreads=%d", m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2);
+			m_ButtonTest2.SetToolTipText(toolTip);
+			toolTip.Format(L"Random %dKiB\r\nQueues=%d\r\nThreads=%d", m_RandomSize1, m_RandomQueues1, m_RandomThreads1);
+			m_ButtonTest3.SetToolTipText(toolTip);
+			toolTip.Format(L"Random %dKiB\r\nQueues=%d\r\nThreads=%d", m_RandomSize2, m_RandomQueues2, m_RandomThreads2);
+			m_ButtonTest4.SetToolTipText(toolTip);
 		}
 	}
 	else
@@ -1637,18 +1627,10 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 		m_ComboDrive.EnableWindow(FALSE);
 
 		m_ButtonAll.SetWindowTextW(L"Stop");
-		m_ButtonSequential1.SetWindowTextW(L"Stop");
-		m_ButtonSequential2.SetWindowTextW(L"Stop");
-		m_ButtonRandom1.SetWindowTextW(L"Stop");
-		m_ButtonRandom2.SetWindowTextW(L"Stop");
-		m_ButtonRandom3.SetWindowTextW(L"Stop");
-
-		CString toolTip = L"";
-		m_ButtonSequential1.SetToolTipText(toolTip);
-		m_ButtonSequential2.SetToolTipText(toolTip);
-		m_ButtonRandom1.SetToolTipText(toolTip);
-		m_ButtonRandom2.SetToolTipText(toolTip);
-		m_ButtonRandom3.SetToolTipText(toolTip);
+		m_ButtonTest1.SetWindowTextW(L"Stop");
+		m_ButtonTest2.SetWindowTextW(L"Stop");
+		m_ButtonTest3.SetWindowTextW(L"Stop");
+		m_ButtonTest4.SetWindowTextW(L"Stop");
 	}
 }
 
@@ -1700,7 +1682,19 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, int blockSize, int
 		else
 		{
 			double iops = score * 1000 * 1000 / blockSize;
-			cstr.Format(_T("%d"), (int)iops);
+
+			if (iops >= 100000.0)
+			{
+				cstr.Format(_T("%d"), (int)iops);
+			}
+			else if (iops >= 10000.0)
+			{
+				cstr.Format(_T("%.1f"), iops);
+			}
+			else
+			{
+				cstr.Format(_T("%.2f"), iops);
+			}
 		}
 	}
 	else if (unit == SCORE_UNIT::SCORE_US)
@@ -1716,11 +1710,11 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, int blockSize, int
 		else
 		{
 			double latency = blockSize / score;
-			if (latency >= 1000000.0)
+			if (latency >= 100000.0)
 			{
 				cstr.Format(_T("%d"), (int)latency);
 			}
-			else if (latency >= 100000.0)
+			else if (latency >= 10000.0)
 			{
 				cstr.Format(_T("%.1f"), latency);
 			}
@@ -1732,15 +1726,15 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, int blockSize, int
 	}
 	else if(unit == SCORE_UNIT::SCORE_GBS)
 	{
-		if (score >= 1000000.0)
+		if (score >= 100000.0)
 		{
 			cstr.Format(_T("%d"), (int)(score / 1000.0));
 		}
-		else if (score >= 100000.0)
+		else if (score >= 10000.0)
 		{
 			cstr.Format(_T("%.1f"), score / 1000.0);
 		}
-		else if (score >= 10000.0)
+		else if (score >= 1000.0)
 		{
 			cstr.Format(_T("%.2f"), score / 1000.0);
 		}
@@ -1751,11 +1745,11 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, int blockSize, int
 	}
 	else
 	{
-		if(score >= 1000000.0)
+		if(score >= 100000.0)
 		{
 			cstr.Format(_T("%d"), (int)score);
 		}
-		else if (score >= 100000.0)
+		else if (score >= 10000.0)
 		{
 			cstr.Format(_T("%.1f"), score);
 		}
@@ -1769,14 +1763,7 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, int blockSize, int
 	control->SetMeter(TRUE, meterRatio);
 	control->SetWindowTextW(cstr);
 
-	if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
-	{
-		SetScoreToolTip(control, score, blockSize);
-	}
-	else
-	{
-		control->SetToolTipText(L"");
-	}
+	SetScoreToolTip(control, score, blockSize);
 }
 
 void CDiskMarkDlg::InitDrive()
@@ -1859,13 +1846,6 @@ void CDiskMarkDlg::InitDrive()
 	GetPrivateProfileString(L"Title", L"TEST_DRIVE", L"Test Drive", str, 256, m_CurrentLangPath);
 	m_ComboDrive.SetToolTipText(str);
 
-	GetPrivateProfileString(L"Title", L"TEST_UNIT", L"Test Unit", str, 256, m_CurrentLangPath);
-	m_ComboUnit.SetToolTipText(str);
-	GetPrivateProfileString(L"Title", L"TEST_COUNT", L"Test Count", str, 256, m_CurrentLangPath);
-	m_ComboCount.SetToolTipText(str);
-	GetPrivateProfileString(L"Title", L"TEST_SIZE", L"Test Size", str, 256, m_CurrentLangPath);
-	m_ComboSize.SetToolTipText(str);
-
 	UpdateData(FALSE);
 }
 
@@ -1908,16 +1888,22 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	cstr = i18n(_T("Menu"), _T("QUEUES_THREADS")) + _T("\tCtrl + Q");
 	menu->ModifyMenu(ID_SETTINGS_QUEUESTHREADS, MF_STRING, ID_SETTINGS_QUEUESTHREADS, cstr);
 
+	cstr = i18n(_T("Menu"), _T("PROFILE_DEFAULT"));
+	menu->ModifyMenu(ID_PROFILE_DEFAULT, MF_STRING, ID_PROFILE_DEFAULT, cstr);
 	cstr = i18n(_T("Menu"), _T("PROFILE_PEAK"));
 	menu->ModifyMenu(ID_PROFILE_PEAK, MF_STRING, ID_PROFILE_PEAK, cstr);
 	cstr = i18n(_T("Menu"), _T("PROFILE_REAL"));
 	menu->ModifyMenu(ID_PROFILE_REAL, MF_STRING, ID_PROFILE_REAL, cstr);
 
+#ifdef MIX_MODE
+	cstr = i18n(_T("Menu"), _T("PROFILE_DEFAULT")) + L" [+Mix]";
+	menu->ModifyMenu(ID_PROFILE_DEFAULT_MIX, MF_STRING, ID_PROFILE_DEFAULT_MIX, cstr);
 	cstr = i18n(_T("Menu"), _T("PROFILE_PEAK")) + L" [+Mix]";
 	menu->ModifyMenu(ID_PROFILE_PEAK_MIX, MF_STRING, ID_PROFILE_PEAK_MIX, cstr);
 	cstr = i18n(_T("Menu"), _T("PROFILE_REAL")) + L" [+Mix]";
 	menu->ModifyMenu(ID_PROFILE_REAL_MIX, MF_STRING, ID_PROFILE_REAL_MIX, cstr);
-	
+#endif
+
 	cstr = i18n(_T("Menu"), _T("HELP")) + _T("\tF1");
 	menu->ModifyMenu(ID_HELP, MF_STRING, ID_HELP, cstr);
 	cstr = i18n(_T("Menu"), _T("HELP_ABOUT"));
@@ -1975,8 +1961,17 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 
 	switch (m_Profile)
 	{
+	case PROFILE_DEFAULT:
+		OnProfileDefault();
+		break;
+	case PROFILE_PEAK:
+		OnProfilePeak();
+		break;
 	case PROFILE_REAL:
 		OnProfileReal();
+		break;
+	case PROFILE_DEFAULT_MIX:
+		OnProfileDefaultMix();
 		break;
 	case PROFILE_PEAK_MIX:
 		OnProfilePeakMix();
@@ -1984,9 +1979,8 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	case PROFILE_REAL_MIX:
 		OnProfileRealMix();
 		break;
-	case PROFILE_PEAK:
 	default:
-		OnProfilePeak();
+		OnProfileDefault();
 		break;
 	}
 
@@ -2067,47 +2061,60 @@ void CDiskMarkDlg::OnResultSave()
 	ResultText(RESULT_TEXT_FILE);
 }
 
+CString CDiskMarkDlg::GetRandomResultString(double score, int size, int queues, int threads)
+{
+	CString result;
+	double iops = 0.0;
+	double latency = 0.0;
+
+	iops = score * 1000 * 1000 / (size * 1024);
+	if (iops > 0.0)
+	{
+		latency = 1.0 * 1000 * 1000 / iops;
+	}
+
+	result.Format(L"Random %dKiB (Q=%3d, T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>", size, queues, threads, score, iops, latency);
+
+	if (size > 100)
+	{
+		result = L"  " + result;
+	}
+	else if(size > 10)
+	{
+		result = L"   " + result;
+	}
+	else
+	{
+		result = L"    " + result;
+	}
+
+	return result;
+}
+
+CString CDiskMarkDlg::GetSequentialResultString(double score, int size, int queues, int threads)
+{
+	CString result;
+	double iops = 0.0;
+	double latency = 0.0;
+
+	iops = score * 1000 * 1000 / (size * 1024 * 1024);
+	if (iops > 0.0)
+	{
+		latency = 1.0 * 1000 * 1000 / iops;
+	}
+
+	result.Format(L"Sequential %dMiB (Q=%3d, T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>", size, queues, threads, score, iops, latency);
+
+	return result;
+}
+
 void CDiskMarkDlg::ResultText(RESULT_TEXT type)
 {
 	CString cstr, clip;
 
 	UpdateData(TRUE);
 
-/*
-#ifdef MIX_MODE
-	clip = _T("\
-------------------------------------------------------------------------------\r\n\
-%PRODUCT% %VERSION%%EDITION% (C) %COPY_YEAR% hiyohiyo\r\n\
-                                  Crystal Dew World: https://crystalmark.info/\r\n\
-------------------------------------------------------------------------------\r\n\
-* MB/s = 1,000,000 bytes/s [SATA/600 = 600,000,000 bytes/s]\r\n\
-* KB = 1000 bytes, KiB = 1024 bytes\r\n\
-\r\n\
-%SequentialRead1%\r\n\
-%SequentialWrite1%\r\n\
-%SequentialMix1%\r\n\
-%SequentialRead2%\r\n\
-%SequentialWrite2%\r\n\
-%SequentialMix2%\r\n\
-%RandomRead1%\r\n\
-%RandomWrite1%\r\n\
-%RandomMix1%\r\n\
-%RandomRead2%\r\n\
-%RandomWrite2%\r\n\
-%RandomMix2%\r\n\
-%RandomRead3%\r\n\
-%RandomWrite3%\r\n\
-%RandomMix3%\r\n\
-\r\n\
-  Mix Ratio : %MixRatio%\r\n\
-       Test : %TestSize% (x%TestCount%) %TestMode% [%IntervalTime%]\r\n\
-       Date : %Date%\r\n\
-         OS : %OS%\r\n\
-  %Comment%\
-");
-#else
-*/
-	if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+	if (m_Profile == PROFILE_DEFAULT || m_Profile == PROFILE_DEFAULT_MIX)
 	{
 		clip = L"\
 ------------------------------------------------------------------------------\r\n\
@@ -2119,32 +2126,38 @@ void CDiskMarkDlg::ResultText(RESULT_TEXT type)
 \r\n\
 [Read]\r\n\
 %SequentialRead1%\r\n\
+%SequentialRead2%\r\n\
 %RandomRead1%\r\n\
+%RandomRead2%\r\n\
 \r\n\
 [Write]\r\n\
 %SequentialWrite1%\r\n\
+%SequentialWrite2%\r\n\
 %RandomWrite1%\r\n\
+%RandomWrite2%\r\n\
 \r\n\
 ";
 
 #ifdef MIX_MODE
-if (m_MixMode)
-{
-	clip += L"\
+		if (m_MixMode)
+		{
+			clip += L"\
 [Mix] %MixRatio%\r\n\
 %SequentialMix1%\r\n\
+%SequentialMix2%\r\n\
 %RandomMix1%\r\n\
+%RandomMix2%\r\n\
 \r\n\
 ";
-}
+		}
 #endif
 
-clip += L"\
-Profile: Real\r\n\
+		clip += L"\
+Profile: Default\r\n\
    Test: %TestSize% (x%TestCount%)%TestMode% [%IntervalTime%] %Affinity%\r\n\
    Date: %Date%\r\n\
      OS: %OS%\r\n\
-%Comment%\
+%Comment%\r\n\
 ";
 	}
 	else
@@ -2159,41 +2172,44 @@ Profile: Real\r\n\
 \r\n\
 [Read]\r\n\
 %SequentialRead1%\r\n\
-%SequentialRead2%\r\n\
 %RandomRead1%\r\n\
-%RandomRead2%\r\n\
-%RandomRead3%\r\n\
 \r\n\
 [Write]\r\n\
 %SequentialWrite1%\r\n\
-%SequentialWrite2%\r\n\
 %RandomWrite1%\r\n\
-%RandomWrite2%\r\n\
-%RandomWrite3%\r\n\
 \r\n\
 ";
 
 #ifdef MIX_MODE
-if (m_MixMode)
-{
-	clip += L"\
+		if (m_MixMode)
+		{
+			clip += L"\
 [Mix] %MixRatio%\r\n\
 %SequentialMix1%\r\n\
-%SequentialMix2%\r\n\
 %RandomMix1%\r\n\
-%RandomMix2%\r\n\
-%RandomMix3%\r\n\
 \r\n\
 ";
-}
+		}
 #endif
 
-clip += L"\
+		if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
+		{
+			clip += L"\
 Profile: Peak\r\n\
+";
+		}
+		else
+		{
+			clip += L"\
+Profile: Real\r\n\
+";
+		}
+
+		clip += L"\
    Test: %TestSize% (x%TestCount%)%TestMode% [%IntervalTime%] %Affinity%\r\n\
    Date: %Date%\r\n\
      OS: %OS%\r\n\
-%Comment%\r\n\
+%Comment%\
 ";
 	}
 
@@ -2216,78 +2232,40 @@ Profile: Peak\r\n\
 
 	if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
 	{
-		cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), 1, 1, 1, m_SequentialReadScore1);
-		clip.Replace(_T("%SequentialRead1%"), cstr);
-		cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), 1, 1, 1, m_SequentialWriteScore1);
-		clip.Replace(_T("%SequentialWrite1%"), cstr);
-
-		iops = 0.0; latency = 0.0; iops = m_RandomReadScore1 * 1000 * 1000 / (m_RandomSize1 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), 1, 1, m_RandomReadScore1, iops, latency);
-		clip.Replace(_T("%RandomRead1%"), cstr);
-		iops = 0.0; latency = 0.0; iops = m_RandomWriteScore1 * 1000 * 1000 / (m_RandomSize1 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), 1, 1, m_RandomWriteScore1, iops, latency);
-		clip.Replace(_T("%RandomWrite1%"), cstr);
+		clip.Replace(_T("%SequentialRead1%"), GetSequentialResultString(m_SequentialReadScore1, 1, 1, 1));
+		clip.Replace(_T("%SequentialWrite1%"), GetSequentialResultString(m_SequentialWriteScore1, 1, 1, 1));
+		clip.Replace(_T("%RandomRead1%"), GetRandomResultString(m_RandomReadScore1, 4, 1, 1));
+		clip.Replace(_T("%RandomWrite1%"), GetRandomResultString(m_RandomWriteScore1, 4, 1, 1));
 
 #ifdef MIX_MODE
 		if (m_MixMode)
 		{
-			cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), 1, 1, 1, m_SequentialMixScore1);
-			clip.Replace(_T("%SequentialMix1%"), cstr);
-			iops = 0.0; latency = 0.0; iops = m_RandomMixScore1 * 1000 * 1000 / (m_RandomSize1 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-			cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), 1, 1, m_RandomMixScore1, iops, latency);
-			clip.Replace(_T("%RandomMix1%"), cstr);
+			clip.Replace(_T("%SequentialMix1%"), GetSequentialResultString(m_SequentialMixScore1, 1, 1, 1));
+			clip.Replace(_T("%RandomMix1%"), GetRandomResultString(m_RandomMixScore1, 4, 1, 1));
 			cstr.Format(_T("Read %d%%/Write %d%%"), 100 - m_MixRatio, m_MixRatio);
 			clip.Replace(_T("%MixRatio%"), cstr);
 		}
 #endif
 	}
-	else if(m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
+	else 
 	{
-		cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1, m_SequentialReadScore1);
-		clip.Replace(_T("%SequentialRead1%"), cstr);
-		cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1, m_SequentialWriteScore1);
-		clip.Replace(_T("%SequentialWrite1%"), cstr);
-		cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2, m_SequentialReadScore2);
-		clip.Replace(_T("%SequentialRead2%"), cstr);
-		cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2, m_SequentialWriteScore2);
-		clip.Replace(_T("%SequentialWrite2%"), cstr);
+		clip.Replace(_T("%SequentialRead1%"), GetSequentialResultString(m_SequentialReadScore1, m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1));
+		clip.Replace(_T("%SequentialRead2%"), GetSequentialResultString(m_SequentialReadScore2, m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2));
+		clip.Replace(_T("%SequentialWrite1%"), GetSequentialResultString(m_SequentialWriteScore1, m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1));
+		clip.Replace(_T("%SequentialWrite2%"), GetSequentialResultString(m_SequentialWriteScore2, m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2));
 
-		iops = 0.0; latency = 0.0; iops = m_RandomReadScore1 * 1000 * 1000 / (m_RandomSize1 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues1, m_RandomThreads1, m_RandomReadScore1, iops, latency);
-		clip.Replace(_T("%RandomRead1%"), cstr);
-		iops = 0.0; latency = 0.0; iops = m_RandomWriteScore1 * 1000 * 1000 / (m_RandomSize1 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues1, m_RandomThreads1, m_RandomWriteScore1, iops, latency);
-		clip.Replace(_T("%RandomWrite1%"), cstr);
-		iops = 0.0; latency = 0.0; iops = m_RandomReadScore2 * 1000 * 1000 / (m_RandomSize2 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues2, m_RandomThreads2, m_RandomReadScore2, iops, latency);
-		clip.Replace(_T("%RandomRead2%"), cstr);
-		iops = 0.0; latency = 0.0; iops = m_RandomWriteScore2 * 1000 * 1000 / (m_RandomSize2 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues2, m_RandomThreads2, m_RandomWriteScore2, iops, latency);
-		clip.Replace(_T("%RandomWrite2%"), cstr);
-		iops = 0.0; latency = 0.0; iops = m_RandomReadScore3 * 1000 * 1000 / (m_RandomSize3 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues3, m_RandomThreads3, m_RandomReadScore3, iops, latency);
-		clip.Replace(_T("%RandomRead3%"), cstr);
-		iops = 0.0; latency = 0.0; iops = m_RandomWriteScore3 * 1000 * 1000 / (m_RandomSize3 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-		cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues3, m_RandomThreads3, m_RandomWriteScore3, iops, latency);
-		clip.Replace(_T("%RandomWrite3%"), cstr);
+		clip.Replace(_T("%RandomRead1%"), GetRandomResultString(m_RandomReadScore1, m_RandomSize1, m_RandomQueues1, m_RandomThreads1));
+		clip.Replace(_T("%RandomRead2%"), GetRandomResultString(m_RandomReadScore2, m_RandomSize2, m_RandomQueues2, m_RandomThreads2));
+		clip.Replace(_T("%RandomWrite1%"), GetRandomResultString(m_RandomWriteScore1, m_RandomSize1, m_RandomQueues1, m_RandomThreads1));
+		clip.Replace(_T("%RandomWrite2%"), GetRandomResultString(m_RandomWriteScore2, m_RandomSize2, m_RandomQueues2, m_RandomThreads2));
 
 #ifdef MIX_MODE
 		if (m_MixMode)
 		{
-			cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1, m_SequentialMixScore1);
-			clip.Replace(_T("%SequentialMix1%"), cstr);
-			cstr.Format(_T("Sequential %dMiB (Q=%3d,T=%2d): %8.3f MB/s"), m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2, m_SequentialMixScore2);
-			clip.Replace(_T("%SequentialMix2%"), cstr);
-
-			iops = 0.0; latency = 0.0; iops = m_RandomMixScore1 * 1000 * 1000 / (m_RandomSize1 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-			cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues1, m_RandomThreads1, m_RandomMixScore1, iops, latency);
-			clip.Replace(_T("%RandomMix1%"), cstr);
-			iops = 0.0; latency = 0.0; iops = m_RandomMixScore2 * 1000 * 1000 / (m_RandomSize2 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-			cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues2, m_RandomThreads2, m_RandomMixScore2, iops, latency);
-			clip.Replace(_T("%RandomMix2%"), cstr);
-			iops = 0.0; latency = 0.0; iops = m_RandomMixScore3 * 1000 * 1000 / (m_RandomSize3 * 1024); if (iops > 0.0) { latency = 1.0 * 1000 * 1000 / iops; }
-			cstr.Format(_T("    Random 4KiB (Q=%3d,T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>"), m_RandomQueues3, m_RandomThreads3, m_RandomMixScore3, iops, latency);
-			clip.Replace(_T("%RandomMix3%"), cstr);
+			clip.Replace(_T("%SequentialMix1%"), GetSequentialResultString(m_SequentialMixScore1, m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1));
+			clip.Replace(_T("%SequentialMix2%"), GetSequentialResultString(m_SequentialMixScore2, m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2));
+			clip.Replace(_T("%RandomMix1%"), GetRandomResultString(m_RandomMixScore1, m_RandomSize1, m_RandomQueues1, m_RandomThreads1));
+			clip.Replace(_T("%RandomMix2%"), GetRandomResultString(m_RandomMixScore2, m_RandomSize2, m_RandomQueues2, m_RandomThreads2));
 
 			cstr.Format(_T("Read %d%%/Write %d%%"), 100 - m_MixRatio, m_MixRatio);
 			clip.Replace(_T("%MixRatio%"), cstr);
@@ -2645,16 +2623,33 @@ void CDiskMarkDlg::OnModeAll0x00()
 	SetWindowTitle(_T(""), ALL_0X00_0FILL);
 }
 
+void CDiskMarkDlg::OnProfileDefault()
+{
+	CMenu* menu = GetMenu();
+	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_DEFAULT, MF_BYCOMMAND);
+	SetMenu(menu);
+	DrawMenuBar();
+
+	m_Profile = PROFILE_DEFAULT;
+	m_MixMode = FALSE;
+	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("0"), m_Ini);
+	ChangeButtonStatus(TRUE);
+	UpdateUnitLabel();
+	InitScore();
+	UpdateScore();
+	UpdateDialogSize();
+}
+
 void CDiskMarkDlg::OnProfilePeak()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_PROFILE_PEAK, ID_PROFILE_REAL_MIX, ID_PROFILE_PEAK, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_PEAK, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
 	m_Profile = PROFILE_PEAK;
 	m_MixMode = FALSE;
-	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("0"), m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("1"), m_Ini);
 	ChangeButtonStatus(TRUE);
 	UpdateUnitLabel();
 	InitScore();
@@ -2665,13 +2660,30 @@ void CDiskMarkDlg::OnProfilePeak()
 void CDiskMarkDlg::OnProfileReal()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_PROFILE_PEAK, ID_PROFILE_REAL_MIX, ID_PROFILE_REAL, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_REAL, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
 	m_Profile = PROFILE_REAL;
 	m_MixMode = FALSE;
-	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("1"), m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("2"), m_Ini);
+	ChangeButtonStatus(TRUE);
+	UpdateUnitLabel();
+	InitScore();
+	UpdateScore();
+	UpdateDialogSize();
+}
+
+void CDiskMarkDlg::OnProfileDefaultMix()
+{
+	CMenu* menu = GetMenu();
+	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_DEFAULT_MIX, MF_BYCOMMAND);
+	SetMenu(menu);
+	DrawMenuBar();
+
+	m_Profile = PROFILE_DEFAULT_MIX;
+	m_MixMode = TRUE;
+	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("3"), m_Ini);
 	ChangeButtonStatus(TRUE);
 	UpdateUnitLabel();
 	InitScore();
@@ -2682,13 +2694,13 @@ void CDiskMarkDlg::OnProfileReal()
 void CDiskMarkDlg::OnProfilePeakMix()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_PROFILE_PEAK, ID_PROFILE_REAL_MIX, ID_PROFILE_PEAK_MIX, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_PEAK_MIX, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
 	m_Profile = PROFILE_PEAK_MIX;
 	m_MixMode = TRUE;
-	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("2"), m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("4"), m_Ini);
 	ChangeButtonStatus(TRUE);
 	UpdateUnitLabel();
 	InitScore();
@@ -2699,13 +2711,13 @@ void CDiskMarkDlg::OnProfilePeakMix()
 void CDiskMarkDlg::OnProfileRealMix()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_PROFILE_PEAK, ID_PROFILE_REAL_MIX, ID_PROFILE_REAL_MIX, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_REAL_MIX, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
 	m_Profile = PROFILE_REAL_MIX;
 	m_MixMode = TRUE;
-	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("3"), m_Ini);
+	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("5"), m_Ini);
 	ChangeButtonStatus(TRUE);
 	UpdateUnitLabel();
 	InitScore();

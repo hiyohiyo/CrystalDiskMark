@@ -60,15 +60,12 @@ public:
 	double m_RandomWriteScore1;
 	double m_RandomReadScore2;
 	double m_RandomWriteScore2;
-	double m_RandomReadScore3;
-	double m_RandomWriteScore3;
 
 #ifdef MIX_MODE
 	double m_SequentialMixScore1;
 	double m_SequentialMixScore2;
 	double m_RandomMixScore1;
 	double m_RandomMixScore2;
-	double m_RandomMixScore3;
 #endif
 
 	void SetMeter(CStaticCx* control, double score, int blockSize, int unit);
@@ -120,7 +117,6 @@ public:
 	BOOL m_MixMode;
 	int m_MixRatio;
 
-
 	// Message //
 	CString m_MesDiskCapacityError;
 	CString m_MesDiskWriteError;
@@ -135,16 +131,19 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 	void OnAll();
-	void OnSequential1();
-	void OnSequential2();
-	void OnRandom1();
-	void OnRandom2();
-	void OnRandom3();
+	void OnTest1();
+	void OnTest2();
+	void OnTest3();
+	void OnTest4();
 	void Stop();
+	void OnSequentialPeak();
+	void OnRandomPeak();
 	void OnSequentialReal();
 	void OnRandomReal();
 
 	void SelectDrive();
+	CString GetRandomResultString(double score, int size, int queues, int threads);
+	CString GetSequentialResultString(double score, int size, int queues, int threads);
 
 	CString m_TitleTestDrive;
 	CString m_TitleTestCount;
@@ -184,32 +183,28 @@ protected:
 	void SetLayeredWindow(HWND hWnd, BYTE alpha);
 
 #ifdef MIX_MODE
-	CStaticCx m_SequentialMix1;
-	CStaticCx m_SequentialMix2;
-	CStaticCx m_RandomMix1;
-	CStaticCx m_RandomMix2;
-	CStaticCx m_RandomMix3;
+	CStaticCx m_TestMix1;
+	CStaticCx m_TestMix2;
+	CStaticCx m_TestMix3;
+	CStaticCx m_TestMix4;
 	CStaticCx m_MixUnit;
 #endif
 
 	CButtonCx m_ButtonAll;
-	CButtonCx m_ButtonSequential1;
-	CButtonCx m_ButtonSequential2;
-	CButtonCx m_ButtonRandom1;
-	CButtonCx m_ButtonRandom2;
-	CButtonCx m_ButtonRandom3;
+	CButtonCx m_ButtonTest1;
+	CButtonCx m_ButtonTest2;
+	CButtonCx m_ButtonTest3;
+	CButtonCx m_ButtonTest4;
 
-	CStaticCx m_SequentialRead1;
-	CStaticCx m_SequentialRead2;
-	CStaticCx m_RandomRead1;
-	CStaticCx m_RandomRead2;
-	CStaticCx m_RandomRead3;
+	CStaticCx m_TestRead1;
+	CStaticCx m_TestRead2;
+	CStaticCx m_TestRead3;
+	CStaticCx m_TestRead4;
 
-	CStaticCx m_SequentialWrite1;
-	CStaticCx m_SequentialWrite2;
-	CStaticCx m_RandomWrite1;
-	CStaticCx m_RandomWrite2;
-	CStaticCx m_RandomWrite3;
+	CStaticCx m_TestWrite1;
+	CStaticCx m_TestWrite2;
+	CStaticCx m_TestWrite3;
+	CStaticCx m_TestWrite4;
 
 	CEditEx m_Comment;
 
@@ -270,10 +265,12 @@ public:
 	afx_msg void OnCrystalDewWorld();
 	afx_msg void OnModeDefault();
 	afx_msg void OnModeAll0x00();
-	afx_msg void OnProfileReal();
+	afx_msg void OnProfileDefault();
 	afx_msg void OnProfilePeak();
-	afx_msg void OnProfileRealMix();
+	afx_msg void OnProfileReal();
+	afx_msg void OnProfileDefaultMix();
 	afx_msg void OnProfilePeakMix();
+	afx_msg void OnProfileRealMix();
 	afx_msg void OnResultSave();
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);

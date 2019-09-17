@@ -16,7 +16,7 @@ class CSettingsDlg : public CDialogCx
 	DECLARE_DYNCREATE(CSettingsDlg)
 
 	static const int SIZE_X = 564;
-	static const int SIZE_Y = 324;
+	static const int SIZE_Y = 284;
 
 public:
 	CSettingsDlg(CWnd* pParent = NULL);
@@ -47,16 +47,12 @@ protected:
 
 	CStaticCx m_RandomLabel1;
 	CStaticCx m_RandomLabel2;
-	CStaticCx m_RandomLabel3;
 	CComboBoxCx m_ComboRandomSize1;
 	CComboBoxCx m_ComboRandomSize2;
-	CComboBoxCx m_ComboRandomSize3;
 	CComboBoxCx m_ComboRandomQueues1;
 	CComboBoxCx m_ComboRandomQueues2;
-	CComboBoxCx m_ComboRandomQueues3;
 	CComboBoxCx m_ComboRandomThreads1;
 	CComboBoxCx m_ComboRandomThreads2;
-	CComboBoxCx m_ComboRandomThreads3;
 
 	CComboBoxCx m_ComboAffinity;
 
@@ -79,9 +75,6 @@ protected:
 	int m_RandomSize2;
 	int m_RandomQueues2;
 	int m_RandomThreads2;
-	int m_RandomSize3;
-	int m_RandomQueues3;
-	int m_RandomThreads3;
 	int m_Affinity;
 	DWORD m_Profile;
 

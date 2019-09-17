@@ -139,16 +139,20 @@ void CComboBoxCx::SetToolTipText(LPCTSTR pText)
 
 	CString toolTipText = pText;
 	// テキストの内容が異なる？
-	if (!toolTipText.IsEmpty() && m_ToolTipText.Find(toolTipText) == 0) { return; }
+	// if (!toolTipText.IsEmpty() && m_ToolTipText.Find(toolTipText) == 0) { return; }
 	m_ToolTipText = toolTipText;
 
 	// ツール ヒント コントロールに登録されているツールの数は無効？
-	if (m_ToolTip.GetToolCount() == 0)
+	if (TRUE /*m_ToolTip.GetToolCount() == 0*/)
 	{
 		// クライアント領域のサイズを取得します
 		CRect rect;
 		GetClientRect(rect);
 		// ツール ヒント コントロールにツールを登録します
+		if (m_ToolTip.GetToolCount() == 1)
+		{
+			m_ToolTip.DelTool(this);
+		}
 		m_ToolTip.AddTool(this, m_ToolTipText, rect, 1);
 	}
 	else

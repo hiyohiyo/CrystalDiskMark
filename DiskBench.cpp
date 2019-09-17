@@ -130,38 +130,58 @@ UINT ExecDiskBenchAll(LPVOID dlg)
 {
 	if(Init(dlg))
 	{
-		DiskSpd(dlg, TEST_SEQUENTIAL_READ1);
+		DiskSpd(dlg, TEST_SEQUENTIAL_READ_1);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_SEQUENTIAL_READ2);
+		DiskSpd(dlg, TEST_SEQUENTIAL_READ_2);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_RANDOM_READ_1);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_RANDOM_READ_2);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_READ_3);
+		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE_1);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE1);
-		Interval(dlg);
-		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE2);
+		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE_2);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_RANDOM_WRITE_1);
 		Interval(dlg);
 		DiskSpd(dlg, TEST_RANDOM_WRITE_2);
-		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_WRITE_3);
 #ifdef MIX_MODE
 		if (MixMode)
 		{
 			Interval(dlg);
-			DiskSpd(dlg, TEST_SEQUENTIAL_MIX1);
+			DiskSpd(dlg, TEST_SEQUENTIAL_MIX_1);
 			Interval(dlg);
-			DiskSpd(dlg, TEST_SEQUENTIAL_MIX2);
+			DiskSpd(dlg, TEST_SEQUENTIAL_MIX_2);
 			Interval(dlg);
 			DiskSpd(dlg, TEST_RANDOM_MIX_1);
 			Interval(dlg);
 			DiskSpd(dlg, TEST_RANDOM_MIX_2);
+		}
+#endif
+	}
+
+	return Exit(dlg);
+}
+
+UINT ExecDiskBenchAllPeak(LPVOID dlg)
+{
+	if (Init(dlg))
+	{
+		DiskSpd(dlg, TEST_SEQUENTIAL_READ_1);
+		Interval(dlg);
+		DiskSpd(dlg, TEST_RANDOM_READ_1);
+		Interval(dlg);
+		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE_1);
+		Interval(dlg);
+		DiskSpd(dlg, TEST_RANDOM_WRITE_1);
+
+#ifdef MIX_MODE
+		if (MixMode)
+		{
 			Interval(dlg);
-			DiskSpd(dlg, TEST_RANDOM_MIX_3);
+			DiskSpd(dlg, TEST_SEQUENTIAL_MIX_1);
+			Interval(dlg);
+			DiskSpd(dlg, TEST_RANDOM_MIX_1);
 		}
 #endif
 	}
@@ -199,14 +219,14 @@ UINT ExecDiskBenchSequential1(LPVOID dlg)
 {
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_SEQUENTIAL_READ1);
+		DiskSpd(dlg, TEST_SEQUENTIAL_READ_1);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE1);
+		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE_1);
 #ifdef MIX_MODE
 		if (MixMode)
 		{
 			Interval(dlg);
-			DiskSpd(dlg, TEST_SEQUENTIAL_MIX1);
+			DiskSpd(dlg, TEST_SEQUENTIAL_MIX_1);
 		}
 #endif
 	}
@@ -218,14 +238,14 @@ UINT ExecDiskBenchSequential2(LPVOID dlg)
 
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_SEQUENTIAL_READ2);
+		DiskSpd(dlg, TEST_SEQUENTIAL_READ_2);
 		Interval(dlg);
-		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE2);
+		DiskSpd(dlg, TEST_SEQUENTIAL_WRITE_2);
 #ifdef MIX_MODE
 		if (MixMode)
 		{
 			Interval(dlg);
-			DiskSpd(dlg, TEST_SEQUENTIAL_MIX2);
+			DiskSpd(dlg, TEST_SEQUENTIAL_MIX_2);
 		}
 #endif
 	}
@@ -261,24 +281,6 @@ UINT ExecDiskBenchRandom2(LPVOID dlg)
 		{
 			Interval(dlg);
 			DiskSpd(dlg, TEST_RANDOM_MIX_2);
-		}
-#endif
-	}
-	return Exit(dlg);
-}
-
-UINT ExecDiskBenchRandom3(LPVOID dlg)
-{
-	if (Init(dlg))
-	{
-		DiskSpd(dlg, TEST_RANDOM_READ_3);
-		Interval(dlg);
-		DiskSpd(dlg, TEST_RANDOM_WRITE_3);
-#ifdef MIX_MODE
-		if (MixMode)
-		{
-			Interval(dlg);
-			DiskSpd(dlg, TEST_RANDOM_MIX_3);
 		}
 #endif
 	}
@@ -593,13 +595,13 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	{
 		switch (cmd)
 		{
-		case TEST_SEQUENTIAL_WRITE1:
-		case TEST_SEQUENTIAL_MIX1:
+		case TEST_SEQUENTIAL_WRITE_1:
+		case TEST_SEQUENTIAL_MIX_1:
 			cstr.Format(L" -Z%dM", SequentialSize1);
 			bufOption += cstr;
 			break;
-		case TEST_SEQUENTIAL_WRITE2:
-		case TEST_SEQUENTIAL_MIX2:
+		case TEST_SEQUENTIAL_WRITE_2:
+		case TEST_SEQUENTIAL_MIX_2:
 			cstr.Format(L" -Z%dM", SequentialSize2);
 			bufOption += cstr;
 			break;
@@ -611,11 +613,6 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		case TEST_RANDOM_WRITE_2:
 		case TEST_RANDOM_MIX_2:
 			cstr.Format(L" -Z%dK", RandomSize2);
-			bufOption += cstr;
-			break;
-		case TEST_RANDOM_WRITE_3:
-		case TEST_RANDOM_MIX_3:
-			cstr.Format(L" -Z%dK", RandomSize3);
 			bufOption += cstr;
 			break;
 		case TEST_RANDOM_WRITE_REAL:
@@ -642,13 +639,13 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 
 		return;
 		break;
-	case TEST_SEQUENTIAL_READ1:
+	case TEST_SEQUENTIAL_READ_1:
 		title.Format(L"Sequential Read");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
 		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w0", SequentialSize1, duration, ((CDiskMarkDlg*) dlg)->m_SequentialQueues1, ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
 		maxScore = &(((CDiskMarkDlg*) dlg)->m_SequentialReadScore1);
 		break;
-	case TEST_SEQUENTIAL_WRITE1:
+	case TEST_SEQUENTIAL_WRITE_1:
 		title.Format(L"Sequential Write");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
 		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w100", SequentialSize1, duration, ((CDiskMarkDlg*) dlg)->m_SequentialQueues1, ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
@@ -656,7 +653,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		maxScore = &(((CDiskMarkDlg*) dlg)->m_SequentialWriteScore1);
 		break;
 #ifdef MIX_MODE
-	case TEST_SEQUENTIAL_MIX1:
+	case TEST_SEQUENTIAL_MIX_1:
 		title.Format(L"Sequential Mix");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*)dlg)->m_SequentialThreads1);
 		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w%d", SequentialSize1, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues1, ((CDiskMarkDlg*)dlg)->m_SequentialThreads1, MixRatio);
@@ -664,13 +661,13 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialMixScore1);
 		break;
 #endif
-	case TEST_SEQUENTIAL_READ2:
+	case TEST_SEQUENTIAL_READ_2:
 		title.Format(L"Sequential Read");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
 		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w0", SequentialSize2, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialReadScore2);
 		break;
-	case TEST_SEQUENTIAL_WRITE2:
+	case TEST_SEQUENTIAL_WRITE_2:
 		title.Format(L"Sequential Write");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
 		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w100", SequentialSize2, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
@@ -678,7 +675,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialWriteScore2);
 		break;
 #ifdef MIX_MODE
-	case TEST_SEQUENTIAL_MIX2:
+	case TEST_SEQUENTIAL_MIX_2:
 		title.Format(L"Sequential Mix");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
 		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w%d", SequentialSize2, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialThreads2, MixRatio);
@@ -749,28 +746,6 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w%d", RandomSize2, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2, MixRatio);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMixScore2);
-		break;
-#endif
-	case TEST_RANDOM_READ_3:
-		title.Format(L"Random Read");
-		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3);
-		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w0", RandomSize3, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3);
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomReadScore3);
-		break;
-	case TEST_RANDOM_WRITE_3:
-		title.Format(L"Random Write");
-		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3);
-		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w100", RandomSize3, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3);
-		option += bufOption;
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomWriteScore3);
-		break;
-#ifdef MIX_MODE
-	case TEST_RANDOM_MIX_3:
-		title.Format(L"Random Mix");
-		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3);
-		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w%d", RandomSize3, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues3, ((CDiskMarkDlg*)dlg)->m_RandomThreads3, MixRatio);
-		option += bufOption;
-		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMixScore3);
 		break;
 #endif
 	case TEST_RANDOM_READ_REAL:

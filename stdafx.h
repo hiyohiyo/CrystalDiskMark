@@ -110,7 +110,7 @@
 /// Beta
 // #define PRODUCT_EDITION			_T("-Marginality-")
 
-#define PRODUCT_RELEASE			_T("2019/09/08")
+#define PRODUCT_RELEASE			_T("2019/09/17")
 #define PRODUCT_COPY_YEAR		_T("2007-2019")
 #define PRODUCT_COPYRIGHT		_T("© hiyohiyo 2007-2019 ")
 #define PRODUCT_LICENSE			_T("The MIT License")
