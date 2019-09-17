@@ -139,7 +139,7 @@ void CStaticCx::SetToolTipText(LPCTSTR pText)
 
 	CString toolTipText = pText;
 	// テキストの内容が異なる？
-	if (!toolTipText.IsEmpty() && m_ToolTipText.Find(toolTipText) == 0){ return; }
+	// if (!toolTipText.IsEmpty() && m_ToolTipText.Find(toolTipText) == 0){ return; }
 	m_ToolTipText = toolTipText;
 
 	// ツール ヒント コントロールに登録されているツールの数は無効？
