@@ -1727,22 +1727,7 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, int blockSize, int
 	}
 	else if(unit == SCORE_UNIT::SCORE_GBS)
 	{
-		if (score >= 100000.0)
-		{
-			cstr.Format(_T("%d"), (int)(score / 1000.0));
-		}
-		else if (score >= 10000.0)
-		{
-			cstr.Format(_T("%.1f"), score / 1000.0);
-		}
-		else if (score >= 1000.0)
-		{
-			cstr.Format(_T("%.2f"), score / 1000.0);
-		}
-		else
-		{
-			cstr.Format(_T("%.3f"), score / 1000.0);
-		}
+		cstr.Format(_T("%.3f"), score / 1000.0);
 	}
 	else
 	{
