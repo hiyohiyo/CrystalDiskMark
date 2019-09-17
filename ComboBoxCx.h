@@ -44,6 +44,7 @@ public:
 	void SetToolTipText(LPCTSTR pText);				// ツールチップのメッセージを設定する。
 	void SetToolTipActivate(BOOL bActivate = TRUE);	// ツールチップの有効無効を切り替えます。
 	void SetToolTipWindowText(LPCTSTR pText);		// コントロールとツールチップのメッセージを設定する。
+	CString GetToolTipText();
 
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 

@@ -128,6 +128,11 @@ BOOL CComboBoxCx::PreTranslateMessage(MSG* pMsg)
 	return CComboBox::PreTranslateMessage(pMsg);
 }
 
+CString CComboBoxCx::GetToolTipText()
+{
+	return m_ToolTipText;
+}
+
 // ツールチップのメッセージを設定する。
 void CComboBoxCx::SetToolTipText(LPCTSTR pText)
 {

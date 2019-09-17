@@ -632,6 +632,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_ComboMix.SetToolTipText(str);
 	}
 #endif
+	m_ComboDrive.SetToolTipText(m_ComboDrive.GetToolTipText().GetString());
 
 	ShowWindow(SW_SHOW);
 }
