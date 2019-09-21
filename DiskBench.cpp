@@ -55,9 +55,9 @@ static volatile BOOL WaitFlag;
 
 PROCESS_INFORMATION pi;
 
-int ExecAndWait(TCHAR *pszCmd, BOOL bNoWindow)
+int ExecAndWait(TCHAR *pszCmd, BOOL bNoWindow, double *latency)
 {
-	DWORD Code;
+	DWORD Code = 0;
 	BOOL bSuccess;
 	STARTUPINFO si;
 
@@ -69,28 +69,39 @@ int ExecAndWait(TCHAR *pszCmd, BOOL bNoWindow)
 		si.wShowWindow = SW_HIDE;
 	}
 
-	bSuccess = CreateProcess(
-		NULL,	// lpApplicationName
-		pszCmd,	// lpCommandLine
-		NULL,	// lpProcessAttributes
-		NULL,	// lpThreadAttributes
-		FALSE,	// bInheritHandle
-		0,		// dwCreationFlag
-		NULL,	// lpEnvironment
-		NULL,	// lpCurrentDirectory
-		&si,	// lpStartupInfo
-		&pi		// lpProcessInformation
-		);
-	if (bSuccess != TRUE) return 0;
+	CString name;
+	name.Format(L"CrystalDiskMark%08X", GetCurrentProcessId());
+	auto size = 8;
 
-	WaitForInputIdle(pi.hProcess, INFINITE);
-	WaitForSingleObject(pi.hProcess, INFINITE);
-	GetExitCodeProcess(pi.hProcess, &Code);
+	HANDLE hSharedMemory = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, NULL, size, name.GetString());
+	if (hSharedMemory != NULL)
+	{
+		auto pMemory = (double*)MapViewOfFile(hSharedMemory, FILE_MAP_ALL_ACCESS, NULL, NULL, size);
+		if (pMemory != NULL)
+		{
+			bSuccess = CreateProcess(NULL, pszCmd, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+			if (bSuccess != TRUE)
+			{
+				UnmapViewOfFile(pMemory);
+				CloseHandle(hSharedMemory);
+				return 0;
+			}
 
-	CloseHandle(pi.hThread);
-	CloseHandle(pi.hProcess);
+			WaitForInputIdle(pi.hProcess, INFINITE);
+			WaitForSingleObject(pi.hProcess, INFINITE);
+			GetExitCodeProcess(pi.hProcess, &Code);
 
-	pi.hProcess = NULL;
+			CloseHandle(pi.hThread);
+			CloseHandle(pi.hProcess);
+
+			pi.hProcess = NULL;
+
+			*latency = (double)*pMemory * 1000; // milli sec to micro sec
+
+			UnmapViewOfFile(pMemory);
+			CloseHandle(hSharedMemory);
+		}
+	}
 
 	return Code;
 }
@@ -569,8 +580,8 @@ UINT Exit(void* dlg)
 void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 {
 	static CString cstr;
-	double score;
 	double *maxScore;
+	double *minLatency;
 	CString command;
 	CString title;
 	CString qt;
@@ -628,6 +639,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 
 	switch (cmd)
 	{
+	/*
 	case TEST_CREATE_FILE:
 		title = L"Preparing...";
 		::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_USER_UPDATE_MESSAGE, (WPARAM) &title, 0);
@@ -635,15 +647,17 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-c%dM", (int)DiskTestSize);
 		option += bufOption;
 		command.Format(_T("\"%s\" %s \"%s\""), DiskSpdExe.GetString(), option, TestFilePath);
-		ExecAndWait((TCHAR*) (command.GetString()), TRUE);
+		ExecAndWait((TCHAR*) (command.GetString()), TRUE, NULL);
 
 		return;
 		break;
+	*/
 	case TEST_SEQUENTIAL_READ_1:
 		title.Format(L"Sequential Read");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
 		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w0", SequentialSize1, duration, ((CDiskMarkDlg*) dlg)->m_SequentialQueues1, ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
 		maxScore = &(((CDiskMarkDlg*) dlg)->m_SequentialReadScore1);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_SequentialReadLatency1);
 		break;
 	case TEST_SEQUENTIAL_WRITE_1:
 		title.Format(L"Sequential Write");
@@ -651,6 +665,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w100", SequentialSize1, duration, ((CDiskMarkDlg*) dlg)->m_SequentialQueues1, ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*) dlg)->m_SequentialWriteScore1);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_SequentialWriteLatency1);
 		break;
 #ifdef MIX_MODE
 	case TEST_SEQUENTIAL_MIX_1:
@@ -659,6 +674,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w%d", SequentialSize1, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues1, ((CDiskMarkDlg*)dlg)->m_SequentialThreads1, MixRatio);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialMixScore1);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_SequentialMixLatency1);
 		break;
 #endif
 	case TEST_SEQUENTIAL_READ_2:
@@ -666,6 +682,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
 		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w0", SequentialSize2, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialReadScore2);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_SequentialReadLatency2);
 		break;
 	case TEST_SEQUENTIAL_WRITE_2:
 		title.Format(L"Sequential Write");
@@ -673,6 +690,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w100", SequentialSize2, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialThreads2);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialWriteScore2);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_SequentialWriteLatency2);
 		break;
 #ifdef MIX_MODE
 	case TEST_SEQUENTIAL_MIX_2:
@@ -681,6 +699,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-b%dM -d%d -o%d -t%d -W0 -S -w%d", SequentialSize2, duration, ((CDiskMarkDlg*)dlg)->m_SequentialQueues2, ((CDiskMarkDlg*)dlg)->m_SequentialThreads2, MixRatio);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialMixScore2);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_SequentialMixLatency2);
 		break;
 #endif
 	case TEST_SEQUENTIAL_READ_REAL:
@@ -688,6 +707,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		qt.Format(L"[T=1]");
 		option.Format(L"-b1M -d%d -o1 -t1 -W0 -S -w0", duration);
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialReadScore1);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_SequentialReadLatency1);
 		break;
 	case TEST_SEQUENTIAL_WRITE_REAL:
 		title.Format(L"Sequential Write");
@@ -695,6 +715,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-b1M -d%d -o1 -t1 -W0 -S -w100", duration);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialWriteScore1);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_SequentialWriteLatency1);
 		break;
 #ifdef MIX_MODE
 	case TEST_SEQUENTIAL_MIX_REAL:
@@ -703,6 +724,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-b1M -d%d -o1 -t1 -W0 -S -w%d", duration, MixRatio);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_SequentialMixScore1);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_SequentialMixLatency1);
 		break;
 #endif
 	case TEST_RANDOM_READ_1:
@@ -710,6 +732,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*) dlg)->m_RandomQueues1, ((CDiskMarkDlg*) dlg)->m_RandomThreads1);
 		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w0", RandomSize1, duration, ((CDiskMarkDlg*) dlg)->m_RandomQueues1, ((CDiskMarkDlg*) dlg)->m_RandomThreads1);
 		maxScore = &(((CDiskMarkDlg*) dlg)->m_RandomReadScore1);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_RandomReadLatency1);
 		break;
 	case TEST_RANDOM_WRITE_1:
 		title.Format(L"Random Write");
@@ -717,6 +740,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w100", RandomSize1, duration, ((CDiskMarkDlg*) dlg)->m_RandomQueues1, ((CDiskMarkDlg*) dlg)->m_RandomThreads1);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*) dlg)->m_RandomWriteScore1);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_RandomWriteLatency1);
 		break;
 #ifdef MIX_MODE
 	case TEST_RANDOM_MIX_1:
@@ -724,6 +748,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_RandomQueues1, ((CDiskMarkDlg*)dlg)->m_RandomThreads1);
 		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w%d", RandomSize1, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues1, ((CDiskMarkDlg*)dlg)->m_RandomThreads1, MixRatio);
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMixScore1);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_RandomMixLatency1);
 		break;
 #endif
 	case TEST_RANDOM_READ_2:
@@ -731,6 +756,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		qt.Format(L"[Q=%d/T=%d]", ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2);
 		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w0", RandomSize2, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2);
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomReadScore2);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_RandomReadLatency2);
 		break;
 	case TEST_RANDOM_WRITE_2:
 		title.Format(L"Random Write");
@@ -738,6 +764,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w100", RandomSize2, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomWriteScore2);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_RandomWriteLatency2);
 		break;
 #ifdef MIX_MODE
 	case TEST_RANDOM_MIX_2:
@@ -746,6 +773,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-b%dK -d%d -o%d -t%d -W0 -r -S -w%d", RandomSize2, duration, ((CDiskMarkDlg*)dlg)->m_RandomQueues2, ((CDiskMarkDlg*)dlg)->m_RandomThreads2, MixRatio);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMixScore2);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_RandomMixLatency2);
 		break;
 #endif
 	case TEST_RANDOM_READ_REAL:
@@ -753,6 +781,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		qt.Format(L"[Q=1/T=1]");
 		option.Format(L"-b4K -d%d -o1 -t1 -W0 -r -S -w0", duration);
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomReadScore1);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_RandomReadLatency1);
 		break;
 	case TEST_RANDOM_WRITE_REAL:
 		title.Format(L"Random Write");
@@ -760,6 +789,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option.Format(L"-b4K -d%d -o1 -t1 -W0 -r -S -w100", duration);
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomWriteScore1);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_RandomWriteLatency1);
 		break;
 #ifdef MIX_MODE
 	case TEST_RANDOM_MIX_REAL:
@@ -767,6 +797,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		qt.Format(L"[Q=1/T=1]");
 		option.Format(L"-b4K -d%d -o1 -t1 -W0 -r -S -w%d", duration, MixRatio);
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_RandomMixScore1);
+		minLatency = &(((CDiskMarkDlg*)dlg)->m_RandomMixLatency1);
 		break;
 #endif
 	}
@@ -782,8 +813,12 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		option += L" -ag";
 	}
 
-	score = 0.0;
+	double score = 0.0;
+	double latency = 0.0;
+
 	*maxScore = 0.0;
+	*minLatency = -1.0;
+
 	for (j = 0; j <= DiskTestCount; j++)
 	{
 		if (j == 0)
@@ -796,14 +831,21 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		}
 		::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_USER_UPDATE_MESSAGE, (WPARAM) &cstr, 0);
 		
-		command.Format(_T("\"%s\" %s \"%s\""), DiskSpdExe.GetString(), option, TestFilePath);
 
-		score = ExecAndWait((TCHAR*) (command.GetString()), TRUE) / 10 / 1000.0;
+		command.Format(_T("\"%s\" %s -A%d -L \"%s\""), DiskSpdExe.GetString(), option, GetCurrentProcessId(),TestFilePath);
+
+		score = ExecAndWait((TCHAR*) (command.GetString()), TRUE, &latency) / 10 / 1000.0;
 
 		if (j > 0 && score > *maxScore)
 		{
 			*maxScore = score;
 			::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_USER_UPDATE_SCORE, 0, 0);
+		}
+
+		if (j > 0 && (latency < *minLatency || *minLatency < 0))
+		{
+			*minLatency = latency;
+			::PostMessage(((CDiskMarkDlg*)dlg)->GetSafeHwnd(), WM_USER_UPDATE_SCORE, 0, 0);
 		}
 
 		if (!((CDiskMarkDlg*) dlg)->m_DiskBenchStatus)

@@ -1098,6 +1098,22 @@ void CDiskMarkDlg::InitScore()
 	m_RandomMixScore2 = 0.0;
 #endif
 
+	m_SequentialReadLatency1 = 0.0;
+	m_SequentialWriteLatency1 = 0.0;
+	m_SequentialReadLatency2 = 0.0;
+	m_SequentialWriteLatency2 = 0.0;
+	m_RandomReadLatency1 = 0.0;
+	m_RandomWriteLatency1 = 0.0;
+	m_RandomReadLatency2 = 0.0;
+	m_RandomWriteLatency2 = 0.0;
+
+#ifdef MIX_MODE
+	m_SequentialMixLatency1 = 0.0;
+	m_SequentialMixLatency2 = 0.0;
+	m_RandomMixLatency1 = 0.0;
+	m_RandomMixLatency2 = 0.0;
+#endif
+
 	UpdateScore();
 }
 
@@ -1106,71 +1122,71 @@ void CDiskMarkDlg::UpdateScore()
 	UpdateData(TRUE);
 	if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
 	{
-		SetMeter(&m_TestRead1, m_SequentialReadScore1, m_SequentialSize1 * 1024 * 1024, SCORE_MBS);
-		SetMeter(&m_TestRead2, m_RandomReadScore1, m_RandomSize1 * 1024, SCORE_MBS);
-		SetMeter(&m_TestRead3, m_RandomReadScore1, m_RandomSize1 * 1024, SCORE_IOPS);
-		SetMeter(&m_TestRead4, m_RandomReadScore1, m_RandomSize1 * 1024, SCORE_US);
-		SetMeter(&m_TestWrite1, m_SequentialWriteScore1, m_SequentialSize1 * 1024 * 1024, SCORE_MBS);
-		SetMeter(&m_TestWrite2, m_RandomWriteScore1, m_RandomSize1 * 1024, SCORE_MBS);
-		SetMeter(&m_TestWrite3, m_RandomWriteScore1, m_RandomSize1 * 1024, SCORE_IOPS);
-		SetMeter(&m_TestWrite4, m_RandomWriteScore1, m_RandomSize1 * 1024, SCORE_US);
+		SetMeter(&m_TestRead1, m_SequentialReadScore1, m_SequentialReadLatency1, m_SequentialSize1 * 1024 * 1024, SCORE_MBS);
+		SetMeter(&m_TestRead2, m_RandomReadScore1, m_RandomReadLatency1, m_RandomSize1 * 1024, SCORE_MBS);
+		SetMeter(&m_TestRead3, m_RandomReadScore1, m_RandomReadLatency1, m_RandomSize1 * 1024, SCORE_IOPS);
+		SetMeter(&m_TestRead4, m_RandomReadScore1, m_RandomReadLatency1, m_RandomSize1 * 1024, SCORE_US);
+		SetMeter(&m_TestWrite1, m_SequentialWriteScore1, m_SequentialWriteLatency1, m_SequentialSize1 * 1024 * 1024, SCORE_MBS);
+		SetMeter(&m_TestWrite2, m_RandomWriteScore1, m_RandomWriteLatency1, m_RandomSize1 * 1024, SCORE_MBS);
+		SetMeter(&m_TestWrite3, m_RandomWriteScore1, m_RandomWriteLatency1, m_RandomSize1 * 1024, SCORE_IOPS);
+		SetMeter(&m_TestWrite4, m_RandomWriteScore1, m_RandomWriteLatency1, m_RandomSize1 * 1024, SCORE_US);
 
 #ifdef MIX_MODE
 		if (m_MixMode)
 		{
-			SetMeter(&m_TestMix1, m_SequentialMixScore1, m_SequentialSize1 * 1024 * 1024, SCORE_MBS);
-			SetMeter(&m_TestMix2, m_RandomMixScore1, m_RandomSize1 * 1024, SCORE_MBS);
-			SetMeter(&m_TestMix3, m_RandomMixScore1, m_RandomSize1 * 1024, SCORE_IOPS);
-			SetMeter(&m_TestMix4, m_RandomMixScore1, m_RandomSize1 * 1024, SCORE_US);
+			SetMeter(&m_TestMix1, m_SequentialMixScore1, m_SequentialMixLatency1, m_SequentialSize1 * 1024 * 1024, SCORE_MBS);
+			SetMeter(&m_TestMix2, m_RandomMixScore1, m_RandomMixLatency1, m_RandomSize1 * 1024, SCORE_MBS);
+			SetMeter(&m_TestMix3, m_RandomMixScore1, m_RandomMixLatency1, m_RandomSize1 * 1024, SCORE_IOPS);
+			SetMeter(&m_TestMix4, m_RandomMixScore1, m_RandomMixLatency1, m_RandomSize1 * 1024, SCORE_US);
 		}
 #endif
 	}
 	else if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
 	{
-		SetMeter(&m_TestRead1, m_SequentialReadScore1, 1 * 1024 * 1024, SCORE_MBS);
-		SetMeter(&m_TestRead2, m_RandomReadScore1, 4 * 1024, SCORE_MBS);
-		SetMeter(&m_TestRead3, m_RandomReadScore1, 4 * 1024, SCORE_IOPS);
-		SetMeter(&m_TestRead4, m_RandomReadScore1, 4 * 1024, SCORE_US);
-		SetMeter(&m_TestWrite1, m_SequentialWriteScore1, 1 * 1024 * 1024, SCORE_MBS);
-		SetMeter(&m_TestWrite2, m_RandomWriteScore1, 4 * 1024, SCORE_MBS);
-		SetMeter(&m_TestWrite3, m_RandomWriteScore1, 4 * 1024, SCORE_IOPS);
-		SetMeter(&m_TestWrite4, m_RandomWriteScore1, 4 * 1024, SCORE_US);
+		SetMeter(&m_TestRead1, m_SequentialReadScore1, m_SequentialReadLatency1, 1 * 1024 * 1024, SCORE_MBS);
+		SetMeter(&m_TestRead2, m_RandomReadScore1, m_RandomReadLatency1, 4 * 1024, SCORE_MBS);
+		SetMeter(&m_TestRead3, m_RandomReadScore1, m_RandomReadLatency1, 4 * 1024, SCORE_IOPS);
+		SetMeter(&m_TestRead4, m_RandomReadScore1, m_RandomReadLatency1, 4 * 1024, SCORE_US);
+		SetMeter(&m_TestWrite1, m_SequentialWriteScore1, m_SequentialWriteLatency1, 1 * 1024 * 1024, SCORE_MBS);
+		SetMeter(&m_TestWrite2, m_RandomWriteScore1, m_RandomWriteLatency1, 4 * 1024, SCORE_MBS);
+		SetMeter(&m_TestWrite3, m_RandomWriteScore1, m_RandomWriteLatency1, 4 * 1024, SCORE_IOPS);
+		SetMeter(&m_TestWrite4, m_RandomWriteScore1, m_RandomWriteLatency1, 4 * 1024, SCORE_US);
 
 #ifdef MIX_MODE
 		if (m_MixMode)
 		{
-			SetMeter(&m_TestMix1, m_SequentialMixScore1, 1 * 1024 * 1024, SCORE_MBS);
-			SetMeter(&m_TestMix2, m_RandomMixScore1, 4 * 1024, SCORE_MBS);
-			SetMeter(&m_TestMix3, m_RandomMixScore1, 4 * 1024, SCORE_IOPS);
-			SetMeter(&m_TestMix4, m_RandomMixScore1, 4 * 1024, SCORE_US);
+			SetMeter(&m_TestMix1, m_SequentialMixScore1, m_SequentialMixLatency1, 1 * 1024 * 1024, SCORE_MBS);
+			SetMeter(&m_TestMix2, m_RandomMixScore1, m_RandomMixLatency1, 4 * 1024, SCORE_MBS);
+			SetMeter(&m_TestMix3, m_RandomMixScore1, m_RandomMixLatency1, 4 * 1024, SCORE_IOPS);
+			SetMeter(&m_TestMix4, m_RandomMixScore1, m_RandomMixLatency1, 4 * 1024, SCORE_US);
 		}
 #endif
 	}
 	else
 	{
-		SetMeter(&m_TestRead1, m_SequentialReadScore1, m_SequentialSize1 * 1024 * 1024, m_IndexTestUnit);
-		SetMeter(&m_TestRead2, m_SequentialReadScore2, m_SequentialSize2 * 1024 * 1024, m_IndexTestUnit);
-		SetMeter(&m_TestRead3, m_RandomReadScore1, m_RandomSize1 * 1024, m_IndexTestUnit);
-		SetMeter(&m_TestRead4, m_RandomReadScore2, m_RandomSize2 * 1024, m_IndexTestUnit);
-		SetMeter(&m_TestWrite1, m_SequentialWriteScore1, m_SequentialSize1 * 1024 * 1024, m_IndexTestUnit);
-		SetMeter(&m_TestWrite2, m_SequentialWriteScore2, m_SequentialSize2 * 1024 * 1024, m_IndexTestUnit);
-		SetMeter(&m_TestWrite3, m_RandomWriteScore1, m_RandomSize1 * 1024, m_IndexTestUnit);
-		SetMeter(&m_TestWrite4, m_RandomWriteScore2, m_RandomSize2 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestRead1, m_SequentialReadScore1, m_SequentialReadLatency1, m_SequentialSize1 * 1024 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestRead2, m_SequentialReadScore2, m_SequentialReadLatency2, m_SequentialSize2 * 1024 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestRead3, m_RandomReadScore1, m_RandomReadLatency1, m_RandomSize1 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestRead4, m_RandomReadScore2, m_RandomReadLatency2, m_RandomSize2 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestWrite1, m_SequentialWriteScore1, m_SequentialWriteLatency1, m_SequentialSize1 * 1024 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestWrite2, m_SequentialWriteScore2, m_SequentialWriteLatency2, m_SequentialSize2 * 1024 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestWrite3, m_RandomWriteScore1, m_RandomWriteLatency1, m_RandomSize1 * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestWrite4, m_RandomWriteScore2, m_RandomWriteLatency2, m_RandomSize2 * 1024, m_IndexTestUnit);
 
 #ifdef MIX_MODE
 		if (m_MixMode)
 		{
-			SetMeter(&m_TestMix1, m_SequentialMixScore1, m_SequentialSize1 * 1024 * 1024, m_IndexTestUnit);
-			SetMeter(&m_TestMix2, m_SequentialMixScore2, m_SequentialSize2 * 1024 * 1024, m_IndexTestUnit);
-			SetMeter(&m_TestMix3, m_RandomMixScore1, m_RandomSize1 * 1024, m_IndexTestUnit);
-			SetMeter(&m_TestMix4, m_RandomMixScore2, m_RandomSize2 * 1024, m_IndexTestUnit);
+			SetMeter(&m_TestMix1, m_SequentialMixScore1, m_SequentialMixLatency1, m_SequentialSize1 * 1024 * 1024, m_IndexTestUnit);
+			SetMeter(&m_TestMix2, m_SequentialMixScore2, m_SequentialMixLatency2, m_SequentialSize2 * 1024 * 1024, m_IndexTestUnit);
+			SetMeter(&m_TestMix3, m_RandomMixScore1, m_RandomMixLatency1, m_RandomSize1 * 1024, m_IndexTestUnit);
+			SetMeter(&m_TestMix4, m_RandomMixScore2, m_RandomMixLatency2, m_RandomSize2 * 1024, m_IndexTestUnit);
 		}
 #endif
 	}
 
 }
 
-void CDiskMarkDlg::SetScoreToolTip(CStaticCx *control, double score, int blockSize)
+void CDiskMarkDlg::SetScoreToolTip(CStaticCx *control, double score, double latency, int blockSize)
 {
 	CString cstr;
 	if (blockSize == -1)
@@ -1183,7 +1199,7 @@ void CDiskMarkDlg::SetScoreToolTip(CStaticCx *control, double score, int blockSi
 	}
 	else
 	{
-		cstr.Format(L"%.3f MB/s\r\n%.3f GB/s\r\n%.3f IOPS\r\n%.3f μs", score, score / 1000, score * 1000 * 1000 / blockSize, blockSize / score);
+		cstr.Format(L"%.3f MB/s\r\n%.3f GB/s\r\n%.3f IOPS\r\n%.3f μs", score, score / 1000, score * 1000 * 1000 / blockSize, latency);
 	}
 	control->SetToolTipText(cstr);
 }
@@ -1654,7 +1670,7 @@ LRESULT CDiskMarkDlg::OnUpdateMessage(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, int blockSize, int unit)
+void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, double latency, int blockSize, int unit)
 {
 	CString cstr;
 
@@ -1710,7 +1726,6 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, int blockSize, int
 		}
 		else
 		{
-			double latency = blockSize / score;
 			if (latency >= 100000.0)
 			{
 				cstr.Format(_T("%d"), (int)latency);
@@ -1749,7 +1764,7 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, int blockSize, int
 	control->SetMeter(TRUE, meterRatio);
 	control->SetWindowTextW(cstr);
 
-	SetScoreToolTip(control, score, blockSize);
+	SetScoreToolTip(control, score, latency, blockSize);
 }
 
 void CDiskMarkDlg::InitDrive()
@@ -2047,17 +2062,12 @@ void CDiskMarkDlg::OnResultSave()
 	ResultText(RESULT_TEXT_FILE);
 }
 
-CString CDiskMarkDlg::GetRandomResultString(double score, int size, int queues, int threads)
+CString CDiskMarkDlg::GetRandomResultString(double score, double latency, int size, int queues, int threads)
 {
 	CString result;
 	double iops = 0.0;
-	double latency = 0.0;
 
 	iops = score * 1000 * 1000 / (size * 1024);
-	if (iops > 0.0)
-	{
-		latency = 1.0 * 1000 * 1000 / iops;
-	}
 
 	result.Format(L"Random %dKiB (Q=%3d, T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>", size, queues, threads, score, iops, latency);
 
@@ -2077,17 +2087,12 @@ CString CDiskMarkDlg::GetRandomResultString(double score, int size, int queues, 
 	return result;
 }
 
-CString CDiskMarkDlg::GetSequentialResultString(double score, int size, int queues, int threads)
+CString CDiskMarkDlg::GetSequentialResultString(double score, double latency, int size, int queues, int threads)
 {
 	CString result;
 	double iops = 0.0;
-	double latency = 0.0;
 
 	iops = score * 1000 * 1000 / (size * 1024 * 1024);
-	if (iops > 0.0)
-	{
-		latency = 1.0 * 1000 * 1000 / iops;
-	}
 
 	result.Format(L"Sequential %dMiB (Q=%3d, T=%2d): %8.3f MB/s [%9.1f IOPS] <%9.2f us>", size, queues, threads, score, iops, latency);
 
@@ -2218,16 +2223,16 @@ Profile: Real\r\n\
 
 	if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
 	{
-		clip.Replace(_T("%SequentialRead1%"), GetSequentialResultString(m_SequentialReadScore1, 1, 1, 1));
-		clip.Replace(_T("%SequentialWrite1%"), GetSequentialResultString(m_SequentialWriteScore1, 1, 1, 1));
-		clip.Replace(_T("%RandomRead1%"), GetRandomResultString(m_RandomReadScore1, 4, 1, 1));
-		clip.Replace(_T("%RandomWrite1%"), GetRandomResultString(m_RandomWriteScore1, 4, 1, 1));
+		clip.Replace(_T("%SequentialRead1%"), GetSequentialResultString(m_SequentialReadScore1, m_SequentialReadLatency1, 1, 1, 1));
+		clip.Replace(_T("%SequentialWrite1%"), GetSequentialResultString(m_SequentialWriteScore1, m_SequentialWriteLatency1, 1, 1, 1));
+		clip.Replace(_T("%RandomRead1%"), GetRandomResultString(m_RandomReadScore1, m_RandomReadLatency1, 4, 1, 1));
+		clip.Replace(_T("%RandomWrite1%"), GetRandomResultString(m_RandomWriteScore1, m_RandomWriteLatency1, 4, 1, 1));
 
 #ifdef MIX_MODE
 		if (m_MixMode)
 		{
-			clip.Replace(_T("%SequentialMix1%"), GetSequentialResultString(m_SequentialMixScore1, 1, 1, 1));
-			clip.Replace(_T("%RandomMix1%"), GetRandomResultString(m_RandomMixScore1, 4, 1, 1));
+			clip.Replace(_T("%SequentialMix1%"), GetSequentialResultString(m_SequentialMixScore1, m_SequentialMixLatency1, 1, 1, 1));
+			clip.Replace(_T("%RandomMix1%"), GetRandomResultString(m_RandomMixScore1, m_RandomMixLatency1, 4, 1, 1));
 			cstr.Format(_T("Read %d%%/Write %d%%"), 100 - m_MixRatio, m_MixRatio);
 			clip.Replace(_T("%MixRatio%"), cstr);
 		}
@@ -2235,23 +2240,23 @@ Profile: Real\r\n\
 	}
 	else 
 	{
-		clip.Replace(_T("%SequentialRead1%"), GetSequentialResultString(m_SequentialReadScore1, m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1));
-		clip.Replace(_T("%SequentialRead2%"), GetSequentialResultString(m_SequentialReadScore2, m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2));
-		clip.Replace(_T("%SequentialWrite1%"), GetSequentialResultString(m_SequentialWriteScore1, m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1));
-		clip.Replace(_T("%SequentialWrite2%"), GetSequentialResultString(m_SequentialWriteScore2, m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2));
+		clip.Replace(_T("%SequentialRead1%"), GetSequentialResultString(m_SequentialReadScore1, m_SequentialReadLatency1, m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1));
+		clip.Replace(_T("%SequentialRead2%"), GetSequentialResultString(m_SequentialReadScore2, m_SequentialReadLatency2, m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2));
+		clip.Replace(_T("%SequentialWrite1%"), GetSequentialResultString(m_SequentialWriteScore1, m_SequentialWriteLatency1, m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1));
+		clip.Replace(_T("%SequentialWrite2%"), GetSequentialResultString(m_SequentialWriteScore2, m_SequentialWriteLatency2, m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2));
 
-		clip.Replace(_T("%RandomRead1%"), GetRandomResultString(m_RandomReadScore1, m_RandomSize1, m_RandomQueues1, m_RandomThreads1));
-		clip.Replace(_T("%RandomRead2%"), GetRandomResultString(m_RandomReadScore2, m_RandomSize2, m_RandomQueues2, m_RandomThreads2));
-		clip.Replace(_T("%RandomWrite1%"), GetRandomResultString(m_RandomWriteScore1, m_RandomSize1, m_RandomQueues1, m_RandomThreads1));
-		clip.Replace(_T("%RandomWrite2%"), GetRandomResultString(m_RandomWriteScore2, m_RandomSize2, m_RandomQueues2, m_RandomThreads2));
+		clip.Replace(_T("%RandomRead1%"), GetRandomResultString(m_RandomReadScore1, m_RandomReadLatency1, m_RandomSize1, m_RandomQueues1, m_RandomThreads1));
+		clip.Replace(_T("%RandomRead2%"), GetRandomResultString(m_RandomReadScore2, m_RandomReadLatency2, m_RandomSize2, m_RandomQueues2, m_RandomThreads2));
+		clip.Replace(_T("%RandomWrite1%"), GetRandomResultString(m_RandomWriteScore1, m_RandomWriteLatency1, m_RandomSize1, m_RandomQueues1, m_RandomThreads1));
+		clip.Replace(_T("%RandomWrite2%"), GetRandomResultString(m_RandomWriteScore2, m_RandomWriteLatency2, m_RandomSize2, m_RandomQueues2, m_RandomThreads2));
 
 #ifdef MIX_MODE
 		if (m_MixMode)
 		{
-			clip.Replace(_T("%SequentialMix1%"), GetSequentialResultString(m_SequentialMixScore1, m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1));
-			clip.Replace(_T("%SequentialMix2%"), GetSequentialResultString(m_SequentialMixScore2, m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2));
-			clip.Replace(_T("%RandomMix1%"), GetRandomResultString(m_RandomMixScore1, m_RandomSize1, m_RandomQueues1, m_RandomThreads1));
-			clip.Replace(_T("%RandomMix2%"), GetRandomResultString(m_RandomMixScore2, m_RandomSize2, m_RandomQueues2, m_RandomThreads2));
+			clip.Replace(_T("%SequentialMix1%"), GetSequentialResultString(m_SequentialMixScore1, m_SequentialMixLatency1, m_SequentialSize1, m_SequentialQueues1, m_SequentialThreads1));
+			clip.Replace(_T("%SequentialMix2%"), GetSequentialResultString(m_SequentialMixScore2, m_SequentialMixLatency2, m_SequentialSize2, m_SequentialQueues2, m_SequentialThreads2));
+			clip.Replace(_T("%RandomMix1%"), GetRandomResultString(m_RandomMixScore1, m_RandomMixLatency1, m_RandomSize1, m_RandomQueues1, m_RandomThreads1));
+			clip.Replace(_T("%RandomMix2%"), GetRandomResultString(m_RandomMixScore2, m_RandomMixLatency2, m_RandomSize2, m_RandomQueues2, m_RandomThreads2));
 
 			cstr.Format(_T("Read %d%%/Write %d%%"), 100 - m_MixRatio, m_MixRatio);
 			clip.Replace(_T("%MixRatio%"), cstr);
@@ -2797,7 +2802,16 @@ void CDiskMarkDlg::MoveForcus()
 
 void CDiskMarkDlg::UpdateUnitLabel()
 {
-	if (m_Profile == PROFILE_REAL)
+	if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+	{
+		m_ReadUnit.SetWindowTextW(L"Read [MB/s]");
+		m_WriteUnit.SetWindowTextW(L"Write [MB/s]");
+#ifdef MIX_MODE
+		m_MixUnit.SetWindowTextW(L"Mix [MB/s]");
+#endif
+		return;
+	}
+	else if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
 	{
 		m_ReadUnit.SetWindowTextW(L"Read [MB/s]");
 		m_WriteUnit.SetWindowTextW(L"Write [MB/s]");

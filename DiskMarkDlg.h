@@ -68,11 +68,27 @@ public:
 	double m_RandomMixScore2;
 #endif
 
-	void SetMeter(CStaticCx* control, double score, int blockSize, int unit);
+	double m_SequentialReadLatency1;
+	double m_SequentialWriteLatency1;
+	double m_SequentialReadLatency2;
+	double m_SequentialWriteLatency2;
+	double m_RandomReadLatency1;
+	double m_RandomWriteLatency1;
+	double m_RandomReadLatency2;
+	double m_RandomWriteLatency2;
+
+#ifdef MIX_MODE
+	double m_SequentialMixLatency1;
+	double m_SequentialMixLatency2;
+	double m_RandomMixLatency1;
+	double m_RandomMixLatency2;
+#endif
+
+	void SetMeter(CStaticCx* control, double score, double latency, int blockSize, int unit);
 	void ChangeLang(CString LangName);
 	void UpdateDialogSize();
 	void ChangeButtonStatus(BOOL status);
-	void SetScoreToolTip(CStaticCx* cx, double score, int blockSize);
+	void SetScoreToolTip(CStaticCx* cx, double score, double latency, int blockSize);
 
 	CString m_CurrentLocalID;
 
@@ -142,8 +158,8 @@ protected:
 	void OnRandomReal();
 
 	void SelectDrive();
-	CString GetRandomResultString(double score, int size, int queues, int threads);
-	CString GetSequentialResultString(double score, int size, int queues, int threads);
+	CString GetRandomResultString(double score, double latency, int size, int queues, int threads);
+	CString GetSequentialResultString(double score, double latency, int size, int queues, int threads);
 
 	CString m_TitleTestDrive;
 	CString m_TitleTestCount;
