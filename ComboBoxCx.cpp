@@ -199,6 +199,12 @@ void CComboBoxCx::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 
 void CComboBoxCx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
+	if (m_bHighContrast)
+	{
+		m_BgColor = RGB(0, 0, 0);
+		m_SelectedColor = RGB(0, 255,255);
+	}
+	
 	CString cstr = L"";
 	if (lpDrawItemStruct->itemID == -1)
 		return;
@@ -212,20 +218,35 @@ void CComboBoxCx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		Brush.CreateSolidBrush(m_SelectedColor);
 		pOldBrush = pDC->SelectObject(&Brush);
 		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
+
+		if (m_bHighContrast)
+		{
+			SetTextColor(lpDrawItemStruct->hDC, RGB(0, 0, 0));
+		}			
 	}
 	else {
 		Brush.CreateSolidBrush(m_BgColor);
 		pOldBrush = pDC->SelectObject(&Brush);
 		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
+		if (m_bHighContrast)
+		{
+			SetTextColor(lpDrawItemStruct->hDC, RGB(255, 255, 255));
+		}
 	}
 	pDC->SelectObject(pOldBrush);
 	Brush.DeleteObject();
 
 	pDC->SetBkMode(TRANSPARENT);
-	// pDC->DrawText(cstr, &rc, DT_SINGLELINE | DT_VCENTER);
 
-	lpDrawItemStruct->rcItem.left = (LONG)(4 * m_ZoomRatio);
-	DrawString(cstr, pDC, lpDrawItemStruct);
+	if (m_bHighContrast)
+	{
+		pDC->DrawText(cstr, &lpDrawItemStruct->rcItem, DT_SINGLELINE | DT_VCENTER);
+	}
+	else
+	{
+		lpDrawItemStruct->rcItem.left = (LONG)(4 * m_ZoomRatio);
+		DrawString(cstr, pDC, lpDrawItemStruct);
+	}
 }
 
 
@@ -447,6 +468,12 @@ void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio)
 
 void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlpha, COLORREF textColor, LONG fontWeight, INT fontType)
 {
+	if (m_bHighContrast)
+	{
+		textColor = RGB(255, 255, 255);
+		textAlpha = 255;
+	}
+
 	m_ZoomRatio = zoomRatio;
 	LOGFONT logFont = { 0 };
 	logFont.lfCharSet = DEFAULT_CHARSET;
@@ -533,10 +560,17 @@ void CComboBoxCx::SetMargin(int top, int left, int bottom, int right, double zoo
 	m_Margin.right = (int)(right * zoomRatio);
 }
 
-BOOL CComboBoxCx::InitControl(int x, int y, int width, int height, double zoomRatio)
+BOOL CComboBoxCx::InitControl(int x, int y, int width, int height, double zoomRatio, UINT renderMode)
 {
 	MoveWindow((int)(x * zoomRatio), (int)(y * zoomRatio), (int)(width * zoomRatio), (int)(height * zoomRatio));
 
+	m_bHighContrast = FALSE;
+
+	if (renderMode & HighContrast)
+	{
+		m_bHighContrast = TRUE;
+	}
+	
 	return TRUE;
 }
 

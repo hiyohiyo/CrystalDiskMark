@@ -149,9 +149,9 @@ void CFontSelection::UpdateDialogSize()
 	m_LabelFontFace.InitControl(8, 8, 472, 24, m_ZoomRatio, NULL, 0, SS_LEFT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_LabelFontScale.InitControl(8, 96, 236, 24, m_ZoomRatio, NULL, 0, SS_LEFT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_LabelFontType.InitControl(248, 96, 236, 24, m_ZoomRatio, NULL, 0, SS_LEFT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_FontComboBox.InitControl(20, 36, 440, 360, m_ZoomRatio);
-	m_FontScaleComboBox.InitControl(20, 124, 200, 360, m_ZoomRatio);
-	m_FontTypeComboBox.InitControl(260, 124, 200, 360, m_ZoomRatio);
+	m_FontComboBox.InitControl(20, 36, 440, 360, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_FontScaleComboBox.InitControl(20, 124, 200, 360, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_FontTypeComboBox.InitControl(260, 124, 200, 360, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
 
 	m_ButtonSetDefault.InitControl(40, 180, 160, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
 	m_CtrlOk.InitControl(280, 180, 160, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);

@@ -452,9 +452,11 @@ void CMainDialog::UpdateControlColor()
 	m_ComboText = GetControlColor(L"ComboText", 0);
 	m_ComboBg   = GetControlColor(L"ComboBg", 255);
 	m_ComboSelected = GetControlColor(L"ComboSelected", 192);
+	m_ComboAlpha = GetControlAlpha(L"ComboAlpha", 255);
 	m_ButtonText= GetControlColor(L"ButtonText", 0);
 	m_EditText  = GetControlColor(L"EditText", 0);
 	m_EditBg    = GetControlColor(L"EditBg", 255);
+	m_EditAlpha = GetControlAlpha(L"EditAlpha", 255);
 }
 
 COLORREF CMainDialog::GetControlColor(CString name, BYTE defaultColor)
@@ -468,6 +470,15 @@ COLORREF CMainDialog::GetControlColor(CString name, BYTE defaultColor)
 	COLORREF color = RGB(GetBValue(reverseColor), GetGValue(reverseColor), GetRValue(reverseColor));
 
 	return color;
+}
+
+BYTE CMainDialog::GetControlAlpha(CString name, BYTE defaultAlpha)
+{
+	CString theme = m_ThemeDir + m_CurrentTheme + L"\\theme.ini";
+
+	BYTE alpha = GetPrivateProfileInt(L"Alpha", name, defaultAlpha, theme);
+	
+	return alpha;
 }
 
 

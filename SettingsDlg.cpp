@@ -380,26 +380,26 @@ void CSettingsDlg::UpdateDialogSize()
 	m_LabelQueues.InitControl(304, 12, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_LabelThreads.InitControl(432, 12, 120, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
-	m_SequentialLabel1.InitControl(0, 40, 176, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_SequentialLabel2.InitControl(0, 80, 176, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_RandomLabel1.InitControl(0, 120, 176, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_RandomLabel2.InitControl(0, 160, 176, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_LabelAffinity.InitControl(0, 200, 176, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_SequentialLabel1.InitControl(0, 40, 172, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_SequentialLabel2.InitControl(0, 80, 172, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_RandomLabel1.InitControl(0, 120, 172, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_RandomLabel2.InitControl(0, 160, 172, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_LabelAffinity.InitControl(0, 200, 172, 24, m_ZoomRatio, NULL, 0, SS_RIGHT, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
-	m_ComboSequentialSize1.InitControl(176, 40, 120, 200, m_ZoomRatio);
-	m_ComboSequentialSize2.InitControl(176, 80, 120, 200, m_ZoomRatio);
-	m_ComboRandomSize1.InitControl(176, 120, 120, 200, m_ZoomRatio);
-	m_ComboRandomSize2.InitControl(176, 160, 120, 200, m_ZoomRatio);
-	m_ComboSequentialQueues1.InitControl(304, 40, 120, 200, m_ZoomRatio);
-	m_ComboSequentialQueues2.InitControl(304, 80, 120, 200, m_ZoomRatio);
-	m_ComboRandomQueues1.InitControl(304, 120, 120, 200, m_ZoomRatio);
-	m_ComboRandomQueues2.InitControl(304, 160, 120, 200, m_ZoomRatio);
-	m_ComboSequentialThreads1.InitControl(432, 40, 120, 200, m_ZoomRatio);
-	m_ComboSequentialThreads2.InitControl(432, 80, 120, 200, m_ZoomRatio);
-	m_ComboRandomThreads1.InitControl(432, 120, 120, 200, m_ZoomRatio);
-	m_ComboRandomThreads2.InitControl(432, 160, 120, 200, m_ZoomRatio);
+	m_ComboSequentialSize1.InitControl(176, 40, 120, 200, m_ZoomRatio, CComboBoxCx::SystemDraw | m_IsHighContrast);
+	m_ComboSequentialSize2.InitControl(176, 80, 120, 200, m_ZoomRatio, CComboBoxCx::SystemDraw | m_IsHighContrast);
+	m_ComboRandomSize1.InitControl(176, 120, 120, 200, m_ZoomRatio, CComboBoxCx::SystemDraw | m_IsHighContrast);
+	m_ComboRandomSize2.InitControl(176, 160, 120, 200, m_ZoomRatio, CComboBoxCx::SystemDraw | m_IsHighContrast);
+	m_ComboSequentialQueues1.InitControl(304, 40, 120, 200, m_ZoomRatio, CComboBoxCx::SystemDraw | m_IsHighContrast);
+	m_ComboSequentialQueues2.InitControl(304, 80, 120, 200, m_ZoomRatio, CComboBoxCx::SystemDraw | m_IsHighContrast);
+	m_ComboRandomQueues1.InitControl(304, 120, 120, 200, m_ZoomRatio, CComboBoxCx::SystemDraw | m_IsHighContrast);
+	m_ComboRandomQueues2.InitControl(304, 160, 120, 200, m_ZoomRatio, CComboBoxCx::SystemDraw | m_IsHighContrast);
+	m_ComboSequentialThreads1.InitControl(432, 40, 120, 200, m_ZoomRatio, CComboBoxCx::SystemDraw | m_IsHighContrast);
+	m_ComboSequentialThreads2.InitControl(432, 80, 120, 200, m_ZoomRatio, CComboBoxCx::SystemDraw | m_IsHighContrast);
+	m_ComboRandomThreads1.InitControl(432, 120, 120, 200, m_ZoomRatio, CComboBoxCx::SystemDraw | m_IsHighContrast);
+	m_ComboRandomThreads2.InitControl(432, 160, 120, 200, m_ZoomRatio, CComboBoxCx::SystemDraw | m_IsHighContrast);
 
-	m_ComboAffinity.InitControl(176, 200, 200, 100, m_ZoomRatio);
+	m_ComboAffinity.InitControl(176, 200, 200, 100, m_ZoomRatio, m_IsHighContrast);
 
 	m_ButtonSetDefault.InitControl(120, 240, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
 	m_ButtonSetDefault.SetHandCursor();

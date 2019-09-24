@@ -61,11 +61,14 @@ public:
 	COLORREF m_ComboText;
 	COLORREF m_ComboBg;
 	COLORREF m_ComboSelected;
+	BYTE     m_ComboAlpha;
 	COLORREF m_ButtonText;
 	COLORREF m_EditText;
 	COLORREF m_EditBg;
+	BYTE     m_EditAlpha;
 	void UpdateControlColor();
 	COLORREF GetControlColor(CString name, BYTE defaultColor = 0);
+	BYTE GetControlAlpha(CString name, BYTE defaultAlpha = 255);
 
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 	virtual BOOL OnInitDialog();

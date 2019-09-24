@@ -54,7 +54,7 @@
 
 // Version Information
 #define PRODUCT_NAME			_T("CrystalDiskMark 7")
-#define PRODUCT_VERSION			_T("Beta4")
+#define PRODUCT_VERSION			_T("Beta5")
 #define PRODUCT_ROMING_NAME		_T("CrystalDiskMark")
 
 #ifdef UWP

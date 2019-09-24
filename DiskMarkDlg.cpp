@@ -478,10 +478,10 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ReadUnit.InitControl(140 + OFFSET_X, 60, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_WriteUnit.InitControl(468 + OFFSET_X, 60, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
-	m_ComboCount.InitControl(140 + OFFSET_X, 12, 60, 500, m_ZoomRatio);
-	m_ComboSize.InitControl(204 + OFFSET_X, 12, 140, 500, m_ZoomRatio);
-	m_ComboDrive.InitControl(348 + OFFSET_X, 12, 320 + offsetX, 500, m_ZoomRatio);
-	m_ComboUnit.InitControl(672 + OFFSET_X, 12, 116, 500, m_ZoomRatio);
+	m_ComboCount.InitControl(140 + OFFSET_X, 12, 60, 500, m_ZoomRatio, m_IsHighContrast);
+	m_ComboSize.InitControl(204 + OFFSET_X, 12, 140, 500, m_ZoomRatio, m_IsHighContrast);
+	m_ComboDrive.InitControl(348 + OFFSET_X, 12, 320 + offsetX, 500, m_ZoomRatio, m_IsHighContrast);
+	m_ComboUnit.InitControl(672 + OFFSET_X, 12, 116, 500, m_ZoomRatio, m_IsHighContrast);
 
 #else
 
@@ -512,10 +512,10 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ReadUnit.InitControl(84 + OFFSET_X, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_WriteUnit.InitControl(280 + OFFSET_X, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
-	m_ComboCount.InitControl(84 + OFFSET_X, 8, 40, 300, m_ZoomRatio);
-	m_ComboSize.InitControl(128 + OFFSET_X, 8, 80, 300, m_ZoomRatio);
-	m_ComboDrive.InitControl(212 + OFFSET_X, 8, 188 + offsetX, 300, m_ZoomRatio);
-	m_ComboUnit.InitControl(404 + OFFSET_X, 8, 68, 300, m_ZoomRatio);
+	m_ComboCount.InitControl(84 + OFFSET_X, 8, 40, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_ComboSize.InitControl(128 + OFFSET_X, 8, 80, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_ComboDrive.InitControl(212 + OFFSET_X, 8, 188 + offsetX, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_ComboUnit.InitControl(404 + OFFSET_X, 8, 68, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
 #endif
 
 #ifdef MIX_MODE
@@ -523,7 +523,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_TestMix2.InitControl(480 + OFFSET_X, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 	m_TestMix3.InitControl(480 + OFFSET_X, 164, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 	m_TestMix4.InitControl(480 + OFFSET_X, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_ComboMix.InitControl(480 + OFFSET_X, 8, 192, 300, m_ZoomRatio);
+	m_ComboMix.InitControl(480 + OFFSET_X, 8, 192, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_MixUnit.InitControl(480 + OFFSET_X, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
 	if (m_MixMode)
@@ -551,8 +551,53 @@ void CDiskMarkDlg::UpdateDialogSize()
 	if (m_EditBrush != NULL)
 	{
 		m_EditBrush->DeleteObject();
-		m_EditBrush->CreateSolidBrush(m_EditBg);
+		if (m_IsHighContrast)
+		{
+			m_EditBrush->CreateSolidBrush(RGB(0, 0, 0));
+		}
+		else
+		{
+			m_EditBrush->CreateSolidBrush(m_EditBg);
+		}
 	}
+
+	if (m_IsHighContrast)
+	{
+		m_TestRead1.SetDrawFrame(TRUE);
+		m_TestRead2.SetDrawFrame(TRUE);
+		m_TestRead3.SetDrawFrame(TRUE);
+		m_TestRead4.SetDrawFrame(TRUE);
+		m_TestWrite1.SetDrawFrame(TRUE);
+		m_TestWrite2.SetDrawFrame(TRUE);
+		m_TestWrite3.SetDrawFrame(TRUE);
+		m_TestWrite4.SetDrawFrame(TRUE);
+
+	#ifdef MIX_MODE
+		m_TestMix1.SetDrawFrame(TRUE);
+		m_TestMix2.SetDrawFrame(TRUE);
+		m_TestMix3.SetDrawFrame(TRUE);
+		m_TestMix4.SetDrawFrame(TRUE);
+	#endif
+	}
+	else
+	{
+		m_TestRead1.SetDrawFrame(FALSE);
+		m_TestRead2.SetDrawFrame(FALSE);
+		m_TestRead3.SetDrawFrame(FALSE);
+		m_TestRead4.SetDrawFrame(FALSE);
+		m_TestWrite1.SetDrawFrame(FALSE);
+		m_TestWrite2.SetDrawFrame(FALSE);
+		m_TestWrite3.SetDrawFrame(FALSE);
+		m_TestWrite4.SetDrawFrame(FALSE);
+
+	#ifdef MIX_MODE
+		m_TestMix1.SetDrawFrame(FALSE);
+		m_TestMix2.SetDrawFrame(FALSE);
+		m_TestMix3.SetDrawFrame(FALSE);
+		m_TestMix4.SetDrawFrame(FALSE);
+	#endif
+	}
+
 
 	UpdateScore();
 	Invalidate();
@@ -564,39 +609,39 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ComboDrive.ShowWindow(SW_HIDE);
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	SetLayeredWindow(m_Comment.m_hWnd, 192);
-	SetLayeredWindow(m_ComboUnit.m_hWnd, 192);
-	SetLayeredWindow(m_ComboCount.m_hWnd, 192);
-	SetLayeredWindow(m_ComboSize.m_hWnd, 192);
-	SetLayeredWindow(m_ComboDrive.m_hWnd, 192);
+	SetLayeredWindow(m_Comment.m_hWnd, m_EditAlpha);
+	SetLayeredWindow(m_ComboUnit.m_hWnd, m_ComboAlpha);
+	SetLayeredWindow(m_ComboCount.m_hWnd, m_ComboAlpha);
+	SetLayeredWindow(m_ComboSize.m_hWnd, m_ComboAlpha);
+	SetLayeredWindow(m_ComboDrive.m_hWnd, m_ComboAlpha);
 #else
-	SetLayeredWindow(m_Comment.m_hWnd, 240);
-	SetLayeredWindow(m_ComboUnit.m_hWnd, 240);
-	SetLayeredWindow(m_ComboCount.m_hWnd, 240);
-	SetLayeredWindow(m_ComboSize.m_hWnd, 240);
-	SetLayeredWindow(m_ComboDrive.m_hWnd, 240);
+	SetLayeredWindow(m_Comment.m_hWnd, m_EditAlpha);
+	SetLayeredWindow(m_ComboUnit.m_hWnd, m_ComboAlpha);
+	SetLayeredWindow(m_ComboCount.m_hWnd, m_ComboAlpha);
+	SetLayeredWindow(m_ComboSize.m_hWnd, m_ComboAlpha);
+	SetLayeredWindow(m_ComboDrive.m_hWnd, m_ComboAlpha);
 #ifdef MIX_MODE
 	if(m_MixMode)
 	{
-		SetLayeredWindow(m_ComboMix.m_hWnd, 240);
+		SetLayeredWindow(m_ComboMix.m_hWnd, m_ComboAlpha);
 	}
 #endif
 #endif
 
 	COMBOBOXINFO info = { sizeof(COMBOBOXINFO) };
 	m_ComboUnit.GetComboBoxInfo(&info);
-	SetLayeredWindow(info.hwndList, 240);
+	SetLayeredWindow(info.hwndList, m_ComboAlpha);
 	m_ComboCount.GetComboBoxInfo(&info);
-	SetLayeredWindow(info.hwndList, 240);
+	SetLayeredWindow(info.hwndList, m_ComboAlpha);
 	m_ComboSize.GetComboBoxInfo(&info);
-	SetLayeredWindow(info.hwndList, 240);
+	SetLayeredWindow(info.hwndList, m_ComboAlpha);
 	m_ComboDrive.GetComboBoxInfo(&info);
-	SetLayeredWindow(info.hwndList, 240);
+	SetLayeredWindow(info.hwndList, m_ComboAlpha);
 #ifdef MIX_MODE
 	if (m_MixMode)
 	{
 		m_ComboMix.GetComboBoxInfo(&info);
-		SetLayeredWindow(info.hwndList, 240);
+		SetLayeredWindow(info.hwndList, m_ComboAlpha);
 		m_ComboMix.ShowWindow(SW_SHOW);
 	}
 #endif
@@ -2886,8 +2931,16 @@ HBRUSH CDiskMarkDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 	switch (pWnd->GetDlgCtrlID()) {
 	case IDC_COMMENT:
-		pDC->SetTextColor(m_EditText);
-		pDC->SetBkColor(m_EditBg);
+		if(m_IsHighContrast)
+		{
+			pDC->SetTextColor(RGB(255, 255, 255));
+			pDC->SetBkColor(RGB(0, 0, 0));
+		}
+		else
+		{
+			pDC->SetTextColor(m_EditText);
+			pDC->SetBkColor(m_EditBg);
+		}
 		hbr = (HBRUSH)m_EditBrush->GetSafeHandle();
 		break;
 	default:

@@ -942,21 +942,20 @@ BOOL CStaticCx::InitControl(int x, int y, int width, int height, double zoomRati
 		ModifyStyle(SS_OWNERDRAW, textAlign);
 		return TRUE;
 	}
-	else
-	{
-		m_bHighContrast = FALSE;
-	}
-
-	if(renderMode & SystemDraw)
+	else if(renderMode & SystemDraw)
 	{
 		// オーナー描画を止め、テキストアライメント再設定する。
 		ModifyStyle(SS_OWNERDRAW, textAlign);
 		return TRUE;
 	}
-	SetBgReload();
+	else
+	{
+		m_bHighContrast = FALSE;
+		// オーナー描画に変更する。
+		ModifyStyle(SS_RIGHT, SS_OWNERDRAW);
+	}
 
-	// オーナー描画に変更する。
-	ModifyStyle(SS_RIGHT, SS_OWNERDRAW);
+	SetBgReload();
 
 	if(renderMode & OwnerDrawGlass)
 	{

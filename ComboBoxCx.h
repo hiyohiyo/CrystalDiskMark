@@ -36,7 +36,7 @@ public:
 	virtual ~CComboBoxCx();
 
 	// 初期化
-	BOOL InitControl(int x, int y, int width, int height, double zoomRatio);
+	BOOL InitControl(int x, int y, int width, int height, double zoomRatio, UINT renderMode = SystemDraw);
 	void SetFontHeight(int height, double zoomRatio);
 	BOOL IsHighContrast();
 

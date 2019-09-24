@@ -40,6 +40,12 @@ void CFontComboBox::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 
 void CFontComboBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
+	if (m_bHighContrast)
+	{
+		m_BgColor = RGB(0, 0, 0);
+		m_SelectedColor = RGB(0, 255, 255);
+	}
+
     CString cstr;
     if (lpDrawItemStruct->itemID == -1)
         return;
@@ -59,7 +65,6 @@ void CFontComboBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     font.CreateFontIndirect(&logfont);
     pDC->SelectObject(&font);
 
-
 	CBrush Brush;
 	CBrush* pOldBrush;
 
@@ -67,11 +72,19 @@ void CFontComboBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		Brush.CreateSolidBrush(m_SelectedColor);
 		pOldBrush = pDC->SelectObject(&Brush);
 		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
+		if (m_bHighContrast)
+		{
+			SetTextColor(lpDrawItemStruct->hDC, RGB(0, 0, 0));
+		}
 	}
 	else {
 		Brush.CreateSolidBrush(m_BgColor);
 		pOldBrush = pDC->SelectObject(&Brush);
 		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
+		if (m_bHighContrast)
+		{
+			SetTextColor(lpDrawItemStruct->hDC, RGB(255, 255, 255));
+		}
 	}
 	pDC->SelectObject(pOldBrush);
 	Brush.DeleteObject();
