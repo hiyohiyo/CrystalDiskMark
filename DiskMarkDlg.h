@@ -211,6 +211,7 @@ protected:
 	CButtonCx m_ButtonTest2;
 	CButtonCx m_ButtonTest3;
 	CButtonCx m_ButtonTest4;
+	CButtonCx m_CommentEx;
 
 	CStaticCx m_TestRead1;
 	CStaticCx m_TestRead2;
@@ -272,6 +273,11 @@ protected:
 
 	CBrush *m_EditBrush;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+
+	afx_msg void OnChangeComment();
+	afx_msg void OnCommentEx();
+	afx_msg void OnKillFocusComment();
+	afx_msg void OnSetFocusCommentEx();
 
 	DECLARE_MESSAGE_MAP()
 

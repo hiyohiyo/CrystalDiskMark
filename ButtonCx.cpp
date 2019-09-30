@@ -60,6 +60,7 @@ CButtonCx::CButtonCx()
 	, m_ImagePath(L"")
 	, m_ImageCount(1)
 	, m_bHandCursor(FALSE)
+	, m_bIbeamCursor(FALSE)
 	, m_RenderMode(0)
 	, m_bHighContrast(FALSE)
 	, m_Alpha(255)
@@ -373,7 +374,19 @@ void CButtonCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 			rectI.bottom = rectI.top + extent.cy;
 			rectI.left = r.left;
 			rectI.right = r.right;
-			DrawText(drawDC->m_hDC, arr.GetAt(i), arr.GetAt(i).GetLength(), r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+			if (m_TextAlign == BS_LEFT)
+			{
+				DrawText(drawDC->m_hDC, arr.GetAt(i), arr.GetAt(i).GetLength(), r, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
+			}
+			else if (m_TextAlign == BS_RIGHT)
+			{
+				DrawText(drawDC->m_hDC, arr.GetAt(i), arr.GetAt(i).GetLength(), r, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
+			}
+			else
+			{
+				DrawText(drawDC->m_hDC, arr.GetAt(i), arr.GetAt(i).GetLength(), r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+			}
+
 			drawDC->SelectObject(oldFont);
 		}
 	}
@@ -836,6 +849,11 @@ BOOL CButtonCx::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		// ハンドカーソルに変更
 		::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_HAND));
 	}
+	else if (m_bIbeamCursor)
+	{
+		// Iビームカーソルに変更
+		::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_IBEAM));
+	}
 	else
 	{
 		// 通常カーソルに戻す
@@ -847,6 +865,11 @@ BOOL CButtonCx::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 void CButtonCx::SetHandCursor(BOOL bHandCuror)
 {
 	m_bHandCursor = bHandCuror;
+}
+
+void CButtonCx::SetIbeamCursor(BOOL bIbeamCuror)
+{
+	m_bIbeamCursor = bIbeamCuror;
 }
 
 void CButtonCx::SetDrawFrame(BOOL bDrawFrame)
@@ -913,7 +936,18 @@ void CButtonCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlp
 	m_GpBrush= new Gdiplus::SolidBrush(
 		Gdiplus::Color(textAlpha, GetRValue(textColor), GetGValue(textColor), GetBValue(textColor)));
 	m_GpStringformat = new Gdiplus::StringFormat;
-	m_GpStringformat->SetAlignment(StringAlignmentCenter);
+	if (m_TextAlign == BS_LEFT)
+	{
+		m_GpStringformat->SetAlignment(StringAlignmentNear);
+	}
+	else if (m_TextAlign == BS_RIGHT)
+	{
+		m_GpStringformat->SetAlignment(StringAlignmentFar);
+	}
+	else
+	{
+		m_GpStringformat->SetAlignment(StringAlignmentCenter);
+	}
 	m_GpStringformat->SetLineAlignment(StringAlignmentCenter);
 	m_GpStringformat->SetFormatFlags(StringFormatFlagsNoClip);
 	ReleaseDC(pDC);

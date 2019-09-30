@@ -88,6 +88,7 @@ public:
 	void SetMargin(int top, int left, int bottom, int right, double zoomRatio); // テキスト描画用のマージンを設定します。
 	// カーソル関係
 	void SetHandCursor(BOOL bHandCuror = TRUE);	// カーソルモードを設定します。
+	void SetIbeamCursor(BOOL bHandCuror = TRUE);	// カーソルモードを設定します。
 
 // 内部変数。
 private:
@@ -125,6 +126,7 @@ private:
 	CString m_ImagePath;	// イメージのパス
 
 	BOOL m_bHandCursor;		// ハンドカーソルモード
+	BOOL m_bIbeamCursor;	// 縦線カーソルモード
 	CRect m_Margin;			// テキスト描画マージン
 	BYTE m_Alpha;			// 画像用のアルファ値
 	int m_FontType;		    // 描画フォントの使用テクノロジー

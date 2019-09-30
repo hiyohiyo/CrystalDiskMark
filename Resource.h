@@ -33,7 +33,8 @@
 #define IDC_TEST_MIX_2                  1020
 #define IDC_TEST_MIX_3                  1021
 #define IDC_TEST_MIX_4                  1022
-#define IDC_COMMENT                     1024
+#define IDC_COMMENT                     1023
+#define IDC_COMMENT_EX                  1024
 #define IDC_COMBO_UNIT                  1025
 #define IDC_COMBO_COUNT                 1026
 #define IDC_COMBO_DRIVE                 1027

@@ -401,11 +401,11 @@ void CSettingsDlg::UpdateDialogSize()
 
 	m_ComboAffinity.InitControl(176, 200, 200, 100, m_ZoomRatio, m_IsHighContrast);
 
-	m_ButtonSetDefault.InitControl(120, 240, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonSetDefault.InitControl(120, 240, 120, 32, m_ZoomRatio, NULL, 0, BS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
 	m_ButtonSetDefault.SetHandCursor();
 	m_ButtonSetDefault.SetWindowTextW(i18n(_T("Dialog"), _T("DEFAULT")));
 
-	m_ButtonOk.InitControl(320, 240, 120, 32, m_ZoomRatio, NULL, 0, SS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
+	m_ButtonOk.InitControl(320, 240, 120, 32, m_ZoomRatio, NULL, 0, BS_CENTER, CButtonCx::OwnerDrawGlass | m_IsHighContrast);
 	m_ButtonOk.SetHandCursor();
 	
 	Invalidate();
