@@ -141,7 +141,7 @@ public:
 	CString m_MesDiskCreateFileError;
 	CString m_MesDiskSpdNotFound;
 
-	void SetWindowTitle(CString message, CString mode);
+	void SetWindowTitle(CString message);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support

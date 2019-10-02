@@ -59,17 +59,13 @@ BEGIN_MESSAGE_MAP(CMainDialog, CDialogCx)
 	ON_WM_WINDOWPOSCHANGING()
 END_MESSAGE_MAP()
 
-void CMainDialog::SetWindowTitle(CString message, CString mode)
+void CMainDialog::SetWindowTitle(CString message)
 {
 	CString title;
 
 	if(! message.IsEmpty())
 	{
 		title.Format(_T("%s - %s"), PRODUCT_SHORT_NAME, message.GetString());
-	}
-	else if(! mode.IsEmpty())
-	{
-		title.Format(_T("%s %s %s %s"), PRODUCT_NAME, PRODUCT_VERSION, PRODUCT_EDITION, mode.GetString());
 	}
 	else
 	{

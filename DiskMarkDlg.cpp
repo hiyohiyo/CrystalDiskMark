@@ -400,14 +400,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	}
 	m_SizeY = SIZE_Y;
 
-	if(m_TestData == TEST_DATA_ALL0X00)
-	{
-		SetWindowTitle(_T(""), ALL_0X00_0FILL);
-	}
-	else
-	{
-		SetWindowTitle(_T(""), _T(""));
-	}
+	SetWindowTitle(L"");
 
 	SetClientRect((DWORD)(m_SizeX * m_ZoomRatio), (DWORD)(m_SizeY * m_ZoomRatio));
 
@@ -1728,7 +1721,7 @@ LRESULT CDiskMarkDlg::OnUpdateMessage(WPARAM wParam, LPARAM lParam)
 		lstr = *((CString*)lParam);
 	}
 
-	SetWindowTitle(wstr, lstr);
+	SetWindowTitle(wstr);
 	return 0;
 }
 
@@ -1806,21 +1799,14 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, double latency, in
 		}
 		else
 		{
-			cstr.Format(_T("%.2f"), latency);
-			/*
-			if (latency >= 100000.0)
+			if (latency >= 1000000.0)
 			{
 				cstr.Format(_T("%d"), (int)latency);
-			}
-			else if (latency >= 10000.0)
-			{
-				cstr.Format(_T("%.1f"), latency);
 			}
 			else
 			{
 				cstr.Format(_T("%.2f"), latency);
 			}
-			*/
 		}
 	}
 	else if(unit == SCORE_UNIT::SCORE_GBS)
@@ -1829,21 +1815,14 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, double latency, in
 	}
 	else
 	{
-		cstr.Format(_T("%.2f"), score);
-		/*
-		if(score >= 100000.0)
+		if(score >= 1000000.0)
 		{
 			cstr.Format(_T("%d"), (int)score);
-		}
-		else if (score >= 10000.0)
-		{
-			cstr.Format(_T("%.1f"), score);
 		}
 		else
 		{
 			cstr.Format(_T("%.2f"), score);
 		}
-		*/
 	}
 
 	UpdateData(FALSE);
@@ -2686,7 +2665,7 @@ void CDiskMarkDlg::OnModeDefault()
 
 	m_TestData = TEST_DATA_RANDOM;
 	WritePrivateProfileString(_T("Setting"), _T("TestData"), _T("0"), m_Ini);
-	SetWindowTitle(_T(""), _T(""));
+	SetWindowTitle(L"");
 }
 
 void CDiskMarkDlg::OnModeAll0x00()
@@ -2698,7 +2677,7 @@ void CDiskMarkDlg::OnModeAll0x00()
 
 	m_TestData = TEST_DATA_ALL0X00;
 	WritePrivateProfileString(_T("Setting"), _T("TestData"), _T("1"), m_Ini);
-	SetWindowTitle(_T(""), ALL_0X00_0FILL);
+	SetWindowTitle(L"");
 }
 
 void CDiskMarkDlg::OnProfileDefault()
@@ -2716,6 +2695,7 @@ void CDiskMarkDlg::OnProfileDefault()
 	InitScore();
 	UpdateScore();
 	UpdateDialogSize();
+	SetWindowTitle(L"");
 }
 
 void CDiskMarkDlg::OnProfilePeak()
@@ -2733,6 +2713,7 @@ void CDiskMarkDlg::OnProfilePeak()
 	InitScore();
 	UpdateScore();
 	UpdateDialogSize();
+	SetWindowTitle(L"");
 }
 
 void CDiskMarkDlg::OnProfileReal()
@@ -2750,6 +2731,7 @@ void CDiskMarkDlg::OnProfileReal()
 	InitScore();
 	UpdateScore();
 	UpdateDialogSize();
+	SetWindowTitle(L"");
 }
 
 void CDiskMarkDlg::OnProfileDefaultMix()
@@ -2767,6 +2749,7 @@ void CDiskMarkDlg::OnProfileDefaultMix()
 	InitScore();
 	UpdateScore();
 	UpdateDialogSize();
+	SetWindowTitle(L"");
 }
 
 void CDiskMarkDlg::OnProfilePeakMix()
@@ -2784,6 +2767,7 @@ void CDiskMarkDlg::OnProfilePeakMix()
 	InitScore();
 	UpdateScore();
 	UpdateDialogSize();
+	SetWindowTitle(L"");
 }
 
 void CDiskMarkDlg::OnProfileRealMix()
@@ -2801,6 +2785,7 @@ void CDiskMarkDlg::OnProfileRealMix()
 	InitScore();
 	UpdateScore();
 	UpdateDialogSize();
+	SetWindowTitle(L"");
 }
 
 
@@ -2942,17 +2927,13 @@ void CDiskMarkDlg::UpdateUnitLabel()
 	}
 }
 
-void CDiskMarkDlg::SetWindowTitle(CString message, CString mode)
+void CDiskMarkDlg::SetWindowTitle(CString message)
 {
 	CString title;
 
 	if (!message.IsEmpty())
 	{
 		title.Format(_T("%s - %s"), PRODUCT_SHORT_NAME, message.GetString());
-	}
-	else if (!mode.IsEmpty())
-	{
-		title.Format(_T("%s %s %s %s"), PRODUCT_NAME, PRODUCT_VERSION, PRODUCT_EDITION, mode.GetString());
 	}
 	else
 	{
@@ -2962,6 +2943,23 @@ void CDiskMarkDlg::SetWindowTitle(CString message, CString mode)
 	if (m_AdminMode)
 	{
 		title += L" [ADMIN]";
+	}
+
+	switch (m_Profile)
+	{
+	case PROFILE_PEAK:
+	case PROFILE_PEAK_MIX:
+		title += L" <PEAK>";
+		break;
+	case PROFILE_REAL:
+	case PROFILE_REAL_MIX:
+		title += L" <REAL>";
+		break;
+	}
+
+	if (m_TestData == TEST_DATA_ALL0X00)
+	{
+		title += L" <0Fill>";
 	}
 
 	SetWindowText(title);
