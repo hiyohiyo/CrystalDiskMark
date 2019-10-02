@@ -9,6 +9,7 @@
 
 #include "AboutDlg.h"
 #include "SettingsDlg.h"
+#include "CommentDlg.h"
 #include "FontSelection.h"
 
 #include "DialogCx.h"
@@ -132,6 +133,7 @@ public:
 	int m_Profile;
 	BOOL m_MixMode;
 	int m_MixRatio;
+	CString m_CommentExchange;
 
 	// Message //
 	CString m_MesDiskCapacityError;
@@ -178,6 +180,7 @@ protected:
 
 	CAboutDlg*		m_AboutDlg;
 	CSettingsDlg*	m_SettingsDlg;
+	CCommentDlg*	m_CommentDlg;
 
 	void SetControlFont();
 	CString IP(CString imagePath); // IP means Image Path!!
@@ -223,7 +226,7 @@ protected:
 	CStaticCx m_TestWrite3;
 	CStaticCx m_TestWrite4;
 
-	CEditEx m_Comment;
+//	CEditEx m_Comment;
 
 	CComboBoxCx m_ComboUnit;
 	CComboBoxCx m_ComboCount;
@@ -244,6 +247,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg LRESULT OnUpdateScore(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnUpdateMessage(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnUpdateComment(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnExitBenchmark(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnZoom100();
 	afx_msg void OnZoom125();
@@ -276,8 +280,8 @@ protected:
 
 	afx_msg void OnChangeComment();
 	afx_msg void OnCommentEx();
-	afx_msg void OnKillFocusComment();
-	afx_msg void OnSetFocusCommentEx();
+//	afx_msg void OnKillFocusComment();
+//	afx_msg void OnSetFocusCommentEx();
 
 	DECLARE_MESSAGE_MAP()
 

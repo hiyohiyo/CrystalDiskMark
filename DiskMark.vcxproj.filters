@@ -72,6 +72,9 @@
     <ClCompile Include="FontComboBox.cpp">
       <Filter>Library Files</Filter>
     </ClCompile>
+    <ClCompile Include="CommentDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="FontComboBox.h">
       <Filter>Library Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommentDlg.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

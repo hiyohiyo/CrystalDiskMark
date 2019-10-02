@@ -100,7 +100,7 @@ void CDiskMarkDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_MIX, m_ComboMix);
 #endif
 
-	DDX_Control(pDX, IDC_COMMENT, m_Comment);
+//	DDX_Control(pDX, IDC_COMMENT, m_Comment);
 	DDX_Control(pDX, IDC_COMMENT_EX, m_CommentEx);
 
 	DDX_Control(pDX, IDC_COMBO_COUNT, m_ComboCount);
@@ -139,6 +139,8 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	ON_MESSAGE(WM_USER_UPDATE_SCORE, OnUpdateScore)
 	ON_MESSAGE(WM_USER_UPDATE_MESSAGE, OnUpdateMessage)
 	ON_MESSAGE(WM_USER_EXIT_BENCHMARK, OnExitBenchmark)
+	ON_MESSAGE(WM_USER_UPDATE_COMMENT, OnUpdateComment)
+
 	ON_COMMAND(ID_ZOOM_100, &CDiskMarkDlg::OnZoom100)
 	ON_COMMAND(ID_ZOOM_125, &CDiskMarkDlg::OnZoom125)
 	ON_COMMAND(ID_ZOOM_150, &CDiskMarkDlg::OnZoom150)
@@ -196,8 +198,8 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 
 	ON_EN_UPDATE(IDC_COMMENT, &CDiskMarkDlg::OnChangeComment)
 	ON_BN_CLICKED(IDC_COMMENT_EX, &CDiskMarkDlg::OnCommentEx)
-	ON_EN_KILLFOCUS(IDC_COMMENT, &CDiskMarkDlg::OnKillFocusComment)
-	ON_BN_SETFOCUS(IDC_COMMENT_EX, &CDiskMarkDlg::OnSetFocusCommentEx)
+//	ON_EN_KILLFOCUS(IDC_COMMENT, &CDiskMarkDlg::OnKillFocusComment)
+//	ON_BN_SETFOCUS(IDC_COMMENT_EX, &CDiskMarkDlg::OnSetFocusCommentEx)
 
 END_MESSAGE_MAP()
 
@@ -508,8 +510,8 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_TestWrite3.InitControl(280 + OFFSET_X, 164, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 	m_TestWrite4.InitControl(280 + OFFSET_X, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
-	m_Comment.MoveWindow((int)((8 + OFFSET_X) * m_ZoomRatio), (int)(268 * m_ZoomRatio), (int)(464 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
-	m_Comment.ShowWindow(SW_HIDE);
+//	m_Comment.MoveWindow((int)((8 + OFFSET_X) * m_ZoomRatio), (int)(268 * m_ZoomRatio), (int)(464 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
+//	m_Comment.ShowWindow(SW_HIDE);
 	m_CommentEx.InitControl(8 + OFFSET_X, 268, 464, 24, m_ZoomRatio, IP(L"Comment"), 1, BS_LEFT, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_CommentEx.SetIbeamCursor(TRUE);
 	m_CommentEx.SetMargin(0, 2, 0, 2, m_ZoomRatio);
@@ -533,7 +535,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 
 	if (m_MixMode)
 	{
-		m_Comment.MoveWindow((int)((8 + OFFSET_X)* m_ZoomRatio), (int)(268* m_ZoomRatio), (int)(664 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
+//		m_Comment.MoveWindow((int)((8 + OFFSET_X)* m_ZoomRatio), (int)(268* m_ZoomRatio), (int)(664 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
 		m_CommentEx.InitControl(8 + OFFSET_X, 268, 664, 24, m_ZoomRatio, IP(L"CommentL"), 1, BS_LEFT, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 
 		m_TestMix1.ShowWindow(SW_SHOW);
@@ -734,7 +736,7 @@ void CDiskMarkDlg::SetControlFont()
 	m_TestWrite3.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 	m_TestWrite4.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
-	m_Comment.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, FW_BOLD);
+//	m_Comment.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, FW_BOLD);
 	m_ButtonAll.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, textAlpha, m_EditText, FW_BOLD, m_FontType);
 
 	m_ReadUnit.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, textAlpha, m_LabelText, FW_BOLD, m_FontType);
@@ -794,7 +796,7 @@ void CDiskMarkDlg::SetControlFont()
 	m_TestWrite3.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 	m_TestWrite4.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
-	m_Comment.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, FW_BOLD);
+//	m_Comment.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, FW_BOLD);
 	m_CommentEx.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_EditText, FW_BOLD, m_FontType);
 
 	m_ReadUnit.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_LabelText, FW_BOLD, m_FontType);
@@ -1725,6 +1727,26 @@ LRESULT CDiskMarkDlg::OnUpdateMessage(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
+LRESULT CDiskMarkDlg::OnUpdateComment(WPARAM wParam, LPARAM lParam)
+{
+	CString wstr = _T("");
+	CString lstr = _T("");
+
+	if (wParam != NULL)
+	{
+		wstr = *((CString*)wParam);
+	}
+
+	if (lParam != NULL)
+	{
+		lstr = *((CString*)lParam);
+	}
+
+	m_CommentEx.SetWindowTextW(wstr);
+
+	return 0;
+}
+
 void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, double latency, int blockSize, int unit)
 {
 	CString cstr;
@@ -2352,7 +2374,7 @@ Profile: Real\r\n\
 	}
 	clip.Replace(_T("%Affinity%"), cstr);
 
-	m_Comment.GetWindowText(cstr);
+	m_CommentEx.GetWindowText(cstr);
 
 	if (cstr.IsEmpty())
 	{
@@ -2991,19 +3013,25 @@ HBRUSH CDiskMarkDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 void CDiskMarkDlg::OnChangeComment()
 {
-	CString cstr;
-	m_Comment.GetWindowTextW(cstr);
-	m_CommentEx.SetWindowTextW(cstr);
+//	CString cstr;
+//	m_Comment.GetWindowTextW(cstr);
+//	m_CommentEx.SetWindowTextW(cstr);
 }
 
 void CDiskMarkDlg::OnCommentEx()
 {
-	m_CommentEx.ShowWindow(SW_HIDE);
-	m_Comment.ShowWindow(SW_SHOW);
-	GotoDlgCtrl(GetDlgItem(IDC_COMMENT));
-	m_Comment.SetSel(-1);
+	m_CommentEx.GetWindowTextW(m_CommentExchange);
+
+	CCommentDlg dlg(this);
+	dlg.DoModal();
+
+//	m_CommentEx.ShowWindow(SW_HIDE);
+//	m_Comment.ShowWindow(SW_SHOW);
+//	GotoDlgCtrl(GetDlgItem(IDC_COMMENT));
+//	m_Comment.SetSel(-1);
 }
 
+/*
 void CDiskMarkDlg::OnKillFocusComment()
 {
 	m_CommentEx.ShowWindow(SW_SHOW);
@@ -3017,3 +3045,4 @@ void CDiskMarkDlg::OnSetFocusCommentEx()
 	m_Comment.SetSel(-1);
 	m_Comment.ShowWindow(SW_SHOW);
 }
+*/

@@ -9,6 +9,7 @@
 #define IDR_MENU                        129
 #define IDR_MAINFRAME                   130
 #define IDD_ABOUT                       131
+#define IDD_COMMENT                     132
 #define IDR_PNG1                        134
 #define IDR_PNG2                        135
 #define IDR_ACCELERATOR                 136
