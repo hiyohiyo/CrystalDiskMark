@@ -114,7 +114,7 @@ void ShowErrorMessage(CString message)
 	LPVOID lpMessageBuffer;
 	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, lastErrorCode, 
 		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR) &lpMessageBuffer, 0, NULL);
-	errorMessage.Format(_T("0x%08X:%s"), lastErrorCode, lpMessageBuffer);
+	errorMessage.Format(_T("0x%08X:%s"), lastErrorCode, (LPTSTR) lpMessageBuffer);
 
 	AfxMessageBox(message + _T("\r\n") + errorMessage);
 	LocalFree( lpMessageBuffer );
@@ -438,9 +438,9 @@ BOOL Init(void* dlg)
 		RootPath += L"\\";
 	}
 
-	TestFileDir.Format(_T("%sCrystalDiskMark%08X"), RootPath, timeGetTime());
+	TestFileDir.Format(_T("%sCrystalDiskMark%08X"), (LPTSTR)RootPath.GetString(), timeGetTime());
 	CreateDirectory(TestFileDir, NULL);
-	TestFilePath.Format(_T("%s\\CrystalDiskMark%08X.tmp"), TestFileDir, timeGetTime());
+	TestFilePath.Format(_T("%s\\CrystalDiskMark%08X.tmp"), (LPTSTR)TestFileDir.GetString(), timeGetTime());
 
 	DWORD FileSystemFlags;
 	GetVolumeInformation(RootPath, NULL, NULL, NULL, NULL, &FileSystemFlags, NULL, NULL);
@@ -580,8 +580,8 @@ UINT Exit(void* dlg)
 void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 {
 	static CString cstr;
-	double *maxScore;
-	double *minLatency;
+	double *maxScore = NULL;
+	double *minLatency = NULL;
 	CString command;
 	CString title;
 	CString qt;
@@ -816,6 +816,10 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	double score = 0.0;
 	double latency = 0.0;
 
+	if (maxScore == NULL || minLatency == NULL)
+	{
+		return ;
+	}
 	*maxScore = 0.0;
 	*minLatency = -1.0;
 
@@ -832,7 +836,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_USER_UPDATE_MESSAGE, (WPARAM) &cstr, 0);
 		
 
-		command.Format(_T("\"%s\" %s -A%d -L \"%s\""), DiskSpdExe.GetString(), option, GetCurrentProcessId(),TestFilePath);
+		command.Format(_T("\"%s\" %s -A%d -L \"%s\""), (LPTSTR)DiskSpdExe.GetString(), (LPTSTR)option.GetString(), GetCurrentProcessId(), (LPTSTR)TestFilePath.GetString());
 
 		score = ExecAndWait((TCHAR*) (command.GetString()), TRUE, &latency) / 10 / 1000.0;
 

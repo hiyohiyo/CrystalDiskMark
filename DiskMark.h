@@ -26,9 +26,6 @@ public:
 	CDiskMarkApp();
 
 	CString m_MainDlgPath;
-	CString m_MainDlgPathIE8;
-	CString m_AboutDlgPath;
-	CString m_SettingsDlgPath;
 	CString m_ThemeDir;
 	CString m_LangDir;
 	DWORD m_ThemeIndex;

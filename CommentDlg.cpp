@@ -44,6 +44,13 @@ BOOL CCommentDlg::OnInitDialog()
 	UpdateDialogSize();
 
 	CenterWindow();
+	CRect parentRect;
+	CRect commentRect;
+	((CDiskMarkDlg*)GetParent())->GetWindowRect(&parentRect);
+	GetWindowRect(&commentRect);
+	commentRect.MoveToXY(parentRect.right - commentRect.Width(), parentRect.bottom - commentRect.Height());
+
+	MoveWindow(&commentRect, TRUE);
 	
 	ShowWindow(SW_SHOW);
 	return TRUE;
@@ -59,6 +66,7 @@ void CCommentDlg::UpdateDialogSize()
 
 	ChangeZoomType(m_ZoomType);
 
+#ifdef MIX_MODE
 	if (m_MixMode)
 	{
 		SetClientRect((DWORD)((SIZE_X + 200)* m_ZoomRatio), (DWORD)(SIZE_Y * m_ZoomRatio), 0);
@@ -70,6 +78,12 @@ void CCommentDlg::UpdateDialogSize()
 		m_Comment.MoveWindow((int)(8 * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(464 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
 	}
 	m_Comment.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, FW_BOLD);
+#else
+	SetClientRect((DWORD)(SIZE_X * m_ZoomRatio), (DWORD)(SIZE_Y * m_ZoomRatio), 0);
+	m_Comment.MoveWindow((int)(12 * m_ZoomRatio), (int)(12 * m_ZoomRatio), (int)(776 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
+	m_Comment.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, FW_BOLD);
+#endif
+
 
 	UpdateBackground(true);
 

@@ -27,6 +27,14 @@ END_MESSAGE_MAP()
 
 CDiskMarkApp::CDiskMarkApp()
 {
+	m_MainDlgPath = L"";
+	m_ThemeDir = L"";
+	m_LangDir = L"";
+	m_ThemeIndex = 0;
+	m_LangIndex = 0;
+
+	m_ExeDir = L"";;
+	m_Ini = L"";
 }
 
 CDiskMarkApp theApp;
@@ -78,7 +86,7 @@ BOOL CDiskMarkApp::InitInstance()
 		SHGetSpecialFolderPath(NULL, ini, CSIDL_LOCAL_APPDATA, TRUE);
 		path.Format(_T("%s\\%s"), ini, PRODUCT_ROMING_NAME);
 		CreateDirectory(path, NULL);
-		m_Ini.Format(_T("%s\\%s.%s"), path, exeName, _T("ini"));
+		m_Ini.Format(_T("%s\\%s.%s"), (LPCTSTR)path.GetString(), exeName, _T("ini"));
 		if(WritePrivateProfileString(_T("Setting"), _T("WriteCheck"), _T("0"), m_Ini) == 0)
 		{
 			m_Ini.Format(_T("%s\\%s.%s"), ini, exeName, _T("ini"));

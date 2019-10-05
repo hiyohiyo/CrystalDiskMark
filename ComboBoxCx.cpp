@@ -61,7 +61,9 @@ CComboBoxCx::CComboBoxCx()
 	, m_RenderMode(0)
 	, m_bHighContrast(FALSE)
 	, m_FontType(FT_GDI)
+	, m_TextColor(0)
 	, m_ZoomRatio(1.0)
+	, m_FontHeight(16)
 {
 	m_Margin.top = 0;
 	m_Margin.left = 0;

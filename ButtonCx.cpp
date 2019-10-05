@@ -63,6 +63,7 @@ CButtonCx::CButtonCx()
 	, m_bIbeamCursor(FALSE)
 	, m_RenderMode(0)
 	, m_bHighContrast(FALSE)
+	, m_TextColor(0)
 	, m_Alpha(255)
 	, m_FontType(FT_GDI)
 {

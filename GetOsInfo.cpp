@@ -47,7 +47,9 @@ BOOL Is7orLater()
 BOOL IsWow64()
 {
 	BOOL bIsWow64 = FALSE;
-	LPFN_ISWOW64PROCESS fnIsWow64Process = (LPFN_ISWOW64PROCESS)GetProcAddress(GetModuleHandle(_T("kernel32")), "IsWow64Process");
+	HMODULE hModule = GetModuleHandle(L"kernel32");
+	if (hModule == NULL) { return FALSE; }
+	LPFN_ISWOW64PROCESS fnIsWow64Process = (LPFN_ISWOW64PROCESS)GetProcAddress(hModule, "IsWow64Process");
 	if(fnIsWow64Process != NULL)
 	{
 		if(! fnIsWow64Process(GetCurrentProcess(), &bIsWow64))
@@ -61,8 +63,9 @@ BOOL IsWow64()
 BOOL IsX64()
 {
 	SYSTEM_INFO si = {0};
-	
-	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(GetModuleHandle(_T("kernel32.dll")), "GetNativeSystemInfo");
+	HMODULE hModule = GetModuleHandle(L"kernel32");
+	if (hModule == NULL) { return FALSE; }
+	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(hModule, "GetNativeSystemInfo");
 	if(pGetNativeSystemInfo != NULL)
 	{
 		pGetNativeSystemInfo(&si);
@@ -77,8 +80,9 @@ BOOL IsX64()
 BOOL IsArm32()
 {
 	SYSTEM_INFO si = { 0 };
-
-	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(GetModuleHandle(_T("kernel32.dll")), "GetNativeSystemInfo");
+	HMODULE hModule = GetModuleHandle(L"kernel32");
+	if (hModule == NULL) { return FALSE; }
+	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(hModule, "GetNativeSystemInfo");
 	if (pGetNativeSystemInfo != NULL)
 	{
 		pGetNativeSystemInfo(&si);
@@ -93,8 +97,9 @@ BOOL IsArm32()
 BOOL IsArm64()
 {
 	SYSTEM_INFO si = { 0 };
-
-	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(GetModuleHandle(_T("kernel32.dll")), "GetNativeSystemInfo");
+	HMODULE hModule = GetModuleHandle(L"kernel32");
+	if (hModule == NULL) { return FALSE; }
+	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(hModule, "GetNativeSystemInfo");
 	if (pGetNativeSystemInfo != NULL)
 	{
 		pGetNativeSystemInfo(&si);
@@ -109,8 +114,9 @@ BOOL IsArm64()
 BOOL IsIa64()
 {
 	SYSTEM_INFO si = {0};
-	
-	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(GetModuleHandle(_T("kernel32.dll")), "GetNativeSystemInfo");
+	HMODULE hModule = GetModuleHandle(L"kernel32");
+	if (hModule == NULL) { return FALSE; }
+	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(hModule, "GetNativeSystemInfo");
 	if(pGetNativeSystemInfo != NULL)
 	{
 		pGetNativeSystemInfo(&si);
@@ -206,7 +212,7 @@ void GetOsName(CString& OsFullName)
 		osVersion.Format(_T("%d.%d"), osvi.dwMajorVersion, osvi.dwMinorVersion);
 		osBuild.Format(_T("%d"), LOWORD(osvi.dwBuildNumber));
 
-		OsFullName.Format(_T("%s [%s Build %s]"), osName, osVersion, osBuild);
+		OsFullName.Format(_T("%s [%s Build %s]"), (LPCTSTR)osName.GetString(), (LPCTSTR)osVersion.GetString(), (LPCTSTR)osBuild.GetString());
 		break;
 
 	case VER_PLATFORM_WIN32_NT:
@@ -502,10 +508,10 @@ void GetOsName(CString& OsFullName)
 				// Meida Center & Tablet
 				if(GetSystemMetrics(SM_MEDIACENTER))
 				{
-					GetWindowsDirectory(path, MAX_PATH);
+					UINT length = GetWindowsDirectoryW(path, MAX_PATH);
 					_tcscat_s(path, MAX_PATH, _T("\\ehome\\ehshell.exe"));
 					TCHAR str[256];
-					if(GetFileVersion(path, str))
+					if(length != 0 && GetFileVersion(path, str))
 					{					
 						cstr = str;
 						if(cstr.Find(_T("5.1")) == 0)
@@ -591,11 +597,11 @@ void GetOsName(CString& OsFullName)
 
 		if(! osCsd.IsEmpty())
 		{
-			osFullName.Format(_T("%s %s %s [%s Build %s] (%s)"), osName, osType, osCsd, osVersion, osBuild, osArchitecture);
+			osFullName.Format(_T("%s %s %s [%s Build %s] (%s)"), (LPCTSTR)osName, (LPCTSTR)osType, (LPCTSTR)osCsd, (LPCTSTR)osVersion, (LPCTSTR)osBuild, (LPCTSTR)osArchitecture);
 		}
 		else
 		{
-			osFullName.Format(_T("%s %s [%s Build %s] (%s)"), osName, osType, osVersion, osBuild, osArchitecture);
+			osFullName.Format(_T("%s %s [%s Build %s] (%s)"), (LPCTSTR)osName, (LPCTSTR)osType, (LPCTSTR)osVersion, (LPCTSTR)osBuild, (LPCTSTR)osArchitecture);
 		}
 		OsFullName = osFullName;
 		break;

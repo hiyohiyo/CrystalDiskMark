@@ -51,6 +51,7 @@ CStaticCx::CStaticCx()
 	, m_bTrackingNow(FALSE)
 	, m_bBgBitmapInit(FALSE)
 	, m_bBgLoad(FALSE)
+	, m_bMeter(FALSE)
 	, m_GpFont(NULL)
 	, m_GpBrush(NULL)
 	, m_GpStringformat(NULL)
@@ -64,6 +65,7 @@ CStaticCx::CStaticCx()
 	, m_FontType(FT_GDI)
 	, m_ZoomRatio(1.0)
 	, m_MeterRatio(0.0)
+	, m_TextColor(0)
 {
 	m_Margin.top = 0;
 	m_Margin.left = 0;
@@ -591,9 +593,14 @@ BOOL CStaticCx::LoadBitmap(UINT nIDResource, LPCTSTR pResourceType)
 	if(dwResourceSize == 0){return FALSE;}
 
 	// リソースデータのポインタを得る。
-	const void* pResourceData = LockResource(LoadResource(NULL, hResource));
-	if(pResourceData == NULL){return FALSE;}
-
+	HGLOBAL hGlobal = LoadResource(NULL, hResource);
+	const void* pResourceData = NULL;
+	if (hGlobal != NULL)
+	{
+		pResourceData = LockResource(hGlobal);
+	}
+	if (pResourceData == NULL) { return FALSE; }
+	
 	// リソースのバッファを作成する。
 	HGLOBAL hResourceBuffer = GlobalAlloc(GMEM_MOVEABLE, dwResourceSize);
 	if(hResourceBuffer == NULL){return FALSE;}

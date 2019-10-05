@@ -207,6 +207,7 @@ protected:
 	CStaticCx m_TestMix3;
 	CStaticCx m_TestMix4;
 	CStaticCx m_MixUnit;
+	CComboBoxCx m_ComboMix;
 #endif
 
 	CButtonCx m_ButtonAll;
@@ -232,7 +233,6 @@ protected:
 	CComboBoxCx m_ComboCount;
 	CComboBoxCx m_ComboSize;
 	CComboBoxCx m_ComboDrive;
-	CComboBoxCx m_ComboMix;
 
 	CStaticCx m_WriteUnit;
 	CStaticCx m_ReadUnit;
@@ -302,9 +302,10 @@ public:
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnCbnSelchangeComboDrive();
 	afx_msg void OnCbnSelchangeComboUnit();
+	afx_msg void MoveForcus();
+	afx_msg void UpdateUnitLabel();
 #ifdef MIX_MODE
 	afx_msg void OnCbnSelchangeComboMix();
 #endif
-	afx_msg void MoveForcus();
-	afx_msg void UpdateUnitLabel();
+
 };

@@ -15,8 +15,13 @@ class CCommentDlg : public CDialogCx
 {
 	DECLARE_DYNCREATE(CCommentDlg)
 
+#ifdef MIX_MODE
 	static const int SIZE_X = 480;
 	static const int SIZE_Y = 40;
+#else
+	static const int SIZE_X = 800;
+	static const int SIZE_Y = 64;
+#endif
 
 public:
 	CCommentDlg(CWnd* pParent = NULL);

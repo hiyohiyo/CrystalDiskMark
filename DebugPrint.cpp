@@ -30,7 +30,7 @@ void SetDebugMode(DWORD mode)
 void DebugPrint(CString cstr)
 {
 	static int flag = TRUE;
-	static TCHAR file[MAX_PATH];
+	static TCHAR file[MAX_PATH] = L"";
 	static DWORD first = GetTickCount();
 	CString output;
 
@@ -59,9 +59,12 @@ void DebugPrint(CString cstr)
 
 	FILE *fp;
 	_tfopen_s(&fp, file, _T("ac"));
-	_ftprintf(fp, _T("%s"), (LPCTSTR)output);
-	fflush(fp);
-	fclose(fp);
+	if (fp != NULL)
+	{
+		_ftprintf(fp, _T("%s"), (LPCTSTR)output);
+		fflush(fp);
+		fclose(fp);
+	}
 
 	if(debugMode == DEBUG_MODE_MESSAGE)
 	{
