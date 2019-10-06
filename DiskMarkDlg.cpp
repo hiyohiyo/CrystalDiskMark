@@ -172,9 +172,11 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
 	ON_COMMAND(ID_PROFILE_DEFAULT, &CDiskMarkDlg::OnProfileDefault)
 	ON_COMMAND(ID_PROFILE_REAL, &CDiskMarkDlg::OnProfileReal)
 	ON_COMMAND(ID_PROFILE_PEAK, &CDiskMarkDlg::OnProfilePeak)
+#ifdef MIX_MODE
 	ON_COMMAND(ID_PROFILE_DEFAULT_MIX, &CDiskMarkDlg::OnProfileDefaultMix)
 	ON_COMMAND(ID_PROFILE_REAL_MIX, &CDiskMarkDlg::OnProfileRealMix)
 	ON_COMMAND(ID_PROFILE_PEAK_MIX, &CDiskMarkDlg::OnProfilePeakMix)
+#endif
 
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_RESULT_SAVE, &CDiskMarkDlg::OnResultSave)
@@ -2087,23 +2089,25 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	switch (m_Profile)
 	{
 	case PROFILE_DEFAULT:
-		OnProfileDefault();
+		ProfileDefault();
 		break;
 	case PROFILE_PEAK:
-		OnProfilePeak();
+		ProfilePeak();
 		break;
 	case PROFILE_REAL:
-		OnProfileReal();
+		ProfileReal();
 		break;
+#ifdef MIX_MODE
 	case PROFILE_DEFAULT_MIX:
-		OnProfileDefaultMix();
+		ProfileDefaultMix();
 		break;
 	case PROFILE_PEAK_MIX:
-		OnProfilePeakMix();
+		ProfilePeakMix();
 		break;
 	case PROFILE_REAL_MIX:
-		OnProfileRealMix();
+		ProfileRealMix();
 		break;
+#endif
 	default:
 		OnProfileDefault();
 		break;
@@ -2741,14 +2745,7 @@ void CDiskMarkDlg::OnModeAll0x00()
 
 void CDiskMarkDlg::OnProfileDefault()
 {
-	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_DEFAULT, MF_BYCOMMAND);
-	SetMenu(menu);
-	DrawMenuBar();
-
-	m_Profile = PROFILE_DEFAULT;
-	m_MixMode = FALSE;
-	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("0"), m_Ini);
+	ProfileDefault();
 	ChangeButtonStatus(TRUE);
 	UpdateUnitLabel();
 	InitScore();
@@ -2757,7 +2754,30 @@ void CDiskMarkDlg::OnProfileDefault()
 	SetWindowTitle(L"");
 }
 
+void CDiskMarkDlg::ProfileDefault()
+{
+	CMenu* menu = GetMenu();
+	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_DEFAULT, MF_BYCOMMAND);
+	SetMenu(menu);
+	DrawMenuBar();
+
+	m_Profile = PROFILE_DEFAULT;
+	m_MixMode = FALSE;
+	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("0"), m_Ini);
+}
+
 void CDiskMarkDlg::OnProfilePeak()
+{
+	ProfilePeak();
+	ChangeButtonStatus(TRUE);
+	UpdateUnitLabel();
+	InitScore();
+	UpdateScore();
+	UpdateDialogSize();
+	SetWindowTitle(L"");
+}
+
+void CDiskMarkDlg::ProfilePeak()
 {
 	CMenu* menu = GetMenu();
 	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_PEAK, MF_BYCOMMAND);
@@ -2767,6 +2787,11 @@ void CDiskMarkDlg::OnProfilePeak()
 	m_Profile = PROFILE_PEAK;
 	m_MixMode = FALSE;
 	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("1"), m_Ini);
+}
+
+void CDiskMarkDlg::OnProfileReal()
+{
+	ProfileReal();
 	ChangeButtonStatus(TRUE);
 	UpdateUnitLabel();
 	InitScore();
@@ -2775,7 +2800,7 @@ void CDiskMarkDlg::OnProfilePeak()
 	SetWindowTitle(L"");
 }
 
-void CDiskMarkDlg::OnProfileReal()
+void CDiskMarkDlg::ProfileReal()
 {
 	CMenu* menu = GetMenu();
 	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_REAL, MF_BYCOMMAND);
@@ -2785,6 +2810,12 @@ void CDiskMarkDlg::OnProfileReal()
 	m_Profile = PROFILE_REAL;
 	m_MixMode = FALSE;
 	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("2"), m_Ini);
+}
+
+#ifdef MIX_MODE
+void CDiskMarkDlg::OnProfileDefaultMix()
+{
+	ProfileDefaultMix();
 	ChangeButtonStatus(TRUE);
 	UpdateUnitLabel();
 	InitScore();
@@ -2793,7 +2824,7 @@ void CDiskMarkDlg::OnProfileReal()
 	SetWindowTitle(L"");
 }
 
-void CDiskMarkDlg::OnProfileDefaultMix()
+void CDiskMarkDlg::ProfileDefaultMix()
 {
 	CMenu* menu = GetMenu();
 	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_DEFAULT_MIX, MF_BYCOMMAND);
@@ -2803,6 +2834,11 @@ void CDiskMarkDlg::OnProfileDefaultMix()
 	m_Profile = PROFILE_DEFAULT_MIX;
 	m_MixMode = TRUE;
 	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("3"), m_Ini);
+}
+
+void CDiskMarkDlg::OnProfilePeakMix()
+{
+	ProfilePeakMix();
 	ChangeButtonStatus(TRUE);
 	UpdateUnitLabel();
 	InitScore();
@@ -2811,7 +2847,7 @@ void CDiskMarkDlg::OnProfileDefaultMix()
 	SetWindowTitle(L"");
 }
 
-void CDiskMarkDlg::OnProfilePeakMix()
+void CDiskMarkDlg::ProfilePeakMix()
 {
 	CMenu* menu = GetMenu();
 	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_PEAK_MIX, MF_BYCOMMAND);
@@ -2821,6 +2857,11 @@ void CDiskMarkDlg::OnProfilePeakMix()
 	m_Profile = PROFILE_PEAK_MIX;
 	m_MixMode = TRUE;
 	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("4"), m_Ini);
+}
+
+void CDiskMarkDlg::OnProfileRealMix()
+{
+	ProfileRealMix();
 	ChangeButtonStatus(TRUE);
 	UpdateUnitLabel();
 	InitScore();
@@ -2829,7 +2870,7 @@ void CDiskMarkDlg::OnProfilePeakMix()
 	SetWindowTitle(L"");
 }
 
-void CDiskMarkDlg::OnProfileRealMix()
+void CDiskMarkDlg::ProfileRealMix()
 {
 	CMenu* menu = GetMenu();
 	menu->CheckMenuRadioItem(ID_PROFILE_DEFAULT, ID_PROFILE_REAL_MIX, ID_PROFILE_REAL_MIX, MF_BYCOMMAND);
@@ -2839,14 +2880,8 @@ void CDiskMarkDlg::OnProfileRealMix()
 	m_Profile = PROFILE_REAL_MIX;
 	m_MixMode = TRUE;
 	WritePrivateProfileString(_T("Setting"), _T("Profile"), _T("5"), m_Ini);
-	ChangeButtonStatus(TRUE);
-	UpdateUnitLabel();
-	InitScore();
-	UpdateScore();
-	UpdateDialogSize();
-	SetWindowTitle(L"");
 }
-
+#endif
 
 void CDiskMarkDlg::OnSettingsQueuesThreads()
 {

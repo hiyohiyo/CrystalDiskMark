@@ -294,9 +294,6 @@ public:
 	afx_msg void OnProfileDefault();
 	afx_msg void OnProfilePeak();
 	afx_msg void OnProfileReal();
-	afx_msg void OnProfileDefaultMix();
-	afx_msg void OnProfilePeakMix();
-	afx_msg void OnProfileRealMix();
 	afx_msg void OnResultSave();
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
@@ -304,7 +301,18 @@ public:
 	afx_msg void OnCbnSelchangeComboUnit();
 	afx_msg void MoveForcus();
 	afx_msg void UpdateUnitLabel();
+
+	void ProfileDefault();
+	void ProfilePeak();
+	void ProfileReal();
+
 #ifdef MIX_MODE
+	afx_msg void OnProfileDefaultMix();
+	afx_msg void OnProfilePeakMix();
+	afx_msg void OnProfileRealMix();
+	void ProfileDefaultMix();
+	void ProfilePeakMix();
+	void ProfileRealMix();
 	afx_msg void OnCbnSelchangeComboMix();
 #endif
 
