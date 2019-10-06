@@ -36,6 +36,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnInitDialog();
 	virtual void UpdateDialogSize();
+	virtual void OnOK();
 
 	DECLARE_MESSAGE_MAP()
 

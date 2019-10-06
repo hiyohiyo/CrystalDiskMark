@@ -1281,8 +1281,11 @@ void CDiskMarkDlg::OnSequentialPeak()
 		UpdateData(TRUE);
 		m_SequentialReadScore1 = 0.0;
 		m_SequentialWriteScore1 = 0.0;
+		m_SequentialReadLatency1 = 0.0;
+		m_SequentialWriteLatency1 = 0.0;
 #ifdef MIX_MODE
 		m_SequentialMixScore1 = 0.0;
+		m_SequentialMixLatency1 = 0.0;
 #endif
 		UpdateScore();
 		m_DiskBenchStatus = TRUE;
@@ -1310,8 +1313,11 @@ void CDiskMarkDlg::OnRandomPeak()
 		UpdateData(TRUE);
 		m_RandomReadScore1 = 0.0;
 		m_RandomWriteScore1 = 0.0;
+		m_RandomReadLatency1 = 0.0;
+		m_RandomWriteLatency1 = 0.0;
 #ifdef MIX_MODE
 		m_RandomMixScore1 = 0.0;
+		m_RandomMixLatency1 = 0.0;
 #endif
 		UpdateScore();
 		m_DiskBenchStatus = TRUE;
@@ -1339,8 +1345,11 @@ void CDiskMarkDlg::OnSequentialReal()
 		UpdateData(TRUE);
 		m_SequentialReadScore1 = 0.0;
 		m_SequentialWriteScore1 = 0.0;
+		m_SequentialReadLatency1 = 0.0;
+		m_SequentialWriteLatency1 = 0.0;
 #ifdef MIX_MODE
 		m_SequentialMixScore1 = 0.0;
+		m_SequentialMixLatency1 = 0.0;
 #endif
 		UpdateScore();
 		m_DiskBenchStatus = TRUE;
@@ -1368,8 +1377,11 @@ void CDiskMarkDlg::OnRandomReal()
 		UpdateData(TRUE);
 		m_RandomReadScore1 = 0.0;
 		m_RandomWriteScore1 = 0.0;
+		m_RandomReadLatency1 = 0.0;
+		m_RandomWriteLatency1 = 0.0;
 #ifdef MIX_MODE
 		m_RandomMixScore1 = 0.0;
+		m_RandomMixLatency1 = 0.0;
 #endif
 		UpdateScore();
 		m_DiskBenchStatus = TRUE;
@@ -1408,8 +1420,11 @@ void CDiskMarkDlg::OnTest1()
 		UpdateData(TRUE);
 		m_SequentialReadScore1 = 0.0;
 		m_SequentialWriteScore1 = 0.0;
+		m_SequentialReadLatency1 = 0.0;
+		m_SequentialWriteLatency1 = 0.0;
 #ifdef MIX_MODE
 		m_SequentialMixScore1 = 0.0;
+		m_SequentialMixLatency1 = 0.0;
 #endif
 		UpdateScore();
 		m_DiskBenchStatus = TRUE;
@@ -1448,8 +1463,11 @@ void CDiskMarkDlg::OnTest2()
 		UpdateData(TRUE);
 		m_SequentialReadScore2 = 0.0;
 		m_SequentialWriteScore2 = 0.0;
+		m_SequentialReadLatency2 = 0.0;
+		m_SequentialWriteLatency2 = 0.0;
 #ifdef MIX_MODE
 		m_SequentialMixScore2 = 0.0;
+		m_SequentialMixLatency2 = 0.0;
 #endif
 		UpdateScore();
 		m_DiskBenchStatus = TRUE;
@@ -1488,8 +1506,11 @@ void CDiskMarkDlg::OnTest3()
 		UpdateData(TRUE);
 		m_RandomReadScore1 = 0.0;
 		m_RandomWriteScore1 = 0.0;
+		m_RandomReadLatency1 = 0.0;
+		m_RandomWriteLatency1 = 0.0;
 #ifdef MIX_MODE
 		m_RandomMixScore1 = 0.0;
+		m_RandomMixLatency1 = 0.0;
 #endif
 		UpdateScore();
 		m_DiskBenchStatus = TRUE;
@@ -1528,8 +1549,11 @@ void CDiskMarkDlg::OnTest4()
 		UpdateData(TRUE);
 		m_RandomReadScore2 = 0.0;
 		m_RandomWriteScore2 = 0.0;
+		m_RandomReadLatency2 = 0.0;
+		m_RandomWriteLatency2 = 0.0;
 #ifdef MIX_MODE
 		m_RandomMixScore2 = 0.0;
+		m_RandomMixLatency2 = 0.0;
 #endif
 		UpdateScore();
 		m_DiskBenchStatus = TRUE;

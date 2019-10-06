@@ -97,3 +97,13 @@ void CCommentDlg::OnChangeComment()
 	
 	::PostMessage(GetParent()->GetSafeHwnd(), WM_USER_UPDATE_COMMENT, (WPARAM)&cstr, 0);
 }
+
+void CCommentDlg::OnOK()
+{
+	static CString cstr;
+	m_Comment.GetWindowTextW(cstr);
+
+	::PostMessage(GetParent()->GetSafeHwnd(), WM_USER_UPDATE_COMMENT, (WPARAM)&cstr, 0);
+
+	CDialog::OnOK();
+}
