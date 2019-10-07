@@ -1824,50 +1824,29 @@ void CDiskMarkDlg::SetMeter(CStaticCx* control, double score, double latency, in
 
 	if (unit == SCORE_UNIT::SCORE_IOPS)
 	{
-		if (blockSize == -1)
+		double iops = score * 1000 * 1000 / blockSize;
+		if (iops >= 1000000.0)
 		{
-			cstr.Format(_T("----"));
+			cstr.Format(_T("%d"), (int)iops);
 		}
 		else
 		{
-			double iops = score * 1000 * 1000 / blockSize;
 			cstr.Format(_T("%.2f"), iops);
-			/*
-			if (iops >= 100000.0)
-			{
-				cstr.Format(_T("%d"), (int)iops);
-			}
-			else if (iops >= 10000.0)
-			{
-				cstr.Format(_T("%.1f"), iops);
-			}
-			else
-			{
-				cstr.Format(_T("%.2f"), iops);
-			}
-			*/
 		}
 	}
 	else if (unit == SCORE_UNIT::SCORE_US)
 	{
-		if (blockSize == -1)
-		{
-			cstr.Format(_T("----"));
-		}
-		else if (score <= 0.0)
+		if (score <= 0.0)
 		{
 			cstr.Format(_T("%.2f"), 0.0);
 		}
+		else if (latency >= 1000000.0)
+		{
+			cstr.Format(_T("%d"), (int)latency);
+		}
 		else
 		{
-			if (latency >= 1000000.0)
-			{
-				cstr.Format(_T("%d"), (int)latency);
-			}
-			else
-			{
-				cstr.Format(_T("%.2f"), latency);
-			}
+			cstr.Format(_T("%.2f"), latency);
 		}
 	}
 	else if(unit == SCORE_UNIT::SCORE_GBS)

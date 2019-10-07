@@ -32,10 +32,10 @@ CMainDialog::CMainDialog(UINT dlgResouce,
 		m_RecommendTheme = L"KureiKeiRecoding";
 	#else
 		m_DefaultTheme = L"Shizuku";
-		m_RecommendTheme = L"ShizukuHotaru";
+		m_RecommendTheme = L"Shizuku";
 	#endif
 #else
-	m_DefaultTheme = L"default";
+	m_DefaultTheme = L"Default";
 #endif
 
 	m_FlagInitializing = TRUE;
