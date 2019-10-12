@@ -54,7 +54,7 @@
 
 // Version Information
 #define PRODUCT_NAME			_T("CrystalDiskMark")
-#define PRODUCT_VERSION			_T("7.0.0 RC1")
+#define PRODUCT_VERSION			_T("7.0.0 RC2")
 #define PRODUCT_ROMING_NAME		_T("CrystalDiskMark")
 
 #ifdef UWP
@@ -110,19 +110,22 @@
 /// Beta
 // #define PRODUCT_EDITION			_T("-Marginality-")
 
-#define PRODUCT_RELEASE			_T("2019/10/06")
+#define PRODUCT_RELEASE			_T("2019/10/13")
 #define PRODUCT_COPY_YEAR		_T("2007-2019")
-#define PRODUCT_COPYRIGHT		_T("© hiyohiyo 2007-2019 ")
+#define PRODUCT_COPYRIGHT		_T("© hiyohiyo 2007-2019")
 #define PRODUCT_LICENSE			_T("The MIT License")
 
 #define URL_CRYSTAL_DEW_WORLD_JA	_T("https://crystalmark.info/ja/")
 #define URL_CRYSTAL_DEW_WORLD_EN 	_T("https://crystalmark.info/en/")
 
+#define	URL_VERSION_JA				_T("https://crystalmark.info/ja/software/crystaldiskmark/crystaldiskmark-history/")
+#define	URL_VERSION_EN				_T("https://crystalmark.info/en/software/crystaldiskmark/crystaldiskmark-history/")
+#define	URL_LICENSE_JA				_T("https://crystalmark.info/ja/software/crystaldiskmark/crystaldiskmark-license/")
+#define	URL_LICENSE_EN				_T("https://crystalmark.info/en/software/crystaldiskmark/crystaldiskmark-license/")
+
+
 #define	URL_PROJECT_SHIZUKU_JA		_T("https://suishoshizuku.com/ja/")
 #define	URL_PROJECT_SHIZUKU_EN		_T("https://suishoshizuku.com/en/")
-
-#define	URL_CDM_LICENSE_JA			_T("https://crystalmark.info/ja/software/crystaldiskmark/crystaldiskmark-license/")
-#define	URL_CDM_LICENSE_EN			_T("https://crystalmark.info/en/software/crystaldiskmark/crystaldiskmark-license/")
 
 #define URL_DISKSPD					_T("https://github.com/microsoft/diskspd")
 
