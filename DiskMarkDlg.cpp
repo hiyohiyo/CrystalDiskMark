@@ -102,7 +102,7 @@ void CDiskMarkDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_MIX, m_ComboMix);
 #endif
 
-//	DDX_Control(pDX, IDC_COMMENT, m_Comment);
+	DDX_Control(pDX, IDC_COMMENT, m_Comment);
 	DDX_Control(pDX, IDC_COMMENT_EX, m_CommentEx);
 
 	DDX_Control(pDX, IDC_COMBO_COUNT, m_ComboCount);
@@ -486,10 +486,12 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_TestWrite3.InitControl(468 + OFFSET_X, 272, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 	m_TestWrite4.InitControl(468 + OFFSET_X, 360, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
-//	m_Comment.MoveWindow((int)((12 + OFFSET_X) * m_ZoomRatio), (int)(544 * m_ZoomRatio), (int)(776 * m_ZoomRatio), (int)(44 * m_ZoomRatio));
+	m_Comment.MoveWindow((int)((12 + OFFSET_X) * m_ZoomRatio), (int)(452 * m_ZoomRatio), (int)(776 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
 	m_CommentEx.InitControl(12 + OFFSET_X, 452, 776, 40, m_ZoomRatio, IP(L"Comment"), 1, BS_LEFT, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_CommentEx.SetIbeamCursor(TRUE);
-	m_CommentEx.SetMargin(0, 2, 0, 2, m_ZoomRatio);
+//	m_CommentEx.SetMargin(0, 4, 0, 4, m_ZoomRatio);
+
+
 
 	m_ReadUnit.InitControl(140 + OFFSET_X, 52, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_WriteUnit.InitControl(468 + OFFSET_X, 52, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
@@ -523,11 +525,11 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_TestWrite3.InitControl(280 + OFFSET_X, 164, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 	m_TestWrite4.InitControl(280 + OFFSET_X, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
-//	m_Comment.MoveWindow((int)((8 + OFFSET_X) * m_ZoomRatio), (int)(268 * m_ZoomRatio), (int)(464 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
-//	m_Comment.ShowWindow(SW_HIDE);
+	m_Comment.MoveWindow((int)((8 + OFFSET_X) * m_ZoomRatio), (int)(268 * m_ZoomRatio), (int)(464 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
+	m_Comment.ShowWindow(SW_HIDE);
 	m_CommentEx.InitControl(8 + OFFSET_X, 268, 464, 24, m_ZoomRatio, IP(L"Comment"), 1, BS_LEFT, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_CommentEx.SetIbeamCursor(TRUE);
-	m_CommentEx.SetMargin(0, 2, 0, 2, m_ZoomRatio);
+//	m_CommentEx.SetMargin(0, 8, 0, 8, m_ZoomRatio);
 
 	m_ReadUnit.InitControl(84 + OFFSET_X, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_WriteUnit.InitControl(280 + OFFSET_X, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
@@ -537,6 +539,11 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ComboDrive.InitControl(212 + OFFSET_X, 8, 188 + offsetX, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_ComboUnit.InitControl(404 + OFFSET_X, 8, 68, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
 #endif
+
+	// Set CButtonCx's Margin equals CEditEx's margin
+	DWORD margin;
+	margin = m_Comment.GetMargins();
+	m_CommentEx.SetMargin(0, LOWORD(margin) + 3, 0, HIWORD(margin) + 3, 1.0);
 
 #ifdef MIX_MODE
 	m_TestMix1.InitControl(480 + OFFSET_X, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
@@ -747,7 +754,7 @@ void CDiskMarkDlg::SetControlFont()
 	m_TestWrite3.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 	m_TestWrite4.SetFontEx(m_FontFace, (int)(64 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
-//	m_Comment.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, FW_BOLD);
+	m_Comment.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, FW_BOLD);
 	m_CommentEx.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, textAlpha, m_EditText, FW_BOLD, m_FontType);
 	m_ButtonAll.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, textAlpha, m_EditText, FW_BOLD, m_FontType);
 
@@ -808,7 +815,7 @@ void CDiskMarkDlg::SetControlFont()
 	m_TestWrite3.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 	m_TestWrite4.SetFontEx(m_FontFace, (int)(36 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
-//	m_Comment.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, FW_BOLD);
+	m_Comment.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, FW_BOLD);
 	m_CommentEx.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_EditText, FW_BOLD, m_FontType);
 
 	m_ReadUnit.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_LabelText, FW_BOLD, m_FontType);
@@ -1769,19 +1776,21 @@ LRESULT CDiskMarkDlg::OnUpdateMessage(WPARAM wParam, LPARAM lParam)
 LRESULT CDiskMarkDlg::OnUpdateComment(WPARAM wParam, LPARAM lParam)
 {
 	CString wstr = _T("");
-	CString lstr = _T("");
+	DWORD margin = 0;
 
 	if (wParam != NULL)
 	{
 		wstr = *((CString*)wParam);
+		m_CommentEx.SetWindowTextW(wstr);
 	}
 
+	/* SetMargin
 	if (lParam != NULL)
 	{
-		lstr = *((CString*)lParam);
+		margin = *(DWORD*)(lParam);
+		m_CommentEx.SetMargin(0, LOWORD(margin) + 3, 0, HIWORD(margin) + 3, 1.0);
 	}
-
-	m_CommentEx.SetWindowTextW(wstr);
+	*/
 
 	return 0;
 }

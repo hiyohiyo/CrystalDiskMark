@@ -31,16 +31,15 @@ public:
 
 	BOOL m_MixMode;
 	int m_FontScale;
+	CEditEx m_Comment;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnInitDialog();
 	virtual void UpdateDialogSize();
 	virtual void OnOK();
+	afx_msg void OnChangeComment();
+	void ChangeComment();
 
 	DECLARE_MESSAGE_MAP()
-
-public:
-	CEditEx m_Comment;
-	afx_msg void OnChangeComment();
 };

@@ -70,7 +70,7 @@ void CCommentDlg::UpdateDialogSize()
 	if (m_MixMode)
 	{
 		SetClientRect((DWORD)((SIZE_X + 200)* m_ZoomRatio), (DWORD)(SIZE_Y * m_ZoomRatio), 0);
-		m_Comment.MoveWindow((int)((8) * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(664 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
+		m_Comment.MoveWindow((int)(8 * m_ZoomRatio), (int)(8 * m_ZoomRatio), (int)(664 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
 	}
 	else
 	{
@@ -84,7 +84,6 @@ void CCommentDlg::UpdateDialogSize()
 	m_Comment.SetFontEx(m_FontFace, (int)(28 * scale), m_ZoomRatio, FW_BOLD);
 #endif
 
-
 	UpdateBackground(true);
 
 	Invalidate();
@@ -92,18 +91,21 @@ void CCommentDlg::UpdateDialogSize()
 
 void CCommentDlg::OnChangeComment()
 {
-	static CString cstr;
-	m_Comment.GetWindowTextW(cstr);
-	
-	::PostMessage(GetParent()->GetSafeHwnd(), WM_USER_UPDATE_COMMENT, (WPARAM)&cstr, 0);
+	ChangeComment();
 }
 
 void CCommentDlg::OnOK()
 {
-	static CString cstr;
-	m_Comment.GetWindowTextW(cstr);
-
-	::PostMessage(GetParent()->GetSafeHwnd(), WM_USER_UPDATE_COMMENT, (WPARAM)&cstr, 0);
-
+	ChangeComment();
 	CDialog::OnOK();
+}
+
+void CCommentDlg::ChangeComment()
+{
+	static CString cstr;
+	static DWORD margin;
+	m_Comment.GetWindowTextW(cstr);
+	margin = m_Comment.GetMargins();
+
+	::PostMessage(GetParent()->GetSafeHwnd(), WM_USER_UPDATE_COMMENT, (WPARAM)&cstr, (LPARAM)&margin);
 }

@@ -227,7 +227,7 @@ protected:
 	CStaticCx m_TestWrite3;
 	CStaticCx m_TestWrite4;
 
-//	CEditEx m_Comment;
+	CEditEx m_Comment;
 
 	CComboBoxCx m_ComboUnit;
 	CComboBoxCx m_ComboCount;
