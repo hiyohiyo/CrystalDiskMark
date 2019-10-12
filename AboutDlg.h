@@ -38,6 +38,8 @@ protected:
 
 public:
 	afx_msg void OnCrystalDewWorld();
+	afx_msg void OnVersion();
+	afx_msg void OnLicense();
 	afx_msg void OnBnClickedProjectSite1();
 	afx_msg void OnBnClickedProjectSite2();
 	afx_msg void OnBnClickedProjectSite3();
@@ -50,10 +52,10 @@ public:
 	CButtonCx m_CtrlProjectSite3;
 	CButtonCx m_CtrlProjectSite4;
 	CButtonCx m_CtrlProjectSite5;
+	CButtonCx m_CtrlVersion;
+	CButtonCx m_CtrlLicense;
 
-	CStaticCx m_CtrlVersion;
 	CStaticCx m_CtrlEdition;
 	CStaticCx m_CtrlRelease;
 	CStaticCx m_CtrlCopyright;
-	CStaticCx m_CtrlLicense;
 };

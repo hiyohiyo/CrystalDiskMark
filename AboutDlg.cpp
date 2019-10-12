@@ -46,11 +46,11 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PROJECT_SITE_3, m_CtrlProjectSite3);
 	DDX_Control(pDX, IDC_PROJECT_SITE_4, m_CtrlProjectSite4);
 	DDX_Control(pDX, IDC_PROJECT_SITE_5, m_CtrlProjectSite5);
-	
 	DDX_Control(pDX, IDC_VERSION, m_CtrlVersion);
+	DDX_Control(pDX, IDC_LICENSE, m_CtrlLicense);
+	
 	DDX_Control(pDX, IDC_RELEASE, m_CtrlRelease);
 	DDX_Control(pDX, IDC_COPYRIGHT, m_CtrlCopyright);
-	DDX_Control(pDX, IDC_LICENSE, m_CtrlLicense);
 	DDX_Control(pDX, IDC_EDITION, m_CtrlEdition);
 }
 
@@ -84,6 +84,8 @@ BOOL CAboutDlg::OnInitDialog()
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogCx)
 	ON_BN_CLICKED(IDC_CRYSTAL_DEW_WORLD, &CAboutDlg::OnCrystalDewWorld)
+	ON_BN_CLICKED(IDC_LICENSE, &CAboutDlg::OnLicense)
+	ON_BN_CLICKED(IDC_VERSION, &CAboutDlg::OnVersion)
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	ON_BN_CLICKED(IDC_PROJECT_SITE_1, &CAboutDlg::OnBnClickedProjectSite1)
 	ON_BN_CLICKED(IDC_PROJECT_SITE_2, &CAboutDlg::OnBnClickedProjectSite2)
@@ -123,7 +125,7 @@ void CAboutDlg::UpdateDialogSize()
 	m_CtrlProjectSite5.SetHandCursor();
 #endif
 
-	m_CtrlCrystalDewWorld.InitControl(12, 12, 128, 128, m_ZoomRatio, IP(L"Logo"), 1, 0, CButtonCx::OwnerDrawImage);
+	m_CtrlCrystalDewWorld.InitControl(12, 20, 128, 128, m_ZoomRatio, IP(L"Logo"), 1, 0, CButtonCx::OwnerDrawImage);
 	m_CtrlCrystalDewWorld.SetHandCursor();
 
 	m_CtrlVersion.SetFontEx(m_FontFace, 24, m_ZoomRatio, 255, RGB(0, 0, 0), FW_BOLD, m_FontType);
@@ -132,18 +134,21 @@ void CAboutDlg::UpdateDialogSize()
 	m_CtrlCopyright.SetFontEx(m_FontFace, 16, m_ZoomRatio, 255, RGB(0, 0, 0), FW_NORMAL, m_FontType);
 	m_CtrlLicense.SetFontEx(m_FontFace, 16, m_ZoomRatio, 255, RGB(0, 0, 0), FW_NORMAL, m_FontType);
 
+	m_CtrlVersion.SetHandCursor();
+	m_CtrlLicense.SetHandCursor();
+
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	m_CtrlVersion.InitControl(152, 12, 476, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlVersion.InitControl(152, 12, 476, 36, m_ZoomRatio, NULL, 0, BS_CENTER, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_CtrlEdition.InitControl(152, 48, 476, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_CtrlRelease.InitControl(152, 88, 476, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_CtrlCopyright.InitControl(152, 112, 476, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlLicense.InitControl(152, 136, 476, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlLicense.InitControl(152, 136, 476, 24, m_ZoomRatio, NULL, 0, BS_CENTER, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
 #else
-	m_CtrlVersion.InitControl(152, 12, 316, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlVersion.InitControl(152, 12, 316, 36, m_ZoomRatio, NULL, 0, BS_CENTER, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_CtrlEdition.InitControl(152, 48, 316, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_CtrlRelease.InitControl(152, 88, 316, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_CtrlCopyright.InitControl(152, 112, 316, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlLicense.InitControl(152, 136, 316, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlLicense.InitControl(152, 136, 316, 24, m_ZoomRatio, NULL, 0, BS_CENTER, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
 #endif
 
 	Invalidate();
@@ -164,6 +169,30 @@ void CAboutDlg::OnCrystalDewWorld()
 		OpenUrl(URL_CRYSTAL_DEW_WORLD_EN);
 	}
 #endif
+}
+
+void CAboutDlg::OnVersion()
+{
+	if (GetUserDefaultLCID() == 0x0411)// Japanese
+	{
+		OpenUrl(URL_VERSION_JA);
+	}
+	else // Other Language
+	{
+		OpenUrl(URL_VERSION_EN);
+	}
+
+}
+void CAboutDlg::OnLicense()
+{
+	if (GetUserDefaultLCID() == 0x0411)// Japanese
+	{
+		OpenUrl(URL_LICENSE_JA);
+	}
+	else // Other Language
+	{
+		OpenUrl(URL_LICENSE_EN);
+	}
 }
 
 #ifdef SUISHO_SHIZUKU_SUPPORT

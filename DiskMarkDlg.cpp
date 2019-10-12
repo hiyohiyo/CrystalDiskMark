@@ -487,11 +487,10 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_TestWrite4.InitControl(468 + OFFSET_X, 360, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
 	m_Comment.MoveWindow((int)((12 + OFFSET_X) * m_ZoomRatio), (int)(452 * m_ZoomRatio), (int)(776 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
+	m_Comment.ShowWindow(SW_HIDE);
 	m_CommentEx.InitControl(12 + OFFSET_X, 452, 776, 40, m_ZoomRatio, IP(L"Comment"), 1, BS_LEFT, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_CommentEx.SetIbeamCursor(TRUE);
 //	m_CommentEx.SetMargin(0, 4, 0, 4, m_ZoomRatio);
-
-
 
 	m_ReadUnit.InitControl(140 + OFFSET_X, 52, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_WriteUnit.InitControl(468 + OFFSET_X, 52, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
