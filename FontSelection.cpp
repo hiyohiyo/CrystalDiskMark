@@ -131,7 +131,7 @@ BOOL CFontSelection::OnInitDialog()
 
 	UpdateDialogSize();
 
-	m_FontComboBox.SetBgColor(RGB(255, 255, 255), RGB(128, 128, 255));
+	m_FontComboBox.SetBgColor(RGB(255, 255, 255), RGB(192, 192, 255));
 
 	return TRUE;
 }
@@ -140,6 +140,7 @@ void CFontSelection::UpdateDialogSize()
 {
 	BYTE textAlpha = 255;
 	COLORREF textColor = RGB(0, 0, 0);
+	COLORREF textSelectedColor = RGB(0, 0, 0);
 
 	ChangeZoomType(m_ZoomType);
 	SetClientRect((DWORD)(SIZE_X * m_ZoomRatio), (DWORD)(SIZE_Y * m_ZoomRatio), 0);
@@ -161,21 +162,21 @@ void CFontSelection::UpdateDialogSize()
 	m_LabelFontType.SetFontEx(m_FontFace, 20, m_ZoomRatio);
 
 	m_FontComboBox.SetFontHeight(28, m_ZoomRatio);
-	m_FontComboBox.SetFontEx(m_FontFace, 28, m_ZoomRatio, textAlpha, textColor, FW_NORMAL, FT_GDI);
+	m_FontComboBox.SetFontEx(m_FontFace, 28, m_ZoomRatio, textAlpha, textColor, textSelectedColor, FW_NORMAL, FT_GDI);
 	m_FontComboBox.SetItemHeight(-1, (UINT)(44 * m_ZoomRatio));
 	for (int i = 0; i < m_FontComboBox.GetCount(); i++)
 	{
 		m_FontComboBox.SetItemHeight(i, (UINT)(44 * m_ZoomRatio));
 	}
 
-	m_FontScaleComboBox.SetFontEx(m_FontFace, 20, m_ZoomRatio, textAlpha, textColor, FW_NORMAL, FT_GDI);
+	m_FontScaleComboBox.SetFontEx(m_FontFace, 20, m_ZoomRatio, textAlpha, textColor, textSelectedColor, FW_NORMAL, FT_GDI);
 	m_FontScaleComboBox.SetItemHeight(-1, (UINT)(28 * m_ZoomRatio));
 	for (int i = 0; i < m_FontScaleComboBox.GetCount(); i++)
 	{
 		m_FontScaleComboBox.SetItemHeight(i, (UINT)(28 * m_ZoomRatio));
 	}
 
-	m_FontTypeComboBox.SetFontEx(m_FontFace, 20, m_ZoomRatio, textAlpha, textColor, FW_NORMAL, FT_GDI);
+	m_FontTypeComboBox.SetFontEx(m_FontFace, 20, m_ZoomRatio, textAlpha, textColor, textSelectedColor, FW_NORMAL, FT_GDI);
 	m_FontTypeComboBox.SetItemHeight(-1, (UINT) (28 * m_ZoomRatio));
 	for (int i = 0; i < m_FontTypeComboBox.GetCount(); i++)
 	{

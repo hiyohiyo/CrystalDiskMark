@@ -49,12 +49,12 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 
 	// フォント関係
-	void SetFontEx(CString face, int size, double zoomRatio, BYTE textAlpha = 255, COLORREF textColor = RGB(0, 0, 0), LONG fontWeight = FW_NORMAL, int fontType = FT_GDI); // フォントを設定します。
+	void SetFontEx(CString face, int size, double zoomRatio, BYTE textAlpha = 255, COLORREF textColor = RGB(0, 0, 0), COLORREF textSelectedColor = RGB(0, 0, 0), LONG fontWeight = FW_NORMAL, int fontType = FT_GDI); // フォントを設定します。
 	void SetMargin(int top, int left, int bottom, int right, double zoomRatio); // テキスト描画用のマージンを設定します。
 	// カーソル関係
 	void SetHandCursor(BOOL bHandCuror = TRUE);	// カーソルモードを設定します。
 
-	void SetBgColor(COLORREF bgColor, COLORREF selectedColor);
+	void SetBgColor(COLORREF bgColor, COLORREF bgSelectedColor);
 
 protected:
 	// ホバー制御
@@ -71,10 +71,13 @@ protected:
 	CFont m_Font;
 	COLORREF m_TextColor;
 	COLORREF m_BgColor;
-	COLORREF m_SelectedColor;
+	COLORREF m_TextSelectedColor;
+	COLORREF m_BgSelectedColor;
+
 	// GDI+ 関連
 	Gdiplus::Font* m_GpFont;
 	Gdiplus::SolidBrush* m_GpBrush;
+	Gdiplus::SolidBrush* m_GpBrushSelected;
 	Gdiplus::StringFormat* m_GpStringformat;
 
 	BOOL m_bHighContrast;	// ハイコントラスト用のフラグ

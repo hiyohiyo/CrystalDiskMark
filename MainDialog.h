@@ -59,8 +59,9 @@ public:
 	COLORREF m_LabelText;
 	COLORREF m_MeterText;
 	COLORREF m_ComboText;
+	COLORREF m_ComboTextSelected;
 	COLORREF m_ComboBg;
-	COLORREF m_ComboSelected;
+	COLORREF m_ComboBgSelected;
 	BYTE     m_ComboAlpha;
 	COLORREF m_ButtonText;
 	COLORREF m_EditText;

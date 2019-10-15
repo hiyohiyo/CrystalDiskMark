@@ -846,7 +846,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 			::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_USER_UPDATE_SCORE, 0, 0);
 		}
 
-		if (j > 0 && (latency < *minLatency || *minLatency < 0))
+		if (j > 0 && score > 0.0 && (latency < *minLatency || *minLatency < 0))
 		{
 			*minLatency = latency;
 			::PostMessage(((CDiskMarkDlg*)dlg)->GetSafeHwnd(), WM_USER_UPDATE_SCORE, 0, 0);

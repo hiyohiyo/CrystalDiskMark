@@ -286,7 +286,7 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		}
 		else
 		{
-			x = rect.left;
+			x = (REAL)rect.left;
 		}
 
 		if (x < 0)
@@ -326,6 +326,15 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		CSize extent;
 		HGDIOBJ oldFont = drawDC->SelectObject(m_Font);
 		GetTextExtentPoint32(drawDC->m_hDC, title, title.GetLength() + 1, &extent);
+
+		// メーター文字列が溢れたときの対処
+		if (m_bMeter && rect.Width() < extent.cx)
+		{
+			title.Replace(L",", L".");
+			int score = _wtoi(title);
+			title.Format(L"%d", score);
+			GetTextExtentPoint32(drawDC->m_hDC, title, title.GetLength() + 1, &extent);
+		}
 
 		SetTextColor(drawDC->m_hDC, m_TextColor);
 

@@ -343,7 +343,7 @@ void CButtonCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 			}
 			else
 			{
-				x = rect.left;
+				x = (REAL)rect.left;
 			}
 
 			if (x < 0)

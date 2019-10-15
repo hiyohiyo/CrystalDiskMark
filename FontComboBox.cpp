@@ -42,8 +42,10 @@ void CFontComboBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	if (m_bHighContrast)
 	{
+		m_TextColor = RGB(255, 255, 255);
 		m_BgColor = RGB(0, 0, 0);
-		m_SelectedColor = RGB(0, 255, 255);
+		m_TextSelectedColor = RGB(0, 0, 0);
+		m_BgSelectedColor = RGB(0, 255, 255);
 	}
 
     CString cstr;
@@ -69,22 +71,16 @@ void CFontComboBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	CBrush* pOldBrush;
 
 	if (lpDrawItemStruct->itemState & ODS_SELECTED) {
-		Brush.CreateSolidBrush(m_SelectedColor);
+		Brush.CreateSolidBrush(m_BgSelectedColor);
 		pOldBrush = pDC->SelectObject(&Brush);
 		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
-		if (m_bHighContrast)
-		{
-			SetTextColor(lpDrawItemStruct->hDC, RGB(0, 0, 0));
-		}
+		SetTextColor(lpDrawItemStruct->hDC, m_TextSelectedColor);
 	}
 	else {
 		Brush.CreateSolidBrush(m_BgColor);
 		pOldBrush = pDC->SelectObject(&Brush);
 		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
-		if (m_bHighContrast)
-		{
-			SetTextColor(lpDrawItemStruct->hDC, RGB(255, 255, 255));
-		}
+		SetTextColor(lpDrawItemStruct->hDC, m_TextColor);
 	}
 	pDC->SelectObject(pOldBrush);
 	Brush.DeleteObject();

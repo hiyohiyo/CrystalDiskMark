@@ -55,6 +55,7 @@ CComboBoxCx::CComboBoxCx()
 	, m_bSelected(FALSE)
 	, m_GpFont(NULL)
 	, m_GpBrush(NULL)
+	, m_GpBrushSelected(NULL)
 	, m_GpStringformat(NULL)
 	, m_TextAlign(BS_LEFT)
 	, m_bHandCursor(FALSE)
@@ -70,8 +71,10 @@ CComboBoxCx::CComboBoxCx()
 	m_Margin.bottom = 0;
 	m_Margin.right = 0;
 
+	m_TextColor = RGB(0, 0, 0);
+	m_TextSelectedColor = RGB(0, 0, 0);
 	m_BgColor = RGB(255, 255, 255);
-	m_SelectedColor = RGB(192, 192, 192);
+	m_BgSelectedColor = RGB(230, 230, 230);
 }
 
 CComboBoxCx::~CComboBoxCx()
@@ -203,8 +206,10 @@ void CComboBoxCx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	if (m_bHighContrast)
 	{
+		m_TextColor = RGB(255, 255, 255);
 		m_BgColor = RGB(0, 0, 0);
-		m_SelectedColor = RGB(0, 255,255);
+		m_TextSelectedColor = RGB(0, 0, 0);
+		m_BgSelectedColor = RGB(0, 255, 255);
 	}
 	
 	CString cstr = L"";
@@ -217,23 +222,17 @@ void CComboBoxCx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	CBrush* pOldBrush;
 
 	if (lpDrawItemStruct->itemState & ODS_SELECTED) {
-		Brush.CreateSolidBrush(m_SelectedColor);
+		Brush.CreateSolidBrush(m_BgSelectedColor);
 		pOldBrush = pDC->SelectObject(&Brush);
 		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
-
-		if (m_bHighContrast)
-		{
-			SetTextColor(lpDrawItemStruct->hDC, RGB(0, 0, 0));
-		}			
+		SetTextColor(lpDrawItemStruct->hDC, m_TextSelectedColor);
 	}
-	else {
+	else
+	{
 		Brush.CreateSolidBrush(m_BgColor);
 		pOldBrush = pDC->SelectObject(&Brush);
 		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
-		if (m_bHighContrast)
-		{
-			SetTextColor(lpDrawItemStruct->hDC, RGB(255, 255, 255));
-		}
+		SetTextColor(lpDrawItemStruct->hDC, m_TextColor);
 	}
 	pDC->SelectObject(pOldBrush);
 	Brush.DeleteObject();
@@ -255,7 +254,7 @@ void CComboBoxCx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 void CComboBoxCx::DrawString(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	// テキストが空の場合および GDI+ Font/Brush が設定されていない場合何もしない。
-	if (title.IsEmpty() || m_GpFont == NULL || m_GpBrush == NULL)
+	if (title.IsEmpty() || m_GpFont == NULL || m_GpBrush == NULL || m_GpBrushSelected == NULL)
 	{
 		return;
 	}
@@ -324,7 +323,14 @@ void CComboBoxCx::DrawString(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDraw
 			Gdiplus::RectF rectF(pt.X, pt.Y, (REAL)extentF.Width, (REAL)extentF.Height);
 
 			g.SetTextRenderingHint(TextRenderingHintAntiAlias);
-			g.DrawString(arr.GetAt(i), -1, m_GpFont, rectF, m_GpStringformat, m_GpBrush);
+			if (lpDrawItemStruct->itemState & ODS_SELECTED)
+			{
+				g.DrawString(arr.GetAt(i), -1, m_GpFont, rectF, m_GpStringformat, m_GpBrushSelected);
+			}
+			else
+			{
+				g.DrawString(arr.GetAt(i), -1, m_GpFont, rectF, m_GpStringformat, m_GpBrush);
+			}
 		}
 	}
 	else // GDI
@@ -340,7 +346,7 @@ void CComboBoxCx::DrawString(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDraw
 			CRect rectI;
 			CSize extent;
 			HGDIOBJ oldFont = drawDC->SelectObject(m_Font);
-			SetTextColor(drawDC->m_hDC, m_TextColor);
+			// SetTextColor(drawDC->m_hDC, m_TextColor);
 			GetTextExtentPoint32(drawDC->m_hDC, arr.GetAt(i), arr.GetAt(i).GetLength() + 1, &extent);
 			rectI.top = r.top + (r.Height() - extent.cy) / 2;
 			rectI.bottom = rectI.top + extent.cy;
@@ -468,12 +474,17 @@ void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio)
 }
 */
 
-void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlpha, COLORREF textColor, LONG fontWeight, INT fontType)
+void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textAlpha, COLORREF textColor, COLORREF textSelectedColor, LONG fontWeight, INT fontType)
 {
 	if (m_bHighContrast)
 	{
-		textColor = RGB(255, 255, 255);
-		textAlpha = 255;
+		m_TextColor = RGB(255, 255, 255);
+		m_TextSelectedColor = RGB(0, 0, 0);
+	}
+	else
+	{
+		m_TextColor = textColor;
+		m_TextSelectedColor = textSelectedColor;
 	}
 
 	m_ZoomRatio = zoomRatio;
@@ -495,7 +506,6 @@ void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textA
 	m_Font.CreateFontIndirect(&logFont);
 	SetFont(&m_Font);
 
-	m_TextColor = textColor;
 
 	// フォント描画方法を設定します。
 	if (FT_AUTO <= fontType && fontType <= FT_GDI_PLUS_3)
@@ -515,11 +525,14 @@ void CComboBoxCx::SetFontEx(CString face, int size, double zoomRatio, BYTE textA
 
 	CDC* pDC = GetDC();
 	SAFE_DELETE(m_GpFont);
-	SAFE_DELETE(m_GpBrush);
+	SAFE_DELETE(m_GpBrushSelected);
 	SAFE_DELETE(m_GpStringformat);
 	m_GpFont = new Gdiplus::Font(pDC->m_hDC, m_Font);
 	m_GpBrush = new Gdiplus::SolidBrush(
 		Gdiplus::Color(textAlpha, GetRValue(textColor), GetGValue(textColor), GetBValue(textColor)));
+	m_GpBrushSelected = new Gdiplus::SolidBrush(
+		Gdiplus::Color(textAlpha, GetRValue(textSelectedColor), GetGValue(textSelectedColor), GetBValue(textSelectedColor)));
+
 	m_GpStringformat = new Gdiplus::StringFormat;
 	m_GpStringformat->SetAlignment(StringAlignmentCenter);
 	m_GpStringformat->SetLineAlignment(StringAlignmentCenter);
@@ -576,8 +589,8 @@ BOOL CComboBoxCx::InitControl(int x, int y, int width, int height, double zoomRa
 	return TRUE;
 }
 
-void CComboBoxCx::SetBgColor(COLORREF bgColor, COLORREF selectedColor)
+void CComboBoxCx::SetBgColor(COLORREF bgColor, COLORREF bgSelectedColor)
 {
 	m_BgColor = bgColor;
-	m_SelectedColor = selectedColor;
+	m_BgSelectedColor = bgSelectedColor;
 }
