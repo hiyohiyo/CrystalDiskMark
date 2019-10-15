@@ -242,7 +242,7 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 	{
 		return;
 	}
-
+	
 	// テキストの描画位置
 	CRect rect = (CRect) (lpDrawItemStruct->rcItem); // クライアント四角形の取得
 	// マージン設定
@@ -262,6 +262,15 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		Gdiplus::RectF extentF;
 		g.MeasureString(title, title.GetLength() + 1, m_GpFont, pointF, &extentF); // "+ 1" for workaround 
 
+		// メーター文字列が溢れたときの対処
+		if (m_bMeter && rect.Width() < extentF.Width)
+		{
+			title.Replace(L",", L".");
+			int score = _wtoi(title);
+			title.Format(L"%d", score);
+			g.MeasureString(title, title.GetLength() + 1, m_GpFont, pointF, &extentF); // "+ 1" for workaround 
+		}
+
 		// 描画位置の設定
 		REAL x = 0.0, y = 0.0;
 		if (m_TextAlign == SS_CENTER)
@@ -270,10 +279,14 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		}
 		else if (m_TextAlign == SS_RIGHT)
 		{
-			if (rect.Width() > extentF.Width)
+			if (rect.left + rect.Width() > extentF.Width)
 			{
-				x = rect.Width() - extentF.Width;
+				x = rect.left + rect.Width() - extentF.Width;
 			}
+		}
+		else
+		{
+			x = rect.left;
 		}
 
 		if (x < 0)
@@ -302,7 +315,6 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 		Gdiplus::PointF pt(x, y);
 		Gdiplus::RectF rectF(pt.X, pt.Y, (REAL) extentF.Width, (REAL) extentF.Height);
-		// Gdiplus::RectF rectF(rect.left, rect.top, rect.Width(), rect.Height());
 
 		g.SetTextRenderingHint(TextRenderingHintAntiAlias);
 		g.DrawString(title, title.GetLength(), m_GpFont, rectF, m_GpStringformat, m_GpBrush);
@@ -323,12 +335,10 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		}
 		else if (m_TextAlign == SS_RIGHT)
 		{
-			rect.right -= (LONG)(4 * m_ZoomRatio);
 			DrawText(drawDC->m_hDC, title, title.GetLength(), rect, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
 		}
 		else
 		{
-			rect.left += (LONG)(4 * m_ZoomRatio);
 			DrawText(drawDC->m_hDC, title, title.GetLength(), rect, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
 		}
 		drawDC->SelectObject(oldFont);

@@ -328,8 +328,29 @@ void CButtonCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 			r.right = rect.right;
 
 			g.MeasureString(arr.GetAt(i), arr.GetAt(i).GetLength() + 1, m_GpFont, pointF, &extentF); // "+ 1" for workdaround 
+			// 描画位置の設定
+			REAL x = 0.0, y = 0.0;
+			if (m_TextAlign == BS_CENTER)
+			{
+				x = rect.CenterPoint().x - (extentF.Width / 2);
+			}
+			else if (m_TextAlign == BS_RIGHT)
+			{
+				if (rect.left + rect.Width() > extentF.Width)
+				{
+					x = rect.left + rect.Width() - extentF.Width;
+				}
+			}
+			else
+			{
+				x = rect.left;
+			}
 
-			REAL y;
+			if (x < 0)
+			{
+				x = 0.0;
+			}
+
 			FontFamily ff;
 			m_GpFont->GetFamily(&ff);
 			REAL ascent = (REAL)ff.GetCellAscent(FontStyleRegular);
@@ -349,8 +370,9 @@ void CButtonCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 				break;
 			}
 
-			Gdiplus::PointF pt(rect.CenterPoint().x - (extentF.Width / 2), y);
-			Gdiplus::RectF rectF(pt.X, pt.Y, (REAL) extentF.Width, (REAL) extentF.Height);
+
+			Gdiplus::PointF pt(x, y);
+			Gdiplus::RectF rectF(pt.X, pt.Y, (REAL)extentF.Width, (REAL)extentF.Height);
 
 			g.SetTextRenderingHint(TextRenderingHintAntiAlias);
 			g.DrawString(arr.GetAt(i), -1, m_GpFont, rectF, m_GpStringformat, m_GpBrush);

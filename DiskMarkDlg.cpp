@@ -539,6 +539,17 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ComboUnit.InitControl(404 + OFFSET_X, 8, 68, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
 #endif
 
+
+	m_TestRead1.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+	m_TestRead2.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+	m_TestRead3.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+	m_TestRead4.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+
+	m_TestWrite1.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+	m_TestWrite2.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+	m_TestWrite3.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+	m_TestWrite4.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+
 	// Set CButtonCx's Margin equals CEditEx's margin
 	DWORD margin;
 	margin = m_Comment.GetMargins();
