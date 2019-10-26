@@ -26,7 +26,7 @@ CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
 	m_CxDefaultTheme = ((CMainDialog*)pParent)->m_DefaultTheme;
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	m_BackgroundName = L"ShizukuAbout";
+	m_BackgroundName = L"About";
 #else
 	m_BackgroundName = L"";
 #endif

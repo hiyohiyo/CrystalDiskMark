@@ -234,15 +234,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);
 	SetIcon(m_hIconMini, FALSE);
 
-#ifdef SUISHO_SHIZUKU_SUPPORT
-#ifdef KUREI_KEI_SUPPORT
-	m_BackgroundName = L"KureiKeiBackground";
-#else
-	m_BackgroundName = L"ShizukuBackground";
-#endif
-#else
 	m_BackgroundName = L"Background";
-#endif
 
 	TCHAR str[256];
 
