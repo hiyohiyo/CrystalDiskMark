@@ -94,12 +94,12 @@ void CMainDialog::InitThemeLang()
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	#ifdef KUREI_KEI_SUPPORT
-		if (IsFileExist(m_ThemeDir + m_RecommendTheme + L"\\KureiKeiBackground-300.png"))
+		if (IsFileExist(m_ThemeDir + m_RecommendTheme + L"\\Background-300.png"))
 		{
 			defaultTheme = m_RecommendTheme;
 		}
 	#else
-		if (IsFileExist(m_ThemeDir + m_RecommendTheme + L"\\ShizukuBackground-300.png"))
+		if (IsFileExist(m_ThemeDir + m_RecommendTheme + L"\\Background-300.png"))
 		{
 			defaultTheme = m_RecommendTheme;
 		}

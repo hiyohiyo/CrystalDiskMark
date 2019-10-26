@@ -260,7 +260,7 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 		const Gdiplus::PointF pointF(0.0, 0.0);
 		Gdiplus::RectF extentF;
-		g.MeasureString(title, title.GetLength() + 1, m_GpFont, pointF, &extentF); // "+ 1" for workaround 
+		g.MeasureString(title, title.GetLength(), m_GpFont, pointF, &extentF);
 
 		// メーター文字列が溢れたときの対処
 		if (m_bMeter && rect.Width() < extentF.Width)
@@ -268,7 +268,7 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 			title.Replace(L",", L".");
 			int score = _wtoi(title);
 			title.Format(L"%d", score);
-			g.MeasureString(title, title.GetLength() + 1, m_GpFont, pointF, &extentF); // "+ 1" for workaround 
+			g.MeasureString(title, title.GetLength(), m_GpFont, pointF, &extentF);
 		}
 
 		// 描画位置の設定
@@ -325,7 +325,7 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		CRect rectI;
 		CSize extent;
 		HGDIOBJ oldFont = drawDC->SelectObject(m_Font);
-		GetTextExtentPoint32(drawDC->m_hDC, title, title.GetLength() + 1, &extent);
+		GetTextExtentPoint32(drawDC->m_hDC, title, title.GetLength(), &extent);
 
 		// メーター文字列が溢れたときの対処
 		if (m_bMeter && rect.Width() < extent.cx)
@@ -333,7 +333,7 @@ void CStaticCx::DrawString(CDC *drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 			title.Replace(L",", L".");
 			int score = _wtoi(title);
 			title.Format(L"%d", score);
-			GetTextExtentPoint32(drawDC->m_hDC, title, title.GetLength() + 1, &extent);
+			GetTextExtentPoint32(drawDC->m_hDC, title, title.GetLength(), &extent);
 		}
 
 		SetTextColor(drawDC->m_hDC, m_TextColor);

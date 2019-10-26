@@ -427,8 +427,6 @@ BOOL CDiskMarkDlg::OnInitDialog()
 void CDiskMarkDlg::UpdateDialogSize()
 {
 	int offsetX;
-	ShowWindow(SW_HIDE);
-	UpdateBackground(true);
 
 	m_SizeX = SIZE_X;
 	m_SizeY = SIZE_Y;
@@ -439,6 +437,9 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_SizeX = SIZE_X_MIX;
 	}
 #endif
+
+	ShowWindow(SW_HIDE);
+	UpdateBackground(true);
 
 	SetControlFont();
 
@@ -531,16 +532,18 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ComboUnit.InitControl(404 + OFFSET_X, 8, 68, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
 #endif
 
+	if (m_FontType <= FT_GDI)
+	{
+		m_TestRead1.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+		m_TestRead2.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+		m_TestRead3.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+		m_TestRead4.SetMargin(0, 0, 0, 4, m_ZoomRatio);
 
-	m_TestRead1.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-	m_TestRead2.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-	m_TestRead3.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-	m_TestRead4.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-
-	m_TestWrite1.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-	m_TestWrite2.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-	m_TestWrite3.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-	m_TestWrite4.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+		m_TestWrite1.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+		m_TestWrite2.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+		m_TestWrite3.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+		m_TestWrite4.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+	}
 
 	// Set CButtonCx's Margin equals CEditEx's margin
 	DWORD margin;
@@ -554,6 +557,14 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_TestMix4.InitControl(480 + OFFSET_X, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 	m_ComboMix.InitControl(480 + OFFSET_X, 8, 192, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
 	m_MixUnit.InitControl(480 + OFFSET_X, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+
+	if (m_FontType <= FT_GDI)
+	{
+		m_TestMix1.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+		m_TestMix2.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+		m_TestMix3.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+		m_TestMix4.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+	}
 
 	if (m_MixMode)
 	{
@@ -2740,7 +2751,10 @@ void CDiskMarkDlg::OnProfileDefault()
 	UpdateUnitLabel();
 	InitScore();
 	UpdateScore();
+#ifdef MIX_MODE
 	UpdateDialogSize();
+	UpdateDialogSize();
+#endif
 	SetWindowTitle(L"");
 }
 
@@ -2763,7 +2777,10 @@ void CDiskMarkDlg::OnProfilePeak()
 	UpdateUnitLabel();
 	InitScore();
 	UpdateScore();
+#ifdef MIX_MODE
 	UpdateDialogSize();
+	UpdateDialogSize();
+#endif
 	SetWindowTitle(L"");
 }
 
@@ -2786,7 +2803,10 @@ void CDiskMarkDlg::OnProfileReal()
 	UpdateUnitLabel();
 	InitScore();
 	UpdateScore();
+#ifdef MIX_MODE
 	UpdateDialogSize();
+	UpdateDialogSize();
+#endif
 	SetWindowTitle(L"");
 }
 
@@ -2811,6 +2831,7 @@ void CDiskMarkDlg::OnProfileDefaultMix()
 	InitScore();
 	UpdateScore();
 	UpdateDialogSize();
+	UpdateDialogSize();
 	SetWindowTitle(L"");
 }
 
@@ -2834,6 +2855,7 @@ void CDiskMarkDlg::OnProfilePeakMix()
 	InitScore();
 	UpdateScore();
 	UpdateDialogSize();
+	UpdateDialogSize();
 	SetWindowTitle(L"");
 }
 
@@ -2856,6 +2878,7 @@ void CDiskMarkDlg::OnProfileRealMix()
 	UpdateUnitLabel();
 	InitScore();
 	UpdateScore();
+	UpdateDialogSize();
 	UpdateDialogSize();
 	SetWindowTitle(L"");
 }
