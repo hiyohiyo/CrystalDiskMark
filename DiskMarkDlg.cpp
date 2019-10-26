@@ -815,15 +815,15 @@ void CDiskMarkDlg::SetControlFont()
 	m_ButtonTest3.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
 	m_ButtonTest4.SetFontEx(m_FontFace, (int)(12 * scale), m_ZoomRatio, textAlpha, m_ButtonText, FW_BOLD, m_FontType);
 
-	m_TestRead1.SetFontEx(m_FontFace, (int)(34 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_TestRead2.SetFontEx(m_FontFace, (int)(34 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_TestRead3.SetFontEx(m_FontFace, (int)(34 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_TestRead4.SetFontEx(m_FontFace, (int)(34 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestRead1.SetFontEx(m_FontFace, (int)(35 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestRead2.SetFontEx(m_FontFace, (int)(35 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestRead3.SetFontEx(m_FontFace, (int)(35 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestRead4.SetFontEx(m_FontFace, (int)(35 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
-	m_TestWrite1.SetFontEx(m_FontFace, (int)(34 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_TestWrite2.SetFontEx(m_FontFace, (int)(34 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_TestWrite3.SetFontEx(m_FontFace, (int)(34 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-	m_TestWrite4.SetFontEx(m_FontFace, (int)(34 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestWrite1.SetFontEx(m_FontFace, (int)(35 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestWrite2.SetFontEx(m_FontFace, (int)(35 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestWrite3.SetFontEx(m_FontFace, (int)(35 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+	m_TestWrite4.SetFontEx(m_FontFace, (int)(35 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 
 	m_Comment.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, FW_BOLD);
 	m_CommentEx.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_EditText, FW_BOLD, m_FontType);
@@ -881,10 +881,10 @@ void CDiskMarkDlg::SetControlFont()
 
 		m_MixUnit.SetFontEx(m_FontFace, (int)(16 * scale), m_ZoomRatio, textAlpha, m_LabelText, FW_BOLD, m_FontType);
 
-		m_TestMix1.SetFontEx(m_FontFace, (int)(34 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-		m_TestMix2.SetFontEx(m_FontFace, (int)(34 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-		m_TestMix3.SetFontEx(m_FontFace, (int)(34 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
-		m_TestMix4.SetFontEx(m_FontFace, (int)(34 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+		m_TestMix1.SetFontEx(m_FontFace, (int)(35 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+		m_TestMix2.SetFontEx(m_FontFace, (int)(35 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+		m_TestMix3.SetFontEx(m_FontFace, (int)(35 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
+		m_TestMix4.SetFontEx(m_FontFace, (int)(35 * scale), m_ZoomRatio, textAlpha, m_MeterText, FW_BOLD, m_FontType);
 	}
 #endif
 
