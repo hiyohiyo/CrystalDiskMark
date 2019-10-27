@@ -200,6 +200,7 @@ protected:
 	void ResultText(RESULT_TEXT type);
 
 	void SetLayeredWindow(HWND hWnd, BYTE alpha);
+	void UpdateComboTooltip();
 
 #ifdef MIX_MODE
 	CStaticCx m_TestMix1;

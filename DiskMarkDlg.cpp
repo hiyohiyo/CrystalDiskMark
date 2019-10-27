@@ -704,6 +704,13 @@ void CDiskMarkDlg::UpdateDialogSize()
 
 	SetClientRect((DWORD)(m_SizeX * m_ZoomRatio), (DWORD)(m_SizeY * m_ZoomRatio), 1);
 
+	UpdateComboTooltip();
+
+	ShowWindow(SW_SHOW);
+}
+
+void CDiskMarkDlg::UpdateComboTooltip()
+{
 	TCHAR str[256];
 	GetPrivateProfileString(L"Title", L"TEST_UNIT", L"Test Unit", str, 256, m_CurrentLangPath);
 	m_ComboUnit.SetToolTipText(str);
@@ -719,8 +726,6 @@ void CDiskMarkDlg::UpdateDialogSize()
 	}
 #endif
 	m_ComboDrive.SetToolTipText(m_ComboDrive.GetToolTipText().GetString());
-
-	ShowWindow(SW_SHOW);
 }
 
 void CDiskMarkDlg::SetLayeredWindow(HWND hWnd, BYTE alpha)
@@ -2163,6 +2168,8 @@ BOOL CDiskMarkDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 		subMenuAN.Detach();
 		subMenu.Detach();
 		menu.Detach();
+
+		UpdateComboTooltip();
 #else
 		CMenu menu;
 		CMenu subMenu;
