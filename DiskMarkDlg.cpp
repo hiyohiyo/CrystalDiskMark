@@ -2767,10 +2767,8 @@ void CDiskMarkDlg::OnProfileDefault()
 	UpdateUnitLabel();
 	InitScore();
 	UpdateScore();
-#ifdef MIX_MODE
 	UpdateDialogSize();
 	UpdateDialogSize();
-#endif
 	SetWindowTitle(L"");
 }
 
@@ -2793,10 +2791,8 @@ void CDiskMarkDlg::OnProfilePeak()
 	UpdateUnitLabel();
 	InitScore();
 	UpdateScore();
-#ifdef MIX_MODE
 	UpdateDialogSize();
 	UpdateDialogSize();
-#endif
 	SetWindowTitle(L"");
 }
 
@@ -2819,10 +2815,8 @@ void CDiskMarkDlg::OnProfileReal()
 	UpdateUnitLabel();
 	InitScore();
 	UpdateScore();
-#ifdef MIX_MODE
 	UpdateDialogSize();
 	UpdateDialogSize();
-#endif
 	SetWindowTitle(L"");
 }
 
