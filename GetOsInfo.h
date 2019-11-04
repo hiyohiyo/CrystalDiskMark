@@ -9,7 +9,7 @@
 #define __GET_OS_INFO_H__
 
 void GetOsName(CString& OsFullName);
-BOOL Is7orLater();
+BOOL Is8orLater();
 BOOL IsX64();
 BOOL IsIa64();
 BOOL IsArm32();

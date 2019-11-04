@@ -362,7 +362,7 @@ BOOL Init(void* dlg)
 #elif _M_ARM64
 	DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_ARM64);
 #elif _M_X64
-	if(Is7orLater())
+	if(Is8orLater())
 	{
 		DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_64);
 	}
@@ -371,7 +371,7 @@ BOOL Init(void* dlg)
 		DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_64_LEGACY);
 	}
 #else
-	if (Is7orLater())
+	if (Is8orLater())
 	{
 		DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_32);
 	}
