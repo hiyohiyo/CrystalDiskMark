@@ -178,7 +178,7 @@ void CMainDialog::InitThemeLang()
 		}
 	}
 
-	UpdateControlColor();
+	UpdateThemeInfo();
 }
 
 void CMainDialog::InitMenu()
@@ -403,7 +403,7 @@ BOOL CMainDialog::OnCommand(WPARAM wParam, LPARAM lParam)
 		subMenu.Detach();
 		menu.Detach();
 
-		UpdateControlColor();
+		UpdateThemeInfo();
 		UpdateDialogSize();
 	}
 
@@ -441,25 +441,26 @@ void CMainDialog::SetZoomType(DWORD zoomType)
 	WritePrivateProfileString(_T("Setting"), _T("ZoomType"), cstr, m_Ini);
 }
 
-void CMainDialog::UpdateControlColor()
-{
-	m_LabelText = GetControlColor(L"LabelText", 0);
-	m_MeterText = GetControlColor(L"MeterText", 0);
-	m_ComboText = GetControlColor(L"ComboText", 0);
-	m_ComboTextSelected = GetControlColor(L"ComboTextSelected", 0);
-	m_ComboBg   = GetControlColor(L"ComboBg", 255);
-	m_ComboBgSelected = GetControlColor(L"ComboBgSelected", 192);
-	m_ComboAlpha = GetControlAlpha(L"ComboAlpha", 255);
-	m_ButtonText= GetControlColor(L"ButtonText", 0);
-	m_EditText  = GetControlColor(L"EditText", 0);
-	m_EditBg    = GetControlColor(L"EditBg", 255);
-	m_EditAlpha = GetControlAlpha(L"EditAlpha", 255);
-}
-
-COLORREF CMainDialog::GetControlColor(CString name, BYTE defaultColor)
+void CMainDialog::UpdateThemeInfo()
 {
 	CString theme = m_ThemeDir + m_CurrentTheme + L"\\theme.ini";
 
+	m_LabelText = GetControlColor(L"LabelText", 0, theme);
+	m_MeterText = GetControlColor(L"MeterText", 0, theme);
+	m_ComboText = GetControlColor(L"ComboText", 0, theme);
+	m_ComboTextSelected = GetControlColor(L"ComboTextSelected", 0, theme);
+	m_ComboBg   = GetControlColor(L"ComboBg", 255, theme);
+	m_ComboBgSelected = GetControlColor(L"ComboBgSelected", 192, theme);
+	m_ComboAlpha = GetControlAlpha(L"ComboAlpha", 255, theme);
+	m_ButtonText= GetControlColor(L"ButtonText", 0, theme);
+	m_EditText  = GetControlColor(L"EditText", 0, theme);
+	m_EditBg    = GetControlColor(L"EditBg", 255, theme);
+	m_EditAlpha = GetControlAlpha(L"EditAlpha", 255, theme);
+	m_CharacterPosition = GetCharacterPosition(theme);
+}
+
+COLORREF CMainDialog::GetControlColor(CString name, BYTE defaultColor, CString theme)
+{
 	COLORREF reverseColor;
 
 	reverseColor = GetPrivateProfileInt(L"Color", name, RGB(defaultColor, defaultColor, defaultColor), theme);
@@ -469,15 +470,19 @@ COLORREF CMainDialog::GetControlColor(CString name, BYTE defaultColor)
 	return color;
 }
 
-BYTE CMainDialog::GetControlAlpha(CString name, BYTE defaultAlpha)
+BYTE CMainDialog::GetControlAlpha(CString name, BYTE defaultAlpha, CString theme)
 {
-	CString theme = m_ThemeDir + m_CurrentTheme + L"\\theme.ini";
-
 	BYTE alpha = GetPrivateProfileInt(L"Alpha", name, defaultAlpha, theme);
 	
 	return alpha;
 }
 
+BYTE CMainDialog::GetCharacterPosition(CString theme)
+{
+	BYTE position = GetPrivateProfileInt(L"Character", L"Position", 0, theme);
+
+	return position;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //

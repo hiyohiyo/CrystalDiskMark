@@ -27,12 +27,6 @@ public:
 
 	enum { IDD = IDD_DISKMARK_DIALOG };
 
-#ifdef SUISHO_SHIZUKU_SUPPORT
-	static const int OFFSET_X = 0;
-#else
-	static const int OFFSET_X = 0;
-#endif
-
 	enum RESULT_TEXT
 	{
 		RESULT_TEXT_CLIPBOARD = 0,

@@ -426,10 +426,19 @@ BOOL CDiskMarkDlg::OnInitDialog()
 
 void CDiskMarkDlg::UpdateDialogSize()
 {
-	int offsetX;
+	int offsetX = 0;
+	int comboDriveX = 0;
 
 	m_SizeX = SIZE_X;
 	m_SizeY = SIZE_Y;
+
+
+#ifdef SUISHO_SHIZUKU_SUPPORT
+	if (m_CharacterPosition == 0)
+	{
+		offsetX = OFFSET_X;
+	}
+#endif
 
 #ifdef MIX_MODE
 	if (m_MixMode)
@@ -446,22 +455,22 @@ void CDiskMarkDlg::UpdateDialogSize()
 	if (m_Profile != PROFILE_DEFAULT && m_Profile != PROFILE_DEFAULT_MIX)
 	{
 #ifdef SUISHO_SHIZUKU_SUPPORT
-		offsetX = 120;
+		comboDriveX = 120;
 #else
-		offsetX = 72;
+		comboDriveX = 72;
 #endif
 	}
 	else
 	{
-		offsetX = 0;
+		comboDriveX = 0;
 	}
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	m_ButtonAll.InitControl(12 + OFFSET_X, 8, 120, 80, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonTest1.InitControl(12 + OFFSET_X, 96, 120, 80, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonTest2.InitControl(12 + OFFSET_X, 184, 120, 80, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonTest3.InitControl(12 + OFFSET_X, 272, 120, 80, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonTest4.InitControl(12 + OFFSET_X, 360, 120, 80, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonAll.InitControl(12 + offsetX, 8, 120, 80, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest1.InitControl(12 + offsetX, 96, 120, 80, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest2.InitControl(12 + offsetX, 184, 120, 80, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest3.InitControl(12 + offsetX, 272, 120, 80, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest4.InitControl(12 + offsetX, 360, 120, 80, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 
 	m_ButtonAll.SetHandCursor(TRUE);
 	m_ButtonTest1.SetHandCursor(TRUE);
@@ -469,37 +478,37 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ButtonTest3.SetHandCursor(TRUE);
 	m_ButtonTest4.SetHandCursor(TRUE);
 
-	m_TestRead1.InitControl(140 + OFFSET_X, 96, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestRead2.InitControl(140 + OFFSET_X, 184, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestRead3.InitControl(140 + OFFSET_X, 272, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestRead4.InitControl(140 + OFFSET_X, 360, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead1.InitControl(140 + offsetX, 96, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead2.InitControl(140 + offsetX, 184, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead3.InitControl(140 + offsetX, 272, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead4.InitControl(140 + offsetX, 360, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
-	m_TestWrite1.InitControl(468 + OFFSET_X, 96, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestWrite2.InitControl(468 + OFFSET_X, 184, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestWrite3.InitControl(468 + OFFSET_X, 272, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestWrite4.InitControl(468 + OFFSET_X, 360, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite1.InitControl(468 + offsetX, 96, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite2.InitControl(468 + offsetX, 184, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite3.InitControl(468 + offsetX, 272, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite4.InitControl(468 + offsetX, 360, 320, 80, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
-	m_Comment.MoveWindow((int)((12 + OFFSET_X) * m_ZoomRatio), (int)(452 * m_ZoomRatio), (int)(776 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
+	m_Comment.MoveWindow((int)((12 + offsetX) * m_ZoomRatio), (int)(452 * m_ZoomRatio), (int)(776 * m_ZoomRatio), (int)(40 * m_ZoomRatio));
 	m_Comment.ShowWindow(SW_HIDE);
-	m_CommentEx.InitControl(12 + OFFSET_X, 452, 776, 40, m_ZoomRatio, IP(L"Comment"), 1, BS_LEFT, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_CommentEx.InitControl(12 + offsetX, 452, 776, 40, m_ZoomRatio, IP(L"Comment"), 1, BS_LEFT, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_CommentEx.SetIbeamCursor(TRUE);
 //	m_CommentEx.SetMargin(0, 4, 0, 4, m_ZoomRatio);
 
-	m_ReadUnit.InitControl(140 + OFFSET_X, 52, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_WriteUnit.InitControl(468 + OFFSET_X, 52, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_ReadUnit.InitControl(140 + offsetX, 52, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_WriteUnit.InitControl(468 + offsetX, 52, 320, 40, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
-	m_ComboCount.InitControl(140 + OFFSET_X, 8, 60, 500, m_ZoomRatio, m_IsHighContrast);
-	m_ComboSize.InitControl(204 + OFFSET_X, 8, 140, 500, m_ZoomRatio, m_IsHighContrast);
-	m_ComboDrive.InitControl(348 + OFFSET_X, 8, 320 + offsetX, 500, m_ZoomRatio, m_IsHighContrast);
-	m_ComboUnit.InitControl(672 + OFFSET_X, 8, 116, 500, m_ZoomRatio, m_IsHighContrast);
+	m_ComboCount.InitControl(140 + offsetX, 8, 60, 500, m_ZoomRatio, m_IsHighContrast);
+	m_ComboSize.InitControl(204 + offsetX, 8, 140, 500, m_ZoomRatio, m_IsHighContrast);
+	m_ComboDrive.InitControl(348 + offsetX, 8, 320 + comboDriveX, 500, m_ZoomRatio, m_IsHighContrast);
+	m_ComboUnit.InitControl(672 + offsetX, 8, 116, 500, m_ZoomRatio, m_IsHighContrast);
 
 #else
 
-	m_ButtonAll.InitControl(8 + OFFSET_X, 8, 72, 48, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonTest1.InitControl(8 + OFFSET_X, 60, 72, 48, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonTest2.InitControl(8 + OFFSET_X, 112, 72, 48, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonTest3.InitControl(8 + OFFSET_X, 164, 72, 48, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
-	m_ButtonTest4.InitControl(8 + OFFSET_X, 216, 72, 48, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonAll.InitControl(8 + offsetX, 8, 72, 48, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest1.InitControl(8 + offsetX, 60, 72, 48, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest2.InitControl(8 + offsetX, 112, 72, 48, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest3.InitControl(8 + offsetX, 164, 72, 48, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_ButtonTest4.InitControl(8 + offsetX, 216, 72, 48, m_ZoomRatio, IP(L"Button"), 3, BS_CENTER, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 
 	m_ButtonAll.SetHandCursor(TRUE);
 	m_ButtonTest1.SetHandCursor(TRUE);
@@ -507,29 +516,29 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ButtonTest3.SetHandCursor(TRUE);
 	m_ButtonTest4.SetHandCursor(TRUE);
 
-	m_TestRead1.InitControl(84 + OFFSET_X, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestRead2.InitControl(84 + OFFSET_X, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestRead3.InitControl(84 + OFFSET_X, 164, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestRead4.InitControl(84 + OFFSET_X, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead1.InitControl(84 + offsetX, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead2.InitControl(84 + offsetX, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead3.InitControl(84 + offsetX, 164, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestRead4.InitControl(84 + offsetX, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
-	m_TestWrite1.InitControl(280 + OFFSET_X, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestWrite2.InitControl(280 + OFFSET_X, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestWrite3.InitControl(280 + OFFSET_X, 164, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestWrite4.InitControl(280 + OFFSET_X, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite1.InitControl(280 + offsetX, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite2.InitControl(280 + offsetX, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite3.InitControl(280 + offsetX, 164, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestWrite4.InitControl(280 + offsetX, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
 
-	m_Comment.MoveWindow((int)((8 + OFFSET_X) * m_ZoomRatio), (int)(268 * m_ZoomRatio), (int)(464 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
+	m_Comment.MoveWindow((int)((8 + offsetX) * m_ZoomRatio), (int)(268 * m_ZoomRatio), (int)(464 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
 	m_Comment.ShowWindow(SW_HIDE);
-	m_CommentEx.InitControl(8 + OFFSET_X, 268, 464, 24, m_ZoomRatio, IP(L"Comment"), 1, BS_LEFT, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+	m_CommentEx.InitControl(8 + offsetX, 268, 464, 24, m_ZoomRatio, IP(L"Comment"), 1, BS_LEFT, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 	m_CommentEx.SetIbeamCursor(TRUE);
 //	m_CommentEx.SetMargin(0, 8, 0, 8, m_ZoomRatio);
 
-	m_ReadUnit.InitControl(84 + OFFSET_X, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_WriteUnit.InitControl(280 + OFFSET_X, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_ReadUnit.InitControl(84 + offsetX, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_WriteUnit.InitControl(280 + offsetX, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
-	m_ComboCount.InitControl(84 + OFFSET_X, 8, 40, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_ComboSize.InitControl(128 + OFFSET_X, 8, 80, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_ComboDrive.InitControl(212 + OFFSET_X, 8, 188 + offsetX, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_ComboUnit.InitControl(404 + OFFSET_X, 8, 68, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_ComboCount.InitControl(84 + offsetX, 8, 40, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_ComboSize.InitControl(128 + offsetX, 8, 80, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_ComboDrive.InitControl(212 + offsetX, 8, 188 + comboDriveX, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_ComboUnit.InitControl(404 + offsetX, 8, 68, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
 #endif
 
 	if (m_FontType <= FT_GDI)
@@ -551,12 +560,12 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_CommentEx.SetMargin(0, LOWORD(margin) + 3, 0, HIWORD(margin) + 3, 1.0);
 
 #ifdef MIX_MODE
-	m_TestMix1.InitControl(480 + OFFSET_X, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestMix2.InitControl(480 + OFFSET_X, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestMix3.InitControl(480 + OFFSET_X, 164, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_TestMix4.InitControl(480 + OFFSET_X, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
-	m_ComboMix.InitControl(480 + OFFSET_X, 8, 192, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_MixUnit.InitControl(480 + OFFSET_X, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_TestMix1.InitControl(480 + offsetX, 60, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestMix2.InitControl(480 + offsetX, 112, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestMix3.InitControl(480 + offsetX, 164, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_TestMix4.InitControl(480 + offsetX, 216, 192, 48, m_ZoomRatio, IP(L"Meter"), 2, SS_RIGHT, CStaticCx::OwnerDrawImage | m_IsHighContrast);
+	m_ComboMix.InitControl(480 + offsetX, 8, 192, 300, m_ZoomRatio, CComboBoxCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_MixUnit.InitControl(480 + offsetX, 36, 192, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
 
 	if (m_FontType <= FT_GDI)
 	{
@@ -568,8 +577,8 @@ void CDiskMarkDlg::UpdateDialogSize()
 
 	if (m_MixMode)
 	{
-//		m_Comment.MoveWindow((int)((8 + OFFSET_X)* m_ZoomRatio), (int)(268* m_ZoomRatio), (int)(664 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
-		m_CommentEx.InitControl(8 + OFFSET_X, 268, 664, 24, m_ZoomRatio, IP(L"CommentL"), 1, BS_LEFT, CButtonCx::OwnerDrawImage | m_IsHighContrast);
+//		m_Comment.MoveWindow((int)((8 + offsetX)* m_ZoomRatio), (int)(268* m_ZoomRatio), (int)(664 * m_ZoomRatio), (int)(24 * m_ZoomRatio));
+		m_CommentEx.InitControl(8 + offsetX, 268, 664, 24, m_ZoomRatio, IP(L"CommentL"), 1, BS_LEFT, CButtonCx::OwnerDrawImage | m_IsHighContrast);
 
 		m_TestMix1.ShowWindow(SW_SHOW);
 		m_TestMix2.ShowWindow(SW_SHOW);

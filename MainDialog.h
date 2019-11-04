@@ -67,9 +67,12 @@ public:
 	COLORREF m_EditText;
 	COLORREF m_EditBg;
 	BYTE     m_EditAlpha;
-	void UpdateControlColor();
-	COLORREF GetControlColor(CString name, BYTE defaultColor = 0);
-	BYTE GetControlAlpha(CString name, BYTE defaultAlpha = 255);
+	BYTE     m_CharacterPosition;
+
+	void UpdateThemeInfo();
+	COLORREF GetControlColor(CString name, BYTE defaultColor, CString theme);
+	BYTE GetControlAlpha(CString name, BYTE defaultAlpha, CString theme);
+	BYTE GetCharacterPosition(CString theme);
 
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 	virtual BOOL OnInitDialog();
