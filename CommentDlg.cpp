@@ -48,7 +48,15 @@ BOOL CCommentDlg::OnInitDialog()
 	CRect commentRect;
 	((CDiskMarkDlg*)GetParent())->GetWindowRect(&parentRect);
 	GetWindowRect(&commentRect);
-	commentRect.MoveToXY(parentRect.right - commentRect.Width(), parentRect.bottom - commentRect.Height());
+
+	if (((CDiskMarkDlg*)GetParent())->m_CharacterPosition)
+	{
+		commentRect.MoveToXY(parentRect.left, parentRect.bottom - commentRect.Height());
+	}
+	else
+	{
+		commentRect.MoveToXY(parentRect.right - commentRect.Width(), parentRect.bottom - commentRect.Height());
+	}
 
 	MoveWindow(&commentRect, TRUE);
 	
