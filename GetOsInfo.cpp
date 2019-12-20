@@ -754,3 +754,33 @@ BOOL IsDotNet4()
 
 	return (BOOL)dotNet4;
 }
+
+BOOL IsWin2k()
+{
+	static INT win2k = -1;
+
+	if (win2k == -1)
+	{
+		OSVERSIONINFOEX osvi;
+		BOOL bosVersionInfoEx;
+
+		ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
+		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+		if (!(bosVersionInfoEx = GetVersionEx((OSVERSIONINFO*)&osvi)))
+		{
+			osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+			GetVersionEx((OSVERSIONINFO*)&osvi);
+		}
+
+		if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0)
+		{
+			win2k = TRUE;
+		}
+		else
+		{
+			win2k = FALSE;
+		}
+	}
+
+	return (BOOL)win2k;
+}

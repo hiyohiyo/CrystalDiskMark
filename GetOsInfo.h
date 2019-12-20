@@ -20,6 +20,7 @@ BOOL IsClassicSystem();
 BOOL IsIe556();
 BOOL IsDotNet2();
 BOOL IsDotNet4();
+BOOL IsWin2k();
 DWORD GetIeVersion();
 
 #define PRODUCT_UNDEFINED                           0x00000000

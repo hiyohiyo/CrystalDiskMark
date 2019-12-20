@@ -243,7 +243,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	CString defaultFontFace;
 	BOOL hasSegoeUI = FALSE;
 	ZeroMemory(&logfont, sizeof(LOGFONT));
-	logfont.lfCharSet = ANSI_CHARSET;
+	logfont.lfCharSet = DEFAULT_CHARSET;
 	::EnumFontFamiliesExW(dc.m_hDC, &logfont, (FONTENUMPROC)EnumFontFamExProcSegoeUI, (INT_PTR)(&hasSegoeUI), 0);
 
 	if (hasSegoeUI)
@@ -739,6 +739,8 @@ void CDiskMarkDlg::UpdateComboTooltip()
 
 void CDiskMarkDlg::SetLayeredWindow(HWND hWnd, BYTE alpha)
 {
+	if (IsWin2k()) { return; }
+
 	::SetWindowLong(hWnd, GWL_EXSTYLE, ::GetWindowLong(hWnd, GWL_EXSTYLE) ^ WS_EX_LAYERED);
 	::SetWindowLong(hWnd, GWL_EXSTYLE, ::GetWindowLong(hWnd, GWL_EXSTYLE) | WS_EX_LAYERED);
 	if (m_IsHighContrast)

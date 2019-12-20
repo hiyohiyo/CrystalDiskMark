@@ -68,7 +68,7 @@ BOOL CFontSelection::OnInitDialog()
     CClientDC dc(this);
     LOGFONT logfont; 
     ZeroMemory(&logfont, sizeof(LOGFONT)); 
-    logfont.lfCharSet = ANSI_CHARSET;
+    logfont.lfCharSet = DEFAULT_CHARSET;
 
     ::EnumFontFamiliesExW(dc.m_hDC, &logfont, (FONTENUMPROC)EnumFontFamExProc, (LPARAM)&m_FontComboBox, 0);
 
@@ -213,6 +213,7 @@ int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, i
 //	CComboBox* pFontComboBox = (CComboBox*)lParam;
 	if(pFontComboBox->FindStringExact(0, (TCHAR*)lpelfe->elfLogFont.lfFaceName) == CB_ERR
 	&& _tcschr((TCHAR*)lpelfe->elfLogFont.lfFaceName, _T('@')) == NULL
+	&& lpelfe->elfLogFont.lfCharSet != SYMBOL_CHARSET
 	)
 	{
 		pFontComboBox->AddString((TCHAR*)lpelfe->elfLogFont.lfFaceName);
@@ -240,7 +241,7 @@ void CFontSelection::OnSetDefault()
 	CClientDC dc(this);
 	LOGFONT logfont;
 	ZeroMemory(&logfont, sizeof(LOGFONT));
-	logfont.lfCharSet = ANSI_CHARSET;
+	logfont.lfCharSet = DEFAULT_CHARSET;
 
 	::EnumFontFamiliesExW(dc.m_hDC, &logfont, (FONTENUMPROC)EnumFontFamExProc, (LPARAM)& m_FontComboBox, 0);
 
