@@ -10,6 +10,11 @@
 #include "DiskMarkDlg.h"
 #include "FontSelection.h"
 
+struct EnumFontFamExProcData {
+	HDC hDC;
+	CFontComboBox* pFontComboBox;
+};
+
 int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, int FontType, LPARAM lParam);
 
 IMPLEMENT_DYNAMIC(CFontSelection, CDialog)
@@ -69,8 +74,9 @@ BOOL CFontSelection::OnInitDialog()
     LOGFONT logfont; 
     ZeroMemory(&logfont, sizeof(LOGFONT)); 
     logfont.lfCharSet = DEFAULT_CHARSET;
+    EnumFontFamExProcData data = { dc.m_hDC, &m_FontComboBox };
 
-    ::EnumFontFamiliesExW(dc.m_hDC, &logfont, (FONTENUMPROC)EnumFontFamExProc, (LPARAM)&m_FontComboBox, 0);
+    ::EnumFontFamiliesExW(dc.m_hDC, &logfont, (FONTENUMPROC)EnumFontFamExProc, (LPARAM)&data, 0);
 
 	int no = m_FontComboBox.FindStringExact(0, m_FontFace);
 	if(no >= 0)
@@ -207,9 +213,30 @@ INT CFontSelection::GetFontScale()
 	return m_FontScale;
 }
 
+struct EnumFontFamExProcBoldData {
+	ENUMLOGFONTEX* lpelfeRegular;
+	CFontComboBox* pFontComboBox;
+};
+
+int CALLBACK EnumFontFamExProcBold(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, int FontType, LPARAM lParam)
+{
+	EnumFontFamExProcBoldData* pdata = (EnumFontFamExProcBoldData*)lParam;
+	CFontComboBox* pFontComboBox = pdata->pFontComboBox;
+	if (!lpelfe->elfLogFont.lfItalic
+		&& lpelfe->elfLogFont.lfCharSet != SYMBOL_CHARSET
+		&& _tcschr((TCHAR*)lpelfe->elfLogFont.lfFaceName, _T('@')) == NULL
+		&& _tcscmp(lpelfe->elfFullName, pdata->lpelfeRegular->elfFullName) != 0
+		&& pFontComboBox->FindStringExact(0, (TCHAR*)lpelfe->elfFullName) == CB_ERR)
+	{
+		pFontComboBox->AddString((TCHAR*)lpelfe->elfFullName);
+	}
+	return TRUE;
+}
+
 int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, int FontType, LPARAM lParam)
 {
-	CFontComboBox* pFontComboBox = (CFontComboBox*)lParam;
+	EnumFontFamExProcData* pdata = (EnumFontFamExProcData*)lParam;
+	CFontComboBox* pFontComboBox = pdata->pFontComboBox;
 //	CComboBox* pFontComboBox = (CComboBox*)lParam;
 	if(pFontComboBox->FindStringExact(0, (TCHAR*)lpelfe->elfLogFont.lfFaceName) == CB_ERR
 	&& _tcschr((TCHAR*)lpelfe->elfLogFont.lfFaceName, _T('@')) == NULL
@@ -217,6 +244,11 @@ int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, i
 	)
 	{
 		pFontComboBox->AddString((TCHAR*)lpelfe->elfLogFont.lfFaceName);
+		LOGFONT logfont = {};
+		_tcscpy(logfont.lfFaceName, lpelfe->elfLogFont.lfFaceName);
+		logfont.lfCharSet = DEFAULT_CHARSET;
+		EnumFontFamExProcBoldData data = { lpelfe, pFontComboBox };
+		::EnumFontFamiliesExW(pdata->hDC, &logfont, (FONTENUMPROC)EnumFontFamExProcBold, (LPARAM)&data, 0);
 	}
     return TRUE;
 }
@@ -242,8 +274,9 @@ void CFontSelection::OnSetDefault()
 	LOGFONT logfont;
 	ZeroMemory(&logfont, sizeof(LOGFONT));
 	logfont.lfCharSet = DEFAULT_CHARSET;
+	EnumFontFamExProcData data = { dc.m_hDC, &m_FontComboBox };
 
-	::EnumFontFamiliesExW(dc.m_hDC, &logfont, (FONTENUMPROC)EnumFontFamExProc, (LPARAM)& m_FontComboBox, 0);
+	::EnumFontFamiliesExW(dc.m_hDC, &logfont, (FONTENUMPROC)EnumFontFamExProc, (LPARAM)&data, 0);
 
 	int no = m_FontComboBox.FindStringExact(0, _T("Segoe UI"));
 	if (no >= 0)
