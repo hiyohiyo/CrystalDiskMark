@@ -63,7 +63,10 @@ void CFontComboBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	logfont.lfQuality = 6;
 	logfont.lfCharSet = DEFAULT_CHARSET;
     pDC->SelectObject(&font);
-    _tcscpy_s(logfont.lfFaceName, 32, (LPCTSTR)cstr);
+	if (cstr.GetLength() < 32)
+	{
+	  _tcscpy_s(logfont.lfFaceName, 32, (LPCTSTR)cstr);
+	}
     font.CreateFontIndirect(&logfont);
     pDC->SelectObject(&font);
 
