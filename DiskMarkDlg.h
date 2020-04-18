@@ -9,15 +9,14 @@
 
 #include "AboutDlg.h"
 #include "SettingsDlg.h"
-#include "CommentDlg.h"
 #include "FontSelection.h"
 
-#include "DialogCx.h"
+#include "DialogFx.h"
 #include "MainDialog.h"
-
-#include "ButtonCx.h"
-#include "StaticCx.h"
-#include "EditEx.h"
+#include "ButtonFx.h"
+#include "StaticFx.h"
+#include "ComboBoxFx.h"
+#include "EditFx.h"
 
 class CDiskMarkDlg : public CMainDialog
 {
@@ -79,13 +78,11 @@ public:
 	double m_RandomMixLatency2;
 #endif
 
-	void SetMeter(CStaticCx* control, double score, double latency, int blockSize, int unit);
+	void SetMeter(CStaticFx* control, double score, double latency, int blockSize, int unit);
 	void ChangeLang(CString LangName);
 	void UpdateDialogSize();
 	void ChangeButtonStatus(BOOL status);
-	void SetScoreToolTip(CStaticCx* cx, double score, double latency, int blockSize);
-
-	CString m_CurrentLocalID;
+	void SetScoreToolTip(CStaticFx* cx, double score, double latency, int blockSize);
 
 	CString m_ValueTestUnit;
 	CString m_ValueTestCount;
@@ -120,7 +117,7 @@ public:
 	int m_FragmenteCounts;
 	int m_IntervalTime;
 	int m_Affinity;
-	int m_FontScale;
+//	int m_FontScale;
 
 	int m_TestData;
 	BOOL m_AdminMode;
@@ -162,8 +159,6 @@ protected:
 	CString m_TitleTestSize;
 	CString m_TitleTestQSize;
 
-	CString m_ExeDir;
-
 protected:
 	HICON m_hIcon;
 	HICON m_hIconMini;
@@ -174,7 +169,6 @@ protected:
 
 	CAboutDlg*		m_AboutDlg;
 	CSettingsDlg*	m_SettingsDlg;
-	CCommentDlg*	m_CommentDlg;
 
 	void SetControlFont();
 	CString IP(CString imagePath); // IP means Image Path!!
@@ -196,41 +190,42 @@ protected:
 	void SetLayeredWindow(HWND hWnd, BYTE alpha);
 	void UpdateComboTooltip();
 
+	virtual BOOL CheckThemeEdition(CString name);
+
 #ifdef MIX_MODE
-	CStaticCx m_TestMix1;
-	CStaticCx m_TestMix2;
-	CStaticCx m_TestMix3;
-	CStaticCx m_TestMix4;
-	CStaticCx m_MixUnit;
-	CComboBoxCx m_ComboMix;
+	CStaticFx m_TestMix1;
+	CStaticFx m_TestMix2;
+	CStaticFx m_TestMix3;
+	CStaticFx m_TestMix4;
+	CStaticFx m_MixUnit;
+	CComboBoxFx m_ComboMix;
 #endif
 
-	CButtonCx m_ButtonAll;
-	CButtonCx m_ButtonTest1;
-	CButtonCx m_ButtonTest2;
-	CButtonCx m_ButtonTest3;
-	CButtonCx m_ButtonTest4;
-	CButtonCx m_CommentEx;
+	CButtonFx m_ButtonAll;
+	CButtonFx m_ButtonTest1;
+	CButtonFx m_ButtonTest2;
+	CButtonFx m_ButtonTest3;
+	CButtonFx m_ButtonTest4;
 
-	CStaticCx m_TestRead1;
-	CStaticCx m_TestRead2;
-	CStaticCx m_TestRead3;
-	CStaticCx m_TestRead4;
+	CStaticFx m_TestRead1;
+	CStaticFx m_TestRead2;
+	CStaticFx m_TestRead3;
+	CStaticFx m_TestRead4;
 
-	CStaticCx m_TestWrite1;
-	CStaticCx m_TestWrite2;
-	CStaticCx m_TestWrite3;
-	CStaticCx m_TestWrite4;
+	CStaticFx m_TestWrite1;
+	CStaticFx m_TestWrite2;
+	CStaticFx m_TestWrite3;
+	CStaticFx m_TestWrite4;
 
-	CEditEx m_Comment;
+	CEditFx m_Comment;
 
-	CComboBoxCx m_ComboUnit;
-	CComboBoxCx m_ComboCount;
-	CComboBoxCx m_ComboSize;
-	CComboBoxCx m_ComboDrive;
+	CComboBoxFx m_ComboUnit;
+	CComboBoxFx m_ComboCount;
+	CComboBoxFx m_ComboSize;
+	CComboBoxFx m_ComboDrive;
 
-	CStaticCx m_WriteUnit;
-	CStaticCx m_ReadUnit;
+	CStaticFx m_WriteUnit;
+	CStaticFx m_ReadUnit;
 
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
@@ -242,7 +237,6 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg LRESULT OnUpdateScore(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnUpdateMessage(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnUpdateComment(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnExitBenchmark(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnZoom100();
 	afx_msg void OnZoom125();
@@ -269,14 +263,6 @@ protected:
 	afx_msg void OnFontSetting();
 
 	LRESULT OnQueryEndSession(WPARAM wParam, LPARAM lParam);
-
-	CBrush *m_EditBrush;
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-
-	afx_msg void OnChangeComment();
-	afx_msg void OnCommentEx();
-//	afx_msg void OnKillFocusComment();
-//	afx_msg void OnSetFocusCommentEx();
 
 	DECLARE_MESSAGE_MAP()
 

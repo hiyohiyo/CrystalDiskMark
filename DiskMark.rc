@@ -104,8 +104,8 @@ BEGIN
     LTEXT           "",IDC_TEST_WRITE_2,160,109,77,37, SS_NOTIFY
     LTEXT           "",IDC_TEST_WRITE_3,156,149,77,37, SS_NOTIFY
     LTEXT           "",IDC_TEST_WRITE_4,156,190,77,37, SS_NOTIFY
-    EDITTEXT        IDC_COMMENT,7,269,252,21
-	PUSHBUTTON      "", IDC_COMMENT_EX, 7, 269, 252, 21, BS_LEFT | BS_NOTIFY
+//    EDITTEXT        IDC_COMMENT,7,269,252,21
+    CONTROL         "", IDC_COMMENT, "EDIT", WS_CHILD | ES_MULTILINE | ES_WANTRETURN, 7, 269, 252, 21,
     LTEXT           "Read [MB/s]",IDC_READ_UNIT,76,58,29,8
     LTEXT           "Write [MB/s]",IDC_WRITE_UNIT,160,60,29,8
 #ifdef _MIX_MODE
@@ -175,11 +175,9 @@ FONT 12, "MS Shell Dlg", 400, 0, 0x80
 BEGIN
 	LTEXT           "Font Face", IDC_FONT_FACE, 1, 1, 1, 1
 	LTEXT           "Font Scale", IDC_FONT_SCALE, 1, 1, 1, 1
-	LTEXT           "Render Method", IDC_FONT_TYPE, 1, 1, 1, 1
 
     COMBOBOX        IDC_FONT_COMBO,7,6,166,20,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
 	COMBOBOX        IDC_FONT_SCALE_COMBO, 7, 28, 166, 148, CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_FONT_TYPE_COMBO,7,28,166,148,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
 	PUSHBUTTON      "Default", IDC_SET_DEFAULT, 26, 17, 156, 107, BS_CENTER
     PUSHBUTTON   "OK",ID_OK,48,68,83,14,BS_CENTER
 END
@@ -199,8 +197,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 7,0,0,2019
- PRODUCTVERSION 7,0,0,2019
+ FILEVERSION 8,0,0,2020
+ PRODUCTVERSION 9,0,0,2020
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -217,13 +215,13 @@ BEGIN
         BEGIN
             VALUE "Comments", "https://crystalmark.info/, The MIT License"
             VALUE "CompanyName", "Crystal Dew World"
-            VALUE "FileVersion", "7.0.0.2019"
+            VALUE "FileVersion", "8.0.0.2020"
             VALUE "ProductName", "CrystalDiskMark"
             VALUE "FileDescription", "CrystalDiskMark"
             VALUE "OriginalFilename", "DiskMark.exe"
             VALUE "InternalName", "DiskMark.exe"
-            VALUE "LegalCopyright", "(C) 2007-2019 hiyohiyo"
-            VALUE "ProductVersion", "7.0.0.2019"
+            VALUE "LegalCopyright", "(C) 2007-2020 hiyohiyo"
+            VALUE "ProductVersion", "8.0.0.2019"
         END
     END
     BLOCK "VarFileInfo"

@@ -6,38 +6,32 @@
 /*---------------------------------------------------------------------------*/
 
 #pragma once
-#include "FontComboBox.h"
-#include "DialogCx.h"
-#include "ButtonCx.h"
-#include "ComboBoxCx.h"
-#include "afxwin.h"
 
-class CFontSelection : public CDialogCx
+#include "afxwin.h"
+#include "DialogFx.h"
+#include "ButtonFx.h"
+#include "ComboBoxFx.h"
+#include "FontComboBox.h"
+
+class CFontSelection : public CDialogFx
 {
 	DECLARE_DYNAMIC(CFontSelection)
 
-	static const int SIZE_X = 480;
+	static const int SIZE_X = 520;
 	static const int SIZE_Y = 228;
+	enum { IDD = IDD_FONT };
 
 public:
 	CFontSelection(CWnd* pParent = NULL);
 	virtual ~CFontSelection();
 
 	CString GetFontFace();
-	INT GetFontType();
-	INT GetFontScale();
-
-	enum { IDD = IDD_FONT };
+	int GetFontScale();
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 
-//	CString m_FontFace;
-//	CString m_WindowTitle;
-
-	int m_FontScale;
-
-	CButtonCx m_CtrlOk;
+	CButtonFx m_CtrlOk;
 	void OnSetDefault();
 
 	DECLARE_MESSAGE_MAP()
@@ -45,14 +39,11 @@ public:
 	virtual BOOL OnInitDialog();
 	virtual void UpdateDialogSize();
 
-	CStaticCx m_LabelFontFace;
-	CStaticCx m_LabelFontScale;
-	CStaticCx m_LabelFontType;
+	CStaticFx m_LabelFontFace;
+	CStaticFx m_LabelFontScale;
 
 	CFontComboBox m_FontComboBox;
-	CComboBoxCx m_FontScaleComboBox;
-	CComboBoxCx m_FontTypeComboBox;
-	CButtonCx m_ButtonSetDefault;
+	CComboBoxFx m_FontScaleComboBox;
+	CButtonFx m_ButtonSetDefault;
 	afx_msg void OnBnClickedOk();
-
 };

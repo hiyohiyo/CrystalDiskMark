@@ -45,25 +45,7 @@
     <ClCompile Include="DebugPrint.cpp">
       <Filter>Library Files</Filter>
     </ClCompile>
-    <ClCompile Include="ButtonCx.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ButtonEx.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogCx.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EditEx.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
     <ClCompile Include="MainDialog.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticCx.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ComboBoxCx.cpp">
       <Filter>Library Files</Filter>
     </ClCompile>
     <ClCompile Include="FontSelection.cpp">
@@ -72,8 +54,20 @@
     <ClCompile Include="FontComboBox.cpp">
       <Filter>Library Files</Filter>
     </ClCompile>
-    <ClCompile Include="CommentDlg.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ButtonFx.cpp">
+      <Filter>Library Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComboBoxFx.cpp">
+      <Filter>Library Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogFx.cpp">
+      <Filter>Library Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EditFx.cpp">
+      <Filter>Library Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticFx.cpp">
+      <Filter>Library Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,25 +101,7 @@
     <ClInclude Include="DebugPrint.h">
       <Filter>Library Files</Filter>
     </ClInclude>
-    <ClInclude Include="ButtonCx.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ButtonEx.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DialogCx.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EditEx.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
     <ClInclude Include="MainDialog.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticCX.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ComboBoxCx.h">
       <Filter>Library Files</Filter>
     </ClInclude>
     <ClInclude Include="FontSelection.h">
@@ -134,8 +110,23 @@
     <ClInclude Include="FontComboBox.h">
       <Filter>Library Files</Filter>
     </ClInclude>
-    <ClInclude Include="CommentDlg.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ButtonFx.h">
+      <Filter>Library Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComboBoxFx.h">
+      <Filter>Library Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonFx.h">
+      <Filter>Library Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogFx.h">
+      <Filter>Library Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EditFx.h">
+      <Filter>Library Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticFx.h">
+      <Filter>Library Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

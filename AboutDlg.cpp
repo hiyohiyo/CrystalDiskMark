@@ -13,23 +13,22 @@
 IMPLEMENT_DYNCREATE(CAboutDlg, CDialog)
 
 CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
-	: CDialogCx(CAboutDlg::IDD, pParent)
+	: CDialogFx(CAboutDlg::IDD, pParent)
 {
-	m_CurrentLangPath = ((CMainDialog*)pParent)->m_CurrentLangPath;
-	m_DefaultLangPath = ((CMainDialog*)pParent)->m_DefaultLangPath;
-	m_ZoomType = ((CMainDialog*)pParent)->GetZoomType();
+	CMainDialog* p = (CMainDialog*)pParent;
 
-	m_FontFace = ((CMainDialog*)pParent)->m_FontFace;
-	m_FontType = FT_GDI;//((CMainDialog*) pParent)->m_FontType;
-	m_CxThemeDir = ((CDiskMarkApp*)AfxGetApp())->m_ThemeDir;
-	m_CxCurrentTheme = ((CMainDialog*)pParent)->m_CurrentTheme;
-	m_CxDefaultTheme = ((CMainDialog*)pParent)->m_DefaultTheme;
+	m_ZoomType = p->GetZoomType();
+	m_FontScale = p->GetFontScale();
+	m_FontRatio = p->GetFontRatio();
+	m_FontFace = p->GetFontFace();
+	m_CurrentLangPath = p->GetCurrentLangPath();
+	m_DefaultLangPath = p->GetDefaultLangPath();
+	m_ThemeDir = p->GetThemeDir();
+	m_CurrentTheme = p->GetCurrentTheme();
+	m_DefaultTheme = p->GetDefaultTheme();
+	m_Ini = p->GetIniPath();
 
-#ifdef SUISHO_SHIZUKU_SUPPORT
 	m_BackgroundName = L"About";
-#else
-	m_BackgroundName = L"";
-#endif
 }
 
 CAboutDlg::~CAboutDlg()
@@ -38,7 +37,7 @@ CAboutDlg::~CAboutDlg()
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogCx::DoDataExchange(pDX);
+	CDialogFx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CRYSTAL_DEW_WORLD, m_CtrlCrystalDewWorld);
 
 	DDX_Control(pDX, IDC_PROJECT_SITE_1, m_CtrlProjectSite1);
@@ -56,11 +55,11 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 
 BOOL CAboutDlg::OnInitDialog()
 {
-	CDialogCx::OnInitDialog();
+	CDialogFx::OnInitDialog();
 
-	SetWindowText(i18n(_T("WindowTitle"), _T("ABOUT")));
+	SetWindowText(i18n(L"WindowTitle", L"ABOUT"));
 
-	m_FlagShowWindow = TRUE;
+	m_bShowWindow = TRUE;
 	m_CtrlVersion.SetWindowTextW(PRODUCT_NAME L" " PRODUCT_VERSION);
 	m_CtrlEdition.SetWindowTextW(PRODUCT_EDITION);
 	m_CtrlRelease.SetWindowTextW(L"Release: " PRODUCT_RELEASE);
@@ -82,7 +81,7 @@ BOOL CAboutDlg::OnInitDialog()
 	return TRUE;
 }
 
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialogCx)
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialogFx)
 	ON_BN_CLICKED(IDC_CRYSTAL_DEW_WORLD, &CAboutDlg::OnCrystalDewWorld)
 	ON_BN_CLICKED(IDC_LICENSE, &CAboutDlg::OnLicense)
 	ON_BN_CLICKED(IDC_VERSION, &CAboutDlg::OnVersion)
@@ -99,24 +98,23 @@ END_MESSAGE_MAP()
 void CAboutDlg::UpdateDialogSize()
 {
 	ChangeZoomType(m_ZoomType);
-	if (m_IsHighContrast)
+	if (m_bHighContrast)
 	{
-		SetClientRect((DWORD)(SIZE_X * m_ZoomRatio), (DWORD)(SIZE_HC_Y * m_ZoomRatio), 0);
+		SetClientSize((int)(SIZE_X * m_ZoomRatio), (int)(SIZE_HC_Y * m_ZoomRatio), 0);
 	}
 	else
 	{
-		SetClientRect((DWORD)(SIZE_X * m_ZoomRatio), (DWORD)(SIZE_Y * m_ZoomRatio), 0);
+		SetClientSize((int)(SIZE_X * m_ZoomRatio), (int)(SIZE_Y * m_ZoomRatio), 0);
 	}
 
-	UpdateBackground(true);
-
+	UpdateBackground(TRUE);
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	m_CtrlProjectSite1.InitControl(340, 324, 292, 20, m_ZoomRatio, NULL, 0, 0, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlProjectSite2.InitControl(340, 368, 292, 20, m_ZoomRatio, NULL, 0, 0, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlProjectSite3.InitControl(340, 392, 292, 20, m_ZoomRatio, NULL, 0, 0, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlProjectSite4.InitControl(340, 416, 292, 20, m_ZoomRatio, NULL, 0, 0, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlProjectSite5.InitControl(320, 192, 292, 92, m_ZoomRatio, NULL, 0, 0, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlProjectSite1.InitControl(340, 324, 292, 20, m_ZoomRatio, &m_BgDC, NULL, 0, 0, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlProjectSite2.InitControl(340, 368, 292, 20, m_ZoomRatio, &m_BgDC, NULL, 0, 0, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlProjectSite3.InitControl(340, 392, 292, 20, m_ZoomRatio, &m_BgDC, NULL, 0, 0, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlProjectSite4.InitControl(340, 416, 292, 20, m_ZoomRatio, &m_BgDC, NULL, 0, 0, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlProjectSite5.InitControl(320, 192, 292, 92, m_ZoomRatio, &m_BgDC, NULL, 0, 0, OwnerDrawTransparent | m_bHighContrast);
 
 	m_CtrlProjectSite1.SetHandCursor();
 	m_CtrlProjectSite2.SetHandCursor();
@@ -125,30 +123,30 @@ void CAboutDlg::UpdateDialogSize()
 	m_CtrlProjectSite5.SetHandCursor();
 #endif
 
-	m_CtrlCrystalDewWorld.InitControl(12, 20, 128, 128, m_ZoomRatio, IP(L"Logo"), 1, 0, CButtonCx::OwnerDrawImage);
+	m_CtrlCrystalDewWorld.InitControl(12, 20, 128, 128, m_ZoomRatio, &m_BgDC, IP(L"Logo"), 1, BS_CENTER, OwnerDrawImage | m_bHighContrast);
 	m_CtrlCrystalDewWorld.SetHandCursor();
 
-	m_CtrlVersion.SetFontEx(m_FontFace, 24, m_ZoomRatio, 255, RGB(0, 0, 0), FW_BOLD, m_FontType);
-	m_CtrlEdition.SetFontEx(m_FontFace, 24, m_ZoomRatio, 255, RGB(0, 0, 0), FW_BOLD, m_FontType);
-	m_CtrlRelease.SetFontEx(m_FontFace, 16, m_ZoomRatio, 255, RGB(0, 0, 0), FW_NORMAL, m_FontType);
-	m_CtrlCopyright.SetFontEx(m_FontFace, 16, m_ZoomRatio, 255, RGB(0, 0, 0), FW_NORMAL, m_FontType);
-	m_CtrlLicense.SetFontEx(m_FontFace, 16, m_ZoomRatio, 255, RGB(0, 0, 0), FW_NORMAL, m_FontType);
+	m_CtrlVersion.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, 255, RGB(0, 0, 0), FW_BOLD);
+	m_CtrlEdition.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, 255, RGB(0, 0, 0), FW_BOLD);
+	m_CtrlRelease.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, 255, RGB(0, 0, 0), FW_NORMAL);
+	m_CtrlCopyright.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, 255, RGB(0, 0, 0), FW_NORMAL);
+	m_CtrlLicense.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, 255, RGB(0, 0, 0), FW_NORMAL);
 
 	m_CtrlVersion.SetHandCursor();
 	m_CtrlLicense.SetHandCursor();
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	m_CtrlVersion.InitControl(152, 12, 476, 36, m_ZoomRatio, NULL, 0, BS_CENTER, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlEdition.InitControl(152, 48, 476, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlRelease.InitControl(152, 88, 476, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlCopyright.InitControl(152, 112, 476, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlLicense.InitControl(152, 136, 476, 24, m_ZoomRatio, NULL, 0, BS_CENTER, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlVersion.InitControl(152, 12, 476, 36, m_ZoomRatio, &m_BgDC, NULL, 0, BS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlEdition.InitControl(152, 48, 476, 36, m_ZoomRatio, &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlRelease.InitControl(152, 88, 476, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlCopyright.InitControl(152, 112, 476, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlLicense.InitControl(152, 136, 476, 24, m_ZoomRatio, &m_BgDC, NULL, 0, BS_CENTER, OwnerDrawTransparent | m_bHighContrast);
 #else
-	m_CtrlVersion.InitControl(152, 12, 316, 36, m_ZoomRatio, NULL, 0, BS_CENTER, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlEdition.InitControl(152, 48, 316, 36, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlRelease.InitControl(152, 88, 316, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlCopyright.InitControl(152, 112, 316, 24, m_ZoomRatio, NULL, 0, SS_CENTER, CStaticCx::OwnerDrawTransparent | m_IsHighContrast);
-	m_CtrlLicense.InitControl(152, 136, 316, 24, m_ZoomRatio, NULL, 0, BS_CENTER, CButtonCx::OwnerDrawTransparent | m_IsHighContrast);
+	m_CtrlVersion.InitControl(152, 12, 316, 36, m_ZoomRatio, &m_BgDC, NULL, 0, BS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlEdition.InitControl(152, 48, 316, 36, m_ZoomRatio, &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlRelease.InitControl(152, 88, 316, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlCopyright.InitControl(152, 112, 316, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlLicense.InitControl(152, 136, 316, 24, m_ZoomRatio, &m_BgDC, NULL, 0, BS_CENTER, OwnerDrawTransparent | m_bHighContrast);
 #endif
 
 	Invalidate();

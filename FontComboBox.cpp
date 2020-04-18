@@ -7,36 +7,25 @@
 
 #include "stdafx.h"
 #include "DiskMark.h"
-#include "ComboBoxCx.h"
 #include "FontComboBox.h"
 
 
-// CFontComboBox
+////------------------------------------------------
+//   CFontComboBox
+////------------------------------------------------
 
-IMPLEMENT_DYNAMIC(CFontComboBox, CComboBox)
+IMPLEMENT_DYNAMIC(CFontComboBox, CComboBoxFx)
 
 CFontComboBox::CFontComboBox()
 {
-	m_FontHeight = (LONG)(-1 * 16 * 1.00);
 }
 
 CFontComboBox::~CFontComboBox()
 {
 }
 
-
-BEGIN_MESSAGE_MAP(CFontComboBox, CComboBoxCx)
+BEGIN_MESSAGE_MAP(CFontComboBox, CComboBoxFx)
 END_MESSAGE_MAP()
-
-void CFontComboBox::SetFontHeight(int height, double zoomRatio)
-{
-	m_FontHeight = (LONG)(-1 * height * zoomRatio);
-}
-
-void CFontComboBox::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct) 
-{
-	lpMeasureItemStruct->itemHeight = abs(m_FontHeight);
-}
 
 void CFontComboBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
@@ -44,14 +33,17 @@ void CFontComboBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	{
 		m_TextColor = RGB(255, 255, 255);
 		m_BgColor = RGB(0, 0, 0);
-		m_TextSelectedColor = RGB(0, 0, 0);
-		m_BgSelectedColor = RGB(0, 255, 255);
+		m_TextColorSelected = RGB(0, 0, 0);
+		m_BgColorSelected = RGB(0, 255, 255);
 	}
 
-    CString cstr;
-    if (lpDrawItemStruct->itemID == -1)
+    CString title;
+	if (lpDrawItemStruct->itemID == -1)
+	{
         return;
-    GetLBText(lpDrawItemStruct->itemID, cstr);
+	}
+
+    GetLBText(lpDrawItemStruct->itemID, title);
     CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
 
     CFont font;
@@ -62,22 +54,18 @@ void CFontComboBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     logfont.lfWeight = 400;
 	logfont.lfQuality = 6;
 	logfont.lfCharSet = DEFAULT_CHARSET;
-    pDC->SelectObject(&font);
-	if (cstr.GetLength() < 32)
-	{
-	  _tcscpy_s(logfont.lfFaceName, 32, (LPCTSTR)cstr);
-	}
+    _tcscpy_s(logfont.lfFaceName, 32, (LPCTSTR)title);
     font.CreateFontIndirect(&logfont);
-    pDC->SelectObject(&font);
+	HGDIOBJ oldFont = pDC->SelectObject(&font);
 
 	CBrush Brush;
 	CBrush* pOldBrush;
 
 	if (lpDrawItemStruct->itemState & ODS_SELECTED) {
-		Brush.CreateSolidBrush(m_BgSelectedColor);
+		Brush.CreateSolidBrush(m_BgColorSelected);
 		pOldBrush = pDC->SelectObject(&Brush);
 		FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
-		SetTextColor(lpDrawItemStruct->hDC, m_TextSelectedColor);
+		SetTextColor(lpDrawItemStruct->hDC, m_TextColorSelected);
 	}
 	else {
 		Brush.CreateSolidBrush(m_BgColor);
@@ -89,22 +77,24 @@ void CFontComboBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	Brush.DeleteObject();
 
 	pDC->SetBkMode(TRANSPARENT);
+	CRect rect = (CRect)(lpDrawItemStruct->rcItem);
+	rect.top += m_Margin.top;
+	rect.left += m_Margin.left;
+	rect.bottom -= m_Margin.bottom;
+	rect.right -= m_Margin.right;
 
-	lpDrawItemStruct->rcItem.left = (LONG)(4 * m_ZoomRatio);
+	if (m_TextAlign == ES_LEFT)
+	{
+		pDC->DrawText(title, title.GetLength(), rect, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
+	}
+	else if (m_TextAlign == ES_RIGHT)
+	{
+		pDC->DrawText(title, title.GetLength(), rect, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
+	}
+	else
+	{
+		pDC->DrawText(title, title.GetLength(), rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+	}
 
-    pDC->DrawText(cstr, &lpDrawItemStruct->rcItem, DT_SINGLELINE | DT_VCENTER);
-}
-
-
-int CFontComboBox::CompareItem(LPCOMPAREITEMSTRUCT lpCompareItemStruct)
-{
-	/*
-	LPCTSTR lpszText1 = (LPCTSTR) lpCompareItemStruct->itemData1;
-	ASSERT(lpszText1 != NULL);
-	LPCTSTR lpszText2 = (LPCTSTR) lpCompareItemStruct->itemData2;
-	ASSERT(lpszText2 != NULL);
-	
-	return _tcscmp(lpszText2, lpszText1);
-	*/
-	return -1;
+	pDC->SelectObject(oldFont);
 }

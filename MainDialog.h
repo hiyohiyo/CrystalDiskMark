@@ -7,44 +7,64 @@
 
 #pragma once
 
-#define WM_THEME_ID			(WM_APP + 0x1600)
-#define WM_LANGUAGE_ID		(WM_APP + 0x1800)
-#include "DialogCx.h"
+#include "DialogFx.h"
 
-class CMainDialog : public CDialogCx
+class CMainDialog : public CDialogFx
 {
 public:
-	CMainDialog(UINT dlgResouce, 
-		CString ThemeDir, DWORD ThemeIndex, CString LangDir, DWORD LangIndex,
-		CWnd* pParent = NULL);
+	CMainDialog(UINT dlgResouce, CWnd* pParent = NULL);
 	virtual ~CMainDialog();
 
-	CString m_CurrentLocalID;
+	// Zoom
+	DWORD GetZoomType();
+	void SetZoomType(DWORD zoomType);
 
-	CString m_ThemeDir;
-	CString m_LangDir;
-	DWORD m_ThemeIndex;
-	DWORD m_LangIndex;
+	// Getter
+	int GetFontScale();
+	double GetFontRatio();
+	CString GetFontFace();
+	CString GetCurrentLangPath();
+	CString GetDefaultLangPath();
+	CString GetThemeDir();
+	CString GetCurrentTheme();
+	CString GetDefaultTheme();
+	CString GetIniPath();
 
-	CStringArray m_MenuArrayTheme;
-	CStringArray m_MenuArrayLang;
-	CString m_CurrentTheme;
-	CString m_DefaultTheme;
-	CString m_RecommendTheme;
-	CString m_CurrentLang;
-
+protected:
 	void InitMenu();
 	void InitThemeLang();
 	void ChangeTheme(CString ThemeName);
 	void SetWindowTitle(CString message);
+	void UpdateThemeInfo();
+	COLORREF GetControlColor(CString name, BYTE defaultColor, CString theme);
+	BYTE GetControlAlpha(CString name, BYTE defaultAlpha, CString theme);
+	BYTE GetCharacterPosition(CString theme);
 
-	BOOL m_FlagStartup;
-	BOOL m_FlagInitializing;
-	BOOL m_FlagWindoowMinimizeOnce;
-	BOOL m_FlagResidentMinimize;
+	virtual BOOL CheckThemeEdition(CString name);
 
+	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
+	virtual BOOL OnInitDialog();
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+
+	DECLARE_MESSAGE_MAP()
+
+	// Common
+	BOOL m_bStartup;
+	BOOL m_bInitializing;
+	BOOL m_bWindowMinimizeOnce;
+	BOOL m_bResident;
+	BOOL m_bResidentMinimize;
+
+	// Theme
+	CString m_ThemeKeyName;
+	CString m_RecommendTheme;
+	CStringArray m_MenuArrayTheme;
+
+	// Language
+	CStringArray m_MenuArrayLang;
+
+#ifdef OPTION_TASK_TRAY
 	// Task Tray
-	BOOL m_FlagResident;
 	static UINT wmTaskbarCreated;
 	BOOL AddTaskTray(UINT id, UINT callback, HICON icon, CString tip);
 	BOOL RemoveTaskTray(UINT id);
@@ -52,31 +72,6 @@ public:
 	BOOL ModifyTaskTrayIcon(UINT id, HICON icon);
 	BOOL ModifyTaskTrayTip(UINT id, CString tip);
 	BOOL ShowBalloon(UINT id, DWORD infoFlag, CString infoTitle, CString info);
+#endif
 
-	DWORD GetZoomType();
-	void SetZoomType(DWORD zoomType);
-
-	COLORREF m_LabelText;
-	COLORREF m_MeterText;
-	COLORREF m_ComboText;
-	COLORREF m_ComboTextSelected;
-	COLORREF m_ComboBg;
-	COLORREF m_ComboBgSelected;
-	BYTE     m_ComboAlpha;
-	COLORREF m_ButtonText;
-	COLORREF m_EditText;
-	COLORREF m_EditBg;
-	BYTE     m_EditAlpha;
-	BYTE     m_CharacterPosition;
-
-	void UpdateThemeInfo();
-	COLORREF GetControlColor(CString name, BYTE defaultColor, CString theme);
-	BYTE GetControlAlpha(CString name, BYTE defaultAlpha, CString theme);
-	BYTE GetCharacterPosition(CString theme);
-
-	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
-	virtual BOOL OnInitDialog();
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-
-	DECLARE_MESSAGE_MAP()
 };

@@ -114,9 +114,9 @@ void ShowErrorMessage(CString message)
 	LPVOID lpMessageBuffer;
 	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, lastErrorCode, 
 		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR) &lpMessageBuffer, 0, NULL);
-	errorMessage.Format(_T("0x%08X:%s"), lastErrorCode, (LPTSTR) lpMessageBuffer);
+	errorMessage.Format(L"0x%08X:%s", lastErrorCode, (LPTSTR) lpMessageBuffer);
 
-	AfxMessageBox(message + _T("\r\n") + errorMessage);
+	AfxMessageBox(message + L"\r\n" + errorMessage);
 	LocalFree( lpMessageBuffer );
 }
 
@@ -132,7 +132,7 @@ VOID Interval(LPVOID dlg)
 			return;
 		}
 		title.Format(L"Interval Time %d/%d sec", i, intervalTime);
-		::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_USER_UPDATE_MESSAGE, (WPARAM) &title, 0);
+		::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_UPDATE_MESSAGE, (WPARAM) &title, 0);
 		Sleep(1000);
 	}
 }
@@ -414,23 +414,23 @@ BOOL Init(void* dlg)
 	{
 
 		drive = ((CDiskMarkDlg*)dlg)->m_ValueTestDrive.GetAt(0);
-		cstr.Format(_T("%C:"), drive);
+		cstr.Format(L"%C:", drive);
 		GetDiskFreeSpaceEx(cstr, &freeBytesAvailableToCaller, &totalNumberOfBytes, &totalNumberOfFreeBytes);
 		if (totalNumberOfBytes.QuadPart < ((ULONGLONG)8 * 1024 * 1024 * 1024)) // < 8 GB
 		{
-			((CDiskMarkDlg*)dlg)->m_TestDriveInfo.Format(_T("%C: %.1f%% (%.1f/%.1f MiB)"), drive,
+			((CDiskMarkDlg*)dlg)->m_TestDriveInfo.Format(L"%C: %.1f%% (%.1f/%.1f MiB)", drive,
 				(double)(totalNumberOfBytes.QuadPart - totalNumberOfFreeBytes.QuadPart) / (double)totalNumberOfBytes.QuadPart * 100,
 				(totalNumberOfBytes.QuadPart - totalNumberOfFreeBytes.QuadPart) / 1024 / 1024.0,
 				totalNumberOfBytes.QuadPart / 1024 / 1024.0);
 		}
 		else
 		{
-			((CDiskMarkDlg*)dlg)->m_TestDriveInfo.Format(_T("%C: %.1f%% (%.1f/%.1f GiB)"), drive,
+			((CDiskMarkDlg*)dlg)->m_TestDriveInfo.Format(L"%C: %.1f%% (%.1f/%.1f GiB)", drive,
 				(double)(totalNumberOfBytes.QuadPart - totalNumberOfFreeBytes.QuadPart) / (double)totalNumberOfBytes.QuadPart * 100,
 				(totalNumberOfBytes.QuadPart - totalNumberOfFreeBytes.QuadPart) / 1024 / 1024 / 1024.0,
 				totalNumberOfBytes.QuadPart / 1024 / 1024 / 1024.0);
 		}
-		RootPath.Format(_T("%c:\\"), drive);
+		RootPath.Format(L"%c:\\", drive);
 	}
 	else
 	{
@@ -438,9 +438,9 @@ BOOL Init(void* dlg)
 		RootPath += L"\\";
 	}
 
-	TestFileDir.Format(_T("%sCrystalDiskMark%08X"), (LPTSTR)RootPath.GetString(), timeGetTime());
+	TestFileDir.Format(L"%sCrystalDiskMark%08X", (LPTSTR)RootPath.GetString(), timeGetTime());
 	CreateDirectory(TestFileDir, NULL);
-	TestFilePath.Format(_T("%s\\CrystalDiskMark%08X.tmp"), (LPTSTR)TestFileDir.GetString(), timeGetTime());
+	TestFilePath.Format(L"%s\\CrystalDiskMark%08X.tmp", (LPTSTR)TestFileDir.GetString(), timeGetTime());
 
 	DWORD FileSystemFlags;
 	GetVolumeInformation(RootPath, NULL, NULL, NULL, NULL, &FileSystemFlags, NULL, NULL);
@@ -469,7 +469,7 @@ BOOL Init(void* dlg)
 
 	CString title;
 	title.Format(L"Preparing... Create Test File");
-	::PostMessage(((CDiskMarkDlg*)dlg)->GetSafeHwnd(), WM_USER_UPDATE_MESSAGE, (WPARAM)& title, 0);
+	::PostMessage(((CDiskMarkDlg*)dlg)->GetSafeHwnd(), WM_UPDATE_MESSAGE, (WPARAM)& title, 0);
 
 // Preapare Test File
 	hFile = ::CreateFile(TestFilePath, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
@@ -501,7 +501,7 @@ BOOL Init(void* dlg)
 	buf = (char*) VirtualAlloc(NULL, BufSize, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
 	if (buf == NULL)
 	{
-		AfxMessageBox(_T("Failed VirtualAlloc()."));
+		AfxMessageBox(L"Failed VirtualAlloc().");
 		((CDiskMarkDlg*) dlg)->m_DiskBenchStatus = FALSE;
 		return FALSE;
 	}
@@ -557,19 +557,15 @@ UINT Exit(void* dlg)
 	RemoveDirectory(TestFileDir);
 
 	static CString cstr;
-	cstr = _T("");
+	cstr = L"";
 
 	if(((CDiskMarkDlg*)dlg)->m_TestData == TEST_DATA_ALL0X00)
 	{
 		cstr = ALL_0X00_0FILL;
 	}
-	else
-	{
-		cstr = _T("");
-	}
 
-	::PostMessage(((CDiskMarkDlg*)dlg)->GetSafeHwnd(), WM_USER_UPDATE_MESSAGE, NULL, (LPARAM)&cstr);
-	::PostMessage(((CDiskMarkDlg*)dlg)->GetSafeHwnd(), WM_USER_EXIT_BENCHMARK, 0, 0);
+	::PostMessage(((CDiskMarkDlg*)dlg)->GetSafeHwnd(), WM_UPDATE_MESSAGE, NULL, (LPARAM)&cstr);
+	::PostMessage(((CDiskMarkDlg*)dlg)->GetSafeHwnd(), WM_EXIT_BENCHMARK, 0, 0);
 
 	((CDiskMarkDlg*)dlg)->m_DiskBenchStatus = FALSE;
 	((CDiskMarkDlg*)dlg)->m_WinThread = NULL;
@@ -639,19 +635,6 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 
 	switch (cmd)
 	{
-	/*
-	case TEST_CREATE_FILE:
-		title = L"Preparing...";
-		::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_USER_UPDATE_MESSAGE, (WPARAM) &title, 0);
-
-		option.Format(L"-c%dM", (int)DiskTestSize);
-		option += bufOption;
-		command.Format(_T("\"%s\" %s \"%s\""), DiskSpdExe.GetString(), option, TestFilePath);
-		ExecAndWait((TCHAR*) (command.GetString()), TRUE, NULL);
-
-		return;
-		break;
-	*/
 	case TEST_SEQUENTIAL_READ_1:
 		title.Format(L"Sequential Read");
 		qt.Format(L"[T=%d]", ((CDiskMarkDlg*) dlg)->m_SequentialThreads1);
@@ -833,23 +816,23 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		{
 			cstr.Format(L"%s [%d/%d]", title.GetString(), j, DiskTestCount);
 		}
-		::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_USER_UPDATE_MESSAGE, (WPARAM) &cstr, 0);
+		::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_UPDATE_MESSAGE, (WPARAM) &cstr, 0);
 		
 
-		command.Format(_T("\"%s\" %s -A%d -L \"%s\""), (LPTSTR)DiskSpdExe.GetString(), (LPTSTR)option.GetString(), GetCurrentProcessId(), (LPTSTR)TestFilePath.GetString());
+		command.Format(L"\"%s\" %s -A%d -L \"%s\"", (LPTSTR)DiskSpdExe.GetString(), (LPTSTR)option.GetString(), GetCurrentProcessId(), (LPTSTR)TestFilePath.GetString());
 
 		score = ExecAndWait((TCHAR*) (command.GetString()), TRUE, &latency) / 10 / 1000.0;
 
 		if (j > 0 && score > *maxScore)
 		{
 			*maxScore = score;
-			::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_USER_UPDATE_SCORE, 0, 0);
+			::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_UPDATE_SCORE, 0, 0);
 		}
 
 		if (j > 0 && score > 0.0 && (latency < *minLatency || *minLatency < 0))
 		{
 			*minLatency = latency;
-			::PostMessage(((CDiskMarkDlg*)dlg)->GetSafeHwnd(), WM_USER_UPDATE_SCORE, 0, 0);
+			::PostMessage(((CDiskMarkDlg*)dlg)->GetSafeHwnd(), WM_UPDATE_SCORE, 0, 0);
 		}
 
 		if (!((CDiskMarkDlg*) dlg)->m_DiskBenchStatus)
@@ -857,5 +840,5 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 			return;
 		}
 	}
-	::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_USER_UPDATE_SCORE, 0, 0);
+	::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_UPDATE_SCORE, 0, 0);
 }

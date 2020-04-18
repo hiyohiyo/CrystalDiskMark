@@ -7,15 +7,14 @@
 
 #pragma once
 
-#define WM_USER_UPDATE_SCORE	(WM_USER+1)
-#define WM_USER_UPDATE_MESSAGE	(WM_USER+2)
-#define WM_USER_EXIT_BENCHMARK	(WM_USER+3)
-#define WM_USER_UPDATE_COMMENT	(WM_USER+4) // for CCommentDlg
+#define WM_UPDATE_SCORE		(WM_APP+1)
+#define WM_UPDATE_MESSAGE	(WM_APP+2)
+#define WM_EXIT_BENCHMARK	(WM_APP+3)
 
 #define TIMER_ID 5963
 
 // Common Message
-#define ALL_0X00_0FILL _T("<0Fill>")
+#define ALL_0X00_0FILL L"<0Fill>"
 
 enum TEST_DATA_TYPE
 {
@@ -39,7 +38,6 @@ enum PROFILE
 	PROFILE_PEAK_MIX,
 	PROFILE_REAL_MIX,
 };
-
 
 enum DISK_SPD_CMD
 {

@@ -4,9 +4,10 @@
 //          Web : https://crystalmark.info/
 //      License : The MIT License
 /*---------------------------------------------------------------------------*/
+
+#pragma once
+
 #include <winnt.h>
-#ifndef __GET_OS_INFO_H__
-#define __GET_OS_INFO_H__
 
 void GetOsName(CString& OsFullName);
 BOOL Is8orLater();
@@ -22,6 +23,7 @@ BOOL IsDotNet2();
 BOOL IsDotNet4();
 BOOL IsWin2k();
 DWORD GetIeVersion();
+DWORD GetWin10Version();
 
 #define PRODUCT_UNDEFINED                           0x00000000
 
@@ -179,5 +181,3 @@ DWORD GetIeVersion();
 #define SM_MEDIACENTER          87
 #define SM_STARTER              88
 #define SM_SERVERR2             89
-
-#endif

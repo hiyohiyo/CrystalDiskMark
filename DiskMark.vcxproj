@@ -301,18 +301,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Marginality\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Cecile\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Marginality\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Cecile\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|Win32'">..\Marginality\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|Win32'">..\Marginality\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Marginality\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|Win32'">..\Marginality\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|Win32'">..\Cecile\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|Win32'">..\Cecile\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Cecile\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|Win32'">..\Cecile\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|Win32'">Build\$(Platform)\$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|Win32'">Build\$(Platform)\$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build\$(Platform)\$(Configuration)\</IntDir>
@@ -325,10 +325,10 @@
     <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|Win32'">true</EmbedManifest>
     <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</EmbedManifest>
     <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|Win32'">true</EmbedManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|x64'">..\Marginality\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|x64'">..\Marginality\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Marginality\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|x64'">..\Marginality\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|x64'">..\Cecile\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|x64'">..\Cecile\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Cecile\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|x64'">..\Cecile\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|x64'">Build\$(Platform)\$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|ARM64'">Build\$(Platform)\$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|ARM'">Build\$(Platform)\$(Configuration)\</IntDir>
@@ -359,44 +359,44 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|ARM64'">
     <TargetName>$(ProjectName)A64S</TargetName>
-    <OutDir>..\Marginality\</OutDir>
+    <OutDir>..\Cecile\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|ARM'">
     <TargetName>$(ProjectName)A32S</TargetName>
-    <OutDir>..\Marginality\</OutDir>
+    <OutDir>..\Cecile\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|x64'">
     <TargetName>$(ProjectName)64S_UWP</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|ARM64'">
     <TargetName>$(ProjectName)A64S_UWP</TargetName>
-    <OutDir>..\Marginality\</OutDir>
+    <OutDir>..\Cecile\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|ARM'">
     <TargetName>$(ProjectName)A32S_UWP</TargetName>
-    <OutDir>..\Marginality\</OutDir>
+    <OutDir>..\Cecile\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>$(ProjectName)64</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <TargetName>$(ProjectName)A64</TargetName>
-    <OutDir>..\Marginality\</OutDir>
+    <OutDir>..\Cecile\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <TargetName>$(ProjectName)A32</TargetName>
-    <OutDir>..\Marginality\</OutDir>
+    <OutDir>..\Cecile\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|x64'">
     <TargetName>$(ProjectName)64_UWP</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|ARM64'">
     <TargetName>$(ProjectName)A64_UWP</TargetName>
-    <OutDir>..\Marginality\</OutDir>
+    <OutDir>..\Cecile\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|ARM'">
     <TargetName>$(ProjectName)A32_UWP</TargetName>
-    <OutDir>..\Marginality\</OutDir>
+    <OutDir>..\Cecile\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|Win32'">
     <TargetName>$(ProjectName)32S</TargetName>
@@ -445,7 +445,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
-      <OutputFile>..\Marginality\DiskMark.exe</OutputFile>
+      <OutputFile>..\Cecile\DiskMark.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -573,7 +573,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\Marginality\$(ProjectName)32S.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)32S.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -612,7 +612,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\Marginality\$(ProjectName)32S_UWP.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)32S_UWP.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -651,7 +651,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\Marginality\$(ProjectName)32.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)32.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -690,7 +690,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\Marginality\$(ProjectName)32_UWP.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)32_UWP.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -736,7 +736,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <OutputFile>..\Marginality\$(ProjectName)64S.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)64S.exe</OutputFile>
       <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
@@ -773,7 +773,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Marginality\$(ProjectName)A64S.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)A64S.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -809,7 +809,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Marginality\$(ProjectName)A32S.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)A32S.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -846,7 +846,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <OutputFile>..\Marginality\$(ProjectName)64S_UWP.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)64S_UWP.exe</OutputFile>
       <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
@@ -883,7 +883,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Marginality\$(ProjectName)A64S_UWP.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)A64S_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -919,7 +919,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Marginality\$(ProjectName)A32S_UWP.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)A32S_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -956,7 +956,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <OutputFile>..\Marginality\$(ProjectName)64.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)64.exe</OutputFile>
       <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
@@ -993,7 +993,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Marginality\$(ProjectName)A64.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)A64.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1029,7 +1029,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Marginality\$(ProjectName)A32.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)A32.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1066,7 +1066,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <OutputFile>..\Marginality\$(ProjectName)64_UWP.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)64_UWP.exe</OutputFile>
       <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
@@ -1103,7 +1103,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Marginality\$(ProjectName)A64_UWP.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)A64_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1139,7 +1139,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Marginality\$(ProjectName)A32_UWP.exe</OutputFile>
+      <OutputFile>..\Cecile\$(ProjectName)A32_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1148,21 +1148,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp" />
-    <ClCompile Include="ButtonCx.cpp" />
-    <ClCompile Include="ButtonEx.cpp" />
-    <ClCompile Include="ComboBoxCx.cpp" />
-    <ClCompile Include="CommentDlg.cpp" />
+    <ClCompile Include="ButtonFx.cpp" />
+    <ClCompile Include="ComboBoxFx.cpp" />
     <ClCompile Include="DebugPrint.cpp" />
-    <ClCompile Include="DialogCx.cpp" />
+    <ClCompile Include="DialogFx.cpp" />
     <ClCompile Include="DiskBench.cpp" />
     <ClCompile Include="DiskMark.cpp" />
     <ClCompile Include="DiskMarkDlg.cpp" />
-    <ClCompile Include="EditEx.cpp" />
+    <ClCompile Include="EditFx.cpp" />
     <ClCompile Include="FontComboBox.cpp" />
     <ClCompile Include="FontSelection.cpp" />
     <ClCompile Include="MainDialog.cpp" />
     <ClCompile Include="SettingsDlg.cpp" />
-    <ClCompile Include="StaticCx.cpp" />
+    <ClCompile Include="StaticFx.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -1190,22 +1188,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h" />
-    <ClInclude Include="ButtonCx.h" />
-    <ClInclude Include="ButtonEx.h" />
-    <ClInclude Include="ComboBoxCx.h" />
-    <ClInclude Include="CommentDlg.h" />
+    <ClInclude Include="ButtonFx.h" />
+    <ClInclude Include="ComboBoxFx.h" />
+    <ClInclude Include="CommonFx.h" />
     <ClInclude Include="DebugPrint.h" />
-    <ClInclude Include="DialogCx.h" />
+    <ClInclude Include="DialogFx.h" />
     <ClInclude Include="DiskBench.h" />
     <ClInclude Include="DiskMark.h" />
     <ClInclude Include="DiskMarkDlg.h" />
-    <ClInclude Include="EditEx.h" />
+    <ClInclude Include="EditFx.h" />
     <ClInclude Include="FontComboBox.h" />
     <ClInclude Include="FontSelection.h" />
     <ClInclude Include="MainDialog.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SettingsDlg.h" />
-    <ClInclude Include="StaticCX.h" />
+    <ClInclude Include="StaticFx.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="GetFileVersion.h" />
     <ClInclude Include="GetOsInfo.h" />

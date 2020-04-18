@@ -8,7 +8,6 @@
 #include "stdafx.h"
 #include "GetOsInfo.h"
 #include "GetFileVersion.h"
-//#include "wbemcli.h"     // WMI interface declarations
 
 typedef BOOL (WINAPI *_GetProductInfo)(DWORD, DWORD, DWORD, DWORD, PDWORD);
 typedef BOOL (WINAPI *_GetNativeSystemInfo)(LPSYSTEM_INFO);
@@ -173,126 +172,126 @@ void GetOsName(CString& OsFullName)
 		case 0: // Windows 95
 			if(LOWORD(osvi.dwBuildNumber) >= 1214)
 			{
-				osName = _T("Windows 95 OSR2.5");
+				osName = L"Windows 95 OSR2.5";
 			}
 			else if(LOWORD(osvi.dwBuildNumber) >= 1212)
 			{
-				osName = _T("Windows 95 OSR2.1");
+				osName = L"Windows 95 OSR2.1";
 			}
 			else if(LOWORD(osvi.dwBuildNumber) == 1111)
 			{
-				osName = _T("Windows 95 OSR2");
+				osName = L"Windows 95 OSR2";
 			}
 			else
 			{
-				osName = _T("Windows 95");	
+				osName = L"Windows 95";	
 			}
 			break;
 		case 10: // Windows 98
 			if(LOWORD(osvi.dwBuildNumber) >= 2222)
 			{
-				osName = _T("Windows 98 SE");
+				osName = L"Windows 98 SE";
 			}
 			else if(LOWORD(osvi.dwBuildNumber) >= 2000)
 			{
-				osName = _T("Windows 98 SP1");
+				osName = L"Windows 98 SP1";
 			}
 			else
 			{
-				osName = _T("Windows 98");	
+				osName = L"Windows 98";	
 			}
 			break;
 		case 90:
-			osName = _T("Windows Me");
+			osName = L"Windows Me";
 			break;
 		default:
-			osName = "Windows 9x";
+			osName = L"Windows 9x";
 			break;
 		}
-		osVersion.Format(_T("%d.%d"), osvi.dwMajorVersion, osvi.dwMinorVersion);
-		osBuild.Format(_T("%d"), LOWORD(osvi.dwBuildNumber));
+		osVersion.Format(L"%d.%d", osvi.dwMajorVersion, osvi.dwMinorVersion);
+		osBuild.Format(L"%d", LOWORD(osvi.dwBuildNumber));
 
-		OsFullName.Format(_T("%s [%s Build %s]"), (LPCTSTR)osName.GetString(), (LPCTSTR)osVersion.GetString(), (LPCTSTR)osBuild.GetString());
+		OsFullName.Format(L"%s [%s Build %s]", (LPCTSTR)osName.GetString(), (LPCTSTR)osVersion.GetString(), (LPCTSTR)osBuild.GetString());
 		break;
 
 	case VER_PLATFORM_WIN32_NT:
 		if(osvi.dwMajorVersion == 3)
 		{
-			osName.Format(_T("Windows NT3.%d"), osvi.dwMinorVersion);
+			osName.Format(L"Windows NT3.%d", osvi.dwMinorVersion);
 		}
 		else if(osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 0)
 		{
-			osName = _T("Windows NT4");
+			osName = L"Windows NT4";
 		}
 		else if(osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0)
 		{
-			osName = _T("Windows 2000");
+			osName = L"Windows 2000";
 		}
 		else if(osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 1)
 		{
-			osName = _T("Windows XP");
+			osName = L"Windows XP";
 		}
 		else if(osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 2)
 		{
 			if(GetSystemMetrics(SM_SERVERR2))
 			{
-				osName = _T("Windows Server 2003 R2");
+				osName = L"Windows Server 2003 R2";
 			}
 			else if(osvi.wSuiteMask == VER_SUITE_STORAGE_SERVER)
 			{
-				osName = _T("Windows Storage Server 2003");
+				osName = L"Windows Storage Server 2003";
 			}
 			else if(osvi.wProductType == VER_NT_WORKSTATION && IsX64())
 			{
-				osName = _T("Windows XP");
+				osName = L"Windows XP";
 			}
 			else
 			{
-				osName = _T("Windows Server 2003");
+				osName = L"Windows Server 2003";
 			}
 		}
 		else if(osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 0)
 		{
 			if(osvi.wProductType != VER_NT_WORKSTATION)
 			{
-				osName = _T("Windows Server 2008");
+				osName = L"Windows Server 2008";
 			}
 			else
 			{
-				osName = _T("Windows Vista");
+				osName = L"Windows Vista";
 			}
 		}
 		else if(osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 1)
 		{
 			if(osvi.wProductType != VER_NT_WORKSTATION)
 			{
-				osName = _T("Windows Server 2008 R2");
+				osName = L"Windows Server 2008 R2";
 			}
 			else
 			{
-				osName = _T("Windows 7");
+				osName = L"Windows 7";
 			}
 		}
 		else if(osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 2)
 		{
 			if(osvi.wProductType != VER_NT_WORKSTATION)
 			{
-				osName = _T("Windows Server 2012");
+				osName = L"Windows Server 2012";
 			}
 			else
 			{
-				osName = _T("Windows 8");
+				osName = L"Windows 8";
 			}
 		}
 		else if(osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 3)
 		{
 			if(osvi.wProductType != VER_NT_WORKSTATION)
 			{
-				osName = _T("Windows Server 2012 R2");
+				osName = L"Windows Server 2012 R2";
 			}
 			else
 			{
-				osName = _T("Windows 8.1");
+				osName = L"Windows 8.1";
 			}
 		}
 		else if ((osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 4)
@@ -302,26 +301,26 @@ void GetOsName(CString& OsFullName)
 			{
 				if(osvi.dwBuildNumber >= 17763)
 				{
-					osName = _T("Windows Server 2019");
+					osName = L"Windows Server 2019";
 				}
 				else
 				{
-					osName = _T("Windows Server 2016");
+					osName = L"Windows Server 2016";
 				}
 			}
 			else
 			{
-				osName = _T("Windows 10");
+				osName = L"Windows 10";
 			}
 		}
 		else
 		{
-			osName.Format(_T("Windows NT %d.%d"), osvi.dwMajorVersion, osvi.dwMinorVersion);
+			osName.Format(L"Windows NT %d.%d", osvi.dwMajorVersion, osvi.dwMinorVersion);
 		}
 
 		if(osvi.dwMajorVersion >= 6)
 		{
-			pGetProductInfo = (_GetProductInfo)GetProcAddress(GetModuleHandle(_T("kernel32.dll")), "GetProductInfo");
+			pGetProductInfo = (_GetProductInfo)GetProcAddress(GetModuleHandle(L"kernel32.dll"), "GetProductInfo");
 
 			if(pGetProductInfo)
 			{
@@ -331,128 +330,128 @@ void GetOsName(CString& OsFullName)
 				switch(productType)
 				{
 				case PRODUCT_UNLICENSED:
-					osType = (_T("Unlicensed"));
+					osType = L"Unlicensed";
 					break;
 				case PRODUCT_BUSINESS:
-					osType = (_T("Business"));
+					osType = L"Business";
 					break;
 				case PRODUCT_BUSINESS_N:
-					osType = (_T("Business N"));
+					osType = L"Business N";
 					break;
 				case PRODUCT_CLUSTER_SERVER:
-					osType = (_T("Cluster Server"));
+					osType = L"Cluster Server";
 					break;
 				case PRODUCT_DATACENTER_SERVER:
-					osType = (_T("Datacenter (Full installation)"));
+					osType = L"Datacenter (Full installation)";
 					break;
 				case PRODUCT_DATACENTER_SERVER_CORE:
-					osType = (_T("Datacenter (Server Core installation)"));
+					osType = L"Datacenter (Server Core installation)";
 					break;
 				case PRODUCT_ENTERPRISE:
-					osType = (_T("Enterprise"));
+					osType = L"Enterprise";
 					break;
 				case PRODUCT_ENTERPRISE_N:
-					osType = (_T("Enterprise N"));
+					osType = L"Enterprise N";
 					break;
 				case PRODUCT_ENTERPRISE_SERVER:
-					osType = (_T("Enterprise (Full installation)"));
+					osType = L"Enterprise (Full installation)";
 					break;
 				case PRODUCT_ENTERPRISE_SERVER_CORE:
-					osType = (_T("Enterprise (Server Core installation)"));
+					osType = L"Enterprise (Server Core installation)";
 					break;
 				case PRODUCT_ENTERPRISE_SERVER_IA64:
-					osType = (_T("Datacenter Enterprise for Itanium-based Systems"));
+					osType = L"Datacenter Enterprise for Itanium-based Systems";
 					break;
 				case PRODUCT_HOME_BASIC:
-					osType = (_T("Home Basic"));
+					osType = L"Home Basic";
 					break;
 				case PRODUCT_HOME_BASIC_N:
-					osType = (_T("Home Basic N"));
+					osType = L"Home Basic N";
 					break;
 				case PRODUCT_HOME_PREMIUM:
-					osType = (_T("Home Premium"));
+					osType = L"Home Premium";
 					break;
 				case PRODUCT_HOME_PREMIUM_N:
-					osType = (_T("Home Premium N"));
+					osType = L"Home Premium N";
 					break;
 				case PRODUCT_HOME_SERVER:
-					osType = (_T("Home Server"));
+					osType = L"Home Server";
 					break;
 				case PRODUCT_SERVER_FOR_SMALLBUSINESS:
-					osType = (_T("Server for Small Business"));
+					osType = L"Server for Small Business";
 					break;
 				case PRODUCT_SMALLBUSINESS_SERVER:
-					osType = (_T("Small Business Server"));
+					osType = L"Small Business Server";
 					break;
 				case PRODUCT_SMALLBUSINESS_SERVER_PREMIUM:
-					osType = (_T("Small Business Server Premium"));
+					osType = L"Small Business Server Premium";
 					break;
 				case PRODUCT_STANDARD_SERVER:
-					osType = (_T("Server Standard (full installation)"));
+					osType = L"Server Standard (full installation)";
 					break;
 				case PRODUCT_STANDARD_SERVER_CORE:
-					osType = (_T("Server Standard (core installation)"));
+					osType = L"Server Standard (core installation)";
 					break;
 				case PRODUCT_STARTER:
-					osType = (_T("Starter"));
+					osType = L"Starter";
 					break;
 				case PRODUCT_STORAGE_ENTERPRISE_SERVER:
-					osType = (_T("Storage Server Enterprise"));
+					osType = L"Storage Server Enterprise";
 					break;
 				case PRODUCT_STORAGE_EXPRESS_SERVER:
-					osType = (_T("Storage Server Express"));
+					osType = L"Storage Server Express";
 					break;
 				case PRODUCT_STORAGE_STANDARD_SERVER:
-					osType = (_T("Storage Server Standard"));
+					osType = L"Storage Server Standard";
 					break;
 				case PRODUCT_STORAGE_WORKGROUP_SERVER:
-					osType = (_T("Storage Server Workgroup"));
+					osType = L"Storage Server Workgroup";
 					break;
 				case PRODUCT_ULTIMATE:
-					osType = (_T("Ultimate"));
+					osType = L"Ultimate";
 					break;
 				case PRODUCT_ULTIMATE_N:
-					osType = (_T("Ultimate N"));
+					osType = L"Ultimate N";
 					break;
 				case PRODUCT_WEB_SERVER:
-					osType = (_T("Web Server"));
+					osType = L"Web Server";
 					break;
 				case PRODUCT_PROFESSIONAL:
 					if(osvi.dwMinorVersion >= 2)
 					{
-						osType = (_T("Pro"));
+						osType = L"Pro";
 					}
 					else
 					{
-						osType = (_T("Professional"));
+						osType = L"Professional";
 					}
 					break;
 				case PRODUCT_PROFESSIONAL_N:
 					if(osvi.dwMinorVersion >= 2)
 					{
-						osType = (_T("Pro N"));
+						osType = L"Pro N";
 					}
 					else
 					{
-						osType = (_T("Professional N"));
+						osType = L"Professional N";
 					}
 					break;
 				case PRODUCT_PRO_WORKSTATION:
-					osType = (_T("Pro for Workstation"));
+					osType = L"Pro for Workstation";
 					break;
 				case PRODUCT_PRO_WORKSTATION_N:
-					osType = (_T("Pro for Workstation N"));
+					osType = L"Pro for Workstation N";
 					break;
 				case PRODUCT_PRO_FOR_EDUCATION:
-					osType = (_T("Pro for Education"));
+					osType = L"Pro for Education";
 					break;
 				case PRODUCT_PRO_FOR_EDUCATION_N:
-					osType = (_T("Pro for Education N"));
+					osType = L"Pro for Education N";
 					break;
 				case PRODUCT_ESSENTIALBUSINESS_SERVER_ADDL:
 				case PRODUCT_ESSENTIALBUSINESS_SERVER_MGMTSVC:
 				case PRODUCT_ESSENTIALBUSINESS_SERVER_ADDLSVC:
-					osType = (_T("Essentials Server"));
+					osType = L"Essentials Server";
 					break;
 				}
 			}
@@ -463,21 +462,21 @@ void GetOsName(CString& OsFullName)
 			{
 				if(osvi.wProductType == VER_NT_WORKSTATION)
 				{
-					osType = _T("Professional");
+					osType = L"Professional";
 				}
 				else if(osvi.wProductType == VER_NT_SERVER)
 				{
 					if(osvi.wSuiteMask & VER_SUITE_DATACENTER)
 					{
-						osType = _T("DataCenter Server");
+						osType = L"DataCenter Server";
 					}
 					else if(osvi.wSuiteMask & VER_SUITE_ENTERPRISE)
 					{
-						osType = _T("Advanced Server");
+						osType = L"Advanced Server";
 					}
 					else
 					{
-						osType = _T("Server");
+						osType = L"Server";
 					}
 				}
 			}
@@ -485,23 +484,23 @@ void GetOsName(CString& OsFullName)
 			{
 				if(osvi.wSuiteMask & VER_SUITE_PERSONAL)
 				{
-					osType = _T("Home Edition");
+					osType = L"Home Edition";
 				}
 				else if(osvi.wSuiteMask & VER_SUITE_DATACENTER)
 				{
-					osType = _T("Datacenter Edition");
+					osType = L"Datacenter Edition";
 				}
 				else if(osvi.wSuiteMask & VER_SUITE_ENTERPRISE)
 				{
-					osType = _T("Enterprise Edition");
+					osType = L"Enterprise Edition";
 				}
 				else if(osvi.wSuiteMask & VER_SUITE_BLADE)
 				{
-					osType = _T("Web Edition");
+					osType = L"Web Edition";
 				}
 				else if(osvi.wProductType == VER_NT_WORKSTATION)
 				{
-					osType = _T("Professional");
+					osType = L"Professional";
 				}
 
 
@@ -509,34 +508,34 @@ void GetOsName(CString& OsFullName)
 				if(GetSystemMetrics(SM_MEDIACENTER))
 				{
 					UINT length = GetWindowsDirectoryW(path, MAX_PATH);
-					_tcscat_s(path, MAX_PATH, _T("\\ehome\\ehshell.exe"));
+					_tcscat_s(path, MAX_PATH, L"\\ehome\\ehshell.exe");
 					TCHAR str[256];
 					if(length != 0 && GetFileVersion(path, str))
 					{					
 						cstr = str;
-						if(cstr.Find(_T("5.1")) == 0)
+						if(cstr.Find(L"5.1") == 0)
 						{
-							osType = _T("Media Center ");
-							cstr.Replace(_T("5.1."), _T(""));
+							osType = L"Media Center ";
+							cstr.Replace(L"5.1.", L"");
 							double num = _tstof(cstr);
 							if(num <= 2600.1200)
 							{
-								osType += _T("2002");
+								osType += L"2002";
 							}
 							else if(num <= 2600.2500)
 							{
-								osType += _T("2004");
+								osType += L"2004";
 							}
 							else
 							{
-								osType += _T("2005");
+								osType += L"2005";
 							}
 						}
 					}
 				}
 				else if(GetSystemMetrics(SM_TABLETPC))
 				{
-					osType = _T("Tablet PC");
+					osType = L"Tablet PC";
 				}
 			}
 		}
@@ -546,22 +545,22 @@ void GetOsName(CString& OsFullName)
 			TCHAR productType[80];
 			DWORD bufLen;
 			
-			if(RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("SYSTEM\\CurrentControlSet\\Control\\ProductOptions"),
+			if(RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Control\\ProductOptions",
 				0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
 			{
-				if(RegQueryValueEx(hKey, _T("ProductType"), NULL, NULL, (LPBYTE)productType, &bufLen) == ERROR_SUCCESS)
+				if(RegQueryValueEx(hKey, L"ProductType", NULL, NULL, (LPBYTE)productType, &bufLen) == ERROR_SUCCESS)
 				{
-					if(lstrcmpi(_T("WINNT"), productType) == 0)
+					if(lstrcmpi(L"WINNT", productType) == 0)
 					{
-						osType = "Workstation";
+						osType = L"Workstation";
 					}
-					else if(lstrcmpi(_T("LANMANNT"), productType) == 0)
+					else if(lstrcmpi(L"LANMANNT", productType) == 0)
 					{
-						osType = "Server";
+						osType = L"Server";
 					}
-					else if(lstrcmpi(_T("SERVERNT"), productType) == 0)
+					else if(lstrcmpi(L"SERVERNT", productType) == 0)
 					{
-						osType = "Advanced Server";
+						osType = L"Advanced Server";
 					}
 				}
 				RegCloseKey(hKey);
@@ -569,39 +568,39 @@ void GetOsName(CString& OsFullName)
 		}
 
 		osCsd = osvi.szCSDVersion;
-		osCsd.Replace(_T("Service Pack "), _T("SP"));
+		osCsd.Replace(L"Service Pack ", L"SP");
 
-		osVersion.Format(_T("%d.%d"), osvi.dwMajorVersion, osvi.dwMinorVersion);
-		osBuild.Format(_T("%d"), osvi.dwBuildNumber);
+		osVersion.Format(L"%d.%d", osvi.dwMajorVersion, osvi.dwMinorVersion);
+		osBuild.Format(L"%d", osvi.dwBuildNumber);
 
 		if(IsX64())
 		{
-			osArchitecture = _T("x64");
+			osArchitecture = L"x64";
 		}
 		else if (IsArm32())
 		{
-			osArchitecture = _T("ARM32");
+			osArchitecture = L"ARM32";
 		}
 		else if (IsArm64())
 		{
-			osArchitecture = _T("ARM64");
+			osArchitecture = L"ARM64";
 		}
 		else if(IsIa64())
 		{
-			osArchitecture = _T("IA64");
+			osArchitecture = L"IA64";
 		}
 		else
 		{
-			osArchitecture = _T("x86");
+			osArchitecture = L"x86";
 		}
 
 		if(! osCsd.IsEmpty())
 		{
-			osFullName.Format(_T("%s %s %s [%s Build %s] (%s)"), (LPCTSTR)osName, (LPCTSTR)osType, (LPCTSTR)osCsd, (LPCTSTR)osVersion, (LPCTSTR)osBuild, (LPCTSTR)osArchitecture);
+			osFullName.Format(L"%s %s %s [%s Build %s] (%s)", (LPCTSTR)osName, (LPCTSTR)osType, (LPCTSTR)osCsd, (LPCTSTR)osVersion, (LPCTSTR)osBuild, (LPCTSTR)osArchitecture);
 		}
 		else
 		{
-			osFullName.Format(_T("%s %s [%s Build %s] (%s)"), (LPCTSTR)osName, (LPCTSTR)osType, (LPCTSTR)osVersion, (LPCTSTR)osBuild, (LPCTSTR)osArchitecture);
+			osFullName.Format(L"%s %s [%s Build %s] (%s)", (LPCTSTR)osName, (LPCTSTR)osType, (LPCTSTR)osVersion, (LPCTSTR)osBuild, (LPCTSTR)osArchitecture);
 		}
 		OsFullName = osFullName;
 		break;
@@ -649,7 +648,7 @@ DWORD GetIeVersion()
 	BYTE  buf[256];
 	CString cstr;
 
-	switch(GetFileVersion(_T("Shdocvw.dll")))
+	switch(GetFileVersion(L"Shdocvw.dll"))
 	{
 	case 470: ieVersion = 300;	break;
 	case 471: ieVersion = 400;	break;
@@ -659,14 +658,14 @@ DWORD GetIeVersion()
 	case 600:
 	default:
 		ieVersion = 600;
-		if(RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\Microsoft\\Internet Explorer"), 
+		if(RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Internet Explorer", 
 			0, KEY_READ, &hKey) == ERROR_SUCCESS)
 		{
-			if(RegQueryValueEx(hKey, _T("Version"), NULL, &type, buf, &size) == ERROR_SUCCESS)
+			if(RegQueryValueEx(hKey, L"Version", NULL, &type, buf, &size) == ERROR_SUCCESS)
 			{
 				cstr = (TCHAR*)buf;
 				ieVersion = _tstoi(cstr) * 100;
-				if(ieVersion == 900 && RegQueryValueEx(hKey, _T("svcVersion"), NULL, &type, buf, &size) == ERROR_SUCCESS)
+				if(ieVersion == 900 && RegQueryValueEx(hKey, L"svcVersion", NULL, &type, buf, &size) == ERROR_SUCCESS)
 				{
 					cstr = (TCHAR*)buf;
 					if(_tstoi(cstr) * 100 > 900)
@@ -709,10 +708,10 @@ BOOL IsDotNet2()
 		HKEY  hKey = NULL;
 		DWORD buf = 0;
 
-		if(RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v2.0.50727"), 0, KEY_READ, &hKey) == ERROR_SUCCESS
-		|| RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\Wow6432Node\\Microsoft\\NET Framework Setup\\NDP\\v2.0.50727"), 0, KEY_READ, &hKey) == ERROR_SUCCESS)
+		if(RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v2.0.50727", 0, KEY_READ, &hKey) == ERROR_SUCCESS
+		|| RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Wow6432Node\\Microsoft\\NET Framework Setup\\NDP\\v2.0.50727", 0, KEY_READ, &hKey) == ERROR_SUCCESS)
 		{
-			if(RegQueryValueEx(hKey, _T("Install"), NULL, &type, (LPBYTE)&buf, &size) == ERROR_SUCCESS)
+			if(RegQueryValueEx(hKey, L"Install", NULL, &type, (LPBYTE)&buf, &size) == ERROR_SUCCESS)
 			{
 				if(buf == 1)
 				{
@@ -738,10 +737,10 @@ BOOL IsDotNet4()
 		HKEY  hKey = NULL;
 		DWORD buf = 0;
 
-		if(RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Client"), 0, KEY_READ, &hKey) == ERROR_SUCCESS
-		|| RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full"), 0, KEY_READ, &hKey) == ERROR_SUCCESS)
+		if(RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Client", 0, KEY_READ, &hKey) == ERROR_SUCCESS
+		|| RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full", 0, KEY_READ, &hKey) == ERROR_SUCCESS)
 		{
-			if(RegQueryValueEx(hKey, _T("Install"), NULL, &type, (LPBYTE)&buf, &size) == ERROR_SUCCESS)
+			if(RegQueryValueEx(hKey, L"Install", NULL, &type, (LPBYTE)&buf, &size) == ERROR_SUCCESS)
 			{
 				if(buf == 1)
 				{
@@ -783,4 +782,24 @@ BOOL IsWin2k()
 	}
 
 	return (BOOL)win2k;
+}
+
+DWORD GetWin10Version()
+{
+	OSVERSIONINFOEX osvi;
+	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	GetVersionEx((OSVERSIONINFO*)&osvi);
+
+	     if (osvi.dwBuildNumber >= 19041) { return 2004; }
+	else if (osvi.dwBuildNumber >= 18363) { return 1909; }
+	else if (osvi.dwBuildNumber >= 18362) { return 1903; }
+	else if (osvi.dwBuildNumber >= 17763) { return 1809; }
+	else if (osvi.dwBuildNumber >= 17134) { return 1803; }
+	else if (osvi.dwBuildNumber >= 16299) { return 1709; }
+	else if (osvi.dwBuildNumber >= 15063) { return 1703; }
+	else if (osvi.dwBuildNumber >= 14393) { return 1607; }
+	else if (osvi.dwBuildNumber >= 10586) { return 1511; }
+	else if (osvi.dwBuildNumber >= 10240) { return 1507; }
+	else { return 0; }
 }

@@ -6,11 +6,11 @@
 /*---------------------------------------------------------------------------*/
 
 #pragma once
-#include "DialogCx.h"
-#include "StaticCx.h"
-#include "ButtonCx.h"
+#include "DialogFx.h"
+#include "StaticFx.h"
+#include "ButtonFx.h"
 
-class CAboutDlg : public CDialogCx
+class CAboutDlg : public CDialogFx
 {
 	DECLARE_DYNCREATE(CAboutDlg)
 
@@ -46,16 +46,16 @@ public:
 	afx_msg void OnBnClickedProjectSite4();
 	afx_msg void OnBnClickedProjectSite5();
 
-	CButtonCx m_CtrlCrystalDewWorld;
-	CButtonCx m_CtrlProjectSite1;
-	CButtonCx m_CtrlProjectSite2;
-	CButtonCx m_CtrlProjectSite3;
-	CButtonCx m_CtrlProjectSite4;
-	CButtonCx m_CtrlProjectSite5;
-	CButtonCx m_CtrlVersion;
-	CButtonCx m_CtrlLicense;
+	CButtonFx m_CtrlCrystalDewWorld;
+	CButtonFx m_CtrlProjectSite1;
+	CButtonFx m_CtrlProjectSite2;
+	CButtonFx m_CtrlProjectSite3;
+	CButtonFx m_CtrlProjectSite4;
+	CButtonFx m_CtrlProjectSite5;
+	CButtonFx m_CtrlVersion;
+	CButtonFx m_CtrlLicense;
 
-	CStaticCx m_CtrlEdition;
-	CStaticCx m_CtrlRelease;
-	CStaticCx m_CtrlCopyright;
+	CStaticFx m_CtrlEdition;
+	CStaticFx m_CtrlRelease;
+	CStaticFx m_CtrlCopyright;
 };

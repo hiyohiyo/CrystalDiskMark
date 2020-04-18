@@ -6,12 +6,12 @@
 /*---------------------------------------------------------------------------*/
 
 #pragma once
-#include "DialogCx.h"
-#include "StaticCx.h"
-#include "ButtonCx.h"
-#include "ComboBoxCx.h"
+#include "DialogFx.h"
+#include "StaticFx.h"
+#include "ButtonFx.h"
+#include "ComboBoxFx.h"
 
-class CSettingsDlg : public CDialogCx
+class CSettingsDlg : public CDialogFx
 {
 	DECLARE_DYNCREATE(CSettingsDlg)
 
@@ -31,33 +31,33 @@ protected:
 
 	void UpdateDialogSize();
 
-	CStaticCx m_LabelBlockSize;
-	CStaticCx m_LabelQueues;
-	CStaticCx m_LabelThreads;
-	CStaticCx m_LabelAffinity;
+	CStaticFx m_LabelBlockSize;
+	CStaticFx m_LabelQueues;
+	CStaticFx m_LabelThreads;
+	CStaticFx m_LabelAffinity;
 
-	CStaticCx m_SequentialLabel1;
-	CStaticCx m_SequentialLabel2;
-	CComboBoxCx m_ComboSequentialSize1;
-	CComboBoxCx m_ComboSequentialSize2;
-	CComboBoxCx m_ComboSequentialQueues1;
-	CComboBoxCx m_ComboSequentialQueues2;
-	CComboBoxCx m_ComboSequentialThreads1;
-	CComboBoxCx m_ComboSequentialThreads2;
+	CStaticFx m_SequentialLabel1;
+	CStaticFx m_SequentialLabel2;
+	CComboBoxFx m_ComboSequentialSize1;
+	CComboBoxFx m_ComboSequentialSize2;
+	CComboBoxFx m_ComboSequentialQueues1;
+	CComboBoxFx m_ComboSequentialQueues2;
+	CComboBoxFx m_ComboSequentialThreads1;
+	CComboBoxFx m_ComboSequentialThreads2;
 
-	CStaticCx m_RandomLabel1;
-	CStaticCx m_RandomLabel2;
-	CComboBoxCx m_ComboRandomSize1;
-	CComboBoxCx m_ComboRandomSize2;
-	CComboBoxCx m_ComboRandomQueues1;
-	CComboBoxCx m_ComboRandomQueues2;
-	CComboBoxCx m_ComboRandomThreads1;
-	CComboBoxCx m_ComboRandomThreads2;
+	CStaticFx m_RandomLabel1;
+	CStaticFx m_RandomLabel2;
+	CComboBoxFx m_ComboRandomSize1;
+	CComboBoxFx m_ComboRandomSize2;
+	CComboBoxFx m_ComboRandomQueues1;
+	CComboBoxFx m_ComboRandomQueues2;
+	CComboBoxFx m_ComboRandomThreads1;
+	CComboBoxFx m_ComboRandomThreads2;
 
-	CComboBoxCx m_ComboAffinity;
+	CComboBoxFx m_ComboAffinity;
 
-	CButtonCx m_ButtonSetDefault;
-	CButtonCx m_ButtonOk;
+	CButtonFx m_ButtonSetDefault;
+	CButtonFx m_ButtonOk;
 
 	void OnSetDefault();
 	void OnOk();
