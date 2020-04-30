@@ -6,14 +6,11 @@
 /*---------------------------------------------------------------------------*/
 
 #include "stdafx.h"
-#include <afxmt.h>
-
 #include "DiskMark.h"
 #include "DiskMarkDlg.h"
 #include "DiskBench.h"
-#include "GetFileVersion.h"
-#include "GetOsInfo.h"
 
+#include <afxmt.h>
 #include <winioctl.h>
 #include <mmsystem.h>
 #pragma comment(lib,"winmm.lib")

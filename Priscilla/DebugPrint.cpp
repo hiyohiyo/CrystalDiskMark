@@ -5,9 +5,8 @@
 //      License : The MIT License
 /*---------------------------------------------------------------------------*/
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include <io.h>
-
 
 static const DWORD DEBUG_MODE_NONE    = 0;
 static const DWORD DEBUG_MODE_LOG     = 1;

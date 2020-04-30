@@ -98,23 +98,16 @@ END_MESSAGE_MAP()
 void CAboutDlg::UpdateDialogSize()
 {
 	ChangeZoomType(m_ZoomType);
-	if (m_bHighContrast)
-	{
-		SetClientSize((int)(SIZE_X * m_ZoomRatio), (int)(SIZE_HC_Y * m_ZoomRatio), 0);
-	}
-	else
-	{
-		SetClientSize((int)(SIZE_X * m_ZoomRatio), (int)(SIZE_Y * m_ZoomRatio), 0);
-	}
 
+	SetClientSize((int)(SIZE_X * m_ZoomRatio), (int)(SIZE_Y * m_ZoomRatio), 0);
 	UpdateBackground(TRUE);
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	m_CtrlProjectSite1.InitControl(340, 324, 292, 20, m_ZoomRatio, &m_BgDC, NULL, 0, 0, OwnerDrawTransparent | m_bHighContrast);
-	m_CtrlProjectSite2.InitControl(340, 368, 292, 20, m_ZoomRatio, &m_BgDC, NULL, 0, 0, OwnerDrawTransparent | m_bHighContrast);
-	m_CtrlProjectSite3.InitControl(340, 392, 292, 20, m_ZoomRatio, &m_BgDC, NULL, 0, 0, OwnerDrawTransparent | m_bHighContrast);
-	m_CtrlProjectSite4.InitControl(340, 416, 292, 20, m_ZoomRatio, &m_BgDC, NULL, 0, 0, OwnerDrawTransparent | m_bHighContrast);
-	m_CtrlProjectSite5.InitControl(320, 192, 292, 92, m_ZoomRatio, &m_BgDC, NULL, 0, 0, OwnerDrawTransparent | m_bHighContrast);
+	m_CtrlProjectSite1.InitControl(340, 324, 292, 20, m_ZoomRatio, &m_BgDC, NULL, 0, BS_LEFT, OwnerDrawTransparent);
+	m_CtrlProjectSite2.InitControl(340, 368, 292, 20, m_ZoomRatio, &m_BgDC, NULL, 0, BS_LEFT, OwnerDrawTransparent);
+	m_CtrlProjectSite3.InitControl(340, 392, 292, 20, m_ZoomRatio, &m_BgDC, NULL, 0, BS_LEFT, OwnerDrawTransparent);
+	m_CtrlProjectSite4.InitControl(340, 416, 292, 20, m_ZoomRatio, &m_BgDC, NULL, 0, BS_LEFT, OwnerDrawTransparent);
+	m_CtrlProjectSite5.InitControl(320, 192, 292, 92, m_ZoomRatio, &m_BgDC, NULL, 0, BS_LEFT, OwnerDrawTransparent);
 
 	m_CtrlProjectSite1.SetHandCursor();
 	m_CtrlProjectSite2.SetHandCursor();
@@ -123,14 +116,14 @@ void CAboutDlg::UpdateDialogSize()
 	m_CtrlProjectSite5.SetHandCursor();
 #endif
 
-	m_CtrlCrystalDewWorld.InitControl(12, 20, 128, 128, m_ZoomRatio, &m_BgDC, IP(L"Logo"), 1, BS_CENTER, OwnerDrawImage | m_bHighContrast);
+	m_CtrlCrystalDewWorld.InitControl(12, 20, 128, 128, m_ZoomRatio, &m_BgDC, IP(L"Logo"), 1, BS_CENTER, OwnerDrawImage);
 	m_CtrlCrystalDewWorld.SetHandCursor();
 
-	m_CtrlVersion.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, 255, RGB(0, 0, 0), FW_BOLD);
-	m_CtrlEdition.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, 255, RGB(0, 0, 0), FW_BOLD);
-	m_CtrlRelease.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, 255, RGB(0, 0, 0), FW_NORMAL);
-	m_CtrlCopyright.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, 255, RGB(0, 0, 0), FW_NORMAL);
-	m_CtrlLicense.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, 255, RGB(0, 0, 0), FW_NORMAL);
+	m_CtrlVersion.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_BOLD);
+	m_CtrlEdition.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_BOLD);
+	m_CtrlRelease.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL);
+	m_CtrlCopyright.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL);
+	m_CtrlLicense.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL);
 
 	m_CtrlVersion.SetHandCursor();
 	m_CtrlLicense.SetHandCursor();

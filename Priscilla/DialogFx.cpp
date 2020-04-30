@@ -5,8 +5,8 @@
 //      License : The MIT License
 /*---------------------------------------------------------------------------*/
 
-#include "stdafx.h"
-#include "resource.h"
+#include "../stdafx.h"
+#include "../Resource.h"
 #include "GetOsInfo.h"
 #include "GetFileVersion.h"
 #include "DialogFx.h"
@@ -22,8 +22,6 @@ using namespace Gdiplus;
 #define WM_DPICHANGED 0x02E0
 #endif
 
-#define TIMER_UPDATE_DIALOG 500
-
 ////------------------------------------------------
 //   CDialogFx
 ////------------------------------------------------
@@ -32,6 +30,7 @@ CDialogFx::CDialogFx(UINT dlgResouce, CWnd* pParent)
 	      :CDialog(dlgResouce, pParent)
 {
 	// Dialog
+	m_bInitializing = TRUE;
 	m_bShowWindow = FALSE;
 	m_bModelessDlg = FALSE;
 	m_bHighContrast = FALSE;
@@ -111,6 +110,8 @@ BOOL CDialogFx::OnInitDialog()
 	}
 
 	m_hAccelerator = ::LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_ACCELERATOR));
+
+	m_bInitializing = FALSE;
 
 	return TRUE;
 }
@@ -398,6 +399,22 @@ void CDialogFx::OpenUrl(CString url)
 	}
 }
 
+void CDialogFx::SetLayeredWindow(HWND hWnd, BYTE alpha)
+{
+	if (IsWin2k()) { return; }
+
+	::SetWindowLong(hWnd, GWL_EXSTYLE, ::GetWindowLong(hWnd, GWL_EXSTYLE) ^ WS_EX_LAYERED);
+	::SetWindowLong(hWnd, GWL_EXSTYLE, ::GetWindowLong(hWnd, GWL_EXSTYLE) | WS_EX_LAYERED);
+	if (m_bHighContrast)
+	{
+		::SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
+	}
+	else
+	{
+		::SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
+	}
+}
+
 //------------------------------------------------
 // MessageMap
 //------------------------------------------------
@@ -450,6 +467,8 @@ afx_msg LRESULT CDialogFx::OnUpdateDialogSize(WPARAM wParam, LPARAM lParam)
 
 afx_msg LRESULT CDialogFx::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 {
+	if (m_bInitializing) { return 0; }
+
 	static DWORD preTime = 0;
 	DWORD currentTime = GetTickCount();
 	if (currentTime - preTime < 1000)
@@ -482,6 +501,8 @@ afx_msg LRESULT CDialogFx::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 
 afx_msg LRESULT CDialogFx::OnDisplayChange(WPARAM wParam, LPARAM lParam)
 {
+	if (m_bInitializing) { return 0; }
+
 	SetTimer(TimerUpdateDialogSize, TIMER_UPDATE_DIALOG, NULL);
 
 	return 0;
@@ -489,6 +510,8 @@ afx_msg LRESULT CDialogFx::OnDisplayChange(WPARAM wParam, LPARAM lParam)
 
 afx_msg LRESULT CDialogFx::OnSysColorChange(WPARAM wParam, LPARAM lParam)
 {
+	if (m_bInitializing) { return 0; }
+
 	m_bHighContrast = IsHighContrast();
 
 	SetTimer(TimerUpdateDialogSize, TIMER_UPDATE_DIALOG, NULL);
@@ -509,4 +532,3 @@ afx_msg LRESULT CDialogFx::OnExitSizeMove(WPARAM wParam, LPARAM lParam)
 
 	return TRUE;
 }
-

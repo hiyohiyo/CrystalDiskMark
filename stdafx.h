@@ -31,21 +31,14 @@
 #define _WIN32_IE 0x0600
 #endif
 
+#define _AFX_NO_MFC_CONTROLS_IN_DIALOGS
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS
-
 #define _AFX_ALL_WARNINGS
 
 #include <afxwin.h>         // MFC core and standard component
 #include <afxext.h>         // Extended MFC
-
-#ifndef _AFX_NO_OLE_SUPPORT
 #include <afxdtctl.h>		// MFC IE4 Common Control support
-#endif
-#ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>			// MFC Windows Common Control support
-#endif // _AFX_NO_AFXCMN_SUPPORT
-
-#include "DebugPrint.h"
 
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
@@ -64,7 +57,7 @@
 #elif _M_X64
 #define PRODUCT_EDITION			L"Shizuku Edition x64 (UWP)"
 #else
-#define PRODUCT_EDITION			"Shizuku Edition (UWP)")
+#define PRODUCT_EDITION			L"Shizuku Edition (UWP)"
 #endif
 #else
 #define PRODUCT_SHORT_NAME		L""
@@ -107,11 +100,11 @@
 #endif
 
 /// Beta
-// #define PRODUCT_EDITION			L"-Cecile-")
+// #define PRODUCT_EDITION			L"-Cecile-"
 
 #define PRODUCT_RELEASE				L"2020/04/18"
 #define PRODUCT_COPY_YEAR			L"2007-2020"
-#define PRODUCT_COPYRIGHT			L"© hiyohiyo 2007-2020"
+#define PRODUCT_COPYRIGHT			L"© 2007-2020 hiyohiyo"
 #define PRODUCT_LICENSE				L"The MIT License"
 
 #define URL_CRYSTAL_DEW_WORLD_JA	L"https://crystalmark.info/ja/"
@@ -148,3 +141,27 @@ static const int RE_EXEC = 5963;
 
 #pragma warning(disable : 4996)
 
+//------------------------------------------------
+// Option Flags
+//------------------------------------------------
+
+// For Task Tray Icon Feature
+// #define OPTION_TASK_TRAY
+
+//------------------------------------------------
+// Global Sttings
+//------------------------------------------------
+
+#define DEFAULT_FONT_FACE_1			L"Segoe UI"
+#define DEFAULT_FONT_FACE_2			L"Tahoma"
+
+#define THEME_DIR					L"CdmResource\\themes\\"
+#define LANGUAGE_DIR				L"CdmResource\\language\\"
+
+#define MENU_THEME_INDEX			3
+#define MENU_LANG_INDEX				5
+
+#define DEFAULT_THEME				L"Default"
+#define DEFAULT_LANGUAGE			L"English"
+
+#define TIMER_UPDATE_DIALOG			500

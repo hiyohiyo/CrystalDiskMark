@@ -9,7 +9,7 @@
 
 #include "AboutDlg.h"
 #include "SettingsDlg.h"
-#include "FontSelection.h"
+#include "FontSelectionDlg.h"
 
 #include "DialogFx.h"
 #include "MainDialog.h"
@@ -17,6 +17,8 @@
 #include "StaticFx.h"
 #include "ComboBoxFx.h"
 #include "EditFx.h"
+#include "GetFileVersion.h"
+#include "GetOsInfo.h"
 
 class CDiskMarkDlg : public CMainDialog
 {

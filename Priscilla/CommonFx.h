@@ -25,26 +25,6 @@
 // 
 
 //------------------------------------------------
-// Option Flags
-//------------------------------------------------
-
-// For Task Tray Icon Feature
-// #define OPTION_TASK_TRAY
-
-//------------------------------------------------
-// Global Sttings
-//------------------------------------------------
-
-#define THEME_DIR					L"CdmResource\\themes\\"
-#define LANGUAGE_DIR				L"CdmResource\\language\\"
-
-#define MENU_THEME_INDEX			3
-#define MENU_LANG_INDEX				5
-
-#define DEFAULT_THEME				L"Default"
-#define DEFAULT_LANGUAGE			L"English"
-
-//------------------------------------------------
 // Utility Macros
 //------------------------------------------------
 
@@ -63,7 +43,7 @@
 #define WM_LANGUAGE_ID			(WM_APP + 0x3000)
 
 //------------------------------------------------
-// TIMER
+// TIMER ID
 //------------------------------------------------
 
 static const int TimerUpdateDialogSize = 0x2001;
@@ -75,7 +55,8 @@ static const int TimerUpdateDialogSize = 0x2001;
 static const int ControlImageNormal   = 0x0000;
 static const int ControlImageHover    = 0x0001;
 static const int ControlImageFocus    = 0x0002;
-static const int ControlImageDisabled = 0x0003;
+static const int ControlImageSelected = 0x0003;
+static const int ControlImageDisabled = 0x0004;
 
 static const int HighContrast         = 0x0001;
 static const int SystemDraw           = 0x0002;

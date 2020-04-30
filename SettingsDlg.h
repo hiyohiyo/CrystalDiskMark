@@ -6,6 +6,7 @@
 /*---------------------------------------------------------------------------*/
 
 #pragma once
+
 #include "DialogFx.h"
 #include "StaticFx.h"
 #include "ButtonFx.h"

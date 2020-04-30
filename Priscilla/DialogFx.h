@@ -40,6 +40,7 @@ protected:
 	virtual CString IP(CString imageName);
 	CString i18n(CString section, CString key, BOOL inEnglish = FALSE);
 	void OpenUrl(CString url);
+	void SetLayeredWindow(HWND hWnd, BYTE alpha);
 
 	// MessageMap
 	DECLARE_MESSAGE_MAP()
@@ -54,6 +55,7 @@ protected:
 
 protected:
 	// Dialog
+	BOOL m_bInitializing;
 	BOOL m_bShowWindow;
 	BOOL m_bModelessDlg;
 	BOOL m_bHighContrast;
@@ -80,13 +82,23 @@ protected:
 	COLORREF m_ComboTextSelected;
 	COLORREF m_ComboBg;
 	COLORREF m_ComboBgSelected;
-	BYTE     m_ComboAlpha;
 	COLORREF m_ButtonText;
 	COLORREF m_EditText;
 	COLORREF m_EditBg;
-	BYTE     m_EditAlpha;
-	BYTE     m_CharacterPosition;
+	COLORREF m_ListText1;
+	COLORREF m_ListText2;
+	COLORREF m_ListTextSelected;
+	COLORREF m_ListBg1;
+	COLORREF m_ListBg2;
+	COLORREF m_ListBgSelected;
+	COLORREF m_ListLine1;
+	COLORREF m_ListLine2;
 	COLORREF m_Glass;
+
+	BYTE     m_CharacterPosition;
+
+	BYTE     m_ComboAlpha;
+	BYTE     m_EditAlpha;
 	BYTE     m_GlassAlpha;
 
 	// Theme for SubClass

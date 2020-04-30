@@ -10,14 +10,8 @@
 #include "DiskMarkDlg.h"
 #include "DiskBench.h"
 #include "AboutDlg.h"
-#include "GetFileVersion.h"
-#include "GetOsInfo.h"
 
 #include <math.h>
-#include <exdispid.h>
-
-#include "DialogFx.h"
-#include "MainDialog.h"
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 #define SIZE_X		1000
@@ -463,44 +457,23 @@ void CDiskMarkDlg::UpdateDialogSize()
 		comboDriveX = 0;
 	}
 
-	if (m_bHighContrast)
-	{
-		m_TestRead1.SetDrawFrame(TRUE);
-		m_TestRead2.SetDrawFrame(TRUE);
-		m_TestRead3.SetDrawFrame(TRUE);
-		m_TestRead4.SetDrawFrame(TRUE);
-		m_TestWrite1.SetDrawFrame(TRUE);
-		m_TestWrite2.SetDrawFrame(TRUE);
-		m_TestWrite3.SetDrawFrame(TRUE);
-		m_TestWrite4.SetDrawFrame(TRUE);
+
+	m_TestRead1.SetDrawFrame(m_bHighContrast);
+	m_TestRead2.SetDrawFrame(m_bHighContrast);
+	m_TestRead3.SetDrawFrame(m_bHighContrast);
+	m_TestRead4.SetDrawFrame(m_bHighContrast);
+	m_TestWrite1.SetDrawFrame(m_bHighContrast);
+	m_TestWrite2.SetDrawFrame(m_bHighContrast);
+	m_TestWrite3.SetDrawFrame(m_bHighContrast);
+	m_TestWrite4.SetDrawFrame(m_bHighContrast);
+	m_Comment.SetDrawFrame(m_bHighContrast);
 
 #ifdef MIX_MODE
-		m_TestMix1.SetDrawFrame(TRUE);
-		m_TestMix2.SetDrawFrame(TRUE);
-		m_TestMix3.SetDrawFrame(TRUE);
-		m_TestMix4.SetDrawFrame(TRUE);
+	m_TestMix1.SetDrawFrame(m_bHighContrast);
+	m_TestMix2.SetDrawFrame(m_bHighContrast);
+	m_TestMix3.SetDrawFrame(m_bHighContrast);
+	m_TestMix4.SetDrawFrame(m_bHighContrast);
 #endif
-		m_Comment.SetDrawFrame(TRUE);
-	}
-	else
-	{
-		m_TestRead1.SetDrawFrame(FALSE);
-		m_TestRead2.SetDrawFrame(FALSE);
-		m_TestRead3.SetDrawFrame(FALSE);
-		m_TestRead4.SetDrawFrame(FALSE);
-		m_TestWrite1.SetDrawFrame(FALSE);
-		m_TestWrite2.SetDrawFrame(FALSE);
-		m_TestWrite3.SetDrawFrame(FALSE);
-		m_TestWrite4.SetDrawFrame(FALSE);
-
-#ifdef MIX_MODE
-		m_TestMix1.SetDrawFrame(FALSE);
-		m_TestMix2.SetDrawFrame(FALSE);
-		m_TestMix3.SetDrawFrame(FALSE);
-		m_TestMix4.SetDrawFrame(FALSE);
-#endif
-		m_Comment.SetDrawFrame(FALSE);
-	}
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	m_ButtonAll.InitControl(  12 + offsetX,   8, 120, 80, m_ZoomRatio, &m_BgDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
@@ -635,33 +608,13 @@ void CDiskMarkDlg::UpdateDialogSize()
 
 	Invalidate();
 
-//	ShowWindow(SW_SHOW);
-
 	m_ComboUnit.ShowWindow(SW_HIDE);
 	m_ComboCount.ShowWindow(SW_HIDE);
 	m_ComboSize.ShowWindow(SW_HIDE);
 	m_ComboDrive.ShowWindow(SW_HIDE);
 
-	/*
-#ifdef SUISHO_SHIZUKU_SUPPORT
-	SetLayeredWindow(m_ComboUnit.m_hWnd, m_ComboAlpha);
-	SetLayeredWindow(m_ComboCount.m_hWnd, m_ComboAlpha);
-	SetLayeredWindow(m_ComboSize.m_hWnd, m_ComboAlpha);
-	SetLayeredWindow(m_ComboDrive.m_hWnd, m_ComboAlpha);
-#else
-	SetLayeredWindow(m_ComboUnit.m_hWnd, m_ComboAlpha);
-	SetLayeredWindow(m_ComboCount.m_hWnd, m_ComboAlpha);
-	SetLayeredWindow(m_ComboSize.m_hWnd, m_ComboAlpha);
-	SetLayeredWindow(m_ComboDrive.m_hWnd, m_ComboAlpha);
-#ifdef MIX_MODE
-	if(m_MixMode)
-	{
-		SetLayeredWindow(m_ComboMix.m_hWnd, m_ComboAlpha);
-	}
-#endif
-#endif
-*/
-	COMBOBOXINFO info = { sizeof(COMBOBOXINFO) };
+	COMBOBOXINFO info = { 0 };
+	info.cbSize = sizeof(COMBOBOXINFO);
 	m_ComboUnit.GetComboBoxInfo(&info);
 	SetLayeredWindow(info.hwndList, m_ComboAlpha);
 	m_ComboCount.GetComboBoxInfo(&info);
@@ -744,31 +697,31 @@ void CDiskMarkDlg::SetControlFont()
 #endif
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	m_ButtonAll.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, textAlpha, m_ButtonText, FW_BOLD);
-	m_ButtonTest1.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, textAlpha, m_ButtonText, FW_BOLD);
-	m_ButtonTest2.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, textAlpha, m_ButtonText, FW_BOLD);
-	m_ButtonTest3.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, textAlpha, m_ButtonText, FW_BOLD);
-	m_ButtonTest4.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, textAlpha, m_ButtonText, FW_BOLD);
+	m_ButtonAll.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD);
+	m_ButtonTest1.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD);
+	m_ButtonTest2.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD);
+	m_ButtonTest3.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD);
+	m_ButtonTest4.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD);
 
-	m_TestRead1.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-	m_TestRead2.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-	m_TestRead3.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-	m_TestRead4.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
+	m_TestRead1.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+	m_TestRead2.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+	m_TestRead3.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+	m_TestRead4.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
 
-	m_TestWrite1.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-	m_TestWrite2.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-	m_TestWrite3.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-	m_TestWrite4.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
+	m_TestWrite1.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+	m_TestWrite2.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+	m_TestWrite3.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+	m_TestWrite4.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
 
-	m_Comment.SetFontEx(m_FontFace, 28, m_ZoomRatio, m_FontRatio, textAlpha, m_EditText, FW_BOLD);
+	m_Comment.SetFontEx(m_FontFace, 28, m_ZoomRatio, m_FontRatio, m_EditText, FW_BOLD);
 
-	m_ReadUnit.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, textAlpha, m_LabelText, FW_BOLD);
-	m_WriteUnit.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, textAlpha, m_LabelText, FW_BOLD);
+	m_ReadUnit.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_LabelText, FW_BOLD);
+	m_WriteUnit.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_LabelText, FW_BOLD);
 
-	m_ComboUnit.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, textAlpha, m_ComboText, m_ComboTextSelected, FW_NORMAL);
-	m_ComboCount.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, textAlpha, m_ComboText, m_ComboTextSelected, FW_NORMAL);
-	m_ComboSize.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, textAlpha, m_ComboText, m_ComboTextSelected, FW_NORMAL);
-	m_ComboDrive.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, textAlpha, m_ComboText, m_ComboTextSelected, FW_NORMAL);
+	m_ComboUnit.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL);
+	m_ComboCount.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL);
+	m_ComboSize.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL);
+	m_ComboDrive.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL);
 
 	m_ButtonTest3.SetMargin(8, 0, 8, 0, m_ZoomRatio);
 	m_ButtonTest1.SetMargin(8, 0, 8, 0, m_ZoomRatio);
@@ -803,31 +756,31 @@ void CDiskMarkDlg::SetControlFont()
 
 #else
 
-	m_ButtonAll.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, textAlpha, m_ButtonText, FW_BOLD);
-	m_ButtonTest1.SetFontEx(m_FontFace, 12, 12, m_ZoomRatio, m_FontRatio, textAlpha, m_ButtonText, FW_BOLD);
-	m_ButtonTest2.SetFontEx(m_FontFace, 12, 12, m_ZoomRatio, m_FontRatio, textAlpha, m_ButtonText, FW_BOLD);
-	m_ButtonTest3.SetFontEx(m_FontFace, 12, 12, m_ZoomRatio, m_FontRatio, textAlpha, m_ButtonText, FW_BOLD);
-	m_ButtonTest4.SetFontEx(m_FontFace, 12, 12, m_ZoomRatio, m_FontRatio, textAlpha, m_ButtonText, FW_BOLD);
+	m_ButtonAll.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD);
+	m_ButtonTest1.SetFontEx(m_FontFace, 12, 12, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD);
+	m_ButtonTest2.SetFontEx(m_FontFace, 12, 12, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD);
+	m_ButtonTest3.SetFontEx(m_FontFace, 12, 12, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD);
+	m_ButtonTest4.SetFontEx(m_FontFace, 12, 12, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD);
 
-	m_TestRead1.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-	m_TestRead2.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-	m_TestRead3.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-	m_TestRead4.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
+	m_TestRead1.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+	m_TestRead2.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+	m_TestRead3.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+	m_TestRead4.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
 
-	m_TestWrite1.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-	m_TestWrite2.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-	m_TestWrite3.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-	m_TestWrite4.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
+	m_TestWrite1.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+	m_TestWrite2.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+	m_TestWrite3.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+	m_TestWrite4.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
 
-	m_Comment.SetFontEx(m_FontFace, 16, m_ZoomRatio, m_FontRatio, textAlpha, m_EditText, FW_BOLD);
+	m_Comment.SetFontEx(m_FontFace, 16, m_ZoomRatio, m_FontRatio, m_EditText, FW_BOLD);
 
-	m_ReadUnit.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, textAlpha, m_LabelText, FW_BOLD);
-	m_WriteUnit.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, textAlpha, m_LabelText, FW_BOLD);
+	m_ReadUnit.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_LabelText, FW_BOLD);
+	m_WriteUnit.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_LabelText, FW_BOLD);
 
-	m_ComboUnit.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, textAlpha, m_ComboText, m_ComboTextSelected, FW_NORMAL);
-	m_ComboCount.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, textAlpha, m_ComboText, m_ComboTextSelected, FW_NORMAL);
-	m_ComboSize.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, textAlpha, m_ComboText, m_ComboTextSelected, FW_NORMAL);
-	m_ComboDrive.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, textAlpha, m_ComboText, m_ComboTextSelected, FW_NORMAL);
+	m_ComboUnit.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL);
+	m_ComboCount.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL);
+	m_ComboSize.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL);
+	m_ComboDrive.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL);
 
 	m_ButtonTest3.SetMargin(4, 0, 4, 0, m_ZoomRatio);
 	m_ButtonTest1.SetMargin(4, 0, 4, 0, m_ZoomRatio);
@@ -863,19 +816,19 @@ void CDiskMarkDlg::SetControlFont()
 #ifdef MIX_MODE
 	if(m_MixMode)
 	{
-		m_ComboMix.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, textAlpha, m_ComboText, m_ComboTextSelected, FW_NORMAL);
+		m_ComboMix.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL);
 		m_ComboMix.SetFontHeight(16, m_ZoomRatio, m_FontRatio);
 		m_ComboMix.SetItemHeightEx(-1, 20, m_ZoomRatio, m_FontRatio);
 		for (int i = 0; i < m_ComboMix.GetCount(); i++)
 		{
 			m_ComboMix.SetItemHeightEx(i, 20, m_ZoomRatio, m_FontRatio);
 		}
-		m_MixUnit.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, textAlpha, m_LabelText, FW_BOLD);
+		m_MixUnit.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_LabelText, FW_BOLD);
 
-		m_TestMix1.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-		m_TestMix2.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-		m_TestMix3.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
-		m_TestMix4.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, textAlpha, m_MeterText, FW_BOLD);
+		m_TestMix1.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+		m_TestMix2.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+		m_TestMix3.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
+		m_TestMix4.SetFontEx(m_FontFace, 35, 35, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD);
 	}
 #endif
 
@@ -2109,7 +2062,7 @@ BOOL CDiskMarkDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 		CMenu subMenuAN;
 		CMenu subMenuOZ;
 		menu.Attach(GetMenu()->GetSafeHmenu());
-		subMenu.Attach(menu.GetSubMenu(5)->GetSafeHmenu()); // 6th is "Language".
+		subMenu.Attach(menu.GetSubMenu(MENU_LANG_INDEX)->GetSafeHmenu());
 		subMenuAN.Attach(subMenu.GetSubMenu(0)->GetSafeHmenu());
 		subMenuOZ.Attach(subMenu.GetSubMenu(1)->GetSafeHmenu());
 
@@ -2848,7 +2801,7 @@ BOOL CDiskMarkDlg::OnNcCreate(LPCREATESTRUCT lpCreateStruct)
 
 void CDiskMarkDlg::OnFontSetting()
 {
-	CFontSelection fontSelection(this);
+	CFontSelectionDlg fontSelection(this);
 	if (fontSelection.DoModal() == IDOK)
 	{
 		m_FontFace = fontSelection.GetFontFace();

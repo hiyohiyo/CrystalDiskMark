@@ -8,20 +8,20 @@
 #include "stdafx.h"
 #include "DiskMark.h"
 #include "DiskMarkDlg.h"
-#include "FontSelection.h"
+#include "FontSelectionDlg.h"
 
 int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, int FontType, LPARAM lParam);
 
-IMPLEMENT_DYNAMIC(CFontSelection, CDialog)
+IMPLEMENT_DYNAMIC(CFontSelectionDlg, CDialog)
 
-CFontSelection::CFontSelection(CWnd* pParent)
-	: CDialogFx(CFontSelection::IDD, pParent)
+CFontSelectionDlg::CFontSelectionDlg(CWnd* pParent)
+	: CDialogFx(CFontSelectionDlg::IDD, pParent)
 {
 	CMainDialog* p = (CMainDialog*)pParent;
 
 	m_ZoomType = p->GetZoomType();
 	m_FontScale = p->GetFontScale();
-	m_FontRatio = p->GetFontRatio();
+	m_FontRatio = 1.0; // p->GetFontRatio();
 	m_FontFace = p->GetFontFace();
 	m_CurrentLangPath = p->GetCurrentLangPath();
 	m_DefaultLangPath = p->GetDefaultLangPath();
@@ -33,11 +33,11 @@ CFontSelection::CFontSelection(CWnd* pParent)
 	m_BackgroundName = L"";
 }
 
-CFontSelection::~CFontSelection()
+CFontSelectionDlg::~CFontSelectionDlg()
 {
 }
 
-void CFontSelection::DoDataExchange(CDataExchange* pDX)
+void CFontSelectionDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, ID_OK, m_CtrlOk);
@@ -48,12 +48,12 @@ void CFontSelection::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SET_DEFAULT, m_ButtonSetDefault);
 }
 
-BEGIN_MESSAGE_MAP(CFontSelection, CDialogFx)
-	ON_BN_CLICKED(ID_OK, &CFontSelection::OnBnClickedOk)
-	ON_BN_CLICKED(IDC_SET_DEFAULT, &CFontSelection::OnSetDefault)
+BEGIN_MESSAGE_MAP(CFontSelectionDlg, CDialogFx)
+	ON_BN_CLICKED(ID_OK, &CFontSelectionDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_SET_DEFAULT, &CFontSelectionDlg::OnSetDefault)
 END_MESSAGE_MAP()
 
-BOOL CFontSelection::OnInitDialog()
+BOOL CFontSelectionDlg::OnInitDialog()
 {
 	CDialogFx::OnInitDialog();
 
@@ -111,7 +111,7 @@ BOOL CFontSelection::OnInitDialog()
 	return TRUE;
 }
 
-void CFontSelection::UpdateDialogSize()
+void CFontSelectionDlg::UpdateDialogSize()
 {
 	BYTE textAlpha = 255;
 	COLORREF textColor = RGB(0, 0, 0);
@@ -138,16 +138,16 @@ void CFontSelection::UpdateDialogSize()
 	m_LabelFontFace.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio);
 	m_LabelFontScale.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio);
 
-	m_FontComboBox.SetFontHeight(28, m_ZoomRatio);
-	m_FontComboBox.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, textAlpha, textColor, textSelectedColor, FW_NORMAL);
+	m_FontComboBox.SetFontHeight(28, m_ZoomRatio, m_FontRatio);
+	m_FontComboBox.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, textColor, textSelectedColor, FW_NORMAL);
 	m_FontComboBox.SetItemHeightEx(-1, 44, m_ZoomRatio, m_FontRatio);
 	for (int i = 0; i < m_FontComboBox.GetCount(); i++)
 	{
 		m_FontComboBox.SetItemHeightEx(i, 44, m_ZoomRatio, m_FontRatio);
 	}
 
-	m_FontScaleComboBox.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, textAlpha, textColor, textSelectedColor, FW_NORMAL);
-	m_FontScaleComboBox.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, textAlpha, textColor, textSelectedColor, FW_NORMAL);
+	m_FontScaleComboBox.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, textColor, textSelectedColor, FW_NORMAL);
+	m_FontScaleComboBox.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, textColor, textSelectedColor, FW_NORMAL);
 	m_FontScaleComboBox.SetItemHeightEx(-1, 28, m_ZoomRatio, m_FontRatio);
 	for (int i = 0; i < m_FontScaleComboBox.GetCount(); i++)
 	{
@@ -163,12 +163,12 @@ void CFontSelection::UpdateDialogSize()
 	Invalidate();
 }
 
-CString CFontSelection::GetFontFace()
+CString CFontSelectionDlg::GetFontFace()
 {
 	return m_FontFace;
 }
 
-int CFontSelection::GetFontScale()
+int CFontSelectionDlg::GetFontScale()
 {
 	return m_FontScale;
 }
@@ -186,7 +186,7 @@ int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, i
     return TRUE;
 }
 
-void CFontSelection::OnBnClickedOk()
+void CFontSelectionDlg::OnBnClickedOk()
 {
 	CString cstr;
 
@@ -198,7 +198,7 @@ void CFontSelection::OnBnClickedOk()
 }
 
 
-void CFontSelection::OnSetDefault()
+void CFontSelectionDlg::OnSetDefault()
 {
 	m_FontComboBox.ResetContent();
 

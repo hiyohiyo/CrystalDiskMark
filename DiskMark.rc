@@ -182,22 +182,13 @@ BEGIN
     PUSHBUTTON   "OK",ID_OK,48,68,83,14,BS_CENTER
 END
 
-IDD_COMMENT DIALOGEX 0, 0, 477, 362
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Comment"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-	EDITTEXT        IDC_COMMENT, 7, 269, 252, 21
-END
-
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 8,0,0,2020
+ FILEVERSION 9,0,0,2020
  PRODUCTVERSION 9,0,0,2020
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -215,13 +206,13 @@ BEGIN
         BEGIN
             VALUE "Comments", "https://crystalmark.info/, The MIT License"
             VALUE "CompanyName", "Crystal Dew World"
-            VALUE "FileVersion", "8.0.0.2020"
+            VALUE "FileVersion", "9.0.0.2020"
             VALUE "ProductName", "CrystalDiskMark"
             VALUE "FileDescription", "CrystalDiskMark"
             VALUE "OriginalFilename", "DiskMark.exe"
             VALUE "InternalName", "DiskMark.exe"
             VALUE "LegalCopyright", "(C) 2007-2020 hiyohiyo"
-            VALUE "ProductVersion", "8.0.0.2019"
+            VALUE "ProductVersion", "9.0.0.2019"
         END
     END
     BLOCK "VarFileInfo"

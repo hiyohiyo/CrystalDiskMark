@@ -9,9 +9,6 @@
 #include "DiskMark.h"
 #include "DiskMarkDlg.h"
 
-#include "GetFileVersion.h"
-#include "GetOsInfo.h"
-
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
 

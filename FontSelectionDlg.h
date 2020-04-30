@@ -8,22 +8,22 @@
 #pragma once
 
 #include "afxwin.h"
-#include "DialogFx.h"
+#include "DebugPrint.h"
 #include "ButtonFx.h"
 #include "ComboBoxFx.h"
 #include "FontComboBox.h"
 
-class CFontSelection : public CDialogFx
+class CFontSelectionDlg : public CDialogFx
 {
-	DECLARE_DYNAMIC(CFontSelection)
+	DECLARE_DYNAMIC(CFontSelectionDlg)
 
 	static const int SIZE_X = 520;
 	static const int SIZE_Y = 228;
 	enum { IDD = IDD_FONT };
 
 public:
-	CFontSelection(CWnd* pParent = NULL);
-	virtual ~CFontSelection();
+	CFontSelectionDlg(CWnd* pParent = NULL);
+	virtual ~CFontSelectionDlg();
 
 	CString GetFontFace();
 	int GetFontScale();

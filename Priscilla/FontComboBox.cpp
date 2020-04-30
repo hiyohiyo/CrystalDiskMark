@@ -5,10 +5,8 @@
 //      License : The MIT License
 /*---------------------------------------------------------------------------*/
 
-#include "stdafx.h"
-#include "DiskMark.h"
+#include "../stdafx.h"
 #include "FontComboBox.h"
-
 
 ////------------------------------------------------
 //   CFontComboBox

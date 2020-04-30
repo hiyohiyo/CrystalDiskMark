@@ -5,65 +5,52 @@
 //      License : The MIT License
 /*---------------------------------------------------------------------------*/
 
-#include "stdafx.h"
-#include "ComboBoxFx.h"
+#include "../stdafx.h"
+#include "ButtonFx.h"
 
 ////------------------------------------------------
-//   CComboBoxFx
+//   CButtonFx
 ////------------------------------------------------
 
-CComboBoxFx::CComboBoxFx()
+CButtonFx::CButtonFx()
 {
 	// Control
 	m_X = 0;
 	m_Y = 0;
-	m_bHighContrast = FALSE;
 	m_RenderMode = SystemDraw;
-	m_Margin.top = 0;
-	m_Margin.left = 0;
-	m_Margin.bottom = 0;
-	m_Margin.right = 0;
+	m_bHighContrast = FALSE;
 
-	// Alpha/Glass
-	m_Alpha = 255;
+	// Glass
 	m_GlassColor = RGB(255, 255, 255);
 	m_GlassAlpha = 255;
 
 	// Image
 	m_ImageCount = 0;
-	m_ImagePath = L"";
 	m_BgDC = NULL;
 	m_bBgBitmapInit = FALSE;
 	m_bBgLoad = FALSE;
 
 	// Font
-	m_TextAlign = SS_LEFT;
+	m_TextAlign = BS_LEFT;
 	m_TextColor = RGB(0, 0, 0);
-	m_TextColorSelected = RGB(255, 255, 255);
-	m_BgColor = RGB(255, 255, 255);
-	m_BgColorSelected = RGB(230, 230, 230);
-	m_TextColorHc = RGB(255, 255, 255);
-	m_TextColorSelectedHc = RGB(0, 0, 0);
-	m_BgColorHc = RGB(0, 0, 0);
-	m_BgColorSelectedHc = RGB(0, 255, 255);
-	m_FontHeight = 16;
 
 	// Mouse
 	m_bHover = FALSE;
 	m_bFocas = FALSE;
 	m_bTrackingNow = FALSE;
 	m_bHandCursor = FALSE;
+	m_bSelected = FALSE;
 }
 
-CComboBoxFx::~CComboBoxFx()
+CButtonFx::~CButtonFx()
 {
 }
 
-IMPLEMENT_DYNAMIC(CComboBoxFx, CComboBox)
+IMPLEMENT_DYNAMIC(CButtonFx, CButton)
 
-BEGIN_MESSAGE_MAP(CComboBoxFx, CComboBox)
-	//{{AFX_MSG_MAP(CComboBoxCx)
-	ON_WM_CTLCOLOR()
+BEGIN_MESSAGE_MAP(CButtonFx, CButton)
+	//{{AFX_MSG_MAP(CButtonFx)
+	ON_WM_ERASEBKGND()
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSEHOVER()
 	ON_WM_MOUSELEAVE()
@@ -77,33 +64,26 @@ END_MESSAGE_MAP()
 // Control
 //------------------------------------------------
 
-BOOL CComboBoxFx::InitControl(int x, int y, int width, int height, double zoomRatio,
-	 CDC* bgDC, LPCWSTR imagePath, int imageCount, DWORD textAlign, int renderMode,
-	 COLORREF bgColor, COLORREF bgColorSelected, COLORREF glassColor, BYTE glassAlpha)
+BOOL CButtonFx::InitControl(int x, int y, int width, int height, double zoomRatio,
+	CDC* bgDC, LPCWSTR imagePath, int imageCount, DWORD textAlign, int renderMode)
 {
 	m_X = (int)(x * zoomRatio);
 	m_Y = (int)(y * zoomRatio);
-	MoveWindow(m_X, m_Y, (int)(width * zoomRatio), (int)(height * zoomRatio));
 	m_CtrlSize.cx = (int)(width * zoomRatio);
 	m_CtrlSize.cy = (int)(height * zoomRatio);
+	MoveWindow(m_X, m_Y, m_CtrlSize.cx, m_CtrlSize.cy);
 
 	m_BgDC = bgDC;
 	m_ImagePath = imagePath;
 	m_ImageCount = imageCount;
 	m_RenderMode = renderMode;
 
-	m_BgColor = bgColor;
-	m_BgColorSelected = bgColorSelected;
-	m_GlassColor = glassColor;
-	m_GlassAlpha = glassAlpha;
-
-	if (ES_LEFT <= textAlign && textAlign <= ES_RIGHT)
+	if (BS_LEFT <= textAlign && textAlign <= BS_CENTER)
 	{
 		m_TextAlign = textAlign;
-		ModifyStyle(0, m_TextAlign);
 	}
 
-	if (m_ToolTip.m_hWnd != NULL)
+	if(m_ToolTip.m_hWnd != NULL)
 	{
 		if (m_ToolTip.GetToolCount() != 0)
 		{
@@ -117,29 +97,60 @@ BOOL CComboBoxFx::InitControl(int x, int y, int width, int height, double zoomRa
 	if (renderMode & HighContrast)
 	{
 		m_bHighContrast = TRUE;
+		ModifyStyle(BS_OWNERDRAW, m_TextAlign);
 
 		return TRUE;
 	}
-	else if (renderMode & SystemDraw)
+	else if(renderMode & SystemDraw)
 	{
+		ModifyStyle(BS_OWNERDRAW, m_TextAlign);
+
 		return TRUE;
 	}
 	else
 	{
 		m_bHighContrast = FALSE;
+		SetBgReload();
+		ModifyStyle(0, BS_OWNERDRAW);
 	}
 
-	if (renderMode & OwnerDrawGlass)
+	if (renderMode & OwnerDrawImage)
 	{
-		m_ImageCount = 1;
+		if (!LoadBitmap(imagePath))
+		{
+			ModifyStyle(BS_OWNERDRAW, m_TextAlign);
+		}
+	}
+	else if (renderMode & OwnerDrawGlass)
+	{
+		m_ImageCount = 3;
 		m_CtrlImage.Destroy();
 		m_CtrlImage.Create(m_CtrlSize.cx, m_CtrlSize.cy * m_ImageCount, 32);
 
 		RECT rect;
-		rect.top = 0;
 		rect.left = 0;
 		rect.right = m_CtrlSize.cx;
+		
+		CDC* pDC = CDC::FromHandle(m_CtrlImage.GetDC());
+		rect.top = 0;
 		rect.bottom = m_CtrlSize.cy;
+		pDC->SetDCPenColor(RGB(128, 128, 128));
+		pDC->SelectObject(GetStockObject(DC_PEN));
+		pDC->Rectangle(&rect);
+
+		rect.top = m_CtrlSize.cy;
+		rect.bottom = m_CtrlSize.cy * 2;
+		pDC->SetDCPenColor(RGB(64, 64, 255));
+		pDC->SelectObject(GetStockObject(DC_PEN));
+		pDC->Rectangle(&rect);
+
+		rect.top = m_CtrlSize.cy * 2;
+		rect.bottom = m_CtrlSize.cy * 3;
+		pDC->SetDCPenColor(RGB(255, 64, 64));
+		pDC->SelectObject(GetStockObject(DC_PEN));
+		pDC->Rectangle(&rect);
+
+		m_CtrlImage.ReleaseDC();
 
 		m_CtrlBitmap.Detach();
 		m_CtrlBitmap.Attach((HBITMAP)m_CtrlImage);
@@ -151,16 +162,63 @@ BOOL CComboBoxFx::InitControl(int x, int y, int width, int height, double zoomRa
 		BYTE r = (BYTE)GetRValue(m_GlassColor);
 		BYTE g = (BYTE)GetGValue(m_GlassColor);
 		BYTE b = (BYTE)GetBValue(m_GlassColor);
-		BYTE a = m_GlassAlpha;
+		BYTE a =  m_GlassAlpha;
+
+		// for Debug
+		// BYTE b0 = bitmapBits[0]; 128
+		// BYTE b1 = bitmapBits[1]; 128
+		// BYTE b2 = bitmapBits[2]; 128
+		// BYTE b3 = bitmapBits[3];   0
+
+		for (int i = 1; i <= m_ImageCount; i++)
+		{
+			for (int y = m_CtrlSize.cy * (i - 1) + 1; y < (int)(m_CtrlSize.cy * i) - 1; y++)
+			{
+				for (int x = 0 + 1 ; x < m_CtrlSize.cx - 1 ; x++)
+				{
+					bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = b;
+					bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = g;
+					bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = r;
+				}
+			}
+		}
+
+		for (int i = 1; i <= m_ImageCount; i++)
+		{
+			for (int y = m_CtrlSize.cy * (i - 1); y < (int)(m_CtrlSize.cy * i); y++)
+			{
+				for (int x = 0; x < m_CtrlSize.cx; x++)
+				{
+					bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = a;
+				}
+			}
+		}
+
+		m_CtrlBitmap.SetBitmapBits(length, bitmapBits);
+		delete[] bitmapBits;
+
+		SetDrawFrame(TRUE);
+	}	
+	else if (renderMode & OwnerDrawTransparent)
+	{
+		m_ImageCount = 1;
+		m_CtrlImage.Destroy();
+		m_CtrlImage.Create(m_CtrlSize.cx, m_CtrlSize.cy * m_ImageCount, 32);
+		m_CtrlBitmap.Detach();
+		m_CtrlBitmap.Attach((HBITMAP)m_CtrlImage);
+
+		DWORD length = m_CtrlSize.cx * m_CtrlSize.cy * m_ImageCount * 4;
+		BYTE* bitmapBits = new BYTE[length];
+		m_CtrlBitmap.GetBitmapBits(length, bitmapBits);
 
 		for (int y = 0; y < (int)(m_CtrlSize.cy * m_ImageCount); y++)
 		{
 			for (int x = 0; x < m_CtrlSize.cx; x++)
 			{
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = b;
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = g;
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = r;
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = a;
+				//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = 255;
+				//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = 255;
+				//	bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = 255;
+				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = (BYTE)0;
 			}
 		}
 
@@ -168,24 +226,28 @@ BOOL CComboBoxFx::InitControl(int x, int y, int width, int height, double zoomRa
 		delete[] bitmapBits;
 	}
 
-	SetBgReload();
 	Invalidate();
 
 	return TRUE;
 }
 
-void CComboBoxFx::SetFontHeight(int height, double zoomRatio, double fontRatio)
+BOOL CButtonFx::ReloadImage(LPCWSTR imagePath, UINT imageCount)
 {
-	m_FontHeight = (LONG)(-1 * height * zoomRatio * fontRatio);
+	if (imagePath != NULL && m_ImagePath.Compare(imagePath) == 0)
+	{
+		return FALSE;
+	}
+
+	m_ImagePath = imagePath;
+	m_ImageCount = imageCount;
+
+	LoadBitmap(imagePath);
+
+	Invalidate();
+	return TRUE;
 }
 
-void CComboBoxFx::SetItemHeightEx(int nIndex, int height, double zoomRatio, double fontRatio)
-{
-	CComboBox::SetItemHeight(nIndex, (UINT)(height * zoomRatio * fontRatio));
-}
-
-
-void CComboBoxFx::SetMargin(int top, int left, int bottom, int right, double zoomRatio)
+void CButtonFx::SetMargin(int top, int left, int bottom, int right, double zoomRatio)
 {
 	m_Margin.top = (int)(top * zoomRatio);
 	m_Margin.left = (int)(left * zoomRatio);
@@ -193,112 +255,73 @@ void CComboBoxFx::SetMargin(int top, int left, int bottom, int right, double zoo
 	m_Margin.right = (int)(right * zoomRatio);
 }
 
-CSize CComboBoxFx::GetSize(void)
+CSize CButtonFx::GetSize(void)
 {
 	return m_CtrlSize;
 }
 
-void CComboBoxFx::SetGlassColor(COLORREF glassColor, BYTE glassAlpha)
+void CButtonFx::SetDrawFrame(BOOL bDrawFrame)
+{
+	if (bDrawFrame)
+	{
+		ModifyStyleEx(0, WS_EX_STATICEDGE, SWP_DRAWFRAME);
+	}
+	else
+	{
+		ModifyStyleEx(WS_EX_STATICEDGE, 0, SWP_DRAWFRAME);
+	}
+}
+
+void CButtonFx::SetGlassColor(COLORREF glassColor, BYTE glassAlpha)
 {
 	m_GlassColor = glassColor;
 	m_GlassAlpha = glassAlpha;
-}
-
-void CComboBoxFx::SetAlpha(BYTE alpha)
-{
-	m_Alpha = alpha;
-}
-
-HBRUSH CComboBoxFx::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
-{
-	HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
-	switch (nCtlColor) {
-	case CTLCOLOR_EDIT:
-		pDC->SetBkMode(TRANSPARENT);
-		return hbr;
-	default:
-		return hbr;
-	}
 }
 
 //------------------------------------------------
 // Draw Control
 //------------------------------------------------
 
-void CComboBoxFx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
+void CButtonFx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
-	if (lpDrawItemStruct->itemID == -1) { return; }
+	if (m_bHighContrast) { return CButton::DrawItem(lpDrawItemStruct); }
 
 	CDC* drawDC = CDC::FromHandle(lpDrawItemStruct->hDC);
 	LoadCtrlBg(drawDC);
-	CString cstr = L"";
-	GetLBText(lpDrawItemStruct->itemID, cstr);
-	CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
-	if (m_bHighContrast)
-	{
-		pDC->SetBkMode(OPAQUE);
-	}
-	else
-	{
-		pDC->SetBkMode(TRANSPARENT);
-	}
 
-	static COLORREF textColor;
-	static COLORREF textColorSelected;
-	static COLORREF bgColor;
-	static COLORREF bgColorSelected;
-
-	if (lpDrawItemStruct->rcItem.left != 0)
+	if (IsWindowEnabled())
 	{
-		if (m_bHighContrast)
+		if (m_bSelected && m_ImageCount > ControlImageSelected)
 		{
-			textColor = GetTextColor(lpDrawItemStruct->hDC);
-			textColorSelected = RGB(0, 0, 0);
-			bgColor =  GetBkColor(lpDrawItemStruct->hDC);
-			bgColorSelected = RGB(0, 255, 255);
+			DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, ControlImageSelected);
+		}
+		else if ((lpDrawItemStruct->itemState & ODS_SELECTED || m_bHover) && m_ImageCount > ControlImageHover)
+		{
+			DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, ControlImageHover);
+		}
+		else if ((lpDrawItemStruct->itemState & ODS_FOCUS || m_bFocas) && m_ImageCount > ControlImageFocus)
+		{
+			DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, ControlImageFocus);
 		}
 		else
 		{
-			textColor = m_TextColor;
-			textColorSelected = m_TextColorSelected;
-			bgColor = m_BgColor;
-			bgColorSelected = m_BgColorSelected;
+			DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, ControlImageNormal);
 		}
-	}
-
-	if (lpDrawItemStruct->rcItem.left != 0 && ! m_bHighContrast)
-	{
-		DrawControl(cstr, drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, ControlImageNormal);
 	}
 	else
 	{
-		CBrush Brush;
-		CBrush* pOldBrush;
-
-		if (lpDrawItemStruct->itemState & ODS_SELECTED) {
-			Brush.CreateSolidBrush(bgColorSelected);
-			pOldBrush = pDC->SelectObject(&Brush);
-			FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
-			DrawString(cstr, pDC, lpDrawItemStruct, textColorSelected);
+		if (m_ImageCount > ControlImageDisabled)
+		{
+			DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, ControlImageDisabled);
 		}
 		else
 		{
-			Brush.CreateSolidBrush(bgColor);
-			pOldBrush = pDC->SelectObject(&Brush);
-			FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, (HBRUSH)Brush);
-			DrawString(cstr, pDC, lpDrawItemStruct, textColor);
+			DrawControl(drawDC, lpDrawItemStruct, m_CtrlBitmap, m_BgBitmap, ControlImageNormal);
 		}
-		pDC->SelectObject(pOldBrush);
-		Brush.DeleteObject();
 	}
 }
 
-void CComboBoxFx::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
-{
-	lpMeasureItemStruct->itemHeight = abs(m_FontHeight);
-}
-
-void CComboBoxFx::DrawControl(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, CBitmap& ctrlBitmap, CBitmap& bgBitmap, int no)
+void CButtonFx::DrawControl(CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, CBitmap& ctrlBitmap, CBitmap& bgBitmap, int no)
 {
 	CDC* pMemDC = new CDC;
 	CBitmap* pOldMemBitmap;
@@ -312,7 +335,7 @@ void CComboBoxFx::DrawControl(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDra
 	if (drawDC->GetDeviceCaps(BITSPIXEL) * drawDC->GetDeviceCaps(PLANES) < 24)
 	{
 		drawDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pMemDC, 0, m_CtrlSize.cy * no, SRCCOPY);
-		DrawString(title, drawDC, lpDrawItemStruct, m_TextColor);
+		DrawString(drawDC, lpDrawItemStruct);
 	}
 	else // Full Color (24/32bit)
 	{
@@ -332,7 +355,7 @@ void CComboBoxFx::DrawControl(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDra
 				DWORD DstLineBytes = DstBmpInfo.bmWidthBytes;
 				DWORD DstMemSize = DstLineBytes * DstBmpInfo.bmHeight;
 				ctrlBitmap.GetBitmap(&CtlBmpInfo);
-				DWORD CtlLineBytes = CtlBmpInfo.bmWidthBytes;;
+				DWORD CtlLineBytes = CtlBmpInfo.bmWidthBytes;
 				DWORD CtlMemSize = CtlLineBytes * CtlBmpInfo.bmHeight;
 
 				BYTE* DstBuffer = new BYTE[DstMemSize];
@@ -358,7 +381,7 @@ void CComboBoxFx::DrawControl(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDra
 				}
 
 				DrawBmp.SetBitmapBits(DstMemSize, DstBuffer);
-				DrawString(title, pDrawBmpDC, lpDrawItemStruct, m_TextColor);
+				DrawString(pDrawBmpDC, lpDrawItemStruct);
 				drawDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pDrawBmpDC, 0, 0, SRCCOPY);
 
 				delete[] DstBuffer;
@@ -367,14 +390,14 @@ void CComboBoxFx::DrawControl(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDra
 			else
 			{
 				pDrawBmpDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pMemDC, 0, m_CtrlSize.cy * no, SRCCOPY);
-				DrawString(title, pDrawBmpDC, lpDrawItemStruct, m_TextColor);
+				DrawString(pDrawBmpDC, lpDrawItemStruct);
 				drawDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pDrawBmpDC, 0, 0, SRCCOPY);
 			}
 		}
 		else
 		{
 			pDrawBmpDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pBgDC, 0, m_CtrlSize.cy * no, SRCCOPY);
-			DrawString(title, pDrawBmpDC, lpDrawItemStruct, m_TextColor);
+			DrawString(pDrawBmpDC, lpDrawItemStruct);
 			drawDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pDrawBmpDC, 0, 0, SRCCOPY);
 		}
 
@@ -391,8 +414,11 @@ void CComboBoxFx::DrawControl(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDra
 	delete pBgDC;
 }
 
-void CComboBoxFx::DrawString(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, COLORREF textColor)
+void CButtonFx::DrawString(CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
+	CString title;
+	GetWindowText(title);
+
 	if (title.IsEmpty())
 	{
 		return;
@@ -405,30 +431,54 @@ void CComboBoxFx::DrawString(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDraw
 	rect.bottom -= m_Margin.bottom;
 	rect.right -= m_Margin.right;
 
-	HGDIOBJ oldFont = drawDC->SelectObject(m_Font);
-	drawDC->SetTextColor(textColor);
+	CArray<CString, CString> arr;
+	arr.RemoveAll();
 
-	if (m_TextAlign == ES_LEFT)
+	CString resToken;
+	int curPos = 0;
+	resToken = title.Tokenize(L"\r\n", curPos);
+	while (resToken != L"")
 	{
-		drawDC->DrawText(title, title.GetLength(), rect, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
-	}
-	else if (m_TextAlign == ES_RIGHT)
-	{
-		drawDC->DrawText(title, title.GetLength(), rect, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
-	}
-	else
-	{
-		drawDC->DrawText(title, title.GetLength(), rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+		arr.Add(resToken);
+		resToken = title.Tokenize(L"\r\n", curPos);
 	}
 
-	drawDC->SelectObject(oldFont);
+	for (int i = 0; i < arr.GetCount(); i++)
+	{
+		CRect r;
+		r.top = rect.top + (LONG)(((double)rect.Height()) / arr.GetCount() * i);
+		r.bottom = rect.top + (LONG)(((double)rect.Height()) / arr.GetCount() * (i + 1));
+		r.left = rect.left;
+		r.right = rect.right;
+
+		CRect rectI;
+		CSize extent;
+		HGDIOBJ oldFont = drawDC->SelectObject(m_Font);
+		SetTextColor(drawDC->m_hDC, m_TextColor);
+		GetTextExtentPoint32(drawDC->m_hDC, arr.GetAt(i), arr.GetAt(i).GetLength() + 1, &extent);
+
+		if (m_TextAlign == BS_LEFT)
+		{
+			drawDC->DrawText(arr.GetAt(i), arr.GetAt(i).GetLength(), r, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
+		}
+		else if (m_TextAlign == BS_RIGHT)
+		{
+			drawDC->DrawText(arr.GetAt(i), arr.GetAt(i).GetLength(), r, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
+		}
+		else
+		{
+			drawDC->DrawText(arr.GetAt(i), arr.GetAt(i).GetLength(), r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+		}
+
+		drawDC->SelectObject(oldFont);
+	}
 }
 
 //------------------------------------------------
 // Image
 //------------------------------------------------
 
-BOOL CComboBoxFx::LoadBitmap(LPCTSTR fileName)
+BOOL CButtonFx::LoadBitmap(LPCTSTR fileName)
 {
 	if (m_bHighContrast) { return FALSE; }
 	if (fileName == NULL) { return FALSE; }
@@ -440,7 +490,7 @@ BOOL CComboBoxFx::LoadBitmap(LPCTSTR fileName)
 	return LoadBitmap((HBITMAP)m_CtrlImage);
 }
 
-BOOL CComboBoxFx::LoadBitmap(HBITMAP hBitmap)
+BOOL CButtonFx::LoadBitmap(HBITMAP hBitmap)
 {
 	if (m_bHighContrast) { return FALSE; }
 
@@ -450,31 +500,33 @@ BOOL CComboBoxFx::LoadBitmap(HBITMAP hBitmap)
 	return SetBitmap(m_CtrlBitmap);
 }
 
-void CComboBoxFx::SetBgReload(void)
+void CButtonFx::SetBgReload(void)
 {
 	m_bBgBitmapInit = FALSE;
 	m_bBgLoad = FALSE;
 }
 
-BOOL CComboBoxFx::SetBitmap(CBitmap& bitmap)
+BOOL CButtonFx::SetBitmap(CBitmap& bitmap)
 {
 	if (m_bHighContrast) { return FALSE; }
 
-	BITMAP	bitmapinfo;
-	bitmap.GetBitmap(&bitmapinfo);
+	BITMAP	bitmapInfo;
+	bitmap.GetBitmap(&bitmapInfo);
 
-	if (m_CtrlSize.cx != bitmapinfo.bmWidth
-	||  m_CtrlSize.cy != bitmapinfo.bmHeight / m_ImageCount)
+	if (m_CtrlSize.cx != bitmapInfo.bmWidth
+	||  m_CtrlSize.cy != bitmapInfo.bmHeight / m_ImageCount)
 	{
+		ModifyStyle(BS_OWNERDRAW, 0);
 		return FALSE;
 	}
 	else
 	{
+		ModifyStyle(0, BS_OWNERDRAW);
 		return TRUE;
 	}
 }
 
-void CComboBoxFx::LoadCtrlBg(CDC* drawDC)
+void CButtonFx::LoadCtrlBg(CDC* drawDC)
 {
 	if (m_bHighContrast) { SetBgReload(); return; }
 
@@ -516,8 +568,7 @@ void CComboBoxFx::LoadCtrlBg(CDC* drawDC)
 // Font
 //------------------------------------------------
 
-void CComboBoxFx::SetFontEx(CString face, int size, int sizeToolTip, double zoomRatio, double fontRatio,
-     BYTE textAlpha, COLORREF textColor, COLORREF textColorSelected, LONG fontWeight)
+void CButtonFx::SetFontEx(CString face, int size, int sizeToolTip, double zoomRatio, double fontRatio, COLORREF textColor, LONG fontWeight)
 {
 	LOGFONT logFont = { 0 };
 	logFont.lfCharSet = DEFAULT_CHARSET;
@@ -542,11 +593,7 @@ void CComboBoxFx::SetFontEx(CString face, int size, int sizeToolTip, double zoom
 	m_FontToolTip.DeleteObject();
 	m_FontToolTip.CreateFontIndirect(&logFont);
 
-	if (! m_bHighContrast)
-	{
-		m_TextColor = textColor;
-		m_TextColorSelected = textColorSelected;
-	}
+	m_TextColor = textColor;
 
 	if (m_ToolTip.m_hWnd != NULL)
 	{
@@ -558,12 +605,12 @@ void CComboBoxFx::SetFontEx(CString face, int size, int sizeToolTip, double zoom
 // Mouse
 //------------------------------------------------
 
-void CComboBoxFx::SetHandCursor(BOOL bHandCuror)
+void CButtonFx::SetHandCursor(BOOL bHandCuror)
 {
 	m_bHandCursor = bHandCuror;
 }
 
-void CComboBoxFx::OnMouseMove(UINT nFlags, CPoint point)
+void CButtonFx::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if (!m_bTrackingNow)
 	{
@@ -575,39 +622,39 @@ void CComboBoxFx::OnMouseMove(UINT nFlags, CPoint point)
 		m_bTrackingNow = _TrackMouseEvent(&tme);
 	}
 
-	CComboBox::OnMouseMove(nFlags, point);
+	CButton::OnMouseMove(nFlags, point);
 }
 
-void CComboBoxFx::OnMouseHover(UINT nFlags, CPoint point)
+void CButtonFx::OnMouseHover(UINT nFlags, CPoint point)
 {
-	CComboBox::OnMouseHover(nFlags, point);
+	CButton::OnMouseHover(nFlags, point);
 
 	m_bHover = TRUE;
 	Invalidate();
 }
 
-void CComboBoxFx::OnMouseLeave()
+void CButtonFx::OnMouseLeave()
 {
-	CComboBox::OnMouseLeave();
+	CButton::OnMouseLeave();
 
 	m_bTrackingNow = FALSE;
 	m_bHover = FALSE;
 	Invalidate();
 }
 
-void CComboBoxFx::OnSetfocus()
+void CButtonFx::OnSetfocus()
 {
 	m_bFocas = TRUE;
 	Invalidate();
 }
 
-void CComboBoxFx::OnKillfocus()
+void CButtonFx::OnKillfocus()
 {
 	m_bFocas = FALSE;
 	Invalidate();
 }
 
-BOOL CComboBoxFx::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
+BOOL CButtonFx::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	if (m_bHandCursor)
 	{
@@ -621,17 +668,22 @@ BOOL CComboBoxFx::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	return TRUE;
 }
 
+void CButtonFx::SetSelected(BOOL bSelected)
+{
+	m_bSelected = bSelected;
+	Invalidate();
+}
+
 //------------------------------------------------
 // ToolTip
 //------------------------------------------------
 
-void CComboBoxFx::SetToolTipText(LPCTSTR text)
+void CButtonFx::SetToolTipText(LPCTSTR text)
 {
 	if (text == NULL) { return; }
 
 	InitToolTip();
 	m_ToolTipText = text;
-	
 	if (m_ToolTip.GetToolCount() == 0)
 	{
 		CRect rect;
@@ -646,24 +698,24 @@ void CComboBoxFx::SetToolTipText(LPCTSTR text)
 	SetToolTipActivate(TRUE);
 }
 
-void CComboBoxFx::SetToolTipActivate(BOOL bActivate)
+void CButtonFx::SetToolTipActivate(BOOL bActivate)
 {
 	if (m_ToolTip.GetToolCount() == 0) { return; }
 	m_ToolTip.Activate(bActivate);
 }
 
-void CComboBoxFx::SetToolTipWindowText(LPCTSTR pText)
+void CButtonFx::SetToolTipWindowText(LPCTSTR text)
 {
-	SetToolTipText(pText);
-	SetWindowText(pText);
+	SetToolTipText(text);
+	SetWindowText(text);
 }
 
-CString CComboBoxFx::GetToolTipText()
+CString CButtonFx::GetToolTipText()
 {
 	return m_ToolTipText;
 }
 
-void CComboBoxFx::InitToolTip()
+void CButtonFx::InitToolTip()
 {
 	if (m_ToolTip.m_hWnd == NULL)
 	{
@@ -677,10 +729,15 @@ void CComboBoxFx::InitToolTip()
 	}
 }
 
-BOOL CComboBoxFx::PreTranslateMessage(MSG* pMsg)
+BOOL CButtonFx::PreTranslateMessage(MSG* pMsg)
 {
 	InitToolTip();
 	m_ToolTip.RelayEvent(pMsg);
 
-	return CComboBox::PreTranslateMessage(pMsg);
+	return CButton::PreTranslateMessage(pMsg);
+}
+
+BOOL CButtonFx::OnEraseBkgnd(CDC* pDC)
+{
+	return TRUE;
 }

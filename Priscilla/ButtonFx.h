@@ -25,6 +25,7 @@ public:
 	// Control
 	BOOL InitControl(int x, int y, int width, int height, double zoomRatio,
 		 CDC* bgDC, LPCWSTR imagePath, int imageCount, DWORD textAlign, int renderMode);
+	BOOL ReloadImage(LPCWSTR imagePath, UINT imageCount);
 	void SetMargin(int top, int left, int bottom, int right, double zoomRatio);
 	CSize GetSize(void);
 	void SetDrawFrame(BOOL bDrawFrame);
@@ -32,10 +33,11 @@ public:
 
 	// Font
 	void SetFontEx(CString face, int size, int sizeToolTip, double zoomRatio, double fontRatio = 1.0,
-		 BYTE textAlpha = 255, COLORREF textColor = RGB(0, 0, 0), LONG fontWeight = FW_NORMAL);
+		 COLORREF textColor = RGB(0, 0, 0), LONG fontWeight = FW_NORMAL);
 
 	// Mouse
 	void SetHandCursor(BOOL bHandCuror = TRUE);
+	void SetSelected(BOOL bSelected = TRUE);
 
 	// ToolTip
 	void SetToolTipText(LPCTSTR text);
@@ -59,9 +61,11 @@ protected:
 	// ToolTip
 	void InitToolTip();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	
 
 	// Message Map
 	DECLARE_MESSAGE_MAP()
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnMouseHover(UINT nFlags, CPoint point);
 	afx_msg void OnMouseLeave();
@@ -107,4 +111,5 @@ protected:
 	BOOL m_bFocas;
 	BOOL m_bTrackingNow;
 	BOOL m_bHandCursor;
+	BOOL m_bSelected;
 };

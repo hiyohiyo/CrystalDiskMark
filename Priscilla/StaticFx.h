@@ -13,32 +13,27 @@
 #pragma comment(lib, "Gdiplus.lib")
 using namespace Gdiplus;
 
-class CComboBoxFx : public CComboBox
+class CStaticFx : public CStatic
 {
-	DECLARE_DYNAMIC(CComboBoxFx);
+	DECLARE_DYNAMIC(CStaticFx);
 
-// Constructors
 public:
-	CComboBoxFx();
-	virtual ~CComboBoxFx();
+	// Constructors
+	CStaticFx();
+	virtual ~CStaticFx();
 
-// Control
-public:
+	// Control
 	BOOL InitControl(int x, int y, int width, int height, double zoomRatio,
-		 CDC* bgDC, LPCWSTR imagePath, int imageCount, DWORD textAlign, int renderMode,
-		 COLORREF bgColor, COLORREF bgColorSelected, COLORREF glassColor, BYTE glassAlpha
-	);
-	void SetFontHeight(int height, double zoomRatio, double fontRatio = 1.0);
-	void SetItemHeightEx(int nIndex, int height, double zoomRatio, double fontRatio = 1.0);
+		 CDC* bgDC, LPCWSTR imagePath, int imageCount, DWORD textAlign, int renderMode);
 	void SetMargin(int top, int left, int bottom, int right, double zoomRatio);
 	CSize GetSize(void);
+	void SetDrawFrame(BOOL bDrawFrame);
 	void SetGlassColor(COLORREF glassColor, BYTE glassAlpha);
-	void SetAlpha(BYTE alpha);
+	void SetMeter(BOOL bMeter, double meterRatio);
 
 	// Font
 	void SetFontEx(CString face, int size, int sizeToolTip, double zoomRatio, double fontRatio = 1.0,
-		 BYTE textAlpha = 255, COLORREF textColor = RGB(0, 0, 0), COLORREF textColorSelected = RGB(0, 0, 0), 
-		 LONG fontWeight = FW_NORMAL);
+		 COLORREF textColor = RGB(0, 0, 0), LONG fontWeight = FW_NORMAL);
 
 	// ToolTip
 	void SetToolTipText(LPCTSTR pText);
@@ -52,9 +47,8 @@ public:
 protected:
 	// Draw Control
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
-	virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
-	virtual void DrawControl(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, CBitmap& ctrlBitmap, CBitmap& bgBitmap, int no);
-	virtual void DrawString(CString title, CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, COLORREF textColor);
+	virtual void DrawControl(CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, CBitmap& ctrlBitmap, CBitmap& bgBitmap, int no);
+	virtual void DrawString(CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct);
 
 	// Image
 	BOOL LoadBitmap(LPCTSTR fileName);
@@ -69,7 +63,7 @@ protected:
 
 	// Message Map
 	DECLARE_MESSAGE_MAP()
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnMouseHover(UINT nFlags, CPoint point);
 	afx_msg void OnMouseLeave();
@@ -86,10 +80,13 @@ protected:
 	int m_RenderMode;
 	BOOL m_bHighContrast;
 
-	// Alpha/Glass
-	BYTE m_Alpha;
+	// Glass
 	COLORREF m_GlassColor;
 	BYTE m_GlassAlpha;
+
+	// Meter
+	BOOL m_bMeter;
+	double m_MeterRatio;
 
 	// Image
 	CString m_ImagePath;
@@ -106,14 +103,6 @@ protected:
 	CFont m_Font;
 	CFont m_FontToolTip;
 	COLORREF m_TextColor;
-	COLORREF m_TextColorSelected;
-	COLORREF m_BgColor;
-	COLORREF m_BgColorSelected;
-	COLORREF m_TextColorHc;
-	COLORREF m_TextColorSelectedHc;
-	COLORREF m_BgColorHc;
-	COLORREF m_BgColorSelectedHc;
-	LONG m_FontHeight;
 
 	// ToolTip
 	CToolTipCtrl m_ToolTip;

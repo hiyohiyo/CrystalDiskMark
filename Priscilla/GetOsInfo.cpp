@@ -5,29 +5,20 @@
 //      License : The MIT License
 /*---------------------------------------------------------------------------*/
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "GetOsInfo.h"
 #include "GetFileVersion.h"
 
-typedef BOOL (WINAPI *_GetProductInfo)(DWORD, DWORD, DWORD, DWORD, PDWORD);
-typedef BOOL (WINAPI *_GetNativeSystemInfo)(LPSYSTEM_INFO);
-typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE hProcess,PBOOL Wow64Process);
-
-_GetProductInfo pGetProductInfo = NULL;
-_GetNativeSystemInfo pGetNativeSystemInfo = NULL;
+typedef BOOL (WINAPI *FuncGetProductInfo)(DWORD, DWORD, DWORD, DWORD, PDWORD);
+typedef BOOL (WINAPI *FuncGetNativeSystemInfo)(LPSYSTEM_INFO);
+typedef BOOL (WINAPI *FuncIsWow64Process)(HANDLE hProcess,PBOOL Wow64Process);
 
 BOOL Is8orLater()
 {
 	OSVERSIONINFOEX osvi;
-	BOOL bosVersionInfoEx;
-
 	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	if (!(bosVersionInfoEx = GetVersionEx((OSVERSIONINFO*)& osvi)))
-	{
-		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-		GetVersionEx((OSVERSIONINFO*)& osvi);
-	}
+	GetVersionEx((OSVERSIONINFO*)&osvi);
 
 	if (osvi.dwMajorVersion <= 5)
 	{
@@ -46,12 +37,10 @@ BOOL Is8orLater()
 BOOL IsWow64()
 {
 	BOOL bIsWow64 = FALSE;
-	HMODULE hModule = GetModuleHandle(L"kernel32");
-	if (hModule == NULL) { return FALSE; }
-	LPFN_ISWOW64PROCESS fnIsWow64Process = (LPFN_ISWOW64PROCESS)GetProcAddress(hModule, "IsWow64Process");
-	if(fnIsWow64Process != NULL)
+	FuncIsWow64Process pIsWow64Process = (FuncIsWow64Process)GetProcAddress(GetModuleHandle(L"kernel32"), "IsWow64Process");
+	if(pIsWow64Process != NULL)
 	{
-		if(! fnIsWow64Process(GetCurrentProcess(), &bIsWow64))
+		if(! pIsWow64Process(GetCurrentProcess(), &bIsWow64))
 		{
 			bIsWow64 = FALSE;
 		}
@@ -62,9 +51,7 @@ BOOL IsWow64()
 BOOL IsX64()
 {
 	SYSTEM_INFO si = {0};
-	HMODULE hModule = GetModuleHandle(L"kernel32");
-	if (hModule == NULL) { return FALSE; }
-	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(hModule, "GetNativeSystemInfo");
+	FuncGetNativeSystemInfo pGetNativeSystemInfo = (FuncGetNativeSystemInfo)GetProcAddress(GetModuleHandle(L"kernel32"), "GetNativeSystemInfo");
 	if(pGetNativeSystemInfo != NULL)
 	{
 		pGetNativeSystemInfo(&si);
@@ -79,9 +66,7 @@ BOOL IsX64()
 BOOL IsArm32()
 {
 	SYSTEM_INFO si = { 0 };
-	HMODULE hModule = GetModuleHandle(L"kernel32");
-	if (hModule == NULL) { return FALSE; }
-	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(hModule, "GetNativeSystemInfo");
+	FuncGetNativeSystemInfo pGetNativeSystemInfo = (FuncGetNativeSystemInfo)GetProcAddress(GetModuleHandle(L"kernel32"), "GetNativeSystemInfo");
 	if (pGetNativeSystemInfo != NULL)
 	{
 		pGetNativeSystemInfo(&si);
@@ -96,9 +81,7 @@ BOOL IsArm32()
 BOOL IsArm64()
 {
 	SYSTEM_INFO si = { 0 };
-	HMODULE hModule = GetModuleHandle(L"kernel32");
-	if (hModule == NULL) { return FALSE; }
-	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(hModule, "GetNativeSystemInfo");
+	FuncGetNativeSystemInfo pGetNativeSystemInfo = (FuncGetNativeSystemInfo)GetProcAddress(GetModuleHandle(L"kernel32"), "GetNativeSystemInfo");
 	if (pGetNativeSystemInfo != NULL)
 	{
 		pGetNativeSystemInfo(&si);
@@ -113,9 +96,7 @@ BOOL IsArm64()
 BOOL IsIa64()
 {
 	SYSTEM_INFO si = {0};
-	HMODULE hModule = GetModuleHandle(L"kernel32");
-	if (hModule == NULL) { return FALSE; }
-	pGetNativeSystemInfo = (_GetNativeSystemInfo)GetProcAddress(hModule, "GetNativeSystemInfo");
+	FuncGetNativeSystemInfo pGetNativeSystemInfo = (FuncGetNativeSystemInfo)GetProcAddress(GetModuleHandle(L"kernel32"), "GetNativeSystemInfo");
 	if(pGetNativeSystemInfo != NULL)
 	{
 		pGetNativeSystemInfo(&si);
@@ -130,15 +111,9 @@ BOOL IsIa64()
 BOOL IsSidebar()
 {
 	OSVERSIONINFOEX osvi;
-	BOOL bosVersionInfoEx;
-
 	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	if(!(bosVersionInfoEx = GetVersionEx((OSVERSIONINFO *)&osvi)))
-	{
-		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-		GetVersionEx((OSVERSIONINFO *)&osvi);
-	}
+	GetVersionEx((OSVERSIONINFO*)&osvi);
 
 	if(osvi.dwMajorVersion >= 6 && osvi.dwMinorVersion < 2 && osvi.wProductType == VER_NT_WORKSTATION)
 	{
@@ -153,16 +128,11 @@ void GetOsName(CString& OsFullName)
 	CString osName, osType, osCsd, osVersion, osBuild, osFullName, osArchitecture;
 	CString cstr;
 	TCHAR path[MAX_PATH];
-	OSVERSIONINFOEX osvi;
-	BOOL bosVersionInfoEx;
 
+	OSVERSIONINFOEX osvi;
 	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	if(!(bosVersionInfoEx = GetVersionEx((OSVERSIONINFO *)&osvi)))
-	{
-		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-		GetVersionEx((OSVERSIONINFO *)&osvi);
-	}
+	GetVersionEx((OSVERSIONINFO*)&osvi);
 
 	switch(osvi.dwPlatformId)
 	{
@@ -320,7 +290,7 @@ void GetOsName(CString& OsFullName)
 
 		if(osvi.dwMajorVersion >= 6)
 		{
-			pGetProductInfo = (_GetProductInfo)GetProcAddress(GetModuleHandle(L"kernel32.dll"), "GetProductInfo");
+			FuncGetProductInfo pGetProductInfo = (FuncGetProductInfo)GetProcAddress(GetModuleHandle(L"kernel32.dll"), "GetProductInfo");
 
 			if(pGetProductInfo)
 			{
@@ -456,114 +426,83 @@ void GetOsName(CString& OsFullName)
 				}
 			}
 		}
-		else if(bosVersionInfoEx)
+		else if(osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0)
 		{
-			if(osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0)
+			if(osvi.wProductType == VER_NT_WORKSTATION)
 			{
-				if(osvi.wProductType == VER_NT_WORKSTATION)
-				{
-					osType = L"Professional";
-				}
-				else if(osvi.wProductType == VER_NT_SERVER)
-				{
-					if(osvi.wSuiteMask & VER_SUITE_DATACENTER)
-					{
-						osType = L"DataCenter Server";
-					}
-					else if(osvi.wSuiteMask & VER_SUITE_ENTERPRISE)
-					{
-						osType = L"Advanced Server";
-					}
-					else
-					{
-						osType = L"Server";
-					}
-				}
+				osType = L"Professional";
 			}
-			else if(osvi.dwMajorVersion == 5 && osvi.dwMinorVersion >= 1)
+			else if(osvi.wProductType == VER_NT_SERVER)
 			{
-				if(osvi.wSuiteMask & VER_SUITE_PERSONAL)
+				if(osvi.wSuiteMask & VER_SUITE_DATACENTER)
 				{
-					osType = L"Home Edition";
-				}
-				else if(osvi.wSuiteMask & VER_SUITE_DATACENTER)
-				{
-					osType = L"Datacenter Edition";
+					osType = L"DataCenter Server";
 				}
 				else if(osvi.wSuiteMask & VER_SUITE_ENTERPRISE)
 				{
-					osType = L"Enterprise Edition";
+					osType = L"Advanced Server";
 				}
-				else if(osvi.wSuiteMask & VER_SUITE_BLADE)
+				else
 				{
-					osType = L"Web Edition";
-				}
-				else if(osvi.wProductType == VER_NT_WORKSTATION)
-				{
-					osType = L"Professional";
-				}
-
-
-				// Meida Center & Tablet
-				if(GetSystemMetrics(SM_MEDIACENTER))
-				{
-					UINT length = GetWindowsDirectoryW(path, MAX_PATH);
-					_tcscat_s(path, MAX_PATH, L"\\ehome\\ehshell.exe");
-					TCHAR str[256];
-					if(length != 0 && GetFileVersion(path, str))
-					{					
-						cstr = str;
-						if(cstr.Find(L"5.1") == 0)
-						{
-							osType = L"Media Center ";
-							cstr.Replace(L"5.1.", L"");
-							double num = _tstof(cstr);
-							if(num <= 2600.1200)
-							{
-								osType += L"2002";
-							}
-							else if(num <= 2600.2500)
-							{
-								osType += L"2004";
-							}
-							else
-							{
-								osType += L"2005";
-							}
-						}
-					}
-				}
-				else if(GetSystemMetrics(SM_TABLETPC))
-				{
-					osType = L"Tablet PC";
+					osType = L"Server";
 				}
 			}
 		}
-		else // NT4 SP5
+		else if(osvi.dwMajorVersion == 5 && osvi.dwMinorVersion >= 1)
 		{
-			HKEY hKey;
-			TCHAR productType[80];
-			DWORD bufLen;
-			
-			if(RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Control\\ProductOptions",
-				0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
+			if(osvi.wSuiteMask & VER_SUITE_PERSONAL)
 			{
-				if(RegQueryValueEx(hKey, L"ProductType", NULL, NULL, (LPBYTE)productType, &bufLen) == ERROR_SUCCESS)
-				{
-					if(lstrcmpi(L"WINNT", productType) == 0)
+				osType = L"Home Edition";
+			}
+			else if(osvi.wSuiteMask & VER_SUITE_DATACENTER)
+			{
+				osType = L"Datacenter Edition";
+			}
+			else if(osvi.wSuiteMask & VER_SUITE_ENTERPRISE)
+			{
+				osType = L"Enterprise Edition";
+			}
+			else if(osvi.wSuiteMask & VER_SUITE_BLADE)
+			{
+				osType = L"Web Edition";
+			}
+			else if(osvi.wProductType == VER_NT_WORKSTATION)
+			{
+				osType = L"Professional";
+			}
+
+			// Meida Center & Tablet
+			if(GetSystemMetrics(SM_MEDIACENTER))
+			{
+				UINT length = GetWindowsDirectoryW(path, MAX_PATH);
+				_tcscat_s(path, MAX_PATH, L"\\ehome\\ehshell.exe");
+				TCHAR str[256];
+				if(length != 0 && GetFileVersion(path, str))
+				{					
+					cstr = str;
+					if(cstr.Find(L"5.1") == 0)
 					{
-						osType = L"Workstation";
-					}
-					else if(lstrcmpi(L"LANMANNT", productType) == 0)
-					{
-						osType = L"Server";
-					}
-					else if(lstrcmpi(L"SERVERNT", productType) == 0)
-					{
-						osType = L"Advanced Server";
+						osType = L"Media Center ";
+						cstr.Replace(L"5.1.", L"");
+						double num = _tstof(cstr);
+						if(num <= 2600.1200)
+						{
+							osType += L"2002";
+						}
+						else if(num <= 2600.2500)
+						{
+							osType += L"2004";
+						}
+						else
+						{
+							osType += L"2005";
+						}
 					}
 				}
-				RegCloseKey(hKey);
+			}
+			else if(GetSystemMetrics(SM_TABLETPC))
+			{
+				osType = L"Tablet PC";
 			}
 		}
 
@@ -610,15 +549,9 @@ void GetOsName(CString& OsFullName)
 BOOL IsClassicSystem()
 {
 	OSVERSIONINFOEX osvi;
-	BOOL bosVersionInfoEx;
-
 	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	if(!(bosVersionInfoEx = GetVersionEx((OSVERSIONINFO *)&osvi)))
-	{
-		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-		GetVersionEx((OSVERSIONINFO *)&osvi);
-	}
+	GetVersionEx((OSVERSIONINFO *)&osvi);
 
 	if(osvi.dwPlatformId == VER_PLATFORM_WIN32_NT && osvi.dwMajorVersion == 4) // for NT4
 	{
@@ -761,15 +694,9 @@ BOOL IsWin2k()
 	if (win2k == -1)
 	{
 		OSVERSIONINFOEX osvi;
-		BOOL bosVersionInfoEx;
-
 		ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
 		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-		if (!(bosVersionInfoEx = GetVersionEx((OSVERSIONINFO*)&osvi)))
-		{
-			osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-			GetVersionEx((OSVERSIONINFO*)&osvi);
-		}
+		GetVersionEx((OSVERSIONINFO*)&osvi);
 
 		if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0)
 		{

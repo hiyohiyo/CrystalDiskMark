@@ -1,6 +1,4 @@
 ﻿//{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ で生成されたインクルード ファイル。
-// DiskMark.rc で使用
 //
 #define IDD_DISKMARK_DIALOG             102
 #define IDR_HTML_ABOUTDLG               103

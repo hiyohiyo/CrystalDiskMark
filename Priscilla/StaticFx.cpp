@@ -5,7 +5,7 @@
 //      License : The MIT License
 /*---------------------------------------------------------------------------*/
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "StaticFx.h"
 
 ////------------------------------------------------
@@ -53,6 +53,7 @@ IMPLEMENT_DYNAMIC(CStaticFx, CStatic)
 
 BEGIN_MESSAGE_MAP(CStaticFx, CStatic)
 	//{{AFX_MSG_MAP(CStaticFx)
+	ON_WM_ERASEBKGND()
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSEHOVER()
 	ON_WM_MOUSELEAVE()
@@ -71,9 +72,9 @@ BOOL CStaticFx::InitControl(int x, int y, int width, int height, double zoomRati
 {
 	m_X = (int)(x * zoomRatio);
 	m_Y = (int)(y * zoomRatio);
-	MoveWindow(m_X, m_Y, (int)(width * zoomRatio), (int)(height * zoomRatio));
 	m_CtrlSize.cx = (int)(width * zoomRatio);
 	m_CtrlSize.cy = (int)(height * zoomRatio);
+	MoveWindow(m_X, m_Y, m_CtrlSize.cx, m_CtrlSize.cy);
 
 	m_BgDC = bgDC;
 	m_ImagePath = imagePath;
@@ -271,8 +272,6 @@ void CStaticFx::DrawControl(CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, CBit
 
 	if (drawDC->GetDeviceCaps(BITSPIXEL) * drawDC->GetDeviceCaps(PLANES) < 24) 
 	{
-		BLENDFUNCTION blendfunc = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
-
 		drawDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pBgDC, 0, m_CtrlSize.cy, SRCCOPY);
 		if (!m_CtrlImage.IsNull())
 		{
@@ -564,7 +563,7 @@ void CStaticFx::LoadCtrlBg(CDC* drawDC)
 //------------------------------------------------
 
 void CStaticFx::SetFontEx(CString face, int size, int sizeToolTip, double zoomRatio, double fontRatio,
-     BYTE textAlpha, COLORREF textColor, LONG fontWeight)
+     COLORREF textColor, LONG fontWeight)
 {
 	LOGFONT logFont = { 0 };
 	logFont.lfCharSet = DEFAULT_CHARSET;
@@ -723,4 +722,9 @@ BOOL CStaticFx::PreTranslateMessage(MSG* pMsg)
 	m_ToolTip.RelayEvent(pMsg);
 
 	return CStatic::PreTranslateMessage(pMsg);
+}
+
+BOOL CStaticFx::OnEraseBkgnd(CDC* pDC)
+{
+	return TRUE;
 }

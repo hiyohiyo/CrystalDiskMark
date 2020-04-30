@@ -5,7 +5,7 @@
 //      License : The MIT License
 /*---------------------------------------------------------------------------*/
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "EditFx.h"
 
 ////------------------------------------------------
@@ -62,9 +62,9 @@ BOOL CEditFx::InitControl(int x, int y, int width, int height, double zoomRatio,
 {
 	m_X = (int)(x * zoomRatio);
 	m_Y = (int)(y * zoomRatio);
-	MoveWindow(m_X, m_Y, (int)(width * zoomRatio), (int)(height * zoomRatio));
 	m_CtrlSize.cx = (int)(width * zoomRatio);
 	m_CtrlSize.cy = (int)(height * zoomRatio);
+	MoveWindow(m_X, m_Y, m_CtrlSize.cx, m_CtrlSize.cy);
 
 	m_BgDC = bgDC;
 	m_ImagePath = imagePath;
@@ -348,7 +348,7 @@ void CEditFx::SetupControlImage(CBitmap& bgBitmap, CBitmap& ctrlBitmap)
 //------------------------------------------------
 
 void CEditFx::SetFontEx(CString face, int size, double zoomRatio, double fontRatio,
-     BYTE textAlpha, COLORREF textColor, LONG fontWeight)
+     COLORREF textColor, LONG fontWeight)
 {
 	LOGFONT logFont = { 0 };
 	logFont.lfCharSet = DEFAULT_CHARSET;

@@ -5,8 +5,8 @@
 //      License : The MIT License
 /*---------------------------------------------------------------------------*/
 
-#include "stdafx.h"
-#include "resource.h"
+#include "../stdafx.h"
+#include "DebugPrint.h"
 #include "GetFileVersion.h"
 #include "GetOsInfo.h"
 #include "MainDialog.h"
@@ -16,7 +16,6 @@ CMainDialog::CMainDialog(UINT dlgResouce, CWnd* pParent)
 {
 	// Common
 	m_bStartup = FALSE;
-	m_bInitializing = TRUE;
 	m_bWindowMinimizeOnce = TRUE;
 	m_bResident = FALSE;
 	m_bResidentMinimize = FALSE;
@@ -55,6 +54,34 @@ CMainDialog::~CMainDialog()
 BEGIN_MESSAGE_MAP(CMainDialog, CDialogFx)
 	ON_WM_WINDOWPOSCHANGING()
 END_MESSAGE_MAP()
+
+int CALLBACK HasFontProc(ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* lpntme, int FontType, LPARAM lParam)
+{
+	if (_tcscmp(lpelfe->elfLogFont.lfFaceName, DEFAULT_FONT_FACE_1) == 0)
+	{
+		lParam = TRUE;
+	}
+	return TRUE;
+}
+
+CString CMainDialog::GetDefaultFont()
+{
+	CClientDC dc(this);
+	LOGFONT logfont;
+	BOOL hasFont = FALSE;
+	ZeroMemory(&logfont, sizeof(LOGFONT));
+	logfont.lfCharSet = DEFAULT_CHARSET;
+	::EnumFontFamiliesExW(dc.m_hDC, &logfont, (FONTENUMPROC)HasFontProc, (INT_PTR)(&hasFont), 0);
+
+	if (hasFont)
+	{
+		return DEFAULT_FONT_FACE_1;
+	}
+	else
+	{
+		return DEFAULT_FONT_FACE_2;
+	}
+}
 
 int CMainDialog::GetFontScale()
 {
@@ -134,7 +161,7 @@ void CMainDialog::InitThemeLang()
 	{
 		CString defaultTheme = m_DefaultTheme;
 
-		if (IsFileExist(m_ThemeDir + m_RecommendTheme + L"\\Background-300.png"))
+		if (IsFileExist(m_ThemeDir + m_RecommendTheme + L"\\" + m_BackgroundName + L"-300.png"))
 		{
 			defaultTheme = m_RecommendTheme;
 		}
@@ -417,13 +444,23 @@ void CMainDialog::UpdateThemeInfo()
 	m_ComboTextSelected = GetControlColor(L"ComboTextSelected", 0, theme);
 	m_ComboBg   = GetControlColor(L"ComboBg", 255, theme);
 	m_ComboBgSelected = GetControlColor(L"ComboBgSelected", 192, theme);
-	m_ComboAlpha = GetControlAlpha(L"ComboAlpha", 255, theme);
 	m_ButtonText= GetControlColor(L"ButtonText", 0, theme);
 	m_EditText  = GetControlColor(L"EditText", 0, theme);
 	m_EditBg    = GetControlColor(L"EditBg", 255, theme);
-	m_EditAlpha = GetControlAlpha(L"EditAlpha", 255, theme);
-	m_CharacterPosition = GetCharacterPosition(theme);
+	m_ListText1 = GetControlColor(L"ListText1", 0, theme);
+	m_ListText2 = GetControlColor(L"ListText2", 0, theme);
+	m_ListTextSelected = GetControlColor(L"ListTextSelected", 0, theme);
+	m_ListBg1 = GetControlColor(L"ListBg1", 255, theme);
+	m_ListBg2 = GetControlColor(L"ListBg2", 255, theme);
+	m_ListBgSelected = GetControlColor(L"ListBgSelected", 0, theme);
+	m_ListLine1 = GetControlColor(L"ListLine1", 0, theme);
+	m_ListLine2 = GetControlColor(L"ListLine2", 0, theme);
 	m_Glass = GetControlColor(L"Glass", 255, theme);
+
+	m_CharacterPosition = GetCharacterPosition(theme);
+
+	m_ComboAlpha = GetControlAlpha(L"ComboAlpha", 255, theme);
+	m_EditAlpha = GetControlAlpha(L"EditAlpha", 255, theme);
 	m_GlassAlpha = GetControlAlpha(L"GlassAlpha", 128, theme);
 }
 
@@ -460,7 +497,7 @@ BYTE CMainDialog::GetCharacterPosition(CString theme)
 
 #ifdef OPTION_TASK_TRAY
 
-UINT CMainDialog::wmTaskbarCreated = ::RegisterWindowMessage("TaskbarCreated"));
+UINT CMainDialog::wmTaskbarCreated = ::RegisterWindowMessage(L"TaskbarCreated");
 
 // Add TaskTray
 BOOL CMainDialog::AddTaskTray(UINT id, UINT callback, HICON icon, CString tip)

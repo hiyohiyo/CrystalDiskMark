@@ -13,7 +13,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="Library Files">
+    <Filter Include="Priscilla">
       <UniqueIdentifier>{342a84d1-5b9a-4a10-b0ca-cc618409b820}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -33,41 +33,41 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GetFileVersion.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GetOsInfo.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
     <ClCompile Include="SettingsDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DebugPrint.cpp">
-      <Filter>Library Files</Filter>
+    <ClCompile Include="Priscilla\ButtonFx.cpp">
+      <Filter>Priscilla</Filter>
     </ClCompile>
-    <ClCompile Include="MainDialog.cpp">
-      <Filter>Library Files</Filter>
+    <ClCompile Include="Priscilla\ComboBoxFx.cpp">
+      <Filter>Priscilla</Filter>
     </ClCompile>
-    <ClCompile Include="FontSelection.cpp">
+    <ClCompile Include="Priscilla\DebugPrint.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\DialogFx.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\EditFx.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\FontComboBox.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\GetFileVersion.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\GetOsInfo.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\MainDialog.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\StaticFx.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
+    <ClCompile Include="FontSelectionDlg.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FontComboBox.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ButtonFx.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ComboBoxFx.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogFx.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EditFx.cpp">
-      <Filter>Library Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticFx.cpp">
-      <Filter>Library Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,44 +89,44 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GetFileVersion.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GetOsInfo.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
     <ClInclude Include="SettingsDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DebugPrint.h">
-      <Filter>Library Files</Filter>
+    <ClInclude Include="Priscilla\ButtonFx.h">
+      <Filter>Priscilla</Filter>
     </ClInclude>
-    <ClInclude Include="MainDialog.h">
-      <Filter>Library Files</Filter>
+    <ClInclude Include="Priscilla\ComboBoxFx.h">
+      <Filter>Priscilla</Filter>
     </ClInclude>
-    <ClInclude Include="FontSelection.h">
+    <ClInclude Include="Priscilla\CommonFx.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\DebugPrint.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\DialogFx.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\EditFx.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\FontComboBox.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\GetFileVersion.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\GetOsInfo.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\MainDialog.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\StaticFx.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="FontSelectionDlg.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FontComboBox.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ButtonFx.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ComboBoxFx.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CommonFx.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DialogFx.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EditFx.h">
-      <Filter>Library Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticFx.h">
-      <Filter>Library Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
