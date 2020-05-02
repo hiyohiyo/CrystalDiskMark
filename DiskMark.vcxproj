@@ -621,7 +621,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|Win32'">
@@ -663,7 +663,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -705,7 +705,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|Win32'">
@@ -747,7 +747,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|x64'">
@@ -789,7 +789,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|ARM64'">
@@ -828,7 +828,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|ARM'">
@@ -867,7 +867,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|x64'">
@@ -907,7 +907,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|ARM64'">
@@ -946,7 +946,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|ARM'">
@@ -985,7 +985,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -1066,7 +1066,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -1105,7 +1105,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|x64'">
@@ -1145,7 +1145,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|ARM64'">
@@ -1184,7 +1184,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|ARM'">
@@ -1223,7 +1223,7 @@
     </Link>
     <Manifest>
       <AdditionalManifestFiles>DeclareDPIAware.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -1465,9 +1465,6 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="DeclareDPIAware.manifest" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="res\DiskMark.ico" />
     <None Include="res\DiskMark.rc2" />
     <None Include="res\DiskMark16.ico" />
@@ -1485,6 +1482,9 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|Win32'">MIX_MODE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|x64'">MIX_MODE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="DeclareDPIAware.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

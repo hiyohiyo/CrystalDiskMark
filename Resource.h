@@ -54,7 +54,7 @@
 #define IDC_LICENSE                     1109
 #define IDC_EDITION                     1110
 #define ID_OK                           1200
-#define IDC_FONT_COMBO                  1201
+#define IDC_FONT_FACE_COMBO		        1201
 #define IDC_FONT_SCALE_COMBO			1203
 #define IDC_FONT_FACE					1204
 #define IDC_FONT_SCALE					1205

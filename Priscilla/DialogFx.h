@@ -56,10 +56,11 @@ protected:
 protected:
 	// Dialog
 	BOOL m_bInitializing;
+	BOOL m_bDpiChanging;
 	BOOL m_bShowWindow;
 	BOOL m_bModelessDlg;
 	BOOL m_bHighContrast;
-	BOOL m_bBgImage;
+	BOOL m_bBkImage;
 	UINT m_MenuId;
 	CWnd* m_ParentWnd;
 	CWnd* m_DlgWnd;
@@ -69,6 +70,11 @@ protected:
 	CString m_FontFace;
 	int m_FontScale;
 	double m_FontRatio;
+
+	int m_MaxSizeX;
+	int m_MinSizeX;
+	int m_MaxSizeY;
+	int m_MinSizeY;
 
 	// Zoom
 	int m_Dpi;
@@ -80,17 +86,17 @@ protected:
 	COLORREF m_MeterText;
 	COLORREF m_ComboText;
 	COLORREF m_ComboTextSelected;
-	COLORREF m_ComboBg;
-	COLORREF m_ComboBgSelected;
+	COLORREF m_ComboBk;
+	COLORREF m_ComboBkSelected;
 	COLORREF m_ButtonText;
 	COLORREF m_EditText;
-	COLORREF m_EditBg;
+	COLORREF m_EditBk;
 	COLORREF m_ListText1;
 	COLORREF m_ListText2;
 	COLORREF m_ListTextSelected;
-	COLORREF m_ListBg1;
-	COLORREF m_ListBg2;
-	COLORREF m_ListBgSelected;
+	COLORREF m_ListBk1;
+	COLORREF m_ListBk2;
+	COLORREF m_ListBkSelected;
 	COLORREF m_ListLine1;
 	COLORREF m_ListLine2;
 	COLORREF m_Glass;
@@ -114,8 +120,8 @@ protected:
 	CString m_BackgroundName;
 
 	// Class
-	CBitmap m_BgBitmap;
-	CDC		m_BgDC;
-	CImage  m_BgImage;
+	CBitmap m_BkBitmap;
+	CDC		m_BkDC;
+	CImage  m_BkImage;
 	CBrush  m_BrushDlg;
 };

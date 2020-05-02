@@ -39,11 +39,11 @@ public:
 	afx_msg void OnCrystalDewWorld();
 	afx_msg void OnVersion();
 	afx_msg void OnLicense();
-	afx_msg void OnBnClickedProjectSite1();
-	afx_msg void OnBnClickedProjectSite2();
-	afx_msg void OnBnClickedProjectSite3();
-	afx_msg void OnBnClickedProjectSite4();
-	afx_msg void OnBnClickedProjectSite5();
+	afx_msg void OnProjectSite1();
+	afx_msg void OnProjectSite2();
+	afx_msg void OnProjectSite3();
+	afx_msg void OnProjectSite4();
+	afx_msg void OnProjectSite5();
 
 	CButtonFx m_CtrlCrystalDewWorld;
 	CButtonFx m_CtrlProjectSite1;

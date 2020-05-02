@@ -368,7 +368,7 @@ BOOL Init(void* dlg)
 		DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_64_LEGACY);
 	}
 #else
-	if (Is8orLater())
+	if (IsWin8orLater())
 	{
 		DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_32);
 	}

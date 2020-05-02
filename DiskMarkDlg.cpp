@@ -210,13 +210,11 @@ BOOL CDiskMarkDlg::CheckThemeEdition(CString name)
 	return FALSE;
 }
 
-
-int CALLBACK EnumFontFamExProcSegoeUI(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, int FontType, LPARAM lParam)
+int CALLBACK EnumFontFamExProcDefaultFont(ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* lpntme, int FontType, LPARAM lParam)
 {
-	if (_tcscmp(lpelfe->elfLogFont.lfFaceName, L"Segoe UI") == 0)
+	if (_tcscmp(lpelfe->elfLogFont.lfFaceName, DEFAULT_FONT_FACE_1) == 0)
 	{
-		BOOL *flag = (BOOL*)lParam;
-		*flag = TRUE;
+		*((BOOL*)lParam) = TRUE;
 	}
 	return TRUE;
 }
@@ -236,18 +234,18 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	CClientDC dc(this);
 	LOGFONT logfont;
 	CString defaultFontFace;
-	BOOL hasSegoeUI = FALSE;
+	BOOL hasDefaultFont = FALSE;
 	ZeroMemory(&logfont, sizeof(LOGFONT));
 	logfont.lfCharSet = DEFAULT_CHARSET;
-	::EnumFontFamiliesExW(dc.m_hDC, &logfont, (FONTENUMPROC)EnumFontFamExProcSegoeUI, (INT_PTR)(&hasSegoeUI), 0);
+	::EnumFontFamiliesExW(dc.m_hDC, &logfont, (FONTENUMPROC)EnumFontFamExProcDefaultFont, (INT_PTR)(&hasDefaultFont), 0);
 
-	if (hasSegoeUI)
+	if (hasDefaultFont)
 	{
-		defaultFontFace = L"Segoe UI";
+		defaultFontFace = DEFAULT_FONT_FACE_1;
 	}
 	else
 	{
-		defaultFontFace = L"Tahoma";
+		defaultFontFace = DEFAULT_FONT_FACE_2;
 	}
 
 	GetPrivateProfileString(L"Setting", L"FontFace", defaultFontFace, str, 256, m_Ini);
@@ -476,11 +474,11 @@ void CDiskMarkDlg::UpdateDialogSize()
 #endif
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	m_ButtonAll.InitControl(  12 + offsetX,   8, 120, 80, m_ZoomRatio, &m_BgDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
-	m_ButtonTest1.InitControl(12 + offsetX,  96, 120, 80, m_ZoomRatio, &m_BgDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
-	m_ButtonTest2.InitControl(12 + offsetX, 184, 120, 80, m_ZoomRatio, &m_BgDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
-	m_ButtonTest3.InitControl(12 + offsetX, 272, 120, 80, m_ZoomRatio, &m_BgDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
-	m_ButtonTest4.InitControl(12 + offsetX, 360, 120, 80, m_ZoomRatio, &m_BgDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
+	m_ButtonAll.InitControl(  12 + offsetX,   8, 120, 80, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
+	m_ButtonTest1.InitControl(12 + offsetX,  96, 120, 80, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
+	m_ButtonTest2.InitControl(12 + offsetX, 184, 120, 80, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
+	m_ButtonTest3.InitControl(12 + offsetX, 272, 120, 80, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
+	m_ButtonTest4.InitControl(12 + offsetX, 360, 120, 80, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
 
 	m_ButtonAll.SetHandCursor(TRUE);
 	m_ButtonTest1.SetHandCursor(TRUE);
@@ -488,35 +486,35 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ButtonTest3.SetHandCursor(TRUE);
 	m_ButtonTest4.SetHandCursor(TRUE);
 
-	m_TestRead1.InitControl(140 + offsetX,  96, 320, 80, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestRead2.InitControl(140 + offsetX, 184, 320, 80, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestRead3.InitControl(140 + offsetX, 272, 320, 80, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestRead4.InitControl(140 + offsetX, 360, 320, 80, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestRead1.InitControl(140 + offsetX,  96, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestRead2.InitControl(140 + offsetX, 184, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestRead3.InitControl(140 + offsetX, 272, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestRead4.InitControl(140 + offsetX, 360, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
 
-	m_TestWrite1.InitControl(468 + offsetX,  96, 320, 80, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestWrite2.InitControl(468 + offsetX, 184, 320, 80, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestWrite3.InitControl(468 + offsetX, 272, 320, 80, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestWrite4.InitControl(468 + offsetX, 360, 320, 80, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestWrite1.InitControl(468 + offsetX,  96, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestWrite2.InitControl(468 + offsetX, 184, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestWrite3.InitControl(468 + offsetX, 272, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestWrite4.InitControl(468 + offsetX, 360, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
 
-	m_Comment.InitControl(12 + offsetX, 452, 776, 40, m_ZoomRatio, &m_BgDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage | m_bHighContrast);
+	m_Comment.InitControl(12 + offsetX, 452, 776, 40, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage | m_bHighContrast);
 	m_Comment.SetMargin(0, 4, 0, 4, m_ZoomRatio);
 	m_Comment.Adjust();
 
-	m_ReadUnit.InitControl( 140 + offsetX, 52, 320, 40, m_ZoomRatio, &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
-	m_WriteUnit.InitControl(468 + offsetX, 52, 320, 40, m_ZoomRatio, &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_ReadUnit.InitControl( 140 + offsetX, 52, 320, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_WriteUnit.InitControl(468 + offsetX, 52, 320, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
 
-	m_ComboCount.InitControl(140 + offsetX, 8, 60, 500, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboSize.InitControl( 204 + offsetX, 8, 140, 500, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboDrive.InitControl(348 + offsetX, 8, 320 + comboDriveX, 500, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboUnit.InitControl( 672 + offsetX, 8, 116, 500, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
+	m_ComboCount.InitControl(140 + offsetX, 8, 60, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboSize.InitControl( 204 + offsetX, 8, 140, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboDrive.InitControl(348 + offsetX, 8, 320 + comboDriveX, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboUnit.InitControl( 672 + offsetX, 8, 116, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 
 #else
 
-	m_ButtonAll.InitControl(  8 + offsetX, 8, 72, 48, m_ZoomRatio,   &m_BgDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
-	m_ButtonTest1.InitControl(8 + offsetX, 60, 72, 48, m_ZoomRatio,  &m_BgDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
-	m_ButtonTest2.InitControl(8 + offsetX, 112, 72, 48, m_ZoomRatio, &m_BgDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
-	m_ButtonTest3.InitControl(8 + offsetX, 164, 72, 48, m_ZoomRatio, &m_BgDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
-	m_ButtonTest4.InitControl(8 + offsetX, 216, 72, 48, m_ZoomRatio, &m_BgDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
+	m_ButtonAll.InitControl(  8 + offsetX, 8, 72, 48, m_ZoomRatio,   &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
+	m_ButtonTest1.InitControl(8 + offsetX, 60, 72, 48, m_ZoomRatio,  &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
+	m_ButtonTest2.InitControl(8 + offsetX, 112, 72, 48, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
+	m_ButtonTest3.InitControl(8 + offsetX, 164, 72, 48, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
+	m_ButtonTest4.InitControl(8 + offsetX, 216, 72, 48, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage | m_bHighContrast);
 
 	m_ButtonAll.SetHandCursor(TRUE);
 	m_ButtonTest1.SetHandCursor(TRUE);
@@ -524,33 +522,33 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ButtonTest3.SetHandCursor(TRUE);
 	m_ButtonTest4.SetHandCursor(TRUE);
 
-	m_TestRead1.InitControl(84 + offsetX, 60, 192, 48, m_ZoomRatio,  &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestRead2.InitControl(84 + offsetX, 112, 192, 48, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestRead3.InitControl(84 + offsetX, 164, 192, 48, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestRead4.InitControl(84 + offsetX, 216, 192, 48, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestRead1.InitControl(84 + offsetX, 60, 192, 48, m_ZoomRatio,  &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestRead2.InitControl(84 + offsetX, 112, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestRead3.InitControl(84 + offsetX, 164, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestRead4.InitControl(84 + offsetX, 216, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
 
-	m_TestWrite1.InitControl(280 + offsetX, 60, 192, 48, m_ZoomRatio,  &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestWrite2.InitControl(280 + offsetX, 112, 192, 48, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestWrite3.InitControl(280 + offsetX, 164, 192, 48, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestWrite4.InitControl(280 + offsetX, 216, 192, 48, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestWrite1.InitControl(280 + offsetX, 60, 192, 48, m_ZoomRatio,  &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestWrite2.InitControl(280 + offsetX, 112, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestWrite3.InitControl(280 + offsetX, 164, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestWrite4.InitControl(280 + offsetX, 216, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
 	if (m_MixMode)
 	{
-		m_Comment.InitControl(8 + offsetX, 268, 664, 24, m_ZoomRatio, &m_BgDC, IP(L"CommentL"), 1, ES_LEFT, OwnerDrawImage | m_bHighContrast);
+		m_Comment.InitControl(8 + offsetX, 268, 664, 24, m_ZoomRatio, &m_BkDC, IP(L"CommentL"), 1, ES_LEFT, OwnerDrawImage | m_bHighContrast);
 	}
 	else
 	{
-		m_Comment.InitControl(8 + offsetX, 268, 464, 24, m_ZoomRatio, &m_BgDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage | m_bHighContrast);
+		m_Comment.InitControl(8 + offsetX, 268, 464, 24, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage | m_bHighContrast);
 	}
 	m_Comment.SetMargin(0, 4, 0, 4, m_ZoomRatio);
 	m_Comment.Adjust();
 
-	m_ReadUnit.InitControl(84 + offsetX, 36, 192, 24, m_ZoomRatio,   &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
-	m_WriteUnit.InitControl(280 + offsetX, 36, 192, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_ReadUnit.InitControl(84 + offsetX, 36, 192, 24, m_ZoomRatio,   &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_WriteUnit.InitControl(280 + offsetX, 36, 192, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
 
-	m_ComboCount.InitControl(84 + offsetX, 8, 40, 300, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboSize.InitControl(128 + offsetX, 8, 80, 300, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboDrive.InitControl(212 + offsetX, 8, 188 + comboDriveX, 300, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboUnit.InitControl(404 + offsetX, 8, 68, 300, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
+	m_ComboCount.InitControl(84 + offsetX, 8, 40, 300, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboSize.InitControl(128 + offsetX, 8, 80, 300, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboDrive.InitControl(212 + offsetX, 8, 188 + comboDriveX, 300, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboUnit.InitControl(404 + offsetX, 8, 68, 300, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 #endif
 
 	m_TestRead1.SetMargin(0, 0, 0, 4, m_ZoomRatio);
@@ -569,12 +567,12 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ComboUnit.SetMargin (0, 4, 0, 0, m_ZoomRatio);
 
 #ifdef MIX_MODE
-	m_TestMix1.InitControl(480 + offsetX, 60, 192, 48, m_ZoomRatio,  &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestMix2.InitControl(480 + offsetX, 112, 192, 48, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestMix3.InitControl(480 + offsetX, 164, 192, 48, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_TestMix4.InitControl(480 + offsetX, 216, 192, 48, m_ZoomRatio, &m_BgDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
-	m_ComboMix.InitControl(480 + offsetX, 8, 192, 300, m_ZoomRatio,  &m_BgDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_MixUnit.InitControl(480 + offsetX, 36, 192, 24, m_ZoomRatio,   &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_TestMix1.InitControl(480 + offsetX, 60, 192, 48, m_ZoomRatio,  &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestMix2.InitControl(480 + offsetX, 112, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestMix3.InitControl(480 + offsetX, 164, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_TestMix4.InitControl(480 + offsetX, 216, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage | m_bHighContrast);
+	m_ComboMix.InitControl(480 + offsetX, 8, 192, 300, m_ZoomRatio,  &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_MixUnit.InitControl(480 + offsetX, 36, 192, 24, m_ZoomRatio,   &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
 
 	m_TestMix1.SetMargin(0, 0, 0, 4, m_ZoomRatio);
 	m_TestMix2.SetMargin(0, 0, 0, 4, m_ZoomRatio);

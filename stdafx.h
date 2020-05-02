@@ -42,11 +42,6 @@
 
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-// Version Information
-#define PRODUCT_NAME			L"CrystalDiskMark 8 -Cecile-"
-#define PRODUCT_VERSION			L"Alpha0"
-#define PRODUCT_ROMING_NAME		L"Cecile"
-
 #ifdef UWP
 #ifdef SUISHO_SHIZUKU_SUPPORT
 #define PRODUCT_SHORT_NAME		L""
@@ -99,10 +94,12 @@
 #endif
 #endif
 
-/// Beta
-// #define PRODUCT_EDITION			L"-Cecile-"
+// Version Information
+#define PRODUCT_NAME				L"CrystalDiskMark 8"
+#define PRODUCT_VERSION				L"Alpha2"
+#define PRODUCT_ROMING_NAME			L"Cecile"
 
-#define PRODUCT_RELEASE				L"2020/04/18"
+#define PRODUCT_RELEASE				L"2020/05/02"
 #define PRODUCT_COPY_YEAR			L"2007-2020"
 #define PRODUCT_COPYRIGHT			L"© 2007-2020 hiyohiyo"
 #define PRODUCT_LICENSE				L"The MIT License"
@@ -114,7 +111,6 @@
 #define	URL_VERSION_EN				L"https://crystalmark.info/en/software/crystaldiskmark/crystaldiskmark-history/"
 #define	URL_LICENSE_JA				L"https://crystalmark.info/ja/software/crystaldiskmark/crystaldiskmark-license/"
 #define	URL_LICENSE_EN				L"https://crystalmark.info/en/software/crystaldiskmark/crystaldiskmark-license/"
-
 
 #define	URL_PROJECT_SHIZUKU_JA		L"https://suishoshizuku.com/ja/"
 #define	URL_PROJECT_SHIZUKU_EN		L"https://suishoshizuku.com/en/"

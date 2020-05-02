@@ -7,6 +7,7 @@
 
 #include "../stdafx.h"
 #include "ListCtrlFx.h"
+#include "GetOsInfo.h"
 
 IMPLEMENT_DYNAMIC(CListCtrlFx, CListCtrl)
 
@@ -14,7 +15,8 @@ CListCtrlFx::CListCtrlFx()
 {
 	m_X = 0;
 	m_Y = 0;
-	m_BgDC = NULL;
+	m_bNT6orLater = IsNT6orLater();
+	m_BkDC = NULL;
 	m_bHighContrast = FALSE;
 	m_RenderMode = SystemDraw;
 
@@ -41,7 +43,7 @@ BEGIN_MESSAGE_MAP(CListCtrlFx, CListCtrl)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, &CListCtrlFx::OnCustomdraw)
 END_MESSAGE_MAP()
 
-BOOL CListCtrlFx::InitControl(int x, int y, int width, int height, int maxWidth, int maxHeight, double zoomRatio, CDC* bgDC, int renderMode)
+BOOL CListCtrlFx::InitControl(int x, int y, int width, int height, int maxWidth, int maxHeight, double zoomRatio, CDC* bkDC, int renderMode)
 {
 	m_X = (int)(x * zoomRatio);
 	m_Y = (int)(y * zoomRatio);
@@ -51,7 +53,7 @@ BOOL CListCtrlFx::InitControl(int x, int y, int width, int height, int maxWidth,
 	maxWidth = (int)(maxWidth * zoomRatio);
 	maxHeight = (int)(maxHeight * zoomRatio);
 
-	m_BgDC = bgDC;
+	m_BkDC = bkDC;
 	m_RenderMode = renderMode;
 
 	if (renderMode & HighContrast)
@@ -61,12 +63,13 @@ BOOL CListCtrlFx::InitControl(int x, int y, int width, int height, int maxWidth,
 	}
 	else if (renderMode & OwnerDrawGlass)
 	{
-		m_BgBitmap.DeleteObject();
-		m_BgBitmap.CreateCompatibleBitmap(m_BgDC, maxWidth, maxHeight);
-		CDC BgDC;
-		BgDC.CreateCompatibleDC(m_BgDC);
-		BgDC.SelectObject(m_BgBitmap);
-		BgDC.BitBlt(0, 0, maxWidth, maxHeight, m_BgDC, m_X + 2, m_Y + 2, SRCCOPY);
+		m_bHighContrast = FALSE;
+		m_BkBitmap.DeleteObject();
+		m_BkBitmap.CreateCompatibleBitmap(m_BkDC, maxWidth, maxHeight);
+		CDC BkDC;
+		BkDC.CreateCompatibleDC(m_BkDC);
+		BkDC.SelectObject(m_BkBitmap);
+		BkDC.BitBlt(0, 0, maxWidth, maxHeight, m_BkDC, m_X + 2, m_Y + 2, SRCCOPY);
 
 		m_CtrlImage.Destroy();
 		m_CtrlImage.Create(maxWidth, maxHeight, 32);
@@ -103,27 +106,43 @@ BOOL CListCtrlFx::InitControl(int x, int y, int width, int height, int maxWidth,
 		m_CtrlBitmap.SetBitmapBits(length, bitmapBits);
 		delete[] bitmapBits;
 
-		SetupControlImage(m_BgBitmap, m_CtrlBitmap);
-
-		SetBkImage((HBITMAP)m_CtrlBitmap);
-
-		m_Header.InitControl(x, y, zoomRatio, bgDC, &m_CtrlBitmap, m_TextColor1, m_LineColor1, m_RenderMode);
+		SetupControlImage(m_BkBitmap, m_CtrlBitmap);
+		if(m_bNT6orLater)
+		{
+			SetBkImage((HBITMAP)m_CtrlBitmap);
+			m_Header.InitControl(x, y, zoomRatio, bkDC, &m_CtrlBitmap, m_TextColor1, m_BkColor1, m_LineColor1, m_RenderMode);
+		}
+		else
+		{
+			SetBkColor(m_BkColor1);
+			m_Header.InitControl(x, y, zoomRatio, bkDC, NULL, m_TextColor1, m_BkColor1, m_LineColor1, m_RenderMode);
+		}
 	}
 	else
 	{
-		SetBkImage(L"");
-		m_Header.InitControl(x, y, zoomRatio, bgDC, NULL, m_TextColor1, m_LineColor1, m_RenderMode);
+		m_bHighContrast = FALSE;
+		if(m_bNT6orLater)
+		{
+			SetBkImage(L"");
+			SetBkColor(m_BkColor1);
+			m_Header.InitControl(x, y, zoomRatio, bkDC, NULL, m_TextColor1, m_BkColor1, m_LineColor1, m_RenderMode);
+		}
+		else
+		{
+			SetBkColor(m_BkColor1);
+			m_Header.InitControl(x, y, zoomRatio, bkDC, NULL, m_TextColor1, m_BkColor1, m_LineColor1, m_RenderMode);
+		}
 	}
 
 	return TRUE;
 }
 
-void CListCtrlFx::SetupControlImage(CBitmap& bgBitmap, CBitmap& ctrlBitmap)
+void CListCtrlFx::SetupControlImage(CBitmap& bkBitmap, CBitmap& ctrlBitmap)
 {
-	if (m_BgDC->GetDeviceCaps(BITSPIXEL) * m_BgDC->GetDeviceCaps(PLANES) >= 24)
+	if (m_BkDC->GetDeviceCaps(BITSPIXEL) * m_BkDC->GetDeviceCaps(PLANES) >= 24)
 	{
 		BITMAP CtlBmpInfo, DstBmpInfo;
-		bgBitmap.GetBitmap(&DstBmpInfo);
+		bkBitmap.GetBitmap(&DstBmpInfo);
 		DWORD DstLineBytes = DstBmpInfo.bmWidthBytes;
 		DWORD DstMemSize = DstLineBytes * DstBmpInfo.bmHeight;
 		ctrlBitmap.GetBitmap(&CtlBmpInfo);
@@ -136,7 +155,7 @@ void CListCtrlFx::SetupControlImage(CBitmap& bgBitmap, CBitmap& ctrlBitmap)
 		}
 
 		BYTE* DstBuffer = new BYTE[DstMemSize];
-		bgBitmap.GetBitmapBits(DstMemSize, DstBuffer);
+		bkBitmap.GetBitmapBits(DstMemSize, DstBuffer);
 		BYTE* CtlBuffer = new BYTE[CtlMemSize];
 		ctrlBitmap.GetBitmapBits(CtlMemSize, CtlBuffer);
 
@@ -221,12 +240,12 @@ void CListCtrlFx::OnCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CListCtrlFx::SetTextColor1(COLORREF color){m_TextColor1 = color;}
 void CListCtrlFx::SetTextColor2(COLORREF color){m_TextColor2 = color;}
-void CListCtrlFx::SetTextSelected(COLORREF color) { m_TextSelected = color; }
-void CListCtrlFx::SetBkColor1(COLORREF color)  {m_BkColor1   = color;}
-void CListCtrlFx::SetBkColor2(COLORREF color)  {m_BkColor2   = color;}
-void CListCtrlFx::SetBkSelected(COLORREF color) {m_BkSelected = color; }
-void CListCtrlFx::SetLineColor1(COLORREF color) {m_LineColor1  = color;}
-void CListCtrlFx::SetLineColor2(COLORREF color) {m_LineColor2 = color; }
+void CListCtrlFx::SetTextSelected(COLORREF color){m_TextSelected = color;}
+void CListCtrlFx::SetBkColor1(COLORREF color){m_BkColor1 = color;}
+void CListCtrlFx::SetBkColor2(COLORREF color){m_BkColor2 = color;}
+void CListCtrlFx::SetBkSelected(COLORREF color){m_BkSelected = color;}
+void CListCtrlFx::SetLineColor1(COLORREF color){m_LineColor1 = color;}
+void CListCtrlFx::SetLineColor2(COLORREF color){m_LineColor2 = color;}
 
 void CListCtrlFx::SetGlassColor(COLORREF glassColor, BYTE glassAlpha)
 {
@@ -234,34 +253,35 @@ void CListCtrlFx::SetGlassColor(COLORREF glassColor, BYTE glassAlpha)
 	m_GlassAlpha = glassAlpha;
 }
 
-
 COLORREF CListCtrlFx::GetTextColor1(){return m_TextColor1;}
 COLORREF CListCtrlFx::GetTextColor2(){return m_TextColor2;}
-COLORREF CListCtrlFx::GetTextSelected() { return m_TextSelected; }
-COLORREF CListCtrlFx::GetBkColor1()  {return m_BkColor1;}
-COLORREF CListCtrlFx::GetBkColor2()  {return m_BkColor2;}
-COLORREF CListCtrlFx::GetBkSelected() { return m_BkSelected; }
-COLORREF CListCtrlFx::GetLineColor1() {return m_LineColor1;}
-COLORREF CListCtrlFx::GetLineColor2() { return m_LineColor2; }
+COLORREF CListCtrlFx::GetTextSelected(){return m_TextSelected;}
+COLORREF CListCtrlFx::GetBkColor1(){return m_BkColor1;}
+COLORREF CListCtrlFx::GetBkColor2(){return m_BkColor2;}
+COLORREF CListCtrlFx::GetBkSelected(){return m_BkSelected;}
+COLORREF CListCtrlFx::GetLineColor1(){return m_LineColor1;}
+COLORREF CListCtrlFx::GetLineColor2(){return m_LineColor2;}
 
-void CListCtrlFx::SetFontEx(CString face, double zoomRatio, double fontRatio)
+void CListCtrlFx::SetFontEx(CString face, int size, double zoomRatio, double fontRatio)
 {
 	LOGFONT logFont = {0};
 	logFont.lfCharSet = DEFAULT_CHARSET;
-	logFont.lfHeight = (LONG)(-12 * zoomRatio * fontRatio);
+	logFont.lfHeight = (LONG)(-1 * size * zoomRatio * fontRatio);
 	logFont.lfQuality = 6;
 	if(face.GetLength() < 32)
 	{
-		wsprintf(logFont.lfFaceName, _T("%s"), face.GetString());
+		wsprintf(logFont.lfFaceName, L"%s", face.GetString());
 	}
 	else
 	{
-		wsprintf(logFont.lfFaceName, _T(""));
+		wsprintf(logFont.lfFaceName, L"");
 	}
 
 	m_Font.DeleteObject();
 	m_Font.CreateFontIndirect(&logFont);
 	SetFont(&m_Font);
+
+	m_Header.SetFontEx(face, size, zoomRatio, fontRatio);
 }
 
 void CListCtrlFx::PreSubclassWindow()
@@ -276,6 +296,14 @@ void CListCtrlFx::EnableHeaderOwnerDraw(BOOL bOwnerDraw)
 {
 	if (m_RenderMode & HighContrast)
 	{
+		HDITEM hi = { 0 };
+		hi.mask = HDI_FORMAT;
+		for (int i = 0; i < m_Header.GetItemCount(); i++)
+		{
+			m_Header.GetItem(i, &hi);
+			hi.fmt &= ~HDF_OWNERDRAW;
+			m_Header.SetItem(i, &hi);
+		}
 		return;
 	}
 	else if (m_RenderMode & OwnerDrawGlass)

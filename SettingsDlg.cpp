@@ -379,36 +379,36 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ButtonSetDefault.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio);
 	m_ButtonOk.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio);
 
-	m_LabelBlockSize.InitControl(176, 12, 120, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
-	m_LabelQueues.InitControl(304, 12, 120, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
-	m_LabelThreads.InitControl(432, 12, 120, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_LabelBlockSize.InitControl(176, 12, 120, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_LabelQueues.InitControl(304, 12, 120, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
+	m_LabelThreads.InitControl(432, 12, 120, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent | m_bHighContrast);
 
-	m_SequentialLabel1.InitControl(0, 40, 172, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_RIGHT, OwnerDrawTransparent | m_bHighContrast);
-	m_SequentialLabel2.InitControl(0, 80, 172, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_RIGHT, OwnerDrawTransparent | m_bHighContrast);
-	m_RandomLabel1.InitControl(0, 120, 172, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_RIGHT, OwnerDrawTransparent | m_bHighContrast);
-	m_RandomLabel2.InitControl(0, 160, 172, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_RIGHT, OwnerDrawTransparent | m_bHighContrast);
-	m_LabelAffinity.InitControl(0, 200, 172, 24, m_ZoomRatio, &m_BgDC, NULL, 0, SS_RIGHT, OwnerDrawTransparent | m_bHighContrast);
+	m_SequentialLabel1.InitControl(0, 40, 172, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_RIGHT, OwnerDrawTransparent | m_bHighContrast);
+	m_SequentialLabel2.InitControl(0, 80, 172, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_RIGHT, OwnerDrawTransparent | m_bHighContrast);
+	m_RandomLabel1.InitControl(0, 120, 172, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_RIGHT, OwnerDrawTransparent | m_bHighContrast);
+	m_RandomLabel2.InitControl(0, 160, 172, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_RIGHT, OwnerDrawTransparent | m_bHighContrast);
+	m_LabelAffinity.InitControl(0, 200, 172, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_RIGHT, OwnerDrawTransparent | m_bHighContrast);
 
-	m_ComboSequentialSize1.InitControl(176, 40, 120, 200, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboSequentialSize2.InitControl(176, 80, 120, 200, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboRandomSize1.InitControl(176, 120, 120, 200, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboRandomSize2.InitControl(176, 160, 120, 200, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboSequentialQueues1.InitControl(304, 40, 120, 200, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboSequentialQueues2.InitControl(304, 80, 120, 200, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboRandomQueues1.InitControl(304, 120, 120, 200, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboRandomQueues2.InitControl(304, 160, 120, 200, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboSequentialThreads1.InitControl(432, 40, 120, 200, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboSequentialThreads2.InitControl(432, 80, 120, 200, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboRandomThreads1.InitControl(432, 120, 120, 200, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
-	m_ComboRandomThreads2.InitControl(432, 160, 120, 200, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
+	m_ComboSequentialSize1.InitControl(176, 40, 120, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboSequentialSize2.InitControl(176, 80, 120, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboRandomSize1.InitControl(176, 120, 120, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboRandomSize2.InitControl(176, 160, 120, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboSequentialQueues1.InitControl(304, 40, 120, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboSequentialQueues2.InitControl(304, 80, 120, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboRandomQueues1.InitControl(304, 120, 120, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboRandomQueues2.InitControl(304, 160, 120, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboSequentialThreads1.InitControl(432, 40, 120, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboSequentialThreads2.InitControl(432, 80, 120, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboRandomThreads1.InitControl(432, 120, 120, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_ComboRandomThreads2.InitControl(432, 160, 120, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, SystemDraw | m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 
-	m_ComboAffinity.InitControl(176, 200, 200, 100, m_ZoomRatio, &m_BgDC, NULL, 0, ES_LEFT, m_bHighContrast, m_ComboBg, m_ComboBgSelected, m_Glass, m_GlassAlpha);
+	m_ComboAffinity.InitControl(176, 200, 200, 100, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, m_bHighContrast, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 
-	m_ButtonSetDefault.InitControl(120, 240, 120, 32, m_ZoomRatio, &m_BgDC, NULL, 0, BS_CENTER, SystemDraw | m_bHighContrast);
+	m_ButtonSetDefault.InitControl(120, 240, 120, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw | m_bHighContrast);
 	m_ButtonSetDefault.SetHandCursor();
 	m_ButtonSetDefault.SetWindowTextW(i18n(L"Dialog", L"DEFAULT"));
 
-	m_ButtonOk.InitControl(320, 240, 120, 32, m_ZoomRatio, &m_BgDC, NULL, 0, BS_CENTER, SystemDraw | m_bHighContrast);
+	m_ButtonOk.InitControl(320, 240, 120, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw | m_bHighContrast);
 	m_ButtonOk.SetHandCursor();
 	
 	Invalidate();

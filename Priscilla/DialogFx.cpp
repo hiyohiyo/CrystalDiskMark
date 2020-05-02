@@ -31,10 +31,11 @@ CDialogFx::CDialogFx(UINT dlgResouce, CWnd* pParent)
 {
 	// Dialog
 	m_bInitializing = TRUE;
+	m_bDpiChanging = FALSE;
 	m_bShowWindow = FALSE;
 	m_bModelessDlg = FALSE;
 	m_bHighContrast = FALSE;
-	m_bBgImage = FALSE;
+	m_bBkImage = FALSE;
 	m_MenuId = 0;
 	m_ParentWnd = NULL;
 	m_DlgWnd = NULL;
@@ -42,6 +43,11 @@ CDialogFx::CDialogFx(UINT dlgResouce, CWnd* pParent)
 	m_bDrag = FALSE;
 	m_FontScale = 100;
 	m_FontRatio = 1.0;
+
+	m_MaxSizeX = 65535;
+	m_MinSizeX = 0;
+	m_MaxSizeY = 65535;
+	m_MinSizeY = 0;
 
 	// Zoom
 	m_Dpi = 96;
@@ -160,7 +166,7 @@ void CDialogFx::SetClientSize(int sizeX, int sizeY, DWORD menuLine)
 
 	GetWindowRect(&currentRc);
 	GetClientRect(&clientRc);
-	X = currentRc.left;// -(clientRc.Width() - sizeX) / 2;
+	X = currentRc.left;
 	Y = currentRc.top;
 
 	if (clientRc.Height() == sizeY && clientRc.Width() == sizeX)
@@ -168,8 +174,8 @@ void CDialogFx::SetClientSize(int sizeX, int sizeY, DWORD menuLine)
 		return;
 	}
 
-	rc.right += currentRc.Width() - clientRc.Width();
-	rc.bottom += currentRc.Height() - clientRc.Height();
+	rc.right = sizeX;
+	rc.bottom = sizeY;
 	SetWindowPos(&CWnd::wndTop, X, Y, rc.right, rc.bottom, SWP_NOMOVE);
 	GetClientRect(&clientRc);
 
@@ -186,7 +192,7 @@ void CDialogFx::UpdateBackground(BOOL resize)
 	BOOL    br = FALSE;
 	CImage srcBitmap;
 	double ratio = m_ZoomRatio;
-	m_bBgImage = FALSE;
+	m_bBkImage = FALSE;
 
 	if (resize) { m_ZoomRatio = 3.0; }
 
@@ -196,7 +202,7 @@ void CDialogFx::UpdateBackground(BOOL resize)
 
 	if (SUCCEEDED(hr))
 	{
-		m_bBgImage = TRUE;
+		m_bBkImage = TRUE;
 		CBitmap	baseBitmap;
 		CDC		baseDC;
 		CDC* pWndDC = GetDC();
@@ -207,21 +213,21 @@ void CDialogFx::UpdateBackground(BOOL resize)
 		baseBitmap.CreateCompatibleBitmap(pWndDC, srcBitmap.GetWidth(), srcBitmap.GetHeight());
 		baseDC.CreateCompatibleDC(pWndDC);
 
-		m_BgBitmap.DeleteObject();
-		m_BgDC.DeleteDC();
-		m_BgBitmap.CreateCompatibleBitmap(pWndDC, w, h);
-		m_BgDC.CreateCompatibleDC(pWndDC);
+		m_BkBitmap.DeleteObject();
+		m_BkDC.DeleteDC();
+		m_BkBitmap.CreateCompatibleBitmap(pWndDC, w, h);
+		m_BkDC.CreateCompatibleDC(pWndDC);
 
 		ReleaseDC(pWndDC);
 
 		baseDC.SelectObject(&baseBitmap);
-		m_BgDC.SelectObject(&m_BgBitmap);
+		m_BkDC.SelectObject(&m_BkBitmap);
 
 		srcBitmap.BitBlt(baseDC.GetSafeHdc(), 0, 0, SRCCOPY);
 		srcBitmap.Destroy();
 
 		Bitmap* pBitmap = Bitmap::FromHBITMAP((HBITMAP)baseBitmap.GetSafeHandle(), NULL);
-		Graphics	g(m_BgDC.GetSafeHdc());
+		Graphics	g(m_BkDC.GetSafeHdc());
 		g.SetInterpolationMode(InterpolationModeHighQualityBicubic);
 		g.DrawImage(pBitmap, 0, 0, w, h);
 
@@ -230,7 +236,7 @@ void CDialogFx::UpdateBackground(BOOL resize)
 		baseDC.DeleteDC();
 
 		m_BrushDlg.DeleteObject();
-		m_BrushDlg.CreatePatternBrush(&m_BgBitmap);
+		m_BrushDlg.CreatePatternBrush(&m_BkBitmap);
 
 		return;
 	}
@@ -250,16 +256,16 @@ void CDialogFx::UpdateBackground(BOOL resize)
 		int w = rect.Width();
 		int h = rect.Height();
 
-		m_BgBitmap.DeleteObject();
-		m_BgBitmap.CreateCompatibleBitmap(pWndDC, w, h);
-		m_BgDC.DeleteDC();
-		m_BgDC.CreateCompatibleDC(pWndDC);
-		m_BgDC.SelectObject(&m_BgBitmap);
+		m_BkBitmap.DeleteObject();
+		m_BkBitmap.CreateCompatibleBitmap(pWndDC, w, h);
+		m_BkDC.DeleteDC();
+		m_BkDC.CreateCompatibleDC(pWndDC);
+		m_BkDC.SelectObject(&m_BkBitmap);
 
 		m_BrushDlg.DeleteObject();
 		m_BrushDlg.CreateSolidBrush(RGB(255, 255, 255));
 
-		m_BgDC.FillRect(&rect, &m_BrushDlg);
+		m_BkDC.FillRect(&rect, &m_BrushDlg);
 
 		ReleaseDC(pWndDC);
 	}
@@ -421,18 +427,29 @@ void CDialogFx::SetLayeredWindow(HWND hWnd, BYTE alpha)
 
 void CDialogFx::OnTimer(UINT_PTR nIDEvent)
 {
-	if (nIDEvent == TimerUpdateDialogSize)
+	switch (nIDEvent)
 	{
+	case TimerUpdateDialogSizeDpiChanged:
 		if (m_bDrag)
 		{
-			KillTimer(TimerUpdateDialogSize);
-			SetTimer(TimerUpdateDialogSize, TIMER_UPDATE_DIALOG, NULL);
+			KillTimer(TimerUpdateDialogSizeDpiChanged);
+			SetTimer(TimerUpdateDialogSizeDpiChanged, TIMER_UPDATE_DIALOG, NULL);
 		}
 		else
 		{
-			KillTimer(TimerUpdateDialogSize);
+			m_bDpiChanging = FALSE;
+			KillTimer(TimerUpdateDialogSizeDpiChanged);
 			UpdateDialogSize();
 		}
+		break;
+	case TimerUpdateDialogSizeDisplayChange:
+		KillTimer(TimerUpdateDialogSizeDisplayChange);
+		UpdateDialogSize();
+		break;
+	case TimerUpdateDialogSizeSysColorChange:
+		KillTimer(TimerUpdateDialogSizeSysColorChange);
+		UpdateDialogSize();
+		break;
 	}
 }
 
@@ -442,7 +459,7 @@ HBRUSH CDialogFx::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 	switch (nCtlColor) {
 	case CTLCOLOR_DLG:
-		if (m_bHighContrast && !m_bBgImage)
+		if (m_bHighContrast && !m_bBkImage)
 		{
 			return hbr;
 		}
@@ -485,14 +502,16 @@ afx_msg LRESULT CDialogFx::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 	if (GetWin10Version() >= 1709) // DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2
 	{
 		ChangeZoomType(m_ZoomType);
-		SetTimer(TimerUpdateDialogSize, TIMER_UPDATE_DIALOG, NULL);
+		m_bDpiChanging = TRUE;
+		SetTimer(TimerUpdateDialogSizeDpiChanged, TIMER_UPDATE_DIALOG, NULL);
 	}
 	else if(m_ZoomType == ZoomTypeAuto)
 	{
 		DWORD oldZoomRatio = (DWORD)(m_ZoomRatio * 100);
 		if (ChangeZoomType(m_ZoomType) != oldZoomRatio)
 		{
-			SetTimer(TimerUpdateDialogSize, TIMER_UPDATE_DIALOG, NULL);
+			m_bDpiChanging = TRUE;
+			SetTimer(TimerUpdateDialogSizeDpiChanged, TIMER_UPDATE_DIALOG, NULL);
 		}
 	}
 
@@ -503,7 +522,7 @@ afx_msg LRESULT CDialogFx::OnDisplayChange(WPARAM wParam, LPARAM lParam)
 {
 	if (m_bInitializing) { return 0; }
 
-	SetTimer(TimerUpdateDialogSize, TIMER_UPDATE_DIALOG, NULL);
+	SetTimer(TimerUpdateDialogSizeDisplayChange, TIMER_UPDATE_DIALOG, NULL);
 
 	return 0;
 }
@@ -514,7 +533,7 @@ afx_msg LRESULT CDialogFx::OnSysColorChange(WPARAM wParam, LPARAM lParam)
 
 	m_bHighContrast = IsHighContrast();
 
-	SetTimer(TimerUpdateDialogSize, TIMER_UPDATE_DIALOG, NULL);
+	SetTimer(TimerUpdateDialogSizeSysColorChange, TIMER_UPDATE_DIALOG, NULL);
 
 	return 0;
 }
