@@ -42,25 +42,7 @@
     <ClCompile Include="Priscilla\ComboBoxFx.cpp">
       <Filter>Priscilla</Filter>
     </ClCompile>
-    <ClCompile Include="Priscilla\DebugPrint.cpp">
-      <Filter>Priscilla</Filter>
-    </ClCompile>
-    <ClCompile Include="Priscilla\DialogFx.cpp">
-      <Filter>Priscilla</Filter>
-    </ClCompile>
     <ClCompile Include="Priscilla\EditFx.cpp">
-      <Filter>Priscilla</Filter>
-    </ClCompile>
-    <ClCompile Include="Priscilla\FontComboBox.cpp">
-      <Filter>Priscilla</Filter>
-    </ClCompile>
-    <ClCompile Include="Priscilla\GetFileVersion.cpp">
-      <Filter>Priscilla</Filter>
-    </ClCompile>
-    <ClCompile Include="Priscilla\GetOsInfo.cpp">
-      <Filter>Priscilla</Filter>
-    </ClCompile>
-    <ClCompile Include="Priscilla\MainDialog.cpp">
       <Filter>Priscilla</Filter>
     </ClCompile>
     <ClCompile Include="Priscilla\StaticFx.cpp">
@@ -68,6 +50,21 @@
     </ClCompile>
     <ClCompile Include="FontSelectionDlg.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\DialogFx.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\FontComboBoxFx.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\MainDialogFx.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\OsInfoFx.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\UtilityFx.cpp">
+      <Filter>Priscilla</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,25 +98,10 @@
     <ClInclude Include="Priscilla\CommonFx.h">
       <Filter>Priscilla</Filter>
     </ClInclude>
-    <ClInclude Include="Priscilla\DebugPrint.h">
-      <Filter>Priscilla</Filter>
-    </ClInclude>
     <ClInclude Include="Priscilla\DialogFx.h">
       <Filter>Priscilla</Filter>
     </ClInclude>
     <ClInclude Include="Priscilla\EditFx.h">
-      <Filter>Priscilla</Filter>
-    </ClInclude>
-    <ClInclude Include="Priscilla\FontComboBox.h">
-      <Filter>Priscilla</Filter>
-    </ClInclude>
-    <ClInclude Include="Priscilla\GetFileVersion.h">
-      <Filter>Priscilla</Filter>
-    </ClInclude>
-    <ClInclude Include="Priscilla\GetOsInfo.h">
-      <Filter>Priscilla</Filter>
-    </ClInclude>
-    <ClInclude Include="Priscilla\MainDialog.h">
       <Filter>Priscilla</Filter>
     </ClInclude>
     <ClInclude Include="Priscilla\StaticFx.h">
@@ -127,6 +109,18 @@
     </ClInclude>
     <ClInclude Include="FontSelectionDlg.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\FontComboBoxFx.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\MainDialogFx.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\OsInfoFx.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\UtilityFx.h">
+      <Filter>Priscilla</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

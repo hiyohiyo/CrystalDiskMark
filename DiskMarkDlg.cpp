@@ -35,7 +35,7 @@
 extern PROCESS_INFORMATION pi;
 
 CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
-	: CMainDialog(CDiskMarkDlg::IDD, pParent)
+	: CMainDialogFx(CDiskMarkDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_hIconMini = AfxGetApp()->LoadIcon(IDI_TRAY_ICON);
@@ -67,7 +67,7 @@ CDiskMarkDlg::~CDiskMarkDlg()
 
 void CDiskMarkDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CMainDialog::DoDataExchange(pDX);
+	CMainDialogFx::DoDataExchange(pDX);
 
 	DDX_Control(pDX, IDC_BUTTON_ALL, m_ButtonAll);
 	DDX_Control(pDX, IDC_BUTTON_TEST_1, m_ButtonTest1);
@@ -120,7 +120,7 @@ void CDiskMarkDlg::DoDataExchange(CDataExchange* pDX)
 #endif
 }
 
-BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialog)
+BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialogFx)
 	//}}AFX_MSG_MAP
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	ON_WM_GETMINMAXINFO()
@@ -221,7 +221,7 @@ int CALLBACK EnumFontFamExProcDefaultFont(ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX
 
 BOOL CDiskMarkDlg::OnInitDialog()
 {
-	CMainDialog::OnInitDialog();
+	CMainDialogFx::OnInitDialog();
 
 	m_hAccelerator = ::LoadAccelerators(AfxGetInstanceHandle(),
 		                                MAKEINTRESOURCE(IDR_ACCELERATOR));
@@ -1044,7 +1044,7 @@ void CDiskMarkDlg::OnPaint()
 	}
 	else
 	{
-		CMainDialog::OnPaint();
+		CMainDialogFx::OnPaint();
 	}
 }
 
@@ -1104,7 +1104,7 @@ void CDiskMarkDlg::OnCancel()
 	}
 	WritePrivateProfileString(L"Setting", L"DriveLetter", cstr, m_Ini);
 
-	CMainDialog::OnCancel();
+	CMainDialogFx::OnCancel();
 }
 
 void CDiskMarkDlg::InitScore()
@@ -2048,7 +2048,7 @@ BOOL CDiskMarkDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 	// Select Theme
 	if (WM_THEME_ID <= wParam && wParam < WM_THEME_ID + (UINT)m_MenuArrayTheme.GetSize())
 	{
-		CMainDialog::OnCommand(wParam, lParam);
+		CMainDialogFx::OnCommand(wParam, lParam);
 		return TRUE;
 	}
 
@@ -2079,7 +2079,7 @@ BOOL CDiskMarkDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 		UpdateComboTooltip();
 	}
 
-	return CMainDialog::OnCommand(wParam, lParam);
+	return CMainDialogFx::OnCommand(wParam, lParam);
 }
 
 void CDiskMarkDlg::OnEditCopy()
@@ -2781,7 +2781,7 @@ typedef BOOL(WINAPI *FuncEnableNonClientDpiScaling) (HWND hwnd);
 
 BOOL CDiskMarkDlg::OnNcCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (!CMainDialog::OnNcCreate(lpCreateStruct))
+	if (!CMainDialogFx::OnNcCreate(lpCreateStruct))
 		return FALSE;
 
 	HMODULE hModule = GetModuleHandle(L"User32.dll");

@@ -15,7 +15,7 @@ IMPLEMENT_DYNCREATE(CSettingsDlg, CDialog)
 CSettingsDlg::CSettingsDlg(CWnd* pParent /*=NULL*/)
 	: CDialogFx(CSettingsDlg::IDD, pParent)
 {
-	CMainDialog* p = (CMainDialog*)pParent;
+	CMainDialogFx* p = (CMainDialogFx*)pParent;
 
 	m_ZoomType = p->GetZoomType();
 	m_FontScale = p->GetFontScale();

@@ -12,15 +12,15 @@
 #include "FontSelectionDlg.h"
 
 #include "DialogFx.h"
-#include "MainDialog.h"
+#include "MainDialogFx.h"
 #include "ButtonFx.h"
 #include "StaticFx.h"
 #include "ComboBoxFx.h"
 #include "EditFx.h"
-#include "GetFileVersion.h"
-#include "GetOsInfo.h"
+#include "UtilityFx.h"
+#include "OsInfoFx.h"
 
-class CDiskMarkDlg : public CMainDialog
+class CDiskMarkDlg : public CMainDialogFx
 {
 public:
 	CDiskMarkDlg(CWnd* pParent = NULL);
