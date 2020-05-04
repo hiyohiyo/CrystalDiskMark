@@ -359,7 +359,7 @@ BOOL Init(void* dlg)
 #elif _M_ARM64
 	DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_ARM64);
 #elif _M_X64
-	if(Is8orLater())
+	if(IsWin8orLater())
 	{
 		DiskSpdExe.Format(L"%s\\%s", temp, DISK_SPD_EXE_64);
 	}
