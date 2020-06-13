@@ -95,11 +95,11 @@
 #endif
 
 // Version Information
-#define PRODUCT_NAME				L"CrystalDiskMark 8"
-#define PRODUCT_VERSION				L"Alpha2"
+#define PRODUCT_NAME				L"CrystalDiskMark"
+#define PRODUCT_VERSION				L"8 Beta 2"
 #define PRODUCT_ROMING_NAME			L"Cecile"
 
-#define PRODUCT_RELEASE				L"2020/05/02"
+#define PRODUCT_RELEASE				L"2020/05/30"
 #define PRODUCT_COPY_YEAR			L"2007-2020"
 #define PRODUCT_COPYRIGHT			L"© 2007-2020 hiyohiyo"
 #define PRODUCT_LICENSE				L"The MIT License"

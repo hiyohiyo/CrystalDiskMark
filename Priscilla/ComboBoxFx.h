@@ -24,16 +24,18 @@ public:
 
 // Control
 public:
-	BOOL InitControl(int x, int y, int width, int height, double zoomRatio,
-		 CDC* bkDC, LPCWSTR imagePath, int imageCount, DWORD textAlign, int renderMode,
+	BOOL InitControl(int x, int y, int width, int height, double zoomRatio, CDC* bkDC, 
+		 LPCWSTR imagePath, int imageCount, DWORD textAlign, int renderMode, BOOL bHighContrast, BOOL m_bDarkMode,
 		 COLORREF bkColor, COLORREF bkColorSelected, COLORREF glassColor, BYTE glassAlpha
 	);
 	void SetFontHeight(int height, double zoomRatio, double fontRatio = 1.0);
 	void SetItemHeightEx(int nIndex, int height, double zoomRatio, double fontRatio = 1.0);
+	void SetItemHeightAll(int height, double zoomRatio, double fontRatio = 1.0);
 	void SetMargin(int top, int left, int bottom, int right, double zoomRatio);
 	CSize GetSize(void);
 	void SetGlassColor(COLORREF glassColor, BYTE glassAlpha);
 	void SetAlpha(BYTE alpha);
+	HWND GetListHwnd();
 
 	// Font
 	void SetFontEx(CString face, int size, int sizeToolTip, double zoomRatio, double fontRatio = 1.0,
@@ -80,10 +82,12 @@ protected:
 	// Control
 	int m_X;
 	int m_Y;
+	double m_ZoomRatio;
 	CSize m_CtrlSize;
 	CRect m_Margin;
 	int m_RenderMode;
 	BOOL m_bHighContrast;
+	BOOL m_bDarkMode;
 
 	// Alpha/Glass
 	BYTE m_Alpha;
@@ -123,4 +127,7 @@ protected:
 	BOOL m_bFocas;
 	BOOL m_bTrackingNow;
 	BOOL m_bHandCursor;
+
+	// Brush
+	CBrush m_BkBrush;
 };

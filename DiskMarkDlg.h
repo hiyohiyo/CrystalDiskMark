@@ -28,12 +28,6 @@ public:
 
 	enum { IDD = IDD_DISKMARK_DIALOG };
 
-	enum RESULT_TEXT
-	{
-		RESULT_TEXT_CLIPBOARD = 0,
-		RESULT_TEXT_FILE
-	};
-
 	enum SCORE_UNIT
 	{
 		SCORE_MBS = 0,
@@ -90,6 +84,7 @@ public:
 	CString m_ValueTestCount;
 	CString m_ValueTestSize;
 	CString m_ValueTestDrive;
+	CString m_ValueTestMode;
 	CString m_TestDriveInfo;
 	CString m_TestTargetPath;
 	long m_TestDriveLetter;
@@ -100,6 +95,7 @@ public:
 	int m_IndexTestSize;
 	int m_IndexTestDrive;
 	int m_IndexTestMix;
+	int m_IndexTestMode;
 
 	int m_SequentialSize1;
 	int m_SequentialQueues1;
@@ -187,12 +183,16 @@ protected:
 	void EnableMenus();
 	void DisableMenus();
 
-	void ResultText(RESULT_TEXT type);
+	void SaveText(CString fileName);
 
 	void SetLayeredWindow(HWND hWnd, BYTE alpha);
 	void UpdateComboTooltip();
 
 	virtual BOOL CheckThemeEdition(CString name);
+
+	BOOL IsNormMode();
+	BOOL IsNVMeMode();
+	BOOL IsAtaMode();
 
 #ifdef MIX_MODE
 	CStaticFx m_TestMix1;
@@ -221,10 +221,11 @@ protected:
 
 	CEditFx m_Comment;
 
-	CComboBoxFx m_ComboUnit;
 	CComboBoxFx m_ComboCount;
 	CComboBoxFx m_ComboSize;
 	CComboBoxFx m_ComboDrive;
+	CComboBoxFx m_ComboUnit;
+	CComboBoxFx m_ComboMode;
 
 	CStaticFx m_WriteUnit;
 	CStaticFx m_ReadUnit;
@@ -269,7 +270,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	afx_msg void OnEditCopy();
+	afx_msg void OnCopy();
 	afx_msg void OnHelp();
 	afx_msg void OnCrystalDewWorld();
 	afx_msg void OnModeDefault();
@@ -277,17 +278,21 @@ public:
 	afx_msg void OnProfileDefault();
 	afx_msg void OnProfilePeak();
 	afx_msg void OnProfileReal();
-	afx_msg void OnResultSave();
+	afx_msg void OnSaveText();
+	afx_msg void OnSaveImage();
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnCbnSelchangeComboDrive();
 	afx_msg void OnCbnSelchangeComboUnit();
+	afx_msg void OnCbnSelchangeComboMode();
 	afx_msg void MoveForcus();
 	afx_msg void UpdateUnitLabel();
 
 	void ProfileDefault();
 	void ProfilePeak();
 	void ProfileReal();
+
+	void SettingsQueuesThreads(int type);
 
 #ifdef MIX_MODE
 	afx_msg void OnProfileDefaultMix();

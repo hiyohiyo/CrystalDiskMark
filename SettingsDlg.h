@@ -31,6 +31,7 @@ protected:
 	virtual void OnCancel();
 
 	void UpdateDialogSize();
+	int GetBlockSize(CString text);
 
 	CStaticFx m_LabelBlockSize;
 	CStaticFx m_LabelQueues;
@@ -57,10 +58,14 @@ protected:
 
 	CComboBoxFx m_ComboAffinity;
 
-	CButtonFx m_ButtonSetDefault;
+	CButtonFx m_ButtonSetNorm;
+	CButtonFx m_ButtonSetNVMe;
+	CButtonFx m_ButtonSetAta;
 	CButtonFx m_ButtonOk;
 
-	void OnSetDefault();
+	void OnSetNorm();
+	void OnSetNVMe();
+	void OnSetAta();
 	void OnOk();
 	void InitComboBox();
 

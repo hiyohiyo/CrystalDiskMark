@@ -785,7 +785,6 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
       <OutputFile>..\Cecile\$(ProjectName)64S.exe</OutputFile>
-      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -903,7 +902,6 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
       <OutputFile>..\Cecile\$(ProjectName)64S_UWP.exe</OutputFile>
-      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1023,7 +1021,6 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
       <OutputFile>..\Cecile\$(ProjectName)64.exe</OutputFile>
-      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1141,7 +1138,6 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
       <OutputFile>..\Cecile\$(ProjectName)64_UWP.exe</OutputFile>
-      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1384,6 +1380,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|x64'">../stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Priscilla\DarkMode.cpp" />
     <ClCompile Include="Priscilla\DialogFx.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|Win32'">../stdafx.h</PrecompiledHeaderFile>
@@ -1614,6 +1611,7 @@
     <ClInclude Include="Priscilla\ButtonFx.h" />
     <ClInclude Include="Priscilla\ComboBoxFx.h" />
     <ClInclude Include="Priscilla\CommonFx.h" />
+    <ClInclude Include="Priscilla\DarkMode.h" />
     <ClInclude Include="Priscilla\DialogFx.h" />
     <ClInclude Include="Priscilla\EditFx.h" />
     <ClInclude Include="Priscilla\FontComboBoxFx.h" />

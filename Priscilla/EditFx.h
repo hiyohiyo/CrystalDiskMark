@@ -24,7 +24,7 @@ public:
 
 	// Control
 	BOOL InitControl(int x, int y, int width, int height, double zoomRatio, CDC* bkDC, LPCWSTR imagePath,
-		 int imageCount = 0, DWORD textAlign = ES_LEFT, int renderMode = OwnerDrawImage);
+		 int imageCount, DWORD textAlign, int renderMode, BOOL bHighContrast, BOOL bDarkMode);
 	void SetMargin(int top, int left, int bottom, int right, double zoomRatio);
 	CSize GetSize(void);
 	void SetDrawFrame(BOOL bDrawFrame);
@@ -32,8 +32,14 @@ public:
 	void Adjust();
 
 	// Font
-	void SetFontEx(CString face, int size, double zoomRatio, double fontRatio = 1.0,
+	void SetFontEx(CString face, int size, int sizeToolTip, double zoomRatio, double fontRatio = 1.0,
 		 COLORREF textColor = RGB(0, 0, 0), LONG fontWeight = FW_NORMAL);
+
+	// ToolTip
+	void SetToolTipText(LPCTSTR text);
+	void SetToolTipActivate(BOOL bActivate = TRUE);
+	void SetToolTipWindowText(LPCTSTR text);
+	CString GetToolTipText();
 
 protected:
 	// Image
@@ -43,6 +49,10 @@ protected:
 	BOOL SetBitmap(CBitmap& bitmap);
 	void LoadCtrlBk(CDC* drawDC);
 	void SetupControlImage(CBitmap& bkBitmap, CBitmap& ctrlBitmap);
+
+	// ToolTip
+	void InitToolTip();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	// MessageMap
 	DECLARE_MESSAGE_MAP()
@@ -58,6 +68,7 @@ protected:
 	CRect m_Margin;
 	int m_RenderMode;
 	BOOL m_bHighContrast;
+	BOOL m_bDarkMode;
 
 	// Glass
 	COLORREF m_GlassColor;
@@ -77,5 +88,10 @@ protected:
 	// Font
 	DWORD m_TextAlign;
 	CFont m_Font;
+	CFont m_FontToolTip;
 	COLORREF m_TextColor;
+
+	// ToolTip
+	CToolTipCtrl m_ToolTip;
+	CString m_ToolTipText;
 };

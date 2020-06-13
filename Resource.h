@@ -42,6 +42,7 @@
 #define IDC_WRITE_UNIT                  1030
 #define IDC_MIX_UNIT                    1031
 #define IDC_COMBO_MIX                   1032
+#define IDC_COMBO_MODE                  1033
 #define IDC_CRYSTAL_DEW_WORLD           1100
 #define IDC_PROJECT_SITE_1              1101
 #define IDC_PROJECT_SITE_2              1102
@@ -80,15 +81,18 @@
 #define IDC_LABEL_QUEUES				1322
 #define IDC_LABEL_THREADS				1323
 #define IDC_SET_DEFAULT					1324
-#define IDC_AFFINITY_LABEL				1325
-#define IDC_COMBO_AFFINITY		        1326
+#define IDC_SET_NORM					1325
+#define IDC_SET_NVME     				1326
+#define IDC_SET_ATA     				1327
+#define IDC_AFFINITY_LABEL				1328
+#define IDC_COMBO_AFFINITY		        1329
 
 
-#define ID_FILE_EXIT                    32771
-#define ID_HELP_ABOUT                   32772
+#define ID_EXIT                         32771
+#define ID_ABOUT                        32772
 #define ID_THEME                        32775
 #define ID_THEME_DUMMY                  32776
-#define ID_EDIT_COPY_TEXT               32777
+#define ID_COPY                         32777
 #define ID_LANGUAGE_DUMMY               32778
 #define ID_LANGUAGE_A                   32779
 #define ID_LANGUAGE_O                   32780
@@ -105,14 +109,16 @@
 #define ID_ZOOM_300                     32808
 #define ID_ZOOM_AUTO                    33809
 #define ID_HELP_HELP                    32810
-#define ID_HELP_CRYSTALDEWWORLD         32811
+#define ID_CRYSTALDEWWORLD              32811
 #define ID_FILE_BENCHMARKMODE           32812
 #define ID_MODE_DEFAULT                 32815
 #define ID_MODE_ALL0X00                 32816
 #define ID_MODE_ALL0XFF                 32817
 #define ID_SETTINGS_QUEUESTHREADS       32818
-#define ID_RESULT_SAVE                  32819
+#define ID_SAVE_TEXT                    32819
+#define ID_SAVE_IMAGE                   32832
 #define ID_FONT_SETTING                 32830
+
 #define ID_INTERVAL_TIME_0              33820
 #define ID_INTERVAL_TIME_1              33821
 #define ID_INTERVAL_TIME_3              33822
@@ -136,7 +142,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        141
 #define _APS_NEXT_COMMAND_VALUE         33809
-#define _APS_NEXT_CONTROL_VALUE         1024
+#define _APS_NEXT_CONTROL_VALUE         1030
 #define _APS_NEXT_SYMED_VALUE           107
 #endif
 #endif

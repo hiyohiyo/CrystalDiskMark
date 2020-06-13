@@ -30,7 +30,7 @@ BOOL IsX64()
 			}
 		}
 	}
-	return FALSE;
+	return b;
 }
 
 BOOL IsIa64()
@@ -237,6 +237,29 @@ BOOL IsWin2k()
 	return b;
 }
 
+BOOL IsWinXpOrLater()
+{
+	static BOOL b = -1;
+	if (b == -1)
+	{
+		b = FALSE;
+		OSVERSIONINFOEX osvi;
+		ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
+		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+		GetVersionEx((OSVERSIONINFO*)&osvi);
+
+		if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion >= 1)
+		{
+			b = TRUE;
+		}
+		else if (osvi.dwMajorVersion >= 6)
+		{
+			b = TRUE;
+		}
+	}
+	return b;
+}
+
 BOOL IsWinXpLuna()
 {
 	static BOOL xp = -1;
@@ -307,6 +330,53 @@ BOOL IsWin8orLater()
 	}
 	return b;
 }
+
+BOOL IsWin81orLater()
+{
+	static BOOL b = -1;
+	if (b == -1)
+	{
+		b = FALSE;
+		OSVERSIONINFOEX osvi;
+		ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
+		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+		GetVersionEx((OSVERSIONINFO*)&osvi);
+
+		if (osvi.dwMajorVersion <= 5)
+		{
+			b = FALSE;
+		}
+		else if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion <= 2)
+		{
+			b = FALSE;
+		}
+		else
+		{
+			b = TRUE;
+		}
+	}
+	return b;
+}
+
+BOOL IsDarkModeSupport()
+{
+	static BOOL b = -1;
+	if (b == -1)
+	{
+		b = FALSE;
+		OSVERSIONINFOEX osvi;
+		ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
+		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+		GetVersionEx((OSVERSIONINFO*)&osvi);
+
+		if (osvi.dwBuildNumber >= 17763) // Windows 10 Ver.1809 or later
+		{
+			b = TRUE;
+		}
+	}
+	return b;
+}
+
 
 BOOL HasSidebar()
 {

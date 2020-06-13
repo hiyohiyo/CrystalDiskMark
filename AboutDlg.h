@@ -34,8 +34,6 @@ protected:
 	virtual void UpdateDialogSize();
 
 	DECLARE_MESSAGE_MAP()
-
-public:
 	afx_msg void OnCrystalDewWorld();
 	afx_msg void OnVersion();
 	afx_msg void OnLicense();
@@ -46,6 +44,7 @@ public:
 	afx_msg void OnProjectSite5();
 
 	CButtonFx m_CtrlCrystalDewWorld;
+	CButtonFx m_CtrlSecretVoice;
 	CButtonFx m_CtrlProjectSite1;
 	CButtonFx m_CtrlProjectSite2;
 	CButtonFx m_CtrlProjectSite3;
