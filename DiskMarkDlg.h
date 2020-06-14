@@ -36,42 +36,26 @@ public:
 		SCORE_US,
 	};
 
+	enum BENCH_TYPE
+	{
+		BENCH_SEQ = 0,
+		BENCH_RND,
+	};
+
 	volatile CWinThread* m_WinThread;
 	volatile BOOL m_DiskBenchStatus;
 
 	void InitScore();
 	void UpdateScore();
 
-	double m_SequentialReadScore1;
-	double m_SequentialWriteScore1;
-	double m_SequentialReadScore2;
-	double m_SequentialWriteScore2;
-	double m_RandomReadScore1;
-	double m_RandomWriteScore1;
-	double m_RandomReadScore2;
-	double m_RandomWriteScore2;
+	double m_ReadScore[8];
+	double m_WriteScore[8];
+	double m_ReadLatency[8];
+	double m_WriteLatency[8];
 
 #ifdef MIX_MODE
-	double m_SequentialMixScore1;
-	double m_SequentialMixScore2;
-	double m_RandomMixScore1;
-	double m_RandomMixScore2;
-#endif
-
-	double m_SequentialReadLatency1;
-	double m_SequentialWriteLatency1;
-	double m_SequentialReadLatency2;
-	double m_SequentialWriteLatency2;
-	double m_RandomReadLatency1;
-	double m_RandomWriteLatency1;
-	double m_RandomReadLatency2;
-	double m_RandomWriteLatency2;
-
-#ifdef MIX_MODE
-	double m_SequentialMixLatency1;
-	double m_SequentialMixLatency2;
-	double m_RandomMixLatency1;
-	double m_RandomMixLatency2;
+	double m_MixScore[8];
+	double m_MixLatency[8];
 #endif
 
 	void SetMeter(CStaticFx* control, double score, double latency, int blockSize, int unit);
@@ -97,32 +81,18 @@ public:
 	int m_IndexTestMix;
 	int m_IndexTestMode;
 
-	int m_SequentialSize1;
-	int m_SequentialQueues1;
-	int m_SequentialThreads1;
-	int m_SequentialSize2;
-	int m_SequentialQueues2;
-	int m_SequentialThreads2;
-	int m_RandomSize1;
-	int m_RandomQueues1;
-	int m_RandomThreads1;
-	int m_RandomSize2;
-	int m_RandomQueues2;
-	int m_RandomThreads2;
-	int m_RandomSize3;
-	int m_RandomQueues3;
-	int m_RandomThreads3;
-	int m_FragmenteCounts;
+	int m_BenchType[8];
+	int m_BenchSize[8];
+	int m_BenchQueues[8];
+	int m_BenchThreads[8];
 	int m_IntervalTime;
 	int m_Affinity;
-//	int m_FontScale;
 
 	int m_TestData;
-	BOOL m_AdminMode;
 	int m_Profile;
+	BOOL m_AdminMode;
 	BOOL m_MixMode;
 	int m_MixRatio;
-	CString m_CommentExchange;
 
 	// Message //
 	CString m_MesDiskCapacityError;
@@ -138,10 +108,10 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 	void OnAll();
+	void OnTest0();
 	void OnTest1();
 	void OnTest2();
 	void OnTest3();
-	void OnTest4();
 	void Stop();
 	void OnSequentialPeak();
 	void OnRandomPeak();
@@ -149,8 +119,9 @@ protected:
 	void OnRandomReal();
 
 	void SelectDrive();
-	CString GetRandomResultString(double score, double latency, int size, int queues, int threads);
-	CString GetSequentialResultString(double score, double latency, int size, int queues, int threads);
+	CString GetResultString(int type, double score, double latency, int size, int queues, int threads);
+	CString GetButtonText(int type, int size, int queues, int threads, int unit);
+	CString GetButtonToolTipText(int type, int size, int queues, int threads, int unit);
 
 	CString m_TitleTestDrive;
 	CString m_TitleTestCount;
@@ -195,29 +166,29 @@ protected:
 	BOOL IsAtaMode();
 
 #ifdef MIX_MODE
+	CStaticFx m_TestMix0;
 	CStaticFx m_TestMix1;
 	CStaticFx m_TestMix2;
 	CStaticFx m_TestMix3;
-	CStaticFx m_TestMix4;
 	CStaticFx m_MixUnit;
 	CComboBoxFx m_ComboMix;
 #endif
 
 	CButtonFx m_ButtonAll;
+	CButtonFx m_ButtonTest0;
 	CButtonFx m_ButtonTest1;
 	CButtonFx m_ButtonTest2;
 	CButtonFx m_ButtonTest3;
-	CButtonFx m_ButtonTest4;
 
+	CStaticFx m_TestRead0;
 	CStaticFx m_TestRead1;
 	CStaticFx m_TestRead2;
 	CStaticFx m_TestRead3;
-	CStaticFx m_TestRead4;
 
+	CStaticFx m_TestWrite0;
 	CStaticFx m_TestWrite1;
 	CStaticFx m_TestWrite2;
 	CStaticFx m_TestWrite3;
-	CStaticFx m_TestWrite4;
 
 	CEditFx m_Comment;
 
