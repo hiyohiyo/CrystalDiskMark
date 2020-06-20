@@ -7,9 +7,7 @@
 
 #pragma once
 
-#define WM_UPDATE_SCORE		(WM_APP+1)
-#define WM_UPDATE_MESSAGE	(WM_APP+2)
-#define WM_EXIT_BENCHMARK	(WM_APP+3)
+
 
 #define TIMER_ID 5963
 

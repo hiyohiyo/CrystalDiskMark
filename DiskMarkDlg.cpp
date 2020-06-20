@@ -231,6 +231,8 @@ BOOL CDiskMarkDlg::IsNormMode()
 	&&  m_BenchSize[1] == 1024 && m_BenchQueues[1] == 1  && m_BenchThreads[1] == 1
 	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 1
 	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1
+	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 1
+	&&  m_BenchSize[5] == 4    && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 1
 	&&  m_Affinity == 0
 	)
 	{
@@ -245,6 +247,8 @@ BOOL CDiskMarkDlg::IsNVMeMode()
 	&&  m_BenchSize[1] == 1024 && m_BenchQueues[1] == 1  && m_BenchThreads[1] == 1
 	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 16
 	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1
+	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 1
+	&&  m_BenchSize[5] == 4    && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 16
 	&&  m_Affinity == 0
 	)
 	{
@@ -259,6 +263,8 @@ BOOL CDiskMarkDlg::IsAtaMode()
 	&&  m_BenchSize[1] == 128 && m_BenchQueues[1] == 1  && m_BenchThreads[1] == 1
 	&&  m_BenchSize[2] == 4   && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 1
 	&&  m_BenchSize[3] == 4   && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1
+	&&  m_BenchSize[4] == 128 && m_BenchQueues[4] == 32 && m_BenchThreads[4] == 1
+	&&  m_BenchSize[5] == 4   && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 1
 	&&  m_Affinity == 0
 	)
 	{
@@ -411,7 +417,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	// Mode
 	m_ComboMode.AddString(L"NORM");
 	m_ComboMode.AddString(L"NVMe");
-	m_ComboMode.AddString(L"ATA");
+//	m_ComboMode.AddString(L"ATA");
 	m_ComboMode.AddString(L"EDIT");
 
 	if (IsNormMode())
@@ -422,13 +428,15 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	{
 		m_IndexTestMode = 1;
 	}
+	/*
 	else if (IsAtaMode())
 	{
 		m_IndexTestMode = 2;
 	}
+	*/
 	else
 	{
-		m_IndexTestMode = 3;
+		m_IndexTestMode = 2;
 	}
 	m_ComboMode.SetCurSel(m_IndexTestMode);
 
@@ -477,7 +485,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 
 	SetWindowTitle(L"");
 
-	SetClientSize((int)(m_SizeX * m_ZoomRatio), (int)(m_SizeY * m_ZoomRatio));
+	SetClientSize(m_SizeX, m_SizeY, m_ZoomRatio);
 
 	m_bShowWindow = TRUE;
 
@@ -510,7 +518,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_SizeX = SIZE_X_MIX;
 	}
 #endif
-	SetClientSize((int)(m_SizeX * m_ZoomRatio), (int)(m_SizeY * m_ZoomRatio), 1);
+	SetClientSize(m_SizeX, m_SizeY, m_ZoomRatio);
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	if (m_CharacterPosition == 0)
@@ -736,20 +744,14 @@ void CDiskMarkDlg::UpdateDialogSize()
 
 void CDiskMarkDlg::UpdateComboTooltip()
 {
-	TCHAR str[256];
-	GetPrivateProfileString(L"Title", L"TEST_COUNT", L"Test Count", str, 256, m_CurrentLangPath);
-	m_ComboCount.SetToolTipText(str);
-	GetPrivateProfileString(L"Title", L"TEST_SIZE", L"Test Size", str, 256, m_CurrentLangPath);
-	m_ComboSize.SetToolTipText(str);
-	GetPrivateProfileString(L"Title", L"TEST_UNIT", L"Test Unit", str, 256, m_CurrentLangPath);
-	m_ComboUnit.SetToolTipText(str);
-	GetPrivateProfileString(L"Title", L"TEST_MODE", L"Test Mode", str, 256, m_CurrentLangPath);
-	m_ComboMode.SetToolTipText(str);
+	m_ComboCount.SetToolTipText(i18n(L"Title", L"TEST_COUNT"));
+	m_ComboSize.SetToolTipText(i18n(L"Title", L"TEST_SIZE"));
+	m_ComboUnit.SetToolTipText(i18n(L"Title", L"TEST_UNIT"));
+	m_ComboMode.SetToolTipText(i18n(L"Title", L"TEST_MODE"));
 #ifdef MIX_MODE
 	if (m_MixMode)
 	{
-		GetPrivateProfileString(L"Title", L"TEST_MIX", L"Mix Ratio", str, 256, m_CurrentLangPath);
-		m_ComboMix.SetToolTipText(str);
+		m_ComboMix.SetToolTipText(i18n(L"Title", L"TEST_MIX"));
 	}
 #endif
 	m_ComboDrive.SetToolTipText(m_ComboDrive.GetToolTipText().GetString());
@@ -902,6 +904,8 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 	int size[8] =   { 1024, 1024,  4, 4, 1024,  4, 1024, 4 };
 	int queues[8] = {    8,    1, 32, 1,    8, 32,    1, 1 };
 	int threads[8] ={    1,    1,  1, 1,    1,  1,    1, 1 };
+	int measureTimes[5] = { 5, 10, 20, 30, 60 };
+	int intervalTimes[10] = { 0, 1, 3, 5, 10, 30, 60, 180, 300, 600 };
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -926,6 +930,41 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 	if (m_Affinity < 0 || m_Affinity > 1)
 	{
 		m_Affinity = 0;
+	}
+
+	m_TestData = GetPrivateProfileInt(L"Setting", L"TestData", TEST_DATA_RANDOM, m_Ini);
+	if (m_TestData < 0 || m_TestData > 1)
+	{
+		m_TestData = TEST_DATA_RANDOM;
+	}
+	SetWindowTitle(L"");
+
+	BOOL bMeasureflag = FALSE;
+	m_MeasureTime = GetPrivateProfileInt(L"Setting", L"MeasureTime", 5, m_Ini);
+	for (int i = 0; i < 5; i++)
+	{
+		if (m_MeasureTime == measureTimes[i])
+		{
+			bMeasureflag = TRUE;
+		}
+	}
+	if (! bMeasureflag)
+	{
+		m_MeasureTime = 5;
+	}
+
+	BOOL bIntervalFlag = FALSE;
+	m_IntervalTime = GetPrivateProfileInt(L"Setting", L"IntervalTime", 0, m_Ini);
+	for (int i = 0; i < 5; i++)
+	{
+		if (m_IntervalTime == intervalTimes[i])
+		{
+			bIntervalFlag = TRUE;
+		}
+	}
+	if (! bIntervalFlag)
+	{
+		m_IntervalTime = 0;
 	}
 }
 
@@ -978,6 +1017,7 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 		UpdateQueuesThreads();
 		ChangeButtonStatus(TRUE);
 		break;
+	/*
 	case 2: // Ata
 		{
 			int type[8] =    {   0,  0,  1, 1,   0,  1,   1, 0 };
@@ -999,6 +1039,7 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 		UpdateQueuesThreads();
 		ChangeButtonStatus(TRUE);
 		break;
+	*/
 	default:
 		OnSettingsQueuesThreads();
 		break;
@@ -1249,21 +1290,21 @@ void CDiskMarkDlg::UpdateScore()
 	}
 	else
 	{
-		SetMeter(&m_TestRead0, m_ReadScore[0], m_ReadLatency[0], m_BenchSize[0] * 1024, SCORE_MBS);
-		SetMeter(&m_TestRead1, m_ReadScore[1], m_ReadLatency[1], m_BenchSize[1] * 1024, SCORE_MBS);
-		SetMeter(&m_TestRead2, m_ReadScore[2], m_ReadLatency[2], m_BenchSize[2] * 1024, SCORE_IOPS);
-		SetMeter(&m_TestRead3, m_ReadScore[3], m_ReadLatency[3], m_BenchSize[3] * 1024, SCORE_US);
-		SetMeter(&m_TestWrite0, m_WriteScore[0], m_WriteLatency[0], m_BenchSize[0] * 1024, SCORE_MBS);
-		SetMeter(&m_TestWrite1, m_WriteScore[1], m_WriteLatency[1], m_BenchSize[1] * 1024, SCORE_MBS);
-		SetMeter(&m_TestWrite2, m_WriteScore[2], m_WriteLatency[2], m_BenchSize[2] * 1024, SCORE_IOPS);
-		SetMeter(&m_TestWrite3, m_WriteScore[3], m_WriteLatency[3], m_BenchSize[3] * 1024, SCORE_US);
+		SetMeter(&m_TestRead0, m_ReadScore[0], m_ReadLatency[0], m_BenchSize[0] * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestRead1, m_ReadScore[1], m_ReadLatency[1], m_BenchSize[1] * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestRead2, m_ReadScore[2], m_ReadLatency[2], m_BenchSize[2] * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestRead3, m_ReadScore[3], m_ReadLatency[3], m_BenchSize[3] * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestWrite0, m_WriteScore[0], m_WriteLatency[0], m_BenchSize[0] * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestWrite1, m_WriteScore[1], m_WriteLatency[1], m_BenchSize[1] * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestWrite2, m_WriteScore[2], m_WriteLatency[2], m_BenchSize[2] * 1024, m_IndexTestUnit);
+		SetMeter(&m_TestWrite3, m_WriteScore[3], m_WriteLatency[3], m_BenchSize[3] * 1024, m_IndexTestUnit);
 #ifdef MIX_MODE
 		if (m_MixMode)
 		{
-			SetMeter(&m_TestMix0, m_MixScore[0], m_MixLatency[0], m_BenchSize[0] * 1024, SCORE_MBS);
-			SetMeter(&m_TestMix1, m_MixScore[1], m_MixLatency[1], m_BenchSize[1] * 1024, SCORE_MBS);
-			SetMeter(&m_TestMix2, m_MixScore[2], m_MixLatency[2], m_BenchSize[2] * 1024, SCORE_IOPS);
-			SetMeter(&m_TestMix3, m_MixScore[3], m_MixLatency[3], m_BenchSize[3] * 1024, SCORE_US);
+			SetMeter(&m_TestMix0, m_MixScore[0], m_MixLatency[0], m_BenchSize[0] * 1024, m_IndexTestUnit);
+			SetMeter(&m_TestMix1, m_MixScore[1], m_MixLatency[1], m_BenchSize[1] * 1024, m_IndexTestUnit);
+			SetMeter(&m_TestMix2, m_MixScore[2], m_MixLatency[2], m_BenchSize[2] * 1024, m_IndexTestUnit);
+			SetMeter(&m_TestMix3, m_MixScore[3], m_MixLatency[3], m_BenchSize[3] * 1024, m_IndexTestUnit);
 		}
 #endif
 	}
@@ -1678,21 +1719,35 @@ CString CDiskMarkDlg::GetButtonText(int type, int size, int queues, int threads,
 	{
 		if (type == BENCH_RND)
 		{
-			if (unit == SCORE_IOPS)
+			if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX || m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
 			{
-				text.Format(L"RND%dM\r\n(IOPS)", size / 1024);
-			}
-			else if (unit == SCORE_US)
-			{
-				text.Format(L"RND%dM\r\n(μs)", size / 1024);
-			}
-			else if (unit == SCORE_GBS)
-			{
-				text.Format(L"RND%dM\r\nQ%dT%d", size / 1024, queues, threads);
+				if (unit == SCORE_IOPS)
+				{
+					text.Format(L"RND%dM\r\n(IOPS)", size / 1024);
+				}
+				else if (unit == SCORE_US)
+				{
+					text.Format(L"RND%dM\r\n(μs)", size / 1024);
+				}
+				else if (unit == SCORE_GBS)
+				{
+					text.Format(L"RND%dM\r\nQ%dT%d", size / 1024, queues, threads);
+				}
+				else
+				{
+					text.Format(L"RND%dM\r\nQ%dT%d", size / 1024, queues, threads);
+				}
 			}
 			else
 			{
-				text.Format(L"RND%dM\r\nQ%dT%d", size / 1024, queues, threads);
+				if (unit == SCORE_GBS)
+				{
+					text.Format(L"RND%dM\r\nQ%dT%d", size / 1024, queues, threads);
+				}
+				else
+				{
+					text.Format(L"RND%dM\r\nQ%dT%d", size / 1024, queues, threads);
+				}
 			}
 		}
 		else
@@ -1711,21 +1766,35 @@ CString CDiskMarkDlg::GetButtonText(int type, int size, int queues, int threads,
 	{
 		if (type == BENCH_RND)
 		{
-			if (unit == SCORE_IOPS)
+			if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX || m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
 			{
-				text.Format(L"RND%dK\r\n(IOPS)", size);
-			}
-			else if (unit == SCORE_US)
-			{
-				text.Format(L"RND%dK\r\n(μs)", size);
-			}
-			else if (unit == SCORE_GBS)
-			{
-				text.Format(L"RND%dK\r\nQ%dT%d", size, queues, threads);
+				if (unit == SCORE_IOPS)
+				{
+					text.Format(L"RND%dK\r\n(IOPS)", size);
+				}
+				else if (unit == SCORE_US)
+				{
+					text.Format(L"RND%dK\r\n(μs)", size);
+				}
+				else if (unit == SCORE_GBS)
+				{
+					text.Format(L"RND%dK\r\nQ%dT%d", size, queues, threads);
+				}
+				else
+				{
+					text.Format(L"RND%dK\r\nQ%dT%d", size, queues, threads);
+				}
 			}
 			else
 			{
-				text.Format(L"RND%dK\r\nQ%dT%d", size, queues, threads);
+				if (unit == SCORE_GBS)
+				{
+					text.Format(L"RND%dK\r\nQ%dT%d", size, queues, threads);
+				}
+				else
+				{
+					text.Format(L"RND%dK\r\nQ%dT%d", size, queues, threads);
+				}
 			}
 		}
 		else
@@ -1948,7 +2017,6 @@ void CDiskMarkDlg::SetMeter(CStaticFx* control, double score, double latency, in
 		meterRatio = 1.0;
 	}
 
-
 	if (unit == SCORE_UNIT::SCORE_IOPS)
 	{
 		double iops = score * 1000 * 1000 / blockSize;
@@ -2120,7 +2188,7 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 
 	cstr = i18n(L"Menu", L"EDIT_COPY") + L"\tCtrl + Shift + C";
 	menu->ModifyMenu(ID_COPY, MF_STRING, ID_COPY, cstr);
-	cstr = i18n(L"Menu", L"QUEUES_THREADS") + L"\tCtrl + Q";
+	cstr = i18n(L"Menu", L"SETTINGS") + L"\tCtrl + Q";
 	menu->ModifyMenu(ID_SETTINGS_QUEUESTHREADS, MF_STRING, ID_SETTINGS_QUEUESTHREADS, cstr);
 
 	cstr = i18n(L"Menu", L"PROFILE_DEFAULT");
@@ -2139,37 +2207,10 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	menu->ModifyMenu(ID_PROFILE_REAL_MIX, MF_STRING, ID_PROFILE_REAL_MIX, cstr);
 #endif
 
-	cstr = i18n(L"Menu", L"HELP") + L"\tF1";
+	cstr = i18n(L"Menu", L"HELP") + L" [Web]" + L"\tF1";
 	menu->ModifyMenu(ID_HELP, MF_STRING, ID_HELP, cstr);
 	cstr = i18n(L"Menu", L"HELP_ABOUT");
 	menu->ModifyMenu(ID_ABOUT, MF_STRING, ID_ABOUT, cstr);
-
-	subMenu.Attach(menu->GetSubMenu(1)->GetSafeHmenu());
-	cstr = i18n(L"Menu", L"TEST_DATA");
-	subMenu.ModifyMenu(0, MF_BYPOSITION, 0, cstr);
-	cstr = i18n(L"Menu", L"INTERVAL_TIME");
-	subMenu.ModifyMenu(1, MF_BYPOSITION, 1, cstr);
-	subMenu.Detach();
-
-	CString second, minute;
-
-	second = i18n(L"Menu", L"SECOND");
-	minute = i18n(L"Menu", L"MINUTE");
-	menu->ModifyMenu(ID_INTERVAL_TIME_0, MF_STRING, ID_INTERVAL_TIME_0, L"0 " + second);
-	menu->ModifyMenu(ID_INTERVAL_TIME_1, MF_STRING, ID_INTERVAL_TIME_1, L"1 " + second);
-	menu->ModifyMenu(ID_INTERVAL_TIME_3, MF_STRING, ID_INTERVAL_TIME_3, L"3 " + second);
-	menu->ModifyMenu(ID_INTERVAL_TIME_5, MF_STRING, ID_INTERVAL_TIME_5, L"5 " + second);
-	menu->ModifyMenu(ID_INTERVAL_TIME_10, MF_STRING, ID_INTERVAL_TIME_10, L"10 " + second);
-	menu->ModifyMenu(ID_INTERVAL_TIME_30, MF_STRING, ID_INTERVAL_TIME_30, L"30 " + second);
-	menu->ModifyMenu(ID_INTERVAL_TIME_60, MF_STRING, ID_INTERVAL_TIME_60, L"1 " + minute);
-	menu->ModifyMenu(ID_INTERVAL_TIME_180, MF_STRING, ID_INTERVAL_TIME_180, L"3 " + minute);
-	menu->ModifyMenu(ID_INTERVAL_TIME_300, MF_STRING, ID_INTERVAL_TIME_300, L"5 " + minute);
-	menu->ModifyMenu(ID_INTERVAL_TIME_600, MF_STRING, ID_INTERVAL_TIME_600, L"10 " + minute);
-
-	cstr = i18n(L"Menu", L"DEFAULT_RANDOM");
-	menu->ModifyMenu(ID_MODE_DEFAULT, MF_STRING, ID_MODE_DEFAULT, cstr);
-	cstr = i18n(L"Menu", L"ALL_ZERO");
-	menu->ModifyMenu(ID_MODE_ALL0X00, MF_STRING, ID_MODE_ALL0X00, cstr);
 
 	// Theme
 	subMenu.Attach(menu->GetSubMenu(3)->GetSafeHmenu());
@@ -2184,15 +2225,6 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	menu->ModifyMenu(ID_FONT_SETTING, MF_STRING, ID_FONT_SETTING, cstr);
 
 	CheckRadioZoomType();
-
-	if(m_TestData == TEST_DATA_ALL0X00)
-	{
-		OnModeAll0x00();
-	}
-	else
-	{
-		OnModeDefault();
-	}
 
 	switch (m_Profile)
 	{
@@ -2313,41 +2345,23 @@ CString CDiskMarkDlg::GetResultString(int type, double score, double latency, in
 	{
 		if (size >= 1024)
 		{
-			result.Format(L"Random %3dMiB (Q=%3d, T=%2d): %9.3f MB/s [%9.1f IOPS] <%9.2f us>", size, queues, threads, score, iops, latency);
+			result.Format(L"  RND %4dMiB (Q=%3d, T=%2d): %9.3f MB/s [%9.1f IOPS] <%9.2f us>", size / 1024, queues, threads, score, iops, latency);
 		}
 		else
 		{
-			result.Format(L"Random %3dKiB (Q=%3d, T=%2d): %9.3f MB/s [%9.1f IOPS] <%9.2f us>", size, queues, threads, score, iops, latency);
+			result.Format(L"  RND %4dKiB (Q=%3d, T=%2d): %9.3f MB/s [%9.1f IOPS] <%9.2f us>", size, queues, threads, score, iops, latency);
 		}
 	}
 	else
 	{
 		if (size >= 1024)
 		{
-			result.Format(L"Sequential %3dMiB (Q=%3d, T=%2d): %9.3f MB/s [%9.1f IOPS] <%9.2f us>", size, queues, threads, score, iops, latency);
+			result.Format(L"  SEQ %4dMiB (Q=%3d, T=%2d): %9.3f MB/s [%9.1f IOPS] <%9.2f us>", size / 1024, queues, threads, score, iops, latency);
 		}
 		else
 		{
-			result.Format(L"Sequential %3dKiB (Q=%3d, T=%2d): %9.3f MB/s [%9.1f IOPS] <%9.2f us>", size, queues, threads, score, iops, latency);
+			result.Format(L"  SEQ %4dKiB (Q=%3d, T=%2d): %9.3f MB/s [%9.1f IOPS] <%9.2f us>", size, queues, threads, score, iops, latency);
 		}
-	}
-
-	if (size > 1000)
-	{
-		result = L" " + result;
-
-	}
-	else if (size > 100)
-	{
-		result = L"  " + result;
-	}
-	else if(size > 10)
-	{
-		result = L"   " + result;
-	}
-	else
-	{
-		result = L"    " + result;
 	}
 
 	return result;
@@ -2399,7 +2413,8 @@ void CDiskMarkDlg::SaveText(CString fileName)
 
 		clip += L"\
 Profile: Default\r\n\
-   Test: %TestSize% (x%TestCount%)%TestMode% [%IntervalTime%] %Affinity%\r\n\
+   Test: %TestSize% (x%TestCount%) %TestMode%%Affinity%\r\n\
+   Time: Measure %MeasureTime% / Interval %IntervalTime% \r\n\
    Date: %Date%\r\n\
      OS: %OS%\r\n\
 %Comment%\r\n\
@@ -2451,7 +2466,8 @@ Profile: Real\r\n\
 		}
 
 		clip += L"\
-   Test: %TestSize% (x%TestCount%)%TestMode% [%IntervalTime%] %Affinity%\r\n\
+   Test: %TestSize% (x%TestCount%) %TestMode%%Affinity%\r\n\
+   Time: Measure %MeasureTime% / Interval %IntervalTime% \r\n\
    Date: %Date%\r\n\
      OS: %OS%\r\n\
 %Comment%\
@@ -2550,11 +2566,11 @@ Profile: Real\r\n\
 
 	if (m_Affinity == AFFINITY_DISABLED)
 	{
-		cstr = L"<DefaultAffinity=DISABLED>";
+		cstr = L"[DefaultAffinity=DISABLED]";
 	}
 	else
 	{
-		cstr = L"<DefaultAffinity=ENABLED>";
+		cstr = L"[DefaultAffinity=ENABLED]";
 	}
 	clip.Replace(L"%Affinity%", cstr);
 
@@ -2569,14 +2585,16 @@ Profile: Real\r\n\
 
 	if(m_TestData == TEST_DATA_ALL0X00)
 	{
-		clip.Replace(L"%TestMode%", L" " ALL_0X00_0FILL);
+		clip.Replace(L"%TestMode%", ALL_0X00_0FILL L" ");
 	}
 	else
 	{
 		clip.Replace(L"%TestMode%", L"");
 	}
-	cstr.Format(L"Interval: %d sec", m_IntervalTime);
+	cstr.Format(L"%d sec", m_IntervalTime);
 	clip.Replace(L"%IntervalTime%", cstr);
+	cstr.Format(L"%d sec", m_MeasureTime);
+	clip.Replace(L"%MeasureTime%", cstr);
 
 	GetOsName(cstr);
 	clip.Replace(L"%OS%", cstr);

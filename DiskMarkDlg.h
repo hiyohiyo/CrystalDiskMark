@@ -87,6 +87,7 @@ public:
 	int m_BenchThreads[8];
 	int m_IntervalTime;
 	int m_Affinity;
+	int m_MeasureTime;
 
 	int m_TestData;
 	int m_Profile;

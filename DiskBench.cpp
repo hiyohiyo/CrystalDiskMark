@@ -592,13 +592,12 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 
 	int duration = 5;
 	int index = 0;
-	int j;
+	int j = 0;
 
 	if (!((CDiskMarkDlg*) dlg)->m_DiskBenchStatus)
 	{
 		return;
 	}
-
 
 	if (((CDiskMarkDlg*) dlg)->m_TestData == TEST_DATA_ALL0X00)
 	{
@@ -649,12 +648,12 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		if (BenchType[index])
 		{
 			title.Format(L"Random Read");
-			option.Format(L"-b%dK -d%d -o%d -t%d -W0 -S -w0 -r", BenchSize[index], duration, BenchQueues[index], BenchThreads[index]);
+			option.Format(L"-b%dK -o%d -t%d -W0 -S -w0 -r", BenchSize[index], BenchQueues[index], BenchThreads[index]);
 		}
 		else
 		{
 			title.Format(L"Sequential Read");
-			option.Format(L"-b%dK -d%d -o%d -t%d -W0 -S -w0", BenchSize[index], duration, BenchQueues[index], BenchThreads[index]);
+			option.Format(L"-b%dK -o%d -t%d -W0 -S -w0", BenchSize[index], BenchQueues[index], BenchThreads[index]);
 		}
 		maxScore = &(((CDiskMarkDlg*) dlg)->m_ReadScore[index]);
 		minLatency = &(((CDiskMarkDlg*)dlg)->m_ReadLatency[index]);
@@ -671,12 +670,12 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		if (BenchType[index])
 		{
 			title.Format(L"Random Write");
-			option.Format(L"-b%dK -d%d -o%d -t%d -W0 -S -w100 -r", BenchSize[index], duration, BenchQueues[index], BenchThreads[index]);
+			option.Format(L"-b%dK -o%d -t%d -W0 -S -w100 -r", BenchSize[index], BenchQueues[index], BenchThreads[index]);
 		}
 		else
 		{
 			title.Format(L"Sequential Write");
-			option.Format(L"-b%dK -d%d -o%d -t%d -W0 -S -w100", BenchSize[index], duration, BenchQueues[index], BenchThreads[index]);
+			option.Format(L"-b%dK -o%d -t%d -W0 -S -w100", BenchSize[index], BenchQueues[index], BenchThreads[index]);
 		}
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_WriteScore[index]);
@@ -695,12 +694,12 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		if (BenchType[index])
 		{
 			title.Format(L"Random Mix");
-			option.Format(L"-b%dK -d%d -o%d -t%d -W0 -S -w%d -r", BenchSize[index], duration, BenchQueues[index], BenchThreads[index], MixRatio);
+			option.Format(L"-b%dK -o%d -t%d -W0 -S -w%d -r", BenchSize[index], BenchQueues[index], BenchThreads[index], MixRatio);
 		}
 		else
 		{
 			title.Format(L"Sequential Mix");
-			option.Format(L"-b%dK -d%d -o%d -t%d -W0 -S -w%d", BenchSize[index], duration, BenchQueues[index], BenchThreads[index], MixRatio);
+			option.Format(L"-b%dK -o%d -t%d -W0 -S -w%d", BenchSize[index], BenchQueues[index], BenchThreads[index], MixRatio);
 		}
 		option += bufOption;
 		maxScore = &(((CDiskMarkDlg*)dlg)->m_MixScore[index]);
@@ -734,16 +733,18 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	{
 		if (j == 0)
 		{
+			duration = 5;
 			cstr.Format(L"Preparing... %s", title.GetString());
 		}
 		else
 		{
+			duration = ((CDiskMarkDlg*)dlg)->m_MeasureTime;
 			cstr.Format(L"%s [%d/%d]", title.GetString(), j, DiskTestCount);
 		}
 		::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_UPDATE_MESSAGE, (WPARAM) &cstr, 0);
 		
 
-		command.Format(L"\"%s\" %s -A%d -L \"%s\"", (LPTSTR)DiskSpdExe.GetString(), (LPTSTR)option.GetString(), GetCurrentProcessId(), (LPTSTR)TestFilePath.GetString());
+		command.Format(L"\"%s\" %s -d%d -A%d -L \"%s\"", (LPTSTR)DiskSpdExe.GetString(), (LPTSTR)option.GetString(), duration, GetCurrentProcessId(), (LPTSTR)TestFilePath.GetString());
 
 		score = ExecAndWait((TCHAR*) (command.GetString()), TRUE, &latency) / 10 / 1000.0;
 

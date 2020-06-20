@@ -99,7 +99,7 @@
 #define PRODUCT_VERSION				L"8 Beta 2"
 #define PRODUCT_ROMING_NAME			L"Cecile"
 
-#define PRODUCT_RELEASE				L"2020/05/30"
+#define PRODUCT_RELEASE				L"2020/06/20"
 #define PRODUCT_COPY_YEAR			L"2007-2020"
 #define PRODUCT_COPYRIGHT			L"© 2007-2020 hiyohiyo"
 #define PRODUCT_LICENSE				L"The MIT License"
@@ -161,3 +161,7 @@ static const int RE_EXEC = 5963;
 #define DEFAULT_LANGUAGE			L"English"
 
 #define TIMER_UPDATE_DIALOG			500
+
+#define WM_UPDATE_SCORE		(WM_APP+0x1001)
+#define WM_UPDATE_MESSAGE	(WM_APP+0x1002)
+#define WM_EXIT_BENCHMARK	(WM_APP+0x1003)
