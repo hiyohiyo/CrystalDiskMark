@@ -7,12 +7,15 @@
 
 #pragma once
 
-
-
 #define TIMER_ID 5963
 
 // Common Message
 #define ALL_0X00_0FILL L"<0Fill>"
+
+// Benchmark
+#define BENCHMARK_READ       1
+#define BENCHMARK_WRITE      2
+#define BENCHMARK_READ_WRITE 3
 
 enum TEST_DATA_TYPE
 {
@@ -32,6 +35,7 @@ enum PROFILE
 	PROFILE_DEFAULT = 0,
 	PROFILE_PEAK,
 	PROFILE_REAL,
+	PROFILE_DEMO,
 	PROFILE_DEFAULT_MIX,
 	PROFILE_PEAK_MIX,
 	PROFILE_REAL_MIX,
@@ -49,6 +53,7 @@ enum DISK_SPD_CMD
 	TEST_READ_5,
 	TEST_READ_6,
 	TEST_READ_7,
+	TEST_READ_8,
 	TEST_WRITE_0,
 	TEST_WRITE_1,
 	TEST_WRITE_2,
@@ -57,6 +62,7 @@ enum DISK_SPD_CMD
 	TEST_WRITE_5,
 	TEST_WRITE_6,
 	TEST_WRITE_7,
+	TEST_WRITE_8,
 	TEST_MIX_0,
 	TEST_MIX_1,
 	TEST_MIX_2,
@@ -65,11 +71,13 @@ enum DISK_SPD_CMD
 	TEST_MIX_5,
 	TEST_MIX_6,
 	TEST_MIX_7,
+	TEST_MIX_8,
 };
 
 UINT ExecDiskBenchAll(LPVOID  dlg);
 UINT ExecDiskBenchAllPeak(LPVOID  dlg);
 UINT ExecDiskBenchAllReal(LPVOID  dlg);
+UINT ExecDiskBenchAllDemo(LPVOID  dlg);
 UINT ExecDiskBench0(LPVOID  dlg);
 UINT ExecDiskBench1(LPVOID  dlg);
 UINT ExecDiskBench2(LPVOID  dlg);

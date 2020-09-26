@@ -28,12 +28,14 @@ public:
 	void SetMargin(int top, int left, int bottom, int right, double zoomRatio);
 	CSize GetSize(void);
 	void SetDrawFrame(BOOL bDrawFrame);
+	void SetDrawFrameEx(BOOL bDrawFrame, COLORREF frameColor = RGB(128, 128, 128));
 	void SetGlassColor(COLORREF glassColor, BYTE glassAlpha);
 	void SetMeter(BOOL bMeter, double meterRatio);
+	void SetLabelUnit(CString label, CString unit);
 
 	// Font
 	void SetFontEx(CString face, int size, int sizeToolTip, double zoomRatio, double fontRatio = 1.0,
-		 COLORREF textColor = RGB(0, 0, 0), LONG fontWeight = FW_NORMAL);
+		 COLORREF textColor = RGB(0, 0, 0), LONG fontWeight = FW_NORMAL, BYTE fontRender = CLEARTYPE_NATURAL_QUALITY);
 
 	// ToolTip
 	void SetToolTipText(LPCTSTR pText);
@@ -80,6 +82,11 @@ protected:
 	int m_RenderMode;
 	BOOL m_bHighContrast;
 	BOOL m_bDarkMode;
+	BOOL m_bDrawFrame;
+	COLORREF m_FrameColor;
+
+	CString m_Label;
+	CString m_Unit;
 
 	// Glass
 	COLORREF m_GlassColor;

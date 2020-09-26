@@ -24,21 +24,21 @@ static CString DiskSpdExe;
 static HANDLE hFile;
 static int DiskTestCount;
 static UINT64 DiskTestSize;
-static int BenchType[8];
-static int BenchSize[8];
-static int BenchQueues[8];
-static int BenchThreads[8];
+static int BenchType[9];
+static int BenchSize[9];
+static int BenchQueues[9];
+static int BenchThreads[9];
 static int Affinity;
 static BOOL MixMode;
 static int MixRatio;
 
 static void ShowErrorMessage(CString message);
-static void Interval(UINT time, LPVOID dlg);
+static void Interval(UINT time, void* dlg);
 
-static BOOL Init(LPVOID dlg);
-static void DiskSpd(LPVOID dlg, DISK_SPD_CMD cmd);
+static BOOL Init(void* dlg);
+static void DiskSpd(void* dlg, DISK_SPD_CMD cmd);
 
-static UINT Exit(LPVOID dlg);
+static UINT Exit(void* dlg);
 static void CALLBACK TimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
 static volatile BOOL WaitFlag;
 
@@ -116,7 +116,7 @@ void ShowErrorMessage(CString message)
 	LocalFree( lpMessageBuffer );
 }
 
-VOID Interval(LPVOID dlg)
+VOID Interval(void* dlg)
 {
 	int intervalTime = ((CDiskMarkDlg*) dlg)->m_IntervalTime;
 	CString title;
@@ -135,16 +135,28 @@ VOID Interval(LPVOID dlg)
 
 UINT ExecDiskBenchAll(LPVOID dlg)
 {
+	int benchmark = ((CDiskMarkDlg*)dlg)->m_Benchmark;
+
 	if(Init(dlg))
 	{
-		DiskSpd(dlg, TEST_READ_0); Interval(dlg);
-		DiskSpd(dlg, TEST_READ_1); Interval(dlg);
-		DiskSpd(dlg, TEST_READ_2); Interval(dlg);
-		DiskSpd(dlg, TEST_READ_3); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_0);Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_1);Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_2);Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_3);
+		if (benchmark & BENCHMARK_READ)
+		{
+			DiskSpd(dlg, TEST_READ_0); Interval(dlg);
+			DiskSpd(dlg, TEST_READ_1); Interval(dlg);
+			DiskSpd(dlg, TEST_READ_2); Interval(dlg);
+			DiskSpd(dlg, TEST_READ_3);
+		}
+		if ((benchmark & BENCHMARK_READ) && (benchmark & BENCHMARK_WRITE))
+		{
+			Interval(dlg);
+		}
+		if (benchmark & BENCHMARK_WRITE)
+		{
+			DiskSpd(dlg, TEST_WRITE_0); Interval(dlg);
+			DiskSpd(dlg, TEST_WRITE_1); Interval(dlg);
+			DiskSpd(dlg, TEST_WRITE_2); Interval(dlg);
+			DiskSpd(dlg, TEST_WRITE_3);
+		}
 
 #ifdef MIX_MODE
 		if (MixMode)
@@ -163,12 +175,24 @@ UINT ExecDiskBenchAll(LPVOID dlg)
 
 UINT ExecDiskBenchAllPeak(LPVOID dlg)
 {
+	int benchmark = ((CDiskMarkDlg*)dlg)->m_Benchmark;
+
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_READ_4); Interval(dlg);
-		DiskSpd(dlg, TEST_READ_5); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_4); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_5);
+		if (benchmark & BENCHMARK_READ)
+		{
+			DiskSpd(dlg, TEST_READ_4); Interval(dlg);
+			DiskSpd(dlg, TEST_READ_5);
+		}
+		if ((benchmark & BENCHMARK_READ) && (benchmark & BENCHMARK_WRITE))
+		{
+			Interval(dlg);
+		}
+		if (benchmark & BENCHMARK_WRITE)
+		{
+			DiskSpd(dlg, TEST_WRITE_4); Interval(dlg);
+			DiskSpd(dlg, TEST_WRITE_5);
+		}
 
 #ifdef MIX_MODE
 		if (MixMode)
@@ -185,12 +209,24 @@ UINT ExecDiskBenchAllPeak(LPVOID dlg)
 
 UINT ExecDiskBenchAllReal(LPVOID dlg)
 {
+	int benchmark = ((CDiskMarkDlg*)dlg)->m_Benchmark;
+
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_READ_6); Interval(dlg);
-		DiskSpd(dlg, TEST_READ_7); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_6); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_7);
+		if (benchmark & BENCHMARK_READ)
+		{
+			DiskSpd(dlg, TEST_READ_6); Interval(dlg);
+			DiskSpd(dlg, TEST_READ_7);
+		}
+		if ((benchmark & BENCHMARK_READ) && (benchmark & BENCHMARK_WRITE))
+		{
+			Interval(dlg);
+		}
+		if (benchmark & BENCHMARK_WRITE)
+		{
+			DiskSpd(dlg, TEST_WRITE_6); Interval(dlg);
+			DiskSpd(dlg, TEST_WRITE_7);
+		}
 
 #ifdef MIX_MODE
 		if (MixMode)
@@ -205,12 +241,48 @@ UINT ExecDiskBenchAllReal(LPVOID dlg)
 	return Exit(dlg);
 }
 
-UINT ExecDiskBench0(LPVOID dlg)
+UINT ExecDiskBenchAllDemo(LPVOID dlg)
 {
+	int benchmark = ((CDiskMarkDlg*)dlg)->m_Benchmark;
+
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_READ_0); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_0);
+		if (benchmark & BENCHMARK_READ)
+		{
+			DiskSpd(dlg, TEST_READ_8);
+		}
+		if ((benchmark & BENCHMARK_READ) && (benchmark & BENCHMARK_WRITE))
+		{
+			Interval(dlg);
+		}
+		if (benchmark & BENCHMARK_WRITE)
+		{
+			DiskSpd(dlg, TEST_WRITE_8);
+		}
+	}
+
+	return Exit(dlg);
+}
+
+UINT ExecDiskBench0(LPVOID dlg)
+{
+	int benchmark = ((CDiskMarkDlg*)dlg)->m_Benchmark;
+
+	if (Init(dlg))
+	{
+		if (benchmark & BENCHMARK_READ)
+		{
+			DiskSpd(dlg, TEST_READ_0);
+		}
+		if ((benchmark & BENCHMARK_READ) && (benchmark & BENCHMARK_WRITE))
+		{
+			Interval(dlg);
+		}
+		if (benchmark & BENCHMARK_WRITE)
+		{
+			DiskSpd(dlg, TEST_WRITE_0);
+		}
+
 #ifdef MIX_MODE
 		if (MixMode)
 		{
@@ -224,10 +296,22 @@ UINT ExecDiskBench0(LPVOID dlg)
 
 UINT ExecDiskBench1(LPVOID dlg)
 {
+	int benchmark = ((CDiskMarkDlg*)dlg)->m_Benchmark;
+
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_READ_1); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_1);
+		if (benchmark & BENCHMARK_READ)
+		{
+			DiskSpd(dlg, TEST_READ_1);
+		}
+		if ((benchmark & BENCHMARK_READ) && (benchmark & BENCHMARK_WRITE))
+		{
+			Interval(dlg);
+		}
+		if (benchmark & BENCHMARK_WRITE)
+		{
+			DiskSpd(dlg, TEST_WRITE_1);
+		}
 #ifdef MIX_MODE
 		if (MixMode)
 		{
@@ -241,10 +325,22 @@ UINT ExecDiskBench1(LPVOID dlg)
 
 UINT ExecDiskBench2(LPVOID dlg)
 {
+	int benchmark = ((CDiskMarkDlg*)dlg)->m_Benchmark;
+
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_READ_2); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_2);
+		if (benchmark & BENCHMARK_READ)
+		{
+			DiskSpd(dlg, TEST_READ_2);
+		}
+		if ((benchmark & BENCHMARK_READ) && (benchmark & BENCHMARK_WRITE))
+		{
+			Interval(dlg);
+		}
+		if (benchmark & BENCHMARK_WRITE)
+		{
+			DiskSpd(dlg, TEST_WRITE_2);
+		}
 #ifdef MIX_MODE
 		if (MixMode)
 		{
@@ -258,10 +354,22 @@ UINT ExecDiskBench2(LPVOID dlg)
 
 UINT ExecDiskBench3(LPVOID dlg)
 {
+	int benchmark = ((CDiskMarkDlg*)dlg)->m_Benchmark;
+
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_READ_3); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_3);
+		if (benchmark & BENCHMARK_READ)
+		{
+			DiskSpd(dlg, TEST_READ_3);
+		}
+		if ((benchmark & BENCHMARK_READ) && (benchmark & BENCHMARK_WRITE))
+		{
+			Interval(dlg);
+		}
+		if (benchmark & BENCHMARK_WRITE)
+		{
+			DiskSpd(dlg, TEST_WRITE_3);
+		}
 #ifdef MIX_MODE
 		if (MixMode)
 		{
@@ -275,10 +383,22 @@ UINT ExecDiskBench3(LPVOID dlg)
 
 UINT ExecDiskBench4(LPVOID dlg)
 {
+	int benchmark = ((CDiskMarkDlg*)dlg)->m_Benchmark;
+
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_READ_4); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_4);
+		if (benchmark & BENCHMARK_READ)
+		{
+			DiskSpd(dlg, TEST_READ_4);
+		}
+		if ((benchmark & BENCHMARK_READ) && (benchmark & BENCHMARK_WRITE))
+		{
+			Interval(dlg);
+		}
+		if (benchmark & BENCHMARK_WRITE)
+		{
+			DiskSpd(dlg, TEST_WRITE_4);
+		}
 #ifdef MIX_MODE
 		if (MixMode)
 		{
@@ -292,10 +412,22 @@ UINT ExecDiskBench4(LPVOID dlg)
 
 UINT ExecDiskBench5(LPVOID dlg)
 {
+	int benchmark = ((CDiskMarkDlg*)dlg)->m_Benchmark;
+
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_READ_5); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_5);
+		if (benchmark & BENCHMARK_READ)
+		{
+			DiskSpd(dlg, TEST_READ_5);
+		}
+		if ((benchmark & BENCHMARK_READ) && (benchmark & BENCHMARK_WRITE))
+		{
+			Interval(dlg);
+		}
+		if (benchmark & BENCHMARK_WRITE)
+		{
+			DiskSpd(dlg, TEST_WRITE_5);
+		}
 #ifdef MIX_MODE
 		if (MixMode)
 		{
@@ -309,10 +441,22 @@ UINT ExecDiskBench5(LPVOID dlg)
 
 UINT ExecDiskBench6(LPVOID dlg)
 {
+	int benchmark = ((CDiskMarkDlg*)dlg)->m_Benchmark;
+
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_READ_6); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_6);
+		if (benchmark & BENCHMARK_READ)
+		{
+			DiskSpd(dlg, TEST_READ_6);
+		}
+		if ((benchmark & BENCHMARK_READ) && (benchmark & BENCHMARK_WRITE))
+		{
+			Interval(dlg);
+		}
+		if (benchmark & BENCHMARK_WRITE)
+		{
+			DiskSpd(dlg, TEST_WRITE_6);
+		}
 #ifdef MIX_MODE
 		if (MixMode)
 		{
@@ -326,10 +470,22 @@ UINT ExecDiskBench6(LPVOID dlg)
 
 UINT ExecDiskBench7(LPVOID dlg)
 {
+	int benchmark = ((CDiskMarkDlg*)dlg)->m_Benchmark;
+
 	if (Init(dlg))
 	{
-		DiskSpd(dlg, TEST_READ_7); Interval(dlg);
-		DiskSpd(dlg, TEST_WRITE_7);
+		if (benchmark & BENCHMARK_READ)
+		{
+			DiskSpd(dlg, TEST_READ_7);
+		}
+		if ((benchmark & BENCHMARK_READ) && (benchmark & BENCHMARK_WRITE))
+		{
+			Interval(dlg);
+		}
+		if (benchmark & BENCHMARK_WRITE)
+		{
+			DiskSpd(dlg, TEST_WRITE_7);
+		}
 #ifdef MIX_MODE
 		if (MixMode)
 		{
@@ -405,7 +561,7 @@ BOOL Init(void* dlg)
 		DiskTestSize = (UINT64)_tstoi(testSize);
 	}
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 9; i++)
 	{
 		BenchType[i] = ((CDiskMarkDlg*)dlg)->m_BenchType[i];
 		BenchSize[i] = ((CDiskMarkDlg*)dlg)->m_BenchSize[i];
@@ -615,6 +771,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		case TEST_WRITE_5:
 		case TEST_WRITE_6:
 		case TEST_WRITE_7:
+		case TEST_WRITE_8:
 			index = cmd - TEST_WRITE_0;
 			cstr.Format(L" -Z%dK", BenchSize[index]);
 			bufOption += cstr;
@@ -627,6 +784,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		case TEST_MIX_5:
 		case TEST_MIX_6:
 		case TEST_MIX_7:
+		case TEST_MIX_8:
 			index = cmd - TEST_MIX_0;
 			cstr.Format(L" -Z%dK", BenchSize[index]);
 			bufOption += cstr;
@@ -644,6 +802,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	case TEST_READ_5:
 	case TEST_READ_6:
 	case TEST_READ_7:
+	case TEST_READ_8:
 		index = cmd - TEST_READ_0;
 		if (BenchType[index])
 		{
@@ -666,6 +825,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	case TEST_WRITE_5:
 	case TEST_WRITE_6:
 	case TEST_WRITE_7:
+	case TEST_WRITE_8:
 		index = cmd - TEST_WRITE_0;
 		if (BenchType[index])
 		{
@@ -690,6 +850,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	case TEST_MIX_5:
 	case TEST_MIX_6:
 	case TEST_MIX_7:
+	case TEST_MIX_8:
 		index = cmd - TEST_MIX_0;
 		if (BenchType[index])
 		{

@@ -74,21 +74,6 @@ CString CMainDialogFx::GetDefaultFont()
 	}
 }
 
-int CMainDialogFx::GetFontScale()
-{
-	return m_FontScale;
-}
-
-double CMainDialogFx::GetFontRatio()
-{
-	return m_FontRatio;
-}
-
-CString CMainDialogFx::GetFontFace()
-{
-	return m_FontFace;
-}
-
 CString CMainDialogFx::GetCurrentLangPath()
 {
 	return m_CurrentLangPath;
@@ -457,6 +442,7 @@ void CMainDialogFx::UpdateThemeInfo()
 	m_ListLine1 = GetControlColor(L"ListLine1", 0, theme);
 	m_ListLine2 = GetControlColor(L"ListLine2", 0, theme);
 	m_Glass = GetControlColor(L"Glass", 255, theme);
+	m_Frame = GetControlColor(L"Frame", 128, theme);
 
 	m_ComboAlpha = GetControlAlpha(L"ComboAlpha", 255, theme);
 	m_EditAlpha = GetControlAlpha(L"EditAlpha", 255, theme);
@@ -594,7 +580,7 @@ void CMainDialogFx::SaveImageDlg(CImage* image)
 	CString path;
 	SYSTEMTIME st;
 	GetLocalTime(&st);
-	path.Format(L"%s_%04d%02d%02d%0d%02d%02d", PRODUCT_NAME, st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
+	path.Format(L"%s_%04d%02d%02d%02d%02d%02d", PRODUCT_NAME, st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
 
 	CString filter = L"PNG (*.png)|*.png|JPEG (*.jpg)|*.jpg|BMP (*.bmp)|*.bmp||";
 	CFileDialog save(FALSE, L"", path, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_EXPLORER, filter);

@@ -24,11 +24,6 @@ END_MESSAGE_MAP()
 
 CDiskMarkApp::CDiskMarkApp()
 {
-	/*
-	typedef DPI_AWARENESS_CONTEXT(WINAPI* FuncSetProcessDpiAwarenessContext) (DPI_AWARENESS_CONTEXT dpiContext);
-	FuncSetProcessDpiAwarenessContext pSetProcessDpiAwarenessContext = (FuncSetProcessDpiAwarenessContext)GetProcAddress(GetModuleHandle(L"User32.dll"), "SetProcessDpiAwarenessContext");
-	if (pSetProcessDpiAwarenessContext != NULL && GetWin10Version() >= 1703) { pSetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2); }
-	*/
 }
 
 CDiskMarkApp theApp;
@@ -49,7 +44,6 @@ BOOL CDiskMarkApp::InitInstance()
 	CWinApp::InitInstance();
 
 #ifndef UWP
-	/*
 	if (! IsUserAnAdmin())
 	{
 		if (RunAsRestart())
@@ -57,7 +51,6 @@ BOOL CDiskMarkApp::InitInstance()
 			return FALSE;
 		}
 	}
-	*/
 #endif
 
 	// Multimedia Timer Setting

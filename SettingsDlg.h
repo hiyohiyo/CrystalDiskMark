@@ -18,10 +18,10 @@ class CSettingsDlg : public CDialogFx
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	static const int SIZE_X = 680;
-	static const int SIZE_Y = 540;
+	static const int SIZE_Y = 480;
 #else
 	static const int SIZE_X = 440;
-	static const int SIZE_Y = 360;
+	static const int SIZE_Y = 408;
 #endif
 
 public:
@@ -45,6 +45,7 @@ protected:
 	CStaticFx m_LabelThreads;
 	CStaticFx m_LabelDefault;
 	CStaticFx m_LabelPeak;
+	CStaticFx m_LabelDemo;
 	CStaticFx m_LabelMeasureTime;
 	CStaticFx m_LabelIntervalTime;
 	CStaticFx m_LabelAffinity;
@@ -56,24 +57,28 @@ protected:
 	CComboBoxFx m_ComboBenchType3;
 	CComboBoxFx m_ComboBenchType4;
 	CComboBoxFx m_ComboBenchType5;
+	CComboBoxFx m_ComboBenchType8;
 	CComboBoxFx m_ComboBenchSize0;
 	CComboBoxFx m_ComboBenchSize1;
 	CComboBoxFx m_ComboBenchSize2;
 	CComboBoxFx m_ComboBenchSize3;
 	CComboBoxFx m_ComboBenchSize4;
 	CComboBoxFx m_ComboBenchSize5;
+	CComboBoxFx m_ComboBenchSize8;
 	CComboBoxFx m_ComboBenchQueues0;
 	CComboBoxFx m_ComboBenchQueues1;
 	CComboBoxFx m_ComboBenchQueues2;
 	CComboBoxFx m_ComboBenchQueues3;
 	CComboBoxFx m_ComboBenchQueues4;
 	CComboBoxFx m_ComboBenchQueues5;
+	CComboBoxFx m_ComboBenchQueues8;
 	CComboBoxFx m_ComboBenchThreads0;
 	CComboBoxFx m_ComboBenchThreads1;
 	CComboBoxFx m_ComboBenchThreads2;
 	CComboBoxFx m_ComboBenchThreads3;
 	CComboBoxFx m_ComboBenchThreads4;
 	CComboBoxFx m_ComboBenchThreads5;
+	CComboBoxFx m_ComboBenchThreads8;
 
 	CComboBoxFx m_ComboAffinity;
 	CComboBoxFx m_ComboData;
@@ -91,10 +96,10 @@ protected:
 	void OnOk();
 	void InitComboBox();
 
-	int m_BenchType[6];
-	int m_BenchSize[6];
-	int m_BenchQueues[6];
-	int m_BenchThreads[6];
+	int m_BenchType[9];
+	int m_BenchSize[9];
+	int m_BenchQueues[9];
+	int m_BenchThreads[9];
 
 	int m_TestData;
 	int m_Affinity;

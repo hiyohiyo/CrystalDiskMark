@@ -1,9 +1,6 @@
 ﻿//{{NO_DEPENDENCIES}}
 //
 #define IDD_DISKMARK_DIALOG             102
-#define IDR_HTML_ABOUTDLG               103
-#define IDR_HTML_DISKMARK_DIALOG        104
-#define IDR_HTML_DUMMY                  105
 #define IDR_MENU                        129
 #define IDR_MAINFRAME                   130
 #define IDD_ABOUT                       131
@@ -15,6 +12,8 @@
 #define IDI_TRAY_ICON                   138
 #define IDD_SETTINGS                    139
 #define IDD_FONT                        140
+
+#define IDC_OK                          1001
 #define IDC_BUTTON_ALL                  1003
 #define IDC_BUTTON_TEST_0               1004
 #define IDC_BUTTON_TEST_1               1005
@@ -42,7 +41,9 @@
 #define IDC_WRITE_UNIT                  1030
 #define IDC_MIX_UNIT                    1031
 #define IDC_COMBO_MIX                   1032
-#define IDC_COMBO_MODE                  1033
+#define IDC_DEMO_SETTING                1033
+#define IDC_HIDE                        1034
+
 #define IDC_CRYSTAL_DEW_WORLD           1100
 #define IDC_PROJECT_SITE_1              1101
 #define IDC_PROJECT_SITE_2              1102
@@ -54,13 +55,17 @@
 #define IDC_COPYRIGHT                   1108
 #define IDC_LICENSE                     1109
 #define IDC_EDITION                     1110
-#define ID_OK                           1200
+
 #define IDC_FONT_FACE_COMBO		        1201
-#define IDC_FONT_SCALE_COMBO			1203
+#define IDC_FONT_SCALE_COMBO			1202
+#define IDC_FONT_RENDER_COMBO	        1203
 #define IDC_FONT_FACE					1204
 #define IDC_FONT_SCALE					1205
-#define IDC_FONT_TYPE					1206		
+#define IDC_FONT_RENDER     			1206		
 
+#define IDC_LABEL_DEMO			        1301
+#define IDC_COMBO_DATA		            1302
+#define IDC_LABEL_DATA  				1303
 #define IDC_SET_DEFAULT					1304
 #define IDC_SET_NORM					1305
 #define IDC_SET_NVME     				1306
@@ -77,8 +82,6 @@
 #define IDC_COMBO_MEASURE_TIME          1317
 #define IDC_COMBO_INTERVAL_TIME         1318
 #define IDC_LABEL_DEFAULT		        1319
-#define IDC_LABEL_DATA  				1303
-#define IDC_COMBO_DATA		            1302
 
 #define IDC_COMBO_BENCH_TYPE_0		    1320
 #define IDC_COMBO_BENCH_TYPE_1		    1321
@@ -86,6 +89,7 @@
 #define IDC_COMBO_BENCH_TYPE_3		    1323
 #define IDC_COMBO_BENCH_TYPE_4		    1324
 #define IDC_COMBO_BENCH_TYPE_5		    1325
+#define IDC_COMBO_BENCH_TYPE_8		    1328
 
 #define IDC_COMBO_BENCH_SIZE_0		    1330
 #define IDC_COMBO_BENCH_SIZE_1		    1331
@@ -93,6 +97,7 @@
 #define IDC_COMBO_BENCH_SIZE_3		    1333
 #define IDC_COMBO_BENCH_SIZE_4		    1334
 #define IDC_COMBO_BENCH_SIZE_5		    1335
+#define IDC_COMBO_BENCH_SIZE_8		    1338
 
 #define IDC_COMBO_BENCH_QUEUE_0		    1340
 #define IDC_COMBO_BENCH_QUEUE_1		    1341
@@ -100,6 +105,7 @@
 #define IDC_COMBO_BENCH_QUEUE_3		    1343
 #define IDC_COMBO_BENCH_QUEUE_4		    1344
 #define IDC_COMBO_BENCH_QUEUE_5		    1345
+#define IDC_COMBO_BENCH_QUEUE_8		    1348
 
 #define IDC_COMBO_BENCH_THREAD_0		1350
 #define IDC_COMBO_BENCH_THREAD_1		1351
@@ -107,6 +113,7 @@
 #define IDC_COMBO_BENCH_THREAD_3		1353
 #define IDC_COMBO_BENCH_THREAD_4		1354
 #define IDC_COMBO_BENCH_THREAD_5		1355
+#define IDC_COMBO_BENCH_THREAD_8		1358
 
 #define ID_EXIT                         32771
 #define ID_ABOUT                        32772
@@ -152,16 +159,20 @@
 #define ID_PROFILE_DEFAULT				33830
 #define ID_PROFILE_PEAK					33831
 #define ID_PROFILE_REAL					33832
-#define ID_PROFILE_DEFAULT_MIX			33833
-#define ID_PROFILE_PEAK_MIX				33834
-#define ID_PROFILE_REAL_MIX				33835
+#define ID_PROFILE_DEMO					33833
+#define ID_PROFILE_DEFAULT_MIX			33834
+#define ID_PROFILE_PEAK_MIX				33835
+#define ID_PROFILE_REAL_MIX				33836
+#define ID_BENCHMARK_READ_WRITE			33837
+#define ID_BENCHMARK_READ_ONLY			33838
+#define ID_BENCHMARK_WRITE_ONLY		    33839
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        141
-#define _APS_NEXT_COMMAND_VALUE         33809
+#define _APS_NEXT_COMMAND_VALUE         33840
 #define _APS_NEXT_CONTROL_VALUE         1360
 #define _APS_NEXT_SYMED_VALUE           107
 #endif

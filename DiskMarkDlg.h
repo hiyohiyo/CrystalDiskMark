@@ -48,14 +48,14 @@ public:
 	void InitScore();
 	void UpdateScore();
 
-	double m_ReadScore[8];
-	double m_WriteScore[8];
-	double m_ReadLatency[8];
-	double m_WriteLatency[8];
+	double m_ReadScore[9];
+	double m_WriteScore[9];
+	double m_ReadLatency[9];
+	double m_WriteLatency[9];
 
 #ifdef MIX_MODE
-	double m_MixScore[8];
-	double m_MixLatency[8];
+	double m_MixScore[9];
+	double m_MixLatency[9];
 #endif
 
 	void SetMeter(CStaticFx* control, double score, double latency, int blockSize, int unit);
@@ -68,7 +68,6 @@ public:
 	CString m_ValueTestCount;
 	CString m_ValueTestSize;
 	CString m_ValueTestDrive;
-	CString m_ValueTestMode;
 	CString m_TestDriveInfo;
 	CString m_TestTargetPath;
 	long m_TestDriveLetter;
@@ -79,18 +78,19 @@ public:
 	int m_IndexTestSize;
 	int m_IndexTestDrive;
 	int m_IndexTestMix;
-	int m_IndexTestMode;
 
-	int m_BenchType[8];
-	int m_BenchSize[8];
-	int m_BenchQueues[8];
-	int m_BenchThreads[8];
+	int m_BenchType[9];
+	int m_BenchSize[9];
+	int m_BenchQueues[9];
+	int m_BenchThreads[9];
 	int m_IntervalTime;
 	int m_Affinity;
 	int m_MeasureTime;
 
 	int m_TestData;
 	int m_Profile;
+	int m_Benchmark;
+
 	BOOL m_AdminMode;
 	BOOL m_MixMode;
 	int m_MixRatio;
@@ -197,10 +197,10 @@ protected:
 	CComboBoxFx m_ComboSize;
 	CComboBoxFx m_ComboDrive;
 	CComboBoxFx m_ComboUnit;
-	CComboBoxFx m_ComboMode;
 
 	CStaticFx m_WriteUnit;
 	CStaticFx m_ReadUnit;
+	CStaticFx m_DemoSetting;
 
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
@@ -250,19 +250,20 @@ public:
 	afx_msg void OnProfileDefault();
 	afx_msg void OnProfilePeak();
 	afx_msg void OnProfileReal();
+	afx_msg void OnProfileDemo();
 	afx_msg void OnSaveText();
 	afx_msg void OnSaveImage();
 	afx_msg void OnSettingsQueuesThreads();
 	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnCbnSelchangeComboDrive();
 	afx_msg void OnCbnSelchangeComboUnit();
-	afx_msg void OnCbnSelchangeComboMode();
 	afx_msg void MoveForcus();
 	afx_msg void UpdateUnitLabel();
 
 	void ProfileDefault();
 	void ProfilePeak();
 	void ProfileReal();
+	void ProfileDemo();
 
 	void SettingsQueuesThreads(int type);
 
@@ -276,4 +277,7 @@ public:
 	afx_msg void OnCbnSelchangeComboMix();
 #endif
 
+	afx_msg void OnBenchmarkReadWrite();
+	afx_msg void OnBenchmarkReadOnly();
+	afx_msg void OnBenchmarkWriteOnly();
 };

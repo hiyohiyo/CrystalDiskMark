@@ -20,6 +20,7 @@ CButtonFx::CButtonFx()
 	m_RenderMode = SystemDraw;
 	m_bHighContrast = FALSE;
 	m_bDarkMode = FALSE;
+	m_bDrawFrame = FALSE;
 
 	// Glass
 	m_GlassColor = RGB(255, 255, 255);
@@ -274,6 +275,12 @@ void CButtonFx::SetDrawFrame(BOOL bDrawFrame)
 	}
 }
 
+void CButtonFx::SetDrawFrameEx(BOOL bDrawFrame, COLORREF frameColor)
+{
+	m_bDrawFrame = bDrawFrame;
+	m_FrameColor = frameColor;
+}
+
 void CButtonFx::SetGlassColor(COLORREF glassColor, BYTE glassAlpha)
 {
 	m_GlassColor = glassColor;
@@ -414,6 +421,14 @@ void CButtonFx::DrawControl(CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, CBit
 	pBkDC->DeleteDC();
 	delete pMemDC;
 	delete pBkDC;
+
+	if (m_bDrawFrame)
+	{
+		CBrush brush;
+		brush.CreateSolidBrush(m_FrameColor);
+		drawDC->FrameRect(&(lpDrawItemStruct->rcItem), &brush);
+		brush.DeleteObject();
+	}
 }
 
 void CButtonFx::DrawString(CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
@@ -577,12 +592,12 @@ void CButtonFx::LoadCtrlBk(CDC* drawDC)
 // Font
 //------------------------------------------------
 
-void CButtonFx::SetFontEx(CString face, int size, int sizeToolTip, double zoomRatio, double fontRatio, COLORREF textColor, LONG fontWeight)
+void CButtonFx::SetFontEx(CString face, int size, int sizeToolTip, double zoomRatio, double fontRatio, COLORREF textColor, LONG fontWeight, BYTE fontRender)
 {
 	LOGFONT logFont = { 0 };
 	logFont.lfCharSet = DEFAULT_CHARSET;
 	logFont.lfHeight = (LONG)(-1 * size * zoomRatio * fontRatio);
-	logFont.lfQuality = 6;
+	logFont.lfQuality = fontRender;
 	logFont.lfWeight = fontWeight;
 
 	if (face.GetLength() < 32)
