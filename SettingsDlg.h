@@ -85,12 +85,12 @@ protected:
 	CComboBoxFx m_ComboMeasureTime;
 	CComboBoxFx m_ComboIntervalTime;
 
-	CButtonFx m_ButtonSetNorm;
+	CButtonFx m_ButtonSetDefault;
 	CButtonFx m_ButtonSetNVMe;
 	CButtonFx m_ButtonSetAta;
 	CButtonFx m_ButtonOk;
 
-	void OnSetNorm();
+	void OnSetDefault();
 	void OnSetNVMe();
 	void OnSetAta();
 	void OnOk();

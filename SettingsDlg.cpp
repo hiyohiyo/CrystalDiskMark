@@ -57,7 +57,7 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LABEL_AFFINITY, m_LabelAffinity);
 	DDX_Control(pDX, IDC_LABEL_DATA, m_LabelData);
 
-	DDX_Control(pDX, IDC_SET_NORM, m_ButtonSetNorm);
+	DDX_Control(pDX, IDC_SET_DEFAULT, m_ButtonSetDefault);
 	DDX_Control(pDX, IDC_SET_NVME, m_ButtonSetNVMe);
 	DDX_Control(pDX, IDC_SET_ATA, m_ButtonSetAta);
 
@@ -101,13 +101,13 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CSettingsDlg, CDialogFx)
-	ON_BN_CLICKED(IDC_SET_NORM, &CSettingsDlg::OnSetNorm)
+	ON_BN_CLICKED(IDC_SET_DEFAULT, &CSettingsDlg::OnSetDefault)
 	ON_BN_CLICKED(IDC_SET_NVME, &CSettingsDlg::OnSetNVMe)
 	ON_BN_CLICKED(IDC_SET_ATA, &CSettingsDlg::OnSetAta)
 	ON_BN_CLICKED(IDC_OK, &CSettingsDlg::OnOk)
 END_MESSAGE_MAP()
 
-void CSettingsDlg::OnSetNorm()
+void CSettingsDlg::OnSetDefault()
 {
 	int type[9] =    {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
 	int size[9] =    { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
@@ -525,7 +525,7 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboAffinity.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 	m_ComboMeasureTime.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 	m_ComboIntervalTime.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
-	m_ButtonSetNorm.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
+	m_ButtonSetDefault.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
 	m_ButtonSetNVMe.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
 	m_ButtonSetAta.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
 	m_ButtonOk.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
@@ -580,7 +580,7 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboMeasureTime.InitControl(16, 400, 320, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 	m_ComboIntervalTime.InitControl(352, 400, 320, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 
-	m_ButtonSetNorm.InitControl(16, 440, 152, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_ButtonSetDefault.InitControl(16, 440, 152, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
 	m_ButtonSetNVMe.InitControl(184, 440, 152, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
 	m_ButtonSetAta.InitControl(352, 440, 152, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
 	m_ButtonOk.InitControl(512, 436, 160, 36, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
@@ -634,23 +634,23 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboMeasureTime.InitControl(16, 344, 200, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 	m_ComboIntervalTime.InitControl(232, 344, 200, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 
-	m_ButtonSetNorm.InitControl(12, 376, 96, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_ButtonSetAta.InitControl(120, 376, 96, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_ButtonSetNVMe.InitControl(228, 376, 96, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_ButtonSetDefault.InitControl(8, 376, 100, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_ButtonSetNVMe.InitControl(116, 376, 100, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_ButtonSetAta.InitControl(224, 376, 100, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
 	m_ButtonOk.InitControl(332, 372, 100, 28, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
 #endif
 
-	m_ButtonSetNorm.SetHandCursor();
+	m_ButtonSetDefault.SetHandCursor();
 	m_ButtonSetNVMe.SetHandCursor();
 	m_ButtonSetAta.SetHandCursor();
 	m_ButtonOk.SetHandCursor();
 
-	m_ButtonSetNorm.SetWindowTextW(L"NORM");
+	m_ButtonSetDefault.SetWindowTextW(i18n(L"Dialog", L"DEFAULT"));
 	m_ButtonSetNVMe.SetWindowTextW(L"NVMe");
 	m_ButtonSetAta.SetWindowTextW(L"ATA");
 
 	SetDarkModeControl(m_ButtonOk.GetSafeHwnd(), m_bDarkMode);
-	SetDarkModeControl(m_ButtonSetNorm.GetSafeHwnd(), m_bDarkMode);
+	SetDarkModeControl(m_ButtonSetDefault.GetSafeHwnd(), m_bDarkMode);
 	SetDarkModeControl(m_ButtonSetNVMe.GetSafeHwnd(), m_bDarkMode);
 	SetDarkModeControl(m_ButtonSetAta.GetSafeHwnd(), m_bDarkMode);
 

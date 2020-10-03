@@ -158,6 +158,11 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialogFx)
 	ON_COMMAND(ID_CRYSTALDEWWORLD, &CDiskMarkDlg::OnCrystalDewWorld)
 	ON_COMMAND(ID_MODE_DEFAULT, &CDiskMarkDlg::OnModeDefault)
 	ON_COMMAND(ID_MODE_ALL0X00, &CDiskMarkDlg::OnModeAll0x00)
+
+	ON_COMMAND(ID_SETTING_DEFAULT, &CDiskMarkDlg::OnSettingDefault)
+	ON_COMMAND(ID_SETTING_NVME, &CDiskMarkDlg::OnSettingNVMe)
+	ON_COMMAND(ID_SETTING_ATA, &CDiskMarkDlg::OnSettingAta)
+
 	ON_COMMAND(ID_PROFILE_DEFAULT, &CDiskMarkDlg::OnProfileDefault)
 	ON_COMMAND(ID_PROFILE_REAL, &CDiskMarkDlg::OnProfileReal)
 	ON_COMMAND(ID_PROFILE_PEAK, &CDiskMarkDlg::OnProfilePeak)
@@ -227,7 +232,7 @@ int CALLBACK EnumFontFamExProcDefaultFont(ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX
 	return TRUE;
 }
 
-BOOL CDiskMarkDlg::IsNormMode()
+BOOL CDiskMarkDlg::IsDefaultMode()
 {
 	if (m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1
 	&&  m_BenchSize[1] == 1024 && m_BenchQueues[1] == 1  && m_BenchThreads[1] == 1
@@ -1063,6 +1068,35 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 	{
 		m_IntervalTime = 0;
 	}
+
+	if (IsDefaultMode())
+	{
+		CMenu* menu = GetMenu();
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, ID_SETTING_DEFAULT, MF_BYCOMMAND);
+		SetMenu(menu);
+		DrawMenuBar();
+	}
+	else if (IsNVMeMode())
+	{
+		CMenu* menu = GetMenu();
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, ID_SETTING_NVME, MF_BYCOMMAND);
+		SetMenu(menu);
+		DrawMenuBar();
+	}
+	else if (IsAtaMode())
+	{
+		CMenu* menu = GetMenu();
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, ID_SETTING_ATA, MF_BYCOMMAND);
+		SetMenu(menu);
+		DrawMenuBar();
+	}
+	else
+	{
+		CMenu* menu = GetMenu();
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, 0, MF_BYCOMMAND);
+		SetMenu(menu);
+		DrawMenuBar();
+	}
 }
 
 void CDiskMarkDlg::SettingsQueuesThreads(int type)
@@ -1071,7 +1105,7 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 
 	switch (type)
 	{
-	case 0:// NORM
+	case 0:// Default
 		{
 			int type[9] =   {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
 			int size[9] =   { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
@@ -2387,6 +2421,29 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 
 	cstr = i18n(L"Menu", L"EDIT_COPY") + L"\tCtrl + Shift + C";
 	menu->ModifyMenu(ID_COPY, MF_STRING, ID_COPY, cstr);
+
+	subMenu.Attach(menu->GetSubMenu(1)->GetSafeHmenu());
+	cstr = i18n(L"Menu", L"TEST_DATA");
+	subMenu.ModifyMenu(0, MF_BYPOSITION, 0, cstr);
+	subMenu.Detach();
+
+	cstr = i18n(L"Menu", L"DEFAULT_RANDOM");
+	menu->ModifyMenu(ID_MODE_DEFAULT, MF_STRING, ID_MODE_DEFAULT, cstr);
+	cstr = i18n(L"Menu", L"ALL_ZERO");
+	menu->ModifyMenu(ID_MODE_ALL0X00, MF_STRING, ID_MODE_ALL0X00, cstr);
+
+	if (m_TestData == TEST_DATA_ALL0X00)
+	{
+		OnModeAll0x00();
+	}
+	else
+	{
+		OnModeDefault();
+	}
+
+	cstr = i18n(L"Menu", L"PROFILE_DEFAULT");
+	menu->ModifyMenu(ID_SETTING_DEFAULT, MF_STRING, ID_SETTING_DEFAULT, cstr);
+
 	cstr = i18n(L"Menu", L"SETTINGS") + L"\tCtrl + Q";
 	menu->ModifyMenu(ID_SETTINGS_QUEUESTHREADS, MF_STRING, ID_SETTINGS_QUEUESTHREADS, cstr);
 
@@ -3093,6 +3150,36 @@ void CDiskMarkDlg::OnCrystalDewWorld()
 #else
 	#define ID_PROFILE_MAX ID_PROFILE_DEMO
 #endif
+
+void CDiskMarkDlg::OnSettingDefault()
+{
+	CMenu* menu = GetMenu();
+	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, ID_SETTING_DEFAULT, MF_BYCOMMAND);
+	SetMenu(menu);
+	DrawMenuBar();
+
+	SettingsQueuesThreads(0);
+}
+
+void CDiskMarkDlg::OnSettingNVMe()
+{
+	CMenu* menu = GetMenu();
+	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, ID_SETTING_NVME, MF_BYCOMMAND);
+	SetMenu(menu);
+	DrawMenuBar();
+
+	SettingsQueuesThreads(1);
+}
+
+void CDiskMarkDlg::OnSettingAta()
+{
+	CMenu* menu = GetMenu();
+	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, ID_SETTING_ATA, MF_BYCOMMAND);
+	SetMenu(menu);
+	DrawMenuBar();
+
+	SettingsQueuesThreads(2);
+}
 
 void CDiskMarkDlg::OnModeDefault()
 {

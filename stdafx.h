@@ -52,7 +52,7 @@
 #elif _M_X64
 #define PRODUCT_EDITION			L"Shizuku Edition x64 (UWP)"
 #else
-#define PRODUCT_EDITION			L"Shizuku Edition (UWP)"
+#define PRODUCT_EDITION			L"Shizuku Edition x86 (UWP)"
 #endif
 #else
 #define PRODUCT_SHORT_NAME		L""
@@ -63,7 +63,7 @@
 #elif _M_X64
 #define PRODUCT_EDITION			L"x64 (UWP)"
 #else
-#define PRODUCT_EDITION			L"(UWP)"
+#define PRODUCT_EDITION			L"x86 (UWP)"
 #endif
 #endif
 
@@ -78,7 +78,7 @@
 #elif _M_X64
 #define PRODUCT_EDITION			L"Shizuku Edition x64"
 #else
-#define PRODUCT_EDITION			L"Shizuku Edition"
+#define PRODUCT_EDITION			L"Shizuku Edition x86"
 #endif
 #else
 #define PRODUCT_SHORT_NAME		L""
@@ -89,17 +89,17 @@
 #elif _M_X64
 #define PRODUCT_EDITION			L"x64"
 #else
-#define PRODUCT_EDITION			L""
+#define PRODUCT_EDITION			L"x86"
 #endif
 #endif
 #endif
 
 // Version Information
 #define PRODUCT_NAME				L"CrystalDiskMark"
-#define PRODUCT_VERSION				L"8 Beta6"
+#define PRODUCT_VERSION				L"8 Beta7"
 #define PRODUCT_ROMING_NAME			L"Cecile"
 
-#define PRODUCT_RELEASE				L"2020/09/26"
+#define PRODUCT_RELEASE				L"2020/10/03"
 #define PRODUCT_COPY_YEAR			L"2007-2020"
 #define PRODUCT_COPYRIGHT			L"© 2007-2020 hiyohiyo"
 #define PRODUCT_LICENSE				L"The MIT License"

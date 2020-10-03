@@ -162,7 +162,7 @@ protected:
 
 	virtual BOOL CheckThemeEdition(CString name);
 
-	BOOL IsNormMode();
+	BOOL IsDefaultMode();
 	BOOL IsNVMeMode();
 	BOOL IsAtaMode();
 
@@ -247,6 +247,10 @@ public:
 	afx_msg void OnCrystalDewWorld();
 	afx_msg void OnModeDefault();
 	afx_msg void OnModeAll0x00();
+	afx_msg void OnSettingDefault();
+	afx_msg void OnSettingNVMe();
+	afx_msg void OnSettingAta();
+
 	afx_msg void OnProfileDefault();
 	afx_msg void OnProfilePeak();
 	afx_msg void OnProfileReal();
