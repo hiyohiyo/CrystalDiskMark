@@ -124,6 +124,11 @@ BOOL CButtonFx::InitControl(int x, int y, int width, int height, double zoomRati
 			ModifyStyle(BS_OWNERDRAW, m_TextAlign);
 		}
 	}
+	else if (m_BkDC->GetDeviceCaps(BITSPIXEL) * m_BkDC->GetDeviceCaps(PLANES) < 24)
+	{
+		m_ImageCount = 0;
+		m_CtrlImage.Destroy();
+	}
 	else if (renderMode & OwnerDrawGlass)
 	{
 		m_ImageCount = 3;
@@ -343,7 +348,20 @@ void CButtonFx::DrawControl(CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, CBit
 
 	if (drawDC->GetDeviceCaps(BITSPIXEL) * drawDC->GetDeviceCaps(PLANES) < 24)
 	{
-		drawDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pMemDC, 0, m_CtrlSize.cy * no, SRCCOPY);
+		BLENDFUNCTION blendfunc = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
+
+		drawDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pBkDC, 0, m_CtrlSize.cy * no, SRCCOPY);
+		if (!m_CtrlImage.IsNull())
+		{
+			if (m_CtrlImage.GetBPP() == 32)
+			{
+				drawDC->AlphaBlend(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pMemDC, 0, m_CtrlSize.cy * no, m_CtrlSize.cx, m_CtrlSize.cy, blendfunc);
+			}
+			else
+			{
+				drawDC->BitBlt(0, 0, m_CtrlSize.cx, m_CtrlSize.cy, pMemDC, 0, m_CtrlSize.cy * no, SRCCOPY);
+			}
+		}
 		DrawString(drawDC, lpDrawItemStruct);
 	}
 	else // Full Color (24/32bit)

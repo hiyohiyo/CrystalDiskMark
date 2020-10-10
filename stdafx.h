@@ -96,10 +96,10 @@
 
 // Version Information
 #define PRODUCT_NAME				L"CrystalDiskMark"
-#define PRODUCT_VERSION				L"8 Beta7"
+#define PRODUCT_VERSION				L"8.0.0"
 #define PRODUCT_ROMING_NAME			L"Cecile"
 
-#define PRODUCT_RELEASE				L"2020/10/03"
+#define PRODUCT_RELEASE				L"2020/10/10"
 #define PRODUCT_COPY_YEAR			L"2007-2020"
 #define PRODUCT_COPYRIGHT			L"© 2007-2020 hiyohiyo"
 #define PRODUCT_LICENSE				L"The MIT License"
@@ -121,13 +121,11 @@
 #define URL_HTML_HELP_EN 			L"https://crystalmark.info/en/software/crystaldiskmark/"
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-
-#define	URL_PROJECT_SITE_1		    L"http://kirinokasumu.com/"
-#define URL_PROJECT_SITE_2		    L"http://linux-ha.sourceforge.jp/wp/"
-#define URL_PROJECT_SITE_3	        L"http://ch.nicovideo.jp/oss"
-#define URL_PROJECT_SITE_4			L"http://www.bellche.com/"
+#define	URL_PROJECT_SITE_1		    L"https://twitter.com/kirinokasumu"
+#define URL_PROJECT_SITE_2		    L"https://linux-ha.sourceforge.jp/wp/"
+#define URL_PROJECT_SITE_3	        L"https://ch.nicovideo.jp/oss"
+#define URL_PROJECT_SITE_4			L"https://twitter.com/bellche"
 #define URL_PROJECT_SITE_5			L"https://suishoshizuku.com/"
-
 #endif
 
 #define MAX_THREADS 64

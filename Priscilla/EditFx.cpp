@@ -103,7 +103,54 @@ BOOL CEditFx::InitControl(int x, int y, int width, int height, double zoomRatio,
 		LoadCtrlBk(m_BkDC);
 	}
 
-	if (renderMode & OwnerDrawGlass)
+	if (renderMode & OwnerDrawImage)
+	{
+		if (!LoadBitmap(imagePath))
+		{
+		}
+	}
+	else if (m_BkDC->GetDeviceCaps(BITSPIXEL) * m_BkDC->GetDeviceCaps(PLANES) == 8)
+	{
+		m_ImageCount = 1;
+		m_CtrlBitmap.Detach();
+		m_CtrlBitmap.CreateCompatibleBitmap(m_BkDC, m_CtrlSize.cx, m_CtrlSize.cy);
+		HDC hMemDC = CreateCompatibleDC(m_BkDC->GetSafeHdc());
+
+		HBITMAP hOldBitmap = (HBITMAP)SelectObject(hMemDC, m_CtrlBitmap.GetSafeHandle());
+		BitBlt(hMemDC, 0, 0, m_CtrlSize.cx, m_CtrlSize.cy, m_BkDC->GetSafeHdc(), m_X, m_Y, SRCCOPY);
+		if (m_bDrawFrame)
+		{
+			HPEN hPen = CreatePen(PS_SOLID, 1, m_FrameColor);
+			HPEN hOldPen = (HPEN)SelectObject(hMemDC, hPen);
+			SelectObject(hMemDC, GetStockObject(NULL_BRUSH));
+			Rectangle(hMemDC, 0, 0, m_CtrlSize.cx, m_CtrlSize.cy);
+			SelectObject(hMemDC, hOldPen);
+			DeleteObject(hPen);
+		}
+		DeleteDC(hMemDC);
+	}
+	else if (m_BkDC->GetDeviceCaps(BITSPIXEL) * m_BkDC->GetDeviceCaps(PLANES) == 16)
+	{
+		m_ImageCount = 1;
+		m_CtrlImage.Destroy();
+		m_CtrlImage.Create(m_CtrlSize.cx, m_CtrlSize.cy * m_ImageCount, 16);
+		m_CtrlBitmap.Detach();
+		m_CtrlBitmap.Attach((HBITMAP)m_CtrlImage);
+
+		HDC hDC = m_CtrlImage.GetDC();
+		BitBlt(hDC, 0, 0, m_CtrlSize.cx, m_CtrlSize.cy, m_BkDC->GetSafeHdc(), m_X, m_Y, SRCCOPY);
+		if (m_bDrawFrame)
+		{
+			HPEN hPen = CreatePen(PS_SOLID, 1, m_FrameColor);
+			HPEN hOldPen = (HPEN)SelectObject(hDC, hPen);
+			SelectObject(hDC, GetStockObject(NULL_BRUSH));
+			Rectangle(hDC, 0, 0, m_CtrlSize.cx, m_CtrlSize.cy);
+			SelectObject(hDC, hOldPen);
+			DeleteObject(hPen);
+		}
+		m_CtrlImage.ReleaseDC();
+	}
+	else if (renderMode & OwnerDrawGlass)
 	{
 		m_ImageCount = 1;
 		m_CtrlImage.Destroy();
@@ -140,12 +187,6 @@ BOOL CEditFx::InitControl(int x, int y, int width, int height, double zoomRatio,
 
 		m_CtrlBitmap.SetBitmapBits(length, bitmapBits);
 		delete[] bitmapBits;
-	}
-	else if (renderMode & OwnerDrawImage)
-	{
-		if (!LoadBitmap(imagePath))
-		{
-		}
 	}
 	else if (renderMode & OwnerDrawTransparent)
 	{
@@ -350,7 +391,12 @@ void CEditFx::LoadCtrlBk(CDC* drawDC)
 
 void CEditFx::SetupControlImage(CBitmap& bkBitmap, CBitmap& ctrlBitmap)
 {
-	if (m_BkDC->GetDeviceCaps(BITSPIXEL) * m_BkDC->GetDeviceCaps(PLANES) >= 24)
+	int color = m_BkDC->GetDeviceCaps(BITSPIXEL) * m_BkDC->GetDeviceCaps(PLANES);
+	if (color < 24)
+	{
+		
+	}
+	else if (color >= 24)
 	{
 		BITMAP CtlBmpInfo, DstBmpInfo;
 		bkBitmap.GetBitmap(&DstBmpInfo);

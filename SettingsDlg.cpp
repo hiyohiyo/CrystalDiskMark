@@ -525,10 +525,10 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboAffinity.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 	m_ComboMeasureTime.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 	m_ComboIntervalTime.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
-	m_ButtonSetDefault.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
-	m_ButtonSetNVMe.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
-	m_ButtonSetAta.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
-	m_ButtonOk.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
+	m_ButtonSetDefault.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_NORMAL, m_FontRender);
+	m_ButtonSetNVMe.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_NORMAL, m_FontRender);
+	m_ButtonSetAta.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_NORMAL, m_FontRender);
+	m_ButtonOk.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_NORMAL, m_FontRender);
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	m_LabelType.InitControl(8, 8, 160, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);

@@ -662,17 +662,17 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_ReadUnit.InitControl(140 + offsetX, 52, 320, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
 		m_WriteUnit.InitControl(468 + offsetX, 52, 320, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
 
-		m_ComboCount.InitControl(140 + offsetX, 8, 60, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
-		m_ComboSize.InitControl(204 + offsetX, 8, 140, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
-		m_ComboUnit.InitControl(672 + offsetX, 8, 116, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+		m_ComboCount.InitControl(140 + offsetX, 8, 60, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+		m_ComboSize.InitControl(204 + offsetX, 8, 140, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+		m_ComboUnit.InitControl(672 + offsetX, 8, 116, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 
 		if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_REAL)
 		{
-			m_ComboDrive.InitControl(348 + offsetX, 8, 440, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+			m_ComboDrive.InitControl(348 + offsetX, 8, 440, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		}
 		else
 		{
-			m_ComboDrive.InitControl(348 + offsetX, 8, 320, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+			m_ComboDrive.InitControl(348 + offsetX, 8, 320, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		}
 #else
 
@@ -2291,7 +2291,11 @@ void CDiskMarkDlg::SetMeter(CStaticFx* control, double score, double latency, in
 	}
 
 	UpdateData(FALSE);
-	if (m_Profile != PROFILE_DEMO)
+	if (m_Profile == PROFILE_DEMO)
+	{
+		control->SetMeter(FALSE, meterRatio);
+	}
+	else
 	{
 		control->SetMeter(TRUE, meterRatio);
 	}
@@ -2335,6 +2339,9 @@ void CDiskMarkDlg::InitDrive()
 		{
 			pDrive[1] = L'\0';
 			cstr.Format(L"%C: ", pDrive[0]);
+			freeBytesAvailableToCaller.QuadPart = 0;
+			totalNumberOfBytes.QuadPart = 0;
+			totalNumberOfFreeBytes.QuadPart = 0;
 			if(GetDiskFreeSpaceEx(cstr, &freeBytesAvailableToCaller, &totalNumberOfBytes, &totalNumberOfFreeBytes) != 0)
 			{
 				select += cstr;

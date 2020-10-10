@@ -175,6 +175,44 @@ BOOL CComboBoxFx::InitControl(int x, int y, int width, int height, double zoomRa
 		m_CtrlBitmap.SetBitmapBits(length, bitmapBits);
 		delete[] bitmapBits;
 	}
+	else if (renderMode & OwnerDrawTransparent)
+	{
+		m_ImageCount = 1;
+		m_CtrlImage.Destroy();
+		m_CtrlImage.Create(m_CtrlSize.cx, m_CtrlSize.cy * m_ImageCount, 32);
+
+		RECT rect;
+		rect.top = 0;
+		rect.left = 0;
+		rect.right = m_CtrlSize.cx;
+		rect.bottom = m_CtrlSize.cy;
+
+		m_CtrlBitmap.Detach();
+		m_CtrlBitmap.Attach((HBITMAP)m_CtrlImage);
+
+		DWORD length = m_CtrlSize.cx * m_CtrlSize.cy * m_ImageCount * 4;
+		BYTE* bitmapBits = new BYTE[length];
+		m_CtrlBitmap.GetBitmapBits(length, bitmapBits);
+
+		BYTE r = (BYTE)GetRValue(m_GlassColor);
+		BYTE g = (BYTE)GetGValue(m_GlassColor);
+		BYTE b = (BYTE)GetBValue(m_GlassColor);
+		BYTE a = m_GlassAlpha;
+
+		for (int y = 0; y < (int)(m_CtrlSize.cy * m_ImageCount); y++)
+		{
+			for (int x = 0; x < m_CtrlSize.cx; x++)
+			{
+				// bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = b;
+				// bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = g;
+				// bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = r;
+				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = (BYTE)0;
+			}
+		}
+
+		m_CtrlBitmap.SetBitmapBits(length, bitmapBits);
+		delete[] bitmapBits;
+	}
 
 	SetBkReload();
 	Invalidate();
