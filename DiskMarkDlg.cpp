@@ -3388,7 +3388,6 @@ void CDiskMarkDlg::BenchmarkReadWrite()
 
 void CDiskMarkDlg::OnBenchmarkReadOnly()
 {
-	AfxMessageBox(L"");
 	InitScore();
 	BenchmarkReadOnly();
 }
