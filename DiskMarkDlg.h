@@ -284,4 +284,7 @@ public:
 	afx_msg void OnBenchmarkReadWrite();
 	afx_msg void OnBenchmarkReadOnly();
 	afx_msg void OnBenchmarkWriteOnly();
+	void BenchmarkReadWrite();
+	void BenchmarkReadOnly();
+	void BenchmarkWriteOnly();
 };

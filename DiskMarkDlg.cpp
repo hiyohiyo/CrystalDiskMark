@@ -934,6 +934,7 @@ void CDiskMarkDlg::SetControlFont()
 		m_TestRead0.SetFontEx(m_FontFace, 35, 16, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
 		m_TestWrite0.SetFontEx(m_FontFace, 35, 16, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
 	}
+
 	m_TestRead1.SetFontEx(m_FontFace, 35, 16, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
 	m_TestRead2.SetFontEx(m_FontFace, 35, 16, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
 	m_TestRead3.SetFontEx(m_FontFace, 35, 16, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
@@ -2524,16 +2525,16 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	switch (m_Benchmark)
 	{
 	case BENCHMARK_READ_WRITE:
-		OnBenchmarkReadWrite();
+		BenchmarkReadWrite();
 		break;
 	case BENCHMARK_READ:
-		OnBenchmarkReadOnly();
+		BenchmarkReadOnly();
 		break;
 	case BENCHMARK_WRITE:
-		OnBenchmarkWriteOnly();
+		BenchmarkWriteOnly();
 		break;
 	default:
-		OnBenchmarkReadWrite();
+		BenchmarkReadWrite();
 		break;
 	}
 
@@ -3371,7 +3372,11 @@ void CDiskMarkDlg::ProfileRealMix()
 void CDiskMarkDlg::OnBenchmarkReadWrite()
 {
 	InitScore();
+	BenchmarkReadWrite();
+}
 
+void CDiskMarkDlg::BenchmarkReadWrite()
+{
 	CMenu* menu = GetMenu();
 	menu->CheckMenuRadioItem(ID_BENCHMARK_READ_WRITE, ID_BENCHMARK_WRITE_ONLY, ID_BENCHMARK_READ_WRITE, MF_BYCOMMAND);
 	SetMenu(menu);
@@ -3383,8 +3388,13 @@ void CDiskMarkDlg::OnBenchmarkReadWrite()
 
 void CDiskMarkDlg::OnBenchmarkReadOnly()
 {
+	AfxMessageBox(L"");
 	InitScore();
+	BenchmarkReadOnly();
+}
 
+void CDiskMarkDlg::BenchmarkReadOnly()
+{
 	CMenu* menu = GetMenu();
 	menu->CheckMenuRadioItem(ID_BENCHMARK_READ_WRITE, ID_BENCHMARK_WRITE_ONLY, ID_BENCHMARK_READ_ONLY, MF_BYCOMMAND);
 	SetMenu(menu);
@@ -3397,7 +3407,11 @@ void CDiskMarkDlg::OnBenchmarkReadOnly()
 void CDiskMarkDlg::OnBenchmarkWriteOnly()
 {
 	InitScore();
+	BenchmarkWriteOnly();
+}
 
+void CDiskMarkDlg::BenchmarkWriteOnly()
+{
 	CMenu* menu = GetMenu();
 	menu->CheckMenuRadioItem(ID_BENCHMARK_READ_WRITE, ID_BENCHMARK_WRITE_ONLY, ID_BENCHMARK_WRITE_ONLY, MF_BYCOMMAND);
 	SetMenu(menu);
