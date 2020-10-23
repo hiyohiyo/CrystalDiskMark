@@ -163,8 +163,8 @@ protected:
 	virtual BOOL CheckThemeEdition(CString name);
 
 	BOOL IsDefaultMode();
-	BOOL IsNVMeMode();
-	BOOL IsAtaMode();
+	BOOL IsNVMe8Mode();
+	BOOL IsNVMe7Mode();
 
 #ifdef MIX_MODE
 	CStaticFx m_TestMix0;
@@ -248,8 +248,8 @@ public:
 	afx_msg void OnModeDefault();
 	afx_msg void OnModeAll0x00();
 	afx_msg void OnSettingDefault();
-	afx_msg void OnSettingNVMe();
-	afx_msg void OnSettingAta();
+	afx_msg void OnSettingNVMe8();
+	afx_msg void OnSettingNVMe7();
 
 	afx_msg void OnProfileDefault();
 	afx_msg void OnProfilePeak();

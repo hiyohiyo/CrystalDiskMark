@@ -67,8 +67,8 @@
 #define IDC_COMBO_DATA		            1302
 #define IDC_LABEL_DATA  				1303
 #define IDC_SET_DEFAULT					1304
-#define IDC_SET_NVME     				1306
-#define IDC_SET_ATA     				1307
+#define IDC_SET_NVME_8     				1306
+#define IDC_SET_NVME_7     				1307
 #define IDC_LABEL_AFFINITY				1308
 #define IDC_COMBO_AFFINITY		        1309
 #define IDC_LABEL_PEAK			        1310
@@ -145,8 +145,8 @@
 #define ID_SAVE_IMAGE                   32820
 #define ID_FONT_SETTING                 32821
 #define ID_SETTING_DEFAULT              32822
-#define ID_SETTING_NVME                 32823
-#define ID_SETTING_ATA                  32824
+#define ID_SETTING_NVME_8               32823
+#define ID_SETTING_NVME_7               32824
 
 #define ID_INTERVAL_TIME_0              33820
 #define ID_INTERVAL_TIME_1              33821

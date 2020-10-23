@@ -18,10 +18,10 @@ class CSettingsDlg : public CDialogFx
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	static const int SIZE_X = 680;
-	static const int SIZE_Y = 480;
+	static const int SIZE_Y = 472;
 #else
 	static const int SIZE_X = 440;
-	static const int SIZE_Y = 408;
+	static const int SIZE_Y = 404;
 #endif
 
 public:
@@ -86,13 +86,13 @@ protected:
 	CComboBoxFx m_ComboIntervalTime;
 
 	CButtonFx m_ButtonSetDefault;
-	CButtonFx m_ButtonSetNVMe;
-	CButtonFx m_ButtonSetAta;
+	CButtonFx m_ButtonSetNVMe8;
+	CButtonFx m_ButtonSetNVMe7;
 	CButtonFx m_ButtonOk;
 
 	void OnSetDefault();
-	void OnSetNVMe();
-	void OnSetAta();
+	void OnSetNVMe8();
+	void OnSetNVMe7();
 	void OnOk();
 	void InitComboBox();
 

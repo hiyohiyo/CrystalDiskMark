@@ -99,7 +99,7 @@
 #define PRODUCT_VERSION				L"8.0.0"
 #define PRODUCT_ROMING_NAME			L"Cecile"
 
-#define PRODUCT_RELEASE				L"2020/10/11"
+#define PRODUCT_RELEASE				L"2020/10/25"
 #define PRODUCT_COPY_YEAR			L"2007-2020"
 #define PRODUCT_COPYRIGHT			L"© 2007-2020 hiyohiyo"
 #define PRODUCT_LICENSE				L"The MIT License"

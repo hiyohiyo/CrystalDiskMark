@@ -190,7 +190,7 @@ void CListCtrlFx::SetupControlImage(CBitmap& bkBitmap, CBitmap& ctrlBitmap)
 		bk32Bitmap->SetBitmapBits(CtlMemSize, CtlBuffer);
 		m_CtrlImage.Detach();
 		m_CtrlImage.Attach(ctrlBitmap);
-		::BitBlt(m_CtrlImage.GetDC(), 0, 0, m_CtrlSize.cx, m_CtrlSize.cy, bk32Image.GetDC(), 0, 0, SRCCOPY);
+		::BitBlt(m_CtrlImage.GetDC(), 0, 0, m_CtrlSize.cx - 1, m_CtrlSize.cy - 1, bk32Image.GetDC(), 1, 1, SRCCOPY);
 		m_CtrlImage.ReleaseDC();
 		bk32Image.ReleaseDC();
 	}
@@ -278,12 +278,13 @@ COLORREF CListCtrlFx::GetBkSelected(){return m_BkSelected;}
 COLORREF CListCtrlFx::GetLineColor1(){return m_LineColor1;}
 COLORREF CListCtrlFx::GetLineColor2(){return m_LineColor2;}
 
-void CListCtrlFx::SetFontEx(CString face, int size, double zoomRatio, double fontRatio)
+void CListCtrlFx::SetFontEx(CString face, int size, double zoomRatio, double fontRatio, LONG fontWeight, BYTE fontRender)
 {
 	LOGFONT logFont = {0};
 	logFont.lfCharSet = DEFAULT_CHARSET;
 	logFont.lfHeight = (LONG)(-1 * size * zoomRatio * fontRatio);
-	logFont.lfQuality = 6;
+	logFont.lfQuality = fontRender;
+	logFont.lfWeight = fontWeight;
 	if(face.GetLength() < 32)
 	{
 		wsprintf(logFont.lfFaceName, L"%s", face.GetString());
@@ -297,7 +298,7 @@ void CListCtrlFx::SetFontEx(CString face, int size, double zoomRatio, double fon
 	m_Font.CreateFontIndirect(&logFont);
 	SetFont(&m_Font);
 
-	m_Header.SetFontEx(face, size, zoomRatio, fontRatio);
+	m_Header.SetFontEx(face, size, zoomRatio, fontRatio, fontWeight, fontRender);
 }
 
 void CListCtrlFx::PreSubclassWindow()

@@ -160,8 +160,8 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialogFx)
 	ON_COMMAND(ID_MODE_ALL0X00, &CDiskMarkDlg::OnModeAll0x00)
 
 	ON_COMMAND(ID_SETTING_DEFAULT, &CDiskMarkDlg::OnSettingDefault)
-	ON_COMMAND(ID_SETTING_NVME, &CDiskMarkDlg::OnSettingNVMe)
-	ON_COMMAND(ID_SETTING_ATA, &CDiskMarkDlg::OnSettingAta)
+	ON_COMMAND(ID_SETTING_NVME_8, &CDiskMarkDlg::OnSettingNVMe8)
+	ON_COMMAND(ID_SETTING_NVME_7, &CDiskMarkDlg::OnSettingNVMe7)
 
 	ON_COMMAND(ID_PROFILE_DEFAULT, &CDiskMarkDlg::OnProfileDefault)
 	ON_COMMAND(ID_PROFILE_REAL, &CDiskMarkDlg::OnProfileReal)
@@ -234,14 +234,14 @@ int CALLBACK EnumFontFamExProcDefaultFont(ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX
 
 BOOL CDiskMarkDlg::IsDefaultMode()
 {
-	if (m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1
-	&&  m_BenchSize[1] == 1024 && m_BenchQueues[1] == 1  && m_BenchThreads[1] == 1
-	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 1
-	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1
-	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 1
-	&&  m_BenchSize[5] == 4    && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 1
-	&&  m_BenchSize[8] == 1024 && m_BenchQueues[8] == 8  && m_BenchThreads[8] == 1
-	&&  m_Affinity == 0
+	if (m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1 && m_BenchType[0] == BENCH_SEQ
+	&&  m_BenchSize[1] == 128  && m_BenchQueues[1] == 32 && m_BenchThreads[1] == 1 && m_BenchType[1] == BENCH_SEQ
+	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 1 && m_BenchType[2] == BENCH_RND
+	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1 && m_BenchType[3] == BENCH_RND
+	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 1 && m_BenchType[4] == BENCH_SEQ
+	&&  m_BenchSize[5] == 4    && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 1 && m_BenchType[5] == BENCH_RND
+	&&  m_BenchSize[8] == 1024 && m_BenchQueues[8] == 8  && m_BenchThreads[8] == 1 && m_BenchType[8] == BENCH_SEQ
+	&&  m_Affinity == 1
 	)
 	{
 		return TRUE;
@@ -249,16 +249,16 @@ BOOL CDiskMarkDlg::IsDefaultMode()
 	return FALSE;
 }
 
-BOOL CDiskMarkDlg::IsNVMeMode()
+BOOL CDiskMarkDlg::IsNVMe8Mode()
 {
-	if (m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1
-	&&  m_BenchSize[1] == 1024 && m_BenchQueues[1] == 1  && m_BenchThreads[1] == 1
-	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 16
-	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1
-	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 1
-	&&  m_BenchSize[5] == 4    && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 16
-	&&  m_BenchSize[8] == 1024 && m_BenchQueues[8] == 8  && m_BenchThreads[8] == 1
-	&&  m_Affinity == 0
+	if (m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1  && m_BenchType[0] == BENCH_SEQ
+	&&  m_BenchSize[1] == 128  && m_BenchQueues[1] == 32 && m_BenchThreads[1] == 1  && m_BenchType[1] == BENCH_SEQ
+	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 16 && m_BenchType[2] == BENCH_RND
+	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1  && m_BenchType[3] == BENCH_RND
+	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 1  && m_BenchType[4] == BENCH_SEQ
+	&&  m_BenchSize[5] == 4    && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 16 && m_BenchType[5] == BENCH_RND
+	&&  m_BenchSize[8] == 1024 && m_BenchQueues[8] == 8  && m_BenchThreads[8] == 1  && m_BenchType[8] == BENCH_SEQ
+	&&  m_Affinity == 1
 	)
 	{
 		return TRUE;
@@ -266,15 +266,15 @@ BOOL CDiskMarkDlg::IsNVMeMode()
 	return FALSE;
 }
 
-BOOL CDiskMarkDlg::IsAtaMode()
+BOOL CDiskMarkDlg::IsNVMe7Mode()
 {
-	if (m_BenchSize[0] == 128 && m_BenchQueues[0] == 32 && m_BenchThreads[0] == 1
-	&&  m_BenchSize[1] == 128 && m_BenchQueues[1] == 1  && m_BenchThreads[1] == 1
-	&&  m_BenchSize[2] == 4   && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 1
-	&&  m_BenchSize[3] == 4   && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1
-	&&  m_BenchSize[4] == 128 && m_BenchQueues[4] == 32 && m_BenchThreads[4] == 1
-	&&  m_BenchSize[5] == 4   && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 1
-	&&  m_BenchSize[8] == 128 && m_BenchQueues[8] == 32 && m_BenchThreads[8] == 1
+	if (m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1  && m_BenchType[0] == BENCH_SEQ
+	&&  m_BenchSize[1] == 1024 && m_BenchQueues[1] == 1  && m_BenchThreads[1] == 1  && m_BenchType[1] == BENCH_SEQ
+	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 16 && m_BenchType[2] == BENCH_RND
+	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1  && m_BenchType[3] == BENCH_RND
+	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 1  && m_BenchType[4] == BENCH_SEQ
+	&&  m_BenchSize[5] == 4    && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 16 && m_BenchType[5] == BENCH_RND
+	&&  m_BenchSize[8] == 1024 && m_BenchQueues[8] == 8  && m_BenchThreads[8] == 1  && m_BenchType[8] == BENCH_SEQ
 	&&  m_Affinity == 0
 	)
 	{
@@ -1070,31 +1070,32 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 		m_IntervalTime = 0;
 	}
 
+
 	if (IsDefaultMode())
 	{
 		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, ID_SETTING_DEFAULT, MF_BYCOMMAND);
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_DEFAULT, MF_BYCOMMAND);
 		SetMenu(menu);
 		DrawMenuBar();
 	}
-	else if (IsNVMeMode())
+	else if (IsNVMe8Mode())
 	{
 		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, ID_SETTING_NVME, MF_BYCOMMAND);
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_NVME_8, MF_BYCOMMAND);
 		SetMenu(menu);
 		DrawMenuBar();
 	}
-	else if (IsAtaMode())
+	else if (IsNVMe7Mode())
 	{
 		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, ID_SETTING_ATA, MF_BYCOMMAND);
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_NVME_7, MF_BYCOMMAND);
 		SetMenu(menu);
 		DrawMenuBar();
 	}
 	else
 	{
 		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, 0, MF_BYCOMMAND);
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, 0, MF_BYCOMMAND);
 		SetMenu(menu);
 		DrawMenuBar();
 	}
@@ -1109,8 +1110,8 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 	case 0:// Default
 		{
 			int type[9] =   {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
-			int size[9] =   { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
-			int queues[9] = {    8,    1, 32, 1,    8, 32,    1, 1,    8 };
+			int size[9] =   { 1024,  128,  4, 4, 1024,  4, 1024, 4, 1024 };
+			int queues[9] = {    8,   32, 32, 1,    8, 32,    1, 1,    8 };
 			int threads[9] ={    1,    1,  1, 1,    1,  1,    1, 1,    1 };
 
 			for (int i = 0; i < 9; i++)
@@ -1124,15 +1125,16 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 				key.Format(L"BenchThreads%d", i); value.Format(L"%d", threads[i]);
 				WritePrivateProfileString(L"Setting", key, value, m_Ini);
 			}
+			WritePrivateProfileString(L"Setting", L"Affinity", L"1", m_Ini);
 		}
 		UpdateQueuesThreads();
 		ChangeButtonStatus(TRUE);
 		break;
-	case 1: // NVMe
+	case 1: // NVMe Ver.8
 		{
 			int type[9] =    {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
-			int size[9] =    { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
-			int queues[9] =  {    8,    1, 32, 1,    8, 32,    1, 1,    8 };
+			int size[9] =    { 1024,  128,  4, 4, 1024,  4, 1024, 4, 1024 };
+			int queues[9] =  {    8,   32, 32, 1,    8, 32,    1, 1,    8 };
 			int threads[9] = {    1,    1, 16, 1,    1, 16,    1, 1,    1 };
 			for (int i = 0; i < 9; i++)
 			{
@@ -1145,16 +1147,17 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 				key.Format(L"BenchThreads%d", i); value.Format(L"%d", threads[i]);
 				WritePrivateProfileString(L"Setting", key, value, m_Ini);
 			}
+			WritePrivateProfileString(L"Setting", L"Affinity", L"1", m_Ini);
 		}
 		UpdateQueuesThreads();
 		ChangeButtonStatus(TRUE);
 		break;
-	case 2: // ATA
+	case 2: // NVMe Ver.7
 	{
-		int type[9] =    {   0,    0,  1, 1,    0,  1,   0, 1,   0 };
-		int size[9] =    { 128,  128,  4, 4,  128,  4, 128, 4, 128 };
-		int queues[9] =  {  32,    1, 32, 1,   32, 32,   1, 1,  32 };
-		int threads[9] = {   1,    1,  1, 1,    1,  1,   1, 1,   1 };
+		int type[9] =    {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
+		int size[9] =    { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
+		int queues[9] =  {    8,    1, 32, 1,    8, 32,    1, 1,    8 };
+		int threads[9] = {    1,    1, 16, 1,    1, 16,    1, 1,    1 };
 		for (int i = 0; i < 9; i++)
 		{
 			key.Format(L"BenchType%d", i); value.Format(L"%d", type[i]);
@@ -1166,6 +1169,7 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 			key.Format(L"BenchThreads%d", i); value.Format(L"%d", threads[i]);
 			WritePrivateProfileString(L"Setting", key, value, m_Ini);
 		}
+		WritePrivateProfileString(L"Setting", L"Affinity", L"0", m_Ini);
 	}
 		UpdateQueuesThreads();
 		ChangeButtonStatus(TRUE);
@@ -2449,7 +2453,7 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 		OnModeDefault();
 	}
 
-	cstr = i18n(L"Menu", L"PROFILE_DEFAULT");
+	cstr = i18n(L"Dialog", L"DEFAULT");
 	menu->ModifyMenu(ID_SETTING_DEFAULT, MF_STRING, ID_SETTING_DEFAULT, cstr);
 
 	cstr = i18n(L"Menu", L"SETTINGS") + L"\tCtrl + Q";
@@ -3162,27 +3166,27 @@ void CDiskMarkDlg::OnCrystalDewWorld()
 void CDiskMarkDlg::OnSettingDefault()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, ID_SETTING_DEFAULT, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_DEFAULT, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
 	SettingsQueuesThreads(0);
 }
 
-void CDiskMarkDlg::OnSettingNVMe()
+void CDiskMarkDlg::OnSettingNVMe8()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, ID_SETTING_NVME, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_NVME_8, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
 	SettingsQueuesThreads(1);
 }
 
-void CDiskMarkDlg::OnSettingAta()
+void CDiskMarkDlg::OnSettingNVMe7()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_ATA, ID_SETTING_ATA, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_NVME_7, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
@@ -3371,7 +3375,7 @@ void CDiskMarkDlg::ProfileRealMix()
 
 void CDiskMarkDlg::OnBenchmarkReadWrite()
 {
-	InitScore();
+//	InitScore();
 	BenchmarkReadWrite();
 }
 
@@ -3388,7 +3392,7 @@ void CDiskMarkDlg::BenchmarkReadWrite()
 
 void CDiskMarkDlg::OnBenchmarkReadOnly()
 {
-	InitScore();
+//	InitScore();
 	BenchmarkReadOnly();
 }
 
@@ -3405,7 +3409,7 @@ void CDiskMarkDlg::BenchmarkReadOnly()
 
 void CDiskMarkDlg::OnBenchmarkWriteOnly()
 {
-	InitScore();
+//	InitScore();
 	BenchmarkWriteOnly();
 }
 
@@ -3464,7 +3468,6 @@ void CDiskMarkDlg::OnFontSetting()
 		m_FontScale = fontSelection.GetFontScale();
 		m_FontRatio = m_FontScale / 100.0;
 		m_FontRender = fontSelection.GetFontRender();
-
 
 		CString cstr;
 		WritePrivateProfileString(L"Setting", L"FontFace", L"\"" + m_FontFace + L"\"", m_Ini);
