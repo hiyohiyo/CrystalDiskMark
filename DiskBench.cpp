@@ -497,6 +497,22 @@ UINT ExecDiskBench7(LPVOID dlg)
 	return Exit(dlg);
 }
 
+void error_dialog(HWND hWnd) {
+	DWORD errorcode = GetLastError();
+	LPVOID lpMsgBuf;
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER  //      テキストのメモリ割り当てを要求する
+		| FORMAT_MESSAGE_FROM_SYSTEM    //      エラーメッセージはWindowsが用意しているものを使用
+		| FORMAT_MESSAGE_IGNORE_INSERTS,//      次の引数を無視してエラーコードに対するエラーメッセージを作成する
+		NULL, errorcode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),//   言語を指定
+		(LPTSTR)&lpMsgBuf,                          //      メッセージテキストが保存されるバッファへのポインタ
+		0,
+		NULL);
+
+	MessageBox(hWnd, (LPCTSTR)lpMsgBuf, _TEXT("エラー"), MB_OK | MB_ICONINFORMATION);
+	LocalFree(lpMsgBuf);
+}
+
 BOOL Init(void* dlg)
 {
 	BOOL FlagArc;
@@ -652,7 +668,23 @@ BOOL Init(void* dlg)
 	DeviceIoControl(hFile, FSCTL_SET_COMPRESSION, (LPVOID) &lpInBuffer,
 				sizeof(USHORT), NULL, 0, (LPDWORD)&lpBytesReturned, NULL);
 
-	// Fill Test Data
+// Extend File Size
+
+	LARGE_INTEGER li;
+	li.QuadPart = DiskTestSize * 1024 * 1024;
+	LARGE_INTEGER liNewFilePointer;
+	if (SetFilePointerEx(hFile, li, &liNewFilePointer, FILE_BEGIN))
+	{
+		if (liNewFilePointer.QuadPart != li.QuadPart)
+		{
+			if (SetEndOfFile(hFile))
+			{
+				SetFileValidData(hFile, li.QuadPart);
+			}
+		}
+	}
+
+// Fill Test Data
 	char* buf = NULL;
 	int BufSize;
 	int Loop;
@@ -702,6 +734,33 @@ BOOL Init(void* dlg)
 	VirtualFree(buf, 0, MEM_RELEASE);
 	CloseHandle(hFile);
 
+	AfxMessageBox(L"TEST");
+
+	/*
+
+	// Check Test File
+
+	hFile = ::CreateFile(TestFilePath, GENERIC_READ | GENERIC_WRITE | FILE_SHARE_READ | FILE_SHARE_WRITE, 0, NULL, CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL | FILE_FLAG_NO_BUFFERING | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+
+	STARTING_VCN_INPUT_BUFFER Vcn;
+	RETRIEVAL_POINTERS_BUFFER Pointers;
+	Vcn.StartingVcn.QuadPart = 0LL;
+	if (DeviceIoControl(hFile, FSCTL_GET_RETRIEVAL_POINTERS, &Vcn, sizeof(STARTING_VCN_INPUT_BUFFER), &Pointers, sizeof(RETRIEVAL_POINTERS_BUFFER), &lpBytesReturned, NULL))
+	{
+		CString cstr;
+		cstr.Format(L"OK: %d, %d", Pointers.ExtentCount, lpBytesReturned);
+		AfxMessageBox(cstr);
+	}
+	else
+	{
+		error_dialog(NULL);
+		CString cstr;
+		cstr.Format(L"NG: %d, %d", Pointers.ExtentCount, lpBytesReturned);
+		AfxMessageBox(cstr);
+	}
+	CloseHandle(hFile);
+	*/
 	return TRUE;
 }
 
