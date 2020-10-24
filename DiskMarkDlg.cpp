@@ -1257,9 +1257,10 @@ void CDiskMarkDlg::SelectDrive()
 	}
 	else
 	{
-		TCHAR str[256];
-		GetPrivateProfileString(L"Title", L"TEST_DRIVE", L"Test Drive", str, 256, m_CurrentLangPath);
-		m_ComboDrive.SetToolTipText(str);
+		CString cstr;
+		m_ComboDrive.GetWindowTextW(cstr);
+		cstr.Format(L"%C:\\", cstr.GetAt(0));
+		WritePrivateProfileString(L"Setting", L"TargetPath", cstr, m_Ini);
 	}
 }
 
@@ -2328,6 +2329,7 @@ void CDiskMarkDlg::InitDrive()
 	GetLogicalDriveStrings(255, szDrives);
 
 	m_IndexTestDrive = 0;
+	m_TestDriveLetter = GetPrivateProfileInt(L"Setting", L"DriveLetter", 2, m_Ini);
 
 	while( pDrive[0] != L'\0' )
 	{
@@ -2379,18 +2381,26 @@ void CDiskMarkDlg::InitDrive()
 	}
 
 	m_ComboDrive.AddString(i18n(L"Menu", L"SELECT_FOLDER"));
+	    
+	TCHAR str[256];
+	GetPrivateProfileString(L"Setting", L"TargetPath", L"", str, 256, m_Ini);
+	m_TestTargetPath = str;
+
 	if (m_TestDriveLetter == 99)
 	{
 		m_IndexTestDrive = count;
 	}
-
 	m_MaxIndexTestDrive = count;
 
 	m_ComboDrive.SetCurSel(m_IndexTestDrive);
-
-	TCHAR str[256];
-	GetPrivateProfileString(L"Title", L"TEST_DRIVE", L"Test Drive", str, 256, m_CurrentLangPath);
-	m_ComboDrive.SetToolTipText(str);
+	if (m_TestTargetPath.IsEmpty())
+	{
+		m_ComboDrive.SetToolTipText(i18n(L"Title", L"TEST_DRIVE"));
+	}
+	else
+	{
+		m_ComboDrive.SetToolTipText(m_TestTargetPath);
+	}
 
 	UpdateData(FALSE);
 }
