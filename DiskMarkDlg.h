@@ -141,12 +141,11 @@ protected:
 	CSettingsDlg*	m_SettingsDlg;
 
 	void SetControlFont();
-	CString IP(CString imagePath); // IP means Image Path!!
-
 	void InitDrive();
 
 	BOOL CheckRadioZoomType(int id, int value);
 	void CheckRadioZoomType();
+	void CheckRadioPresetMode();
 	void UpdateQueuesThreads();
 
 	BOOL CheckRadioIntervalTime(int id, int value);
@@ -258,11 +257,10 @@ public:
 	afx_msg void OnSaveText();
 	afx_msg void OnSaveImage();
 	afx_msg void OnSettingsQueuesThreads();
-	afx_msg BOOL OnNcCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnCbnSelchangeComboDrive();
 	afx_msg void OnCbnSelchangeComboUnit();
-	afx_msg void MoveForcus();
 	afx_msg void UpdateUnitLabel();
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 
 	void ProfileDefault();
 	void ProfilePeak();

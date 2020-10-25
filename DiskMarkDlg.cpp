@@ -133,6 +133,7 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialogFx)
 	ON_MESSAGE(WM_UPDATE_SCORE, OnUpdateScore)
 	ON_MESSAGE(WM_UPDATE_MESSAGE, OnUpdateMessage)
 	ON_MESSAGE(WM_EXIT_BENCHMARK, OnExitBenchmark)
+	ON_WM_LBUTTONDOWN()
 
 	ON_COMMAND(ID_ZOOM_100, &CDiskMarkDlg::OnZoom100)
 	ON_COMMAND(ID_ZOOM_125, &CDiskMarkDlg::OnZoom125)
@@ -193,14 +194,8 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialogFx)
 	ON_BN_CLICKED(IDC_BUTTON_TEST_3, &CDiskMarkDlg::OnTest3)
 	ON_CBN_SELCHANGE(IDC_COMBO_DRIVE, &CDiskMarkDlg::OnCbnSelchangeComboDrive)
 	ON_CBN_SELCHANGE(IDC_COMBO_UNIT, &CDiskMarkDlg::OnCbnSelchangeComboUnit)
-
-	ON_CBN_CLOSEUP(IDC_COMBO_COUNT, &CDiskMarkDlg::MoveForcus)
-	ON_CBN_CLOSEUP(IDC_COMBO_SIZE, &CDiskMarkDlg::MoveForcus)
-	ON_CBN_CLOSEUP(IDC_COMBO_DRIVE, &CDiskMarkDlg::MoveForcus)
-	ON_CBN_CLOSEUP(IDC_COMBO_UNIT, &CDiskMarkDlg::MoveForcus)
 #ifdef MIX_MODE
 	ON_CBN_SELCHANGE(IDC_COMBO_MIX, &CDiskMarkDlg::OnCbnSelchangeComboMix)
-	ON_CBN_CLOSEUP(IDC_COMBO_MIX, &CDiskMarkDlg::MoveForcus)
 #endif
 
 END_MESSAGE_MAP()
@@ -389,8 +384,6 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	}
 #endif
 
-	UpdateQueuesThreads();
-
 	m_WinThread = NULL;
 	m_DiskBenchStatus = FALSE;
 
@@ -398,6 +391,8 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	InitMenu();
 	ChangeTheme(m_CurrentTheme);
 	ChangeLang(m_CurrentLang);
+
+	UpdateQueuesThreads();
 
 	m_IndexTestCount = GetPrivateProfileInt(L"Setting", L"TestCount", 4, m_Ini);
 	if (m_IndexTestCount < 0 || m_IndexTestCount >= 9)
@@ -841,7 +836,6 @@ void CDiskMarkDlg::UpdateComboTooltip()
 		m_ComboMix.SetToolTipText(i18n(L"Title", L"TEST_MIX"));
 	}
 #endif
-	m_ComboDrive.SetToolTipText(m_ComboDrive.GetToolTipText().GetString());
 }
 
 void CDiskMarkDlg::SetLayeredWindow(HWND hWnd, BYTE alpha)
@@ -983,22 +977,6 @@ void CDiskMarkDlg::SetControlFont()
 
 }
 
-CString CDiskMarkDlg::IP(CString imageName)
-{
-	CString imagePath;
-	imagePath.Format(L"%s%s\\%s-%03d.png", m_ThemeDir.GetString(), m_CurrentTheme.GetString(), imageName.GetString(), (DWORD)(m_ZoomRatio * 100));
-	if (IsFileExist(imagePath))
-	{
-		return imagePath;
-	}
-	imagePath.Format(L"%s%s\\%s-%03d.png", m_ThemeDir.GetString(), m_DefaultTheme.GetString(), imageName.GetString(), (DWORD)(m_ZoomRatio * 100));
-	if (IsFileExist(imagePath))
-	{
-		return imagePath;
-	}
-	return L"";
-}
-
 void CDiskMarkDlg::UpdateQueuesThreads()
 {
 	CString cstr;
@@ -1057,8 +1035,8 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 	}
 
 	BOOL bIntervalFlag = FALSE;
-	m_IntervalTime = GetPrivateProfileInt(L"Setting", L"IntervalTime", 0, m_Ini);
-	for (int i = 0; i < 5; i++)
+	m_IntervalTime = GetPrivateProfileInt(L"Setting", L"IntervalTime", 5, m_Ini);
+	for (int i = 0; i < 10; i++)
 	{
 		if (m_IntervalTime == intervalTimes[i])
 		{
@@ -1067,38 +1045,10 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 	}
 	if (! bIntervalFlag)
 	{
-		m_IntervalTime = 0;
+		m_IntervalTime = 5;
 	}
 
-
-	if (IsDefaultMode())
-	{
-		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_DEFAULT, MF_BYCOMMAND);
-		SetMenu(menu);
-		DrawMenuBar();
-	}
-	else if (IsNVMe8Mode())
-	{
-		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_NVME_8, MF_BYCOMMAND);
-		SetMenu(menu);
-		DrawMenuBar();
-	}
-	else if (IsNVMe7Mode())
-	{
-		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_NVME_7, MF_BYCOMMAND);
-		SetMenu(menu);
-		DrawMenuBar();
-	}
-	else
-	{
-		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, 0, MF_BYCOMMAND);
-		SetMenu(menu);
-		DrawMenuBar();
-	}
+	CheckRadioPresetMode();
 }
 
 void CDiskMarkDlg::SettingsQueuesThreads(int type)
@@ -1251,16 +1201,15 @@ void CDiskMarkDlg::SelectDrive()
 			{
 				m_IndexTestDrive = previousComboDriveIndex;
 				m_ComboDrive.SetCurSel(m_IndexTestDrive);
+				m_ComboDrive.SetToolTipText(i18n(L"Title", L"TEST_DRIVE"));
+
 			}
 			g_pMalloc->Release();
 		}
 	}
 	else
 	{
-		CString cstr;
-		m_ComboDrive.GetWindowTextW(cstr);
-		cstr.Format(L"%C:\\", cstr.GetAt(0));
-		WritePrivateProfileString(L"Setting", L"TargetPath", cstr, m_Ini);
+		m_ComboDrive.SetToolTipText(i18n(L"Title", L"TEST_DRIVE"));
 	}
 }
 
@@ -1331,7 +1280,6 @@ void CDiskMarkDlg::OnCancel()
 	{
 		AfxMessageBox(m_MesStopBenchmark);
 		return;
-		//	Stop();
 	}
 
 	UpdateData(TRUE);
@@ -1448,7 +1396,6 @@ void CDiskMarkDlg::UpdateScore()
 		}
 #endif
 	}
-
 }
 
 void CDiskMarkDlg::SetScoreToolTip(CStaticFx* control, double score, double latency, int blockSize)
@@ -2071,11 +2018,11 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 			}
 			if (m_BenchSize[8] > 1000)
 			{
-				text.Format(L"%s %dMiB, Q=%d, T=%d", type, m_BenchSize[8] / 1024, m_BenchQueues[8], m_BenchThreads[8]);
+				text.Format(L"%s %dMiB, Q=%d, T=%d", type.GetString(), m_BenchSize[8] / 1024, m_BenchQueues[8], m_BenchThreads[8]);
 			}
 			else
 			{
-				text.Format(L"%s %dKiB, Q=%d, T=%d", type, m_BenchSize[8], m_BenchQueues[8], m_BenchThreads[8]);
+				text.Format(L"%s %dKiB, Q=%d, T=%d", type.GetString(), m_BenchSize[8], m_BenchQueues[8], m_BenchThreads[8]);
 			}
 
 			m_DemoSetting.SetWindowTextW(text);
@@ -2329,7 +2276,7 @@ void CDiskMarkDlg::InitDrive()
 	GetLogicalDriveStrings(255, szDrives);
 
 	m_IndexTestDrive = 0;
-	m_TestDriveLetter = GetPrivateProfileInt(L"Setting", L"DriveLetter", 2, m_Ini);
+	m_TestDriveLetter = GetPrivateProfileInt(L"Setting", L"DriveLetter", 2, m_Ini); // Default "C:\"
 
 	while( pDrive[0] != L'\0' )
 	{
@@ -2393,13 +2340,13 @@ void CDiskMarkDlg::InitDrive()
 	m_MaxIndexTestDrive = count;
 
 	m_ComboDrive.SetCurSel(m_IndexTestDrive);
-	if (m_TestTargetPath.IsEmpty())
+	if (m_TestDriveLetter == 99 && ! m_TestTargetPath.IsEmpty())
 	{
-		m_ComboDrive.SetToolTipText(i18n(L"Title", L"TEST_DRIVE"));
+		m_ComboDrive.SetToolTipText(m_TestTargetPath);
 	}
 	else
 	{
-		m_ComboDrive.SetToolTipText(m_TestTargetPath);
+		m_ComboDrive.SetToolTipText(i18n(L"Title", L"TEST_DRIVE"));
 	}
 
 	UpdateData(FALSE);
@@ -2465,6 +2412,8 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 
 	cstr = i18n(L"Dialog", L"DEFAULT");
 	menu->ModifyMenu(ID_SETTING_DEFAULT, MF_STRING, ID_SETTING_DEFAULT, cstr);
+
+	CheckRadioPresetMode();
 
 	cstr = i18n(L"Menu", L"SETTINGS") + L"\tCtrl + Q";
 	menu->ModifyMenu(ID_SETTINGS_QUEUESTHREADS, MF_STRING, ID_SETTINGS_QUEUESTHREADS, cstr);
@@ -2738,7 +2687,7 @@ Profile: Demo\r\n\
 		clip += L"\
 Profile: Default\r\n\
    Test: %TestSize% (x%TestCount%)%Capacity%\r\n\
-   Mode: %Affinity%%TestMode%\r\n\
+   Mode:%TestMode%\r\n\
    Time: Measure %MeasureTime% / Interval %IntervalTime% \r\n\
    Date: %Date%\r\n\
      OS: %OS%\r\n\
@@ -2792,7 +2741,7 @@ Profile: Real\r\n\
 
 		clip += L"\
    Test: %TestSize% (x%TestCount%)%Capacity%\r\n\
-   Mode: %Affinity%%TestMode%\r\n\
+   Mode:%TestMode%\r\n\
    Time: Measure %MeasureTime% / Interval %IntervalTime% \r\n\
    Date: %Date%\r\n\
      OS: %OS%\r\n\
@@ -2896,15 +2845,11 @@ Profile: Real\r\n\
 	cstr.Format(L"%d", _tstoi(m_ValueTestCount));
 	clip.Replace(L"%TestCount%", cstr);
 
-	if (m_Affinity == AFFINITY_DISABLED)
-	{
-		cstr = L"[DefaultAffinity=DISABLED]";
-	}
-	else
-	{
-		cstr = L"[DefaultAffinity=ENABLED]";
-	}
-	clip.Replace(L"%Affinity%", cstr);
+	cstr = L"";
+	if (m_AdminMode){ cstr += L" [Admin]"; }
+	if (m_TestData) { cstr += L" <0Fill>"; }
+	if (m_Affinity) { cstr += L" <Affinity>"; }
+	clip.Replace(L"%TestMode%", cstr);
 
 	m_Comment.GetWindowText(cstr);
 	if (cstr.IsEmpty())
@@ -2915,14 +2860,6 @@ Profile: Real\r\n\
 		clip.Replace(L"%Comment%", L"Comment: " + cstr + L"\r\n");
 	}
 
-	if(m_TestData == TEST_DATA_ALL0X00)
-	{
-		clip.Replace(L"%TestMode%", L" " ALL_0X00_0FILL );
-	}
-	else
-	{
-		clip.Replace(L"%TestMode%", L"");
-	}
 	cstr.Format(L"%d sec", m_IntervalTime);
 	clip.Replace(L"%IntervalTime%", cstr);
 	cstr.Format(L"%d sec", m_MeasureTime);
@@ -2954,12 +2891,13 @@ Profile: Real\r\n\
 			TCHAR* buffer;
 			EmptyClipboard();
 			clipbuffer = GlobalAlloc(GMEM_DDESHARE, sizeof(TCHAR) * (clip.GetLength() + 1));
-			buffer = (TCHAR*)GlobalLock(clipbuffer);
-			_tcscpy_s(buffer, clip.GetLength() + 1, LPCTSTR(clip));
-			GlobalUnlock(clipbuffer);
-
-			SetClipboardData(CF_UNICODETEXT, clipbuffer);
-
+			if (clipbuffer != NULL)
+			{
+				buffer = (TCHAR*)GlobalLock(clipbuffer);
+				_tcscpy_s(buffer, clip.GetLength() + 1, LPCTSTR(clip));
+				GlobalUnlock(clipbuffer);
+				SetClipboardData(CF_UNICODETEXT, clipbuffer);
+			}
 			CloseClipboard();
 		}
 	}
@@ -2981,6 +2919,38 @@ void CDiskMarkDlg::OnZoom100()
 	if (CheckRadioZoomType(ID_ZOOM_100, 100))
 	{
 		UpdateDialogSize();
+	}
+}
+
+void CDiskMarkDlg::CheckRadioPresetMode()
+{
+	if (IsDefaultMode())
+	{
+		CMenu* menu = GetMenu();
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_DEFAULT, MF_BYCOMMAND);
+		SetMenu(menu);
+		DrawMenuBar();
+	}
+	else if (IsNVMe8Mode())
+	{
+		CMenu* menu = GetMenu();
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_NVME_8, MF_BYCOMMAND);
+		SetMenu(menu);
+		DrawMenuBar();
+	}
+	else if (IsNVMe7Mode())
+	{
+		CMenu* menu = GetMenu();
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_NVME_7, MF_BYCOMMAND);
+		SetMenu(menu);
+		DrawMenuBar();
+	}
+	else
+	{
+		CMenu* menu = GetMenu();
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, 0, MF_BYCOMMAND);
+		SetMenu(menu);
+		DrawMenuBar();
 	}
 }
 
@@ -3449,26 +3419,6 @@ void CDiskMarkDlg::OnSettingsQueuesThreads()
 	}
 }
 
-typedef BOOL(WINAPI *FuncEnableNonClientDpiScaling) (HWND hwnd);
-
-BOOL CDiskMarkDlg::OnNcCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if (!CMainDialogFx::OnNcCreate(lpCreateStruct))
-		return FALSE;
-
-	HMODULE hModule = GetModuleHandle(L"User32.dll");
-	if (hModule != NULL)
-	{
-		FuncEnableNonClientDpiScaling pEnableNonClientDpiScaling = (FuncEnableNonClientDpiScaling)GetProcAddress(hModule, "EnableNonClientDpiScaling");
-		if (pEnableNonClientDpiScaling != NULL)
-		{
-			pEnableNonClientDpiScaling(m_hWnd);
-		}
-	}
-
-	return TRUE;
-}
-
 void CDiskMarkDlg::OnFontSetting()
 {
 	CFontSelectionDlg fontSelection(this);
@@ -3513,11 +3463,6 @@ void CDiskMarkDlg::OnCbnSelchangeComboMix()
 	WritePrivateProfileString(L"Setting", L"TestMix", cstr, m_Ini);
 }
 #endif
-
-void CDiskMarkDlg::MoveForcus()
-{
-	// GotoDlgCtrl(GetDlgItem(IDOK));
-}
 
 void CDiskMarkDlg::UpdateUnitLabel()
 {
@@ -3634,21 +3579,26 @@ void CDiskMarkDlg::SetWindowTitle(CString message)
 		title.Format(L"%s %s %s", PRODUCT_NAME, PRODUCT_VERSION, PRODUCT_EDITION);
 	}
 
-	if (m_AdminMode)
-	{
-		title += L" [Admin]";
-	}
-
+	/*
 	switch (m_Profile)
 	{
 	case PROFILE_PEAK:
 	case PROFILE_PEAK_MIX:
-		title += L" <Peak>";
+		title += L" [Peak]";
 		break;
 	case PROFILE_REAL:
 	case PROFILE_REAL_MIX:
-		title += L" <Real>";
+		title += L" [Real]";
 		break;
+	case PROFILE_DEMO:
+		title += L" [Demo]";
+		break;
+	}
+	*/
+
+	if (m_AdminMode)
+	{
+		title += L" <Admin>";
 	}
 
 	if (m_TestData == TEST_DATA_ALL0X00)
@@ -3662,4 +3612,12 @@ void CDiskMarkDlg::SetWindowTitle(CString message)
 	}
 
 	SetWindowText(title);
+}
+
+void CDiskMarkDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// Move Focus to Hide Control
+	GetDlgItem(IDC_HIDE)->SetFocus();
+
+	CMainDialogFx::OnLButtonDown(nFlags, point);
 }

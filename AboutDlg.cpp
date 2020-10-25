@@ -140,11 +140,11 @@ void CAboutDlg::UpdateDialogSize()
 	m_CtrlCopyright.InitControl(152, 112, 476, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, FALSE, FALSE);
 	m_CtrlLicense.InitControl(152, 136, 476, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE);
 #else
-	m_CtrlVersion.InitControl(152, 12, 316, 36, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
-	m_CtrlEdition.InitControl(152, 48, 316, 36, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
-	m_CtrlRelease.InitControl(152, 88, 316, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
-	m_CtrlCopyright.InitControl(152, 112, 316, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
-	m_CtrlLicense.InitControl(152, 136, 316, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
+	m_CtrlVersion.InitControl(140, 12, 340, 36, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
+	m_CtrlEdition.InitControl(140, 48, 340, 36, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
+	m_CtrlRelease.InitControl(140, 84, 340, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
+	m_CtrlCopyright.InitControl(140, 108, 340, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
+	m_CtrlLicense.InitControl(140, 132, 340, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
 #endif
 
 	Invalidate();

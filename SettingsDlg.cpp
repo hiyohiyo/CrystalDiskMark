@@ -478,17 +478,17 @@ void CSettingsDlg::UpdateDialogSize()
 	int comboHeight = 20;
 #endif
 
-	m_LabelType.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_LabelText, FW_NORMAL, m_FontRender);
-	m_LabelSize.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_LabelText, FW_NORMAL, m_FontRender);
-	m_LabelQueues.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_LabelText, FW_NORMAL, m_FontRender);
-	m_LabelThreads.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_LabelText, FW_NORMAL, m_FontRender);
-	m_LabelDefault.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_LabelText, FW_NORMAL, m_FontRender);
-	m_LabelPeak.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_LabelText, FW_NORMAL, m_FontRender);
-	m_LabelDemo.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_LabelText, FW_NORMAL, m_FontRender);
-	m_LabelMeasureTime.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_LabelText, FW_NORMAL, m_FontRender);
-	m_LabelIntervalTime.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_LabelText, FW_NORMAL, m_FontRender);
-	m_LabelAffinity.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_LabelText, FW_NORMAL, m_FontRender);
-	m_LabelData.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_LabelText, FW_NORMAL, m_FontRender);
+	m_LabelType.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
+	m_LabelSize.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
+	m_LabelQueues.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
+	m_LabelThreads.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
+	m_LabelDefault.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
+	m_LabelPeak.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
+	m_LabelDemo.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
+	m_LabelMeasureTime.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
+	m_LabelIntervalTime.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
+	m_LabelAffinity.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
+	m_LabelData.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
 
 	m_ComboBenchType0.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 	m_ComboBenchType1.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);

@@ -19,7 +19,7 @@ class CAboutDlg : public CDialogFx
 	static const int SIZE_Y = 660;
 #else
 	static const int SIZE_X = 480;
-	static const int SIZE_Y = 172;
+	static const int SIZE_Y = 168;
 #endif
 
 public:
