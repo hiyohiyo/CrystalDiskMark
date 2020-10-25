@@ -3636,24 +3636,29 @@ void CDiskMarkDlg::SetWindowTitle(CString message)
 
 	if (m_AdminMode)
 	{
-		title += L" [ADMIN]";
+		title += L" [Admin]";
 	}
 
 	switch (m_Profile)
 	{
 	case PROFILE_PEAK:
 	case PROFILE_PEAK_MIX:
-		title += L" <PEAK>";
+		title += L" <Peak>";
 		break;
 	case PROFILE_REAL:
 	case PROFILE_REAL_MIX:
-		title += L" <REAL>";
+		title += L" <Real>";
 		break;
 	}
 
 	if (m_TestData == TEST_DATA_ALL0X00)
 	{
 		title += L" <0Fill>";
+	}
+
+	if (m_Affinity)
+	{
+		title += L" <Affinity>";
 	}
 
 	SetWindowText(title);
