@@ -28,7 +28,7 @@ static int BenchType[9];
 static int BenchSize[9];
 static int BenchQueues[9];
 static int BenchThreads[9];
-static int Affinity;
+// static int Affinity;
 static BOOL MixMode;
 static int MixRatio;
 
@@ -569,7 +569,7 @@ BOOL Init(void* dlg)
 		BenchThreads[i] = ((CDiskMarkDlg*)dlg)->m_BenchThreads[i];
 	}
 
-	Affinity = ((CDiskMarkDlg*)dlg)->m_Affinity;
+//	Affinity = ((CDiskMarkDlg*)dlg)->m_Affinity;
 	MixMode = ((CDiskMarkDlg*)dlg)->m_MixMode;
 	MixRatio = ((CDiskMarkDlg*)dlg)->m_MixRatio;
 
@@ -869,6 +869,8 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 #endif
 	}
 
+	option += L" -n";
+	/*
 	if (Affinity == 0)
 	{
 	//	AfxMessageBox(L"Affinity OFF/-n");
@@ -879,6 +881,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	//	AfxMessageBox(L"Affinity ON/-ag");
 		option += L" -ag";
 	}
+	*/
 
 	double score = 0.0;
 	double latency = 0.0;

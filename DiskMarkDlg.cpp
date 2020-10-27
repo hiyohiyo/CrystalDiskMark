@@ -162,7 +162,7 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialogFx)
 
 	ON_COMMAND(ID_SETTING_DEFAULT, &CDiskMarkDlg::OnSettingDefault)
 	ON_COMMAND(ID_SETTING_NVME_8, &CDiskMarkDlg::OnSettingNVMe8)
-	ON_COMMAND(ID_SETTING_NVME_7, &CDiskMarkDlg::OnSettingNVMe7)
+//	ON_COMMAND(ID_SETTING_NVME_9, &CDiskMarkDlg::OnSettingNVMe9)
 
 	ON_COMMAND(ID_PROFILE_DEFAULT, &CDiskMarkDlg::OnProfileDefault)
 	ON_COMMAND(ID_PROFILE_REAL, &CDiskMarkDlg::OnProfileReal)
@@ -236,7 +236,6 @@ BOOL CDiskMarkDlg::IsDefaultMode()
 	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 1 && m_BenchType[4] == BENCH_SEQ
 	&&  m_BenchSize[5] == 4    && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 1 && m_BenchType[5] == BENCH_RND
 	&&  m_BenchSize[8] == 1024 && m_BenchQueues[8] == 8  && m_BenchThreads[8] == 1 && m_BenchType[8] == BENCH_SEQ
-	&&  m_Affinity == 1
 	)
 	{
 		return TRUE;
@@ -253,7 +252,6 @@ BOOL CDiskMarkDlg::IsNVMe8Mode()
 	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 1  && m_BenchType[4] == BENCH_SEQ
 	&&  m_BenchSize[5] == 4    && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 16 && m_BenchType[5] == BENCH_RND
 	&&  m_BenchSize[8] == 1024 && m_BenchQueues[8] == 8  && m_BenchThreads[8] == 1  && m_BenchType[8] == BENCH_SEQ
-	&&  m_Affinity == 1
 	)
 	{
 		return TRUE;
@@ -261,22 +259,23 @@ BOOL CDiskMarkDlg::IsNVMe8Mode()
 	return FALSE;
 }
 
-BOOL CDiskMarkDlg::IsNVMe7Mode()
+/*
+BOOL CDiskMarkDlg::IsNVMe9Mode()
 {
-	if (m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1  && m_BenchType[0] == BENCH_SEQ
-	&&  m_BenchSize[1] == 1024 && m_BenchQueues[1] == 1  && m_BenchThreads[1] == 1  && m_BenchType[1] == BENCH_SEQ
+	if (m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 4  && m_BenchType[0] == BENCH_SEQ
+	&&  m_BenchSize[1] == 128  && m_BenchQueues[1] == 32 && m_BenchThreads[1] == 4  && m_BenchType[1] == BENCH_SEQ
 	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 16 && m_BenchType[2] == BENCH_RND
 	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1  && m_BenchType[3] == BENCH_RND
-	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 1  && m_BenchType[4] == BENCH_SEQ
+	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 4  && m_BenchType[4] == BENCH_SEQ
 	&&  m_BenchSize[5] == 4    && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 16 && m_BenchType[5] == BENCH_RND
-	&&  m_BenchSize[8] == 1024 && m_BenchQueues[8] == 8  && m_BenchThreads[8] == 1  && m_BenchType[8] == BENCH_SEQ
-	&&  m_Affinity == 0
+	&&  m_BenchSize[8] == 1024 && m_BenchQueues[8] == 8  && m_BenchThreads[8] == 4  && m_BenchType[8] == BENCH_SEQ
 	)
 	{
 		return TRUE;
 	}
 	return FALSE;
 }
+*/
 
 BOOL CDiskMarkDlg::OnInitDialog()
 {
@@ -353,12 +352,18 @@ BOOL CDiskMarkDlg::OnInitDialog()
 		m_FontRatio = m_FontScale / 100.0;
 	}
 	m_FontRender = GetPrivateProfileInt(L"Setting", L"FontRender", CLEARTYPE_NATURAL_QUALITY, m_Ini);
+	if (m_FontRender > CLEARTYPE_NATURAL_QUALITY)
+	{
+		m_FontRender = CLEARTYPE_NATURAL_QUALITY;
+	}
 
+	/*
 	m_Affinity = GetPrivateProfileInt(L"Setting", L"Affinity", AFFINITY_DISABLED, m_Ini);
 	if (m_Affinity < 0 || m_Affinity > 1)
 	{
 		m_Affinity = AFFINITY_DISABLED;
 	}
+	*/
 
 	// Unit
 	m_ComboUnit.AddString(L"MB/s");
@@ -1007,11 +1012,13 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 		if (m_BenchThreads[i] <= 0 || m_BenchThreads[i] > MAX_THREADS) { m_BenchThreads[i] = threads[i]; }
 	}
 
+	/*
 	m_Affinity = GetPrivateProfileInt(L"Setting", L"Affinity", 0, m_Ini);
 	if (m_Affinity < 0 || m_Affinity > 1)
 	{
 		m_Affinity = 0;
 	}
+	*/
 
 	m_TestData = GetPrivateProfileInt(L"Setting", L"TestData", TEST_DATA_RANDOM, m_Ini);
 	if (m_TestData < 0 || m_TestData > 1)
@@ -1080,7 +1087,7 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 		UpdateQueuesThreads();
 		ChangeButtonStatus(TRUE);
 		break;
-	case 1: // NVMe Ver.8
+	case 1: // NVMe SSD Ver.8
 		{
 			int type[9] =    {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
 			int size[9] =    { 1024,  128,  4, 4, 1024,  4, 1024, 4, 1024 };
@@ -1102,12 +1109,13 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 		UpdateQueuesThreads();
 		ChangeButtonStatus(TRUE);
 		break;
-	case 2: // NVMe Ver.7
+	/*
+	case 2: // NVMe SSD Ver.9
 	{
 		int type[9] =    {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
-		int size[9] =    { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
-		int queues[9] =  {    8,    1, 32, 1,    8, 32,    1, 1,    8 };
-		int threads[9] = {    1,    1, 16, 1,    1, 16,    1, 1,    1 };
+		int size[9] =    { 1024,  128,  4, 4, 1024,  4, 1024, 4, 1024 };
+		int queues[9] =  {    8,   32, 32, 1,    8, 32,    1, 1,    8 };
+		int threads[9] = {    4,    4, 16, 1,    4, 16,    1, 1,    4 };
 		for (int i = 0; i < 9; i++)
 		{
 			key.Format(L"BenchType%d", i); value.Format(L"%d", type[i]);
@@ -1124,6 +1132,7 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 		UpdateQueuesThreads();
 		ChangeButtonStatus(TRUE);
 	break;
+	*/
 	default:
 		OnSettingsQueuesThreads();
 		break;
@@ -1995,11 +2004,6 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 
 		m_ButtonAll.SetWindowTextW(L"All");
 
-		m_ButtonTest0.ShowWindow(SW_SHOW);
-		m_ButtonTest1.ShowWindow(SW_SHOW);
-		m_ButtonTest2.ShowWindow(SW_SHOW);
-		m_ButtonTest3.ShowWindow(SW_SHOW);
-
 		if (m_Profile == PROFILE_DEMO)
 		{
 			m_ButtonTest0.ShowWindow(SW_HIDE);
@@ -2029,6 +2033,11 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 		}
 		else if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
 		{
+			m_ButtonTest0.ShowWindow(SW_SHOW);
+			m_ButtonTest1.ShowWindow(SW_SHOW);
+			m_ButtonTest2.ShowWindow(SW_SHOW);
+			m_ButtonTest3.ShowWindow(SW_SHOW);
+
 			m_ButtonTest0.SetWindowTextW(GetButtonText(BENCH_SEQ, m_BenchSize[4], m_BenchQueues[4], m_BenchThreads[4], SCORE_MBS));
 			m_ButtonTest1.SetWindowTextW(GetButtonText(BENCH_RND, m_BenchSize[5], m_BenchQueues[5], m_BenchThreads[5], SCORE_MBS));
 			m_ButtonTest2.SetWindowTextW(GetButtonText(BENCH_RND, m_BenchSize[5], m_BenchQueues[5], m_BenchThreads[5], SCORE_IOPS));
@@ -2041,6 +2050,11 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 		}
 		else if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
 		{
+			m_ButtonTest0.ShowWindow(SW_SHOW);
+			m_ButtonTest1.ShowWindow(SW_SHOW);
+			m_ButtonTest2.ShowWindow(SW_SHOW);
+			m_ButtonTest3.ShowWindow(SW_SHOW);
+
 			m_ButtonTest0.SetWindowTextW(GetButtonText(BENCH_SEQ, 1024, 1, 1, SCORE_MBS));
 			m_ButtonTest1.SetWindowTextW(GetButtonText(BENCH_RND, 4, 1, 1, SCORE_MBS));
 			m_ButtonTest2.SetWindowTextW(GetButtonText(BENCH_RND, 4, 1, 1, SCORE_IOPS));
@@ -2053,6 +2067,11 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 		}
 		else
 		{
+			m_ButtonTest0.ShowWindow(SW_SHOW);
+			m_ButtonTest1.ShowWindow(SW_SHOW);
+			m_ButtonTest2.ShowWindow(SW_SHOW);
+			m_ButtonTest3.ShowWindow(SW_SHOW);
+
 			m_ButtonTest0.SetWindowTextW(GetButtonText(m_BenchType[0], m_BenchSize[0], m_BenchQueues[0], m_BenchThreads[0], m_IndexTestUnit));
 			m_ButtonTest1.SetWindowTextW(GetButtonText(m_BenchType[1], m_BenchSize[1], m_BenchQueues[1], m_BenchThreads[1], m_IndexTestUnit));
 			m_ButtonTest2.SetWindowTextW(GetButtonText(m_BenchType[2], m_BenchSize[2], m_BenchQueues[2], m_BenchThreads[2], m_IndexTestUnit));
@@ -2848,7 +2867,7 @@ Profile: Real\r\n\
 	cstr = L"";
 	if (m_AdminMode){ cstr += L" [Admin]"; }
 	if (m_TestData) { cstr += L" <0Fill>"; }
-	if (m_Affinity) { cstr += L" <Affinity>"; }
+//	if (m_Affinity) { cstr += L" <Affinity>"; }
 	clip.Replace(L"%TestMode%", cstr);
 
 	m_Comment.GetWindowText(cstr);
@@ -2927,28 +2946,30 @@ void CDiskMarkDlg::CheckRadioPresetMode()
 	if (IsDefaultMode())
 	{
 		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_DEFAULT, MF_BYCOMMAND);
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_8, ID_SETTING_DEFAULT, MF_BYCOMMAND);
 		SetMenu(menu);
 		DrawMenuBar();
 	}
 	else if (IsNVMe8Mode())
 	{
 		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_NVME_8, MF_BYCOMMAND);
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_8, ID_SETTING_NVME_8, MF_BYCOMMAND);
 		SetMenu(menu);
 		DrawMenuBar();
 	}
-	else if (IsNVMe7Mode())
+	/*
+	else if (IsNVMe9Mode())
 	{
 		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_NVME_7, MF_BYCOMMAND);
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_9, ID_SETTING_NVME_9, MF_BYCOMMAND);
 		SetMenu(menu);
 		DrawMenuBar();
 	}
+	*/
 	else
 	{
 		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, 0, MF_BYCOMMAND);
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_8, 0, MF_BYCOMMAND);
 		SetMenu(menu);
 		DrawMenuBar();
 	}
@@ -3146,7 +3167,7 @@ void CDiskMarkDlg::OnCrystalDewWorld()
 void CDiskMarkDlg::OnSettingDefault()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_DEFAULT, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_8, ID_SETTING_DEFAULT, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
@@ -3156,22 +3177,24 @@ void CDiskMarkDlg::OnSettingDefault()
 void CDiskMarkDlg::OnSettingNVMe8()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_NVME_8, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_8, ID_SETTING_NVME_8, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
 	SettingsQueuesThreads(1);
 }
 
-void CDiskMarkDlg::OnSettingNVMe7()
+/*
+void CDiskMarkDlg::OnSettingNVMe9()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_7, ID_SETTING_NVME_7, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_9, ID_SETTING_NVME_9, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
 	SettingsQueuesThreads(2);
 }
+*/
 
 void CDiskMarkDlg::OnModeDefault()
 {
@@ -3598,7 +3621,7 @@ void CDiskMarkDlg::SetWindowTitle(CString message)
 
 	if (m_AdminMode)
 	{
-		title += L" <Admin>";
+		title += L" [Admin]";
 	}
 
 	if (m_TestData == TEST_DATA_ALL0X00)
@@ -3606,10 +3629,12 @@ void CDiskMarkDlg::SetWindowTitle(CString message)
 		title += L" <0Fill>";
 	}
 
+	/*
 	if (m_Affinity)
 	{
 		title += L" <Affinity>";
 	}
+	*/
 
 	SetWindowText(title);
 }

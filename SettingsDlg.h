@@ -18,10 +18,10 @@ class CSettingsDlg : public CDialogFx
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 	static const int SIZE_X = 680;
-	static const int SIZE_Y = 472;
+	static const int SIZE_Y = 416;
 #else
 	static const int SIZE_X = 440;
-	static const int SIZE_Y = 404;
+	static const int SIZE_Y = 356;
 #endif
 
 public:
@@ -48,8 +48,8 @@ protected:
 	CStaticFx m_LabelDemo;
 	CStaticFx m_LabelMeasureTime;
 	CStaticFx m_LabelIntervalTime;
-	CStaticFx m_LabelAffinity;
-	CStaticFx m_LabelData;
+//	CStaticFx m_LabelAffinity;
+//	CStaticFx m_LabelData;
 
 	CComboBoxFx m_ComboBenchType0;
 	CComboBoxFx m_ComboBenchType1;
@@ -80,19 +80,19 @@ protected:
 	CComboBoxFx m_ComboBenchThreads5;
 	CComboBoxFx m_ComboBenchThreads8;
 
-	CComboBoxFx m_ComboAffinity;
-	CComboBoxFx m_ComboData;
+//	CComboBoxFx m_ComboAffinity;
+//	CComboBoxFx m_ComboData;
 	CComboBoxFx m_ComboMeasureTime;
 	CComboBoxFx m_ComboIntervalTime;
 
 	CButtonFx m_ButtonSetDefault;
 	CButtonFx m_ButtonSetNVMe8;
-	CButtonFx m_ButtonSetNVMe7;
+//	CButtonFx m_ButtonSetNVMe9;
 	CButtonFx m_ButtonOk;
 
 	void OnSetDefault();
 	void OnSetNVMe8();
-	void OnSetNVMe7();
+//	void OnSetNVMe9();
 	void OnOk();
 	void InitComboBox();
 
@@ -102,7 +102,7 @@ protected:
 	int m_BenchThreads[9];
 
 	int m_TestData;
-	int m_Affinity;
+//	int m_Affinity;
 	int m_MeasureTime;
 	int m_IntervalTime;
 	DWORD m_Profile;

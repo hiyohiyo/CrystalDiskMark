@@ -84,7 +84,7 @@ public:
 	int m_BenchQueues[9];
 	int m_BenchThreads[9];
 	int m_IntervalTime;
-	int m_Affinity;
+//	int m_Affinity;
 	int m_MeasureTime;
 
 	int m_TestData;
@@ -163,7 +163,7 @@ protected:
 
 	BOOL IsDefaultMode();
 	BOOL IsNVMe8Mode();
-	BOOL IsNVMe7Mode();
+//	BOOL IsNVMe9Mode();
 
 #ifdef MIX_MODE
 	CStaticFx m_TestMix0;
@@ -248,7 +248,7 @@ public:
 	afx_msg void OnModeAll0x00();
 	afx_msg void OnSettingDefault();
 	afx_msg void OnSettingNVMe8();
-	afx_msg void OnSettingNVMe7();
+//	afx_msg void OnSettingNVMe9();
 
 	afx_msg void OnProfileDefault();
 	afx_msg void OnProfilePeak();

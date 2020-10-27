@@ -72,26 +72,21 @@ BOOL CFontSelectionDlg::OnInitDialog()
 		if (m_FontScale == i) { m_CtrlFontScale.SetCurSel(m_CtrlFontScale.GetCount() - 1);  }
 	}
 
-	m_CtrlFontRender.AddString(L"0: DEFAULT_QUALITY");
-	m_CtrlFontRender.AddString(L"1: DRAFT_QUALITY");
-	m_CtrlFontRender.AddString(L"2: PROOF_QUALITY");
-	m_CtrlFontRender.AddString(L"3: NONANTIALIASED_QUALITY");
-	m_CtrlFontRender.AddString(L"4: ANTIALIASED_QUALITY");
-	m_CtrlFontRender.AddString(L"5: CLEARTYPE_QUALITY");
-	m_CtrlFontRender.AddString(L"6: CLEARTYPE_NATURAL_QUALITY");
+	m_CtrlFontRender.AddString(i18n(L"Dialog", L"ENABLED"));
+	m_CtrlFontRender.AddString(i18n(L"Dialog", L"DISABLED"));
 
-	if (0 <= m_FontRender && m_FontRender < 6)
+	if (m_FontRender == CLEARTYPE_NATURAL_QUALITY)
 	{
-		m_CtrlFontRender.SetCurSel(m_FontRender);
+		m_CtrlFontRender.SetCurSel(0);
 	}
 	else
 	{
-		m_CtrlFontRender.SetCurSel(CLEARTYPE_NATURAL_QUALITY);
+		m_CtrlFontRender.SetCurSel(1);
 	}
 
 	m_LabelFontFace.SetWindowTextW(i18n(L"Dialog", L"FONT_FACE"));
 	m_LabelFontScale.SetWindowTextW(i18n(L"Dialog", L"FONT_SCALE"));
-	m_LabelFontRender.SetWindowTextW(i18n(L"Dialog", L"FONT_RENDER_METHOD"));
+	m_LabelFontRender.SetWindowTextW(L"ClearType");
 	m_CtrlDefault.SetWindowTextW(i18n(L"Dialog", L"DEFAULT"));
 
 	UpdateDialogSize();
@@ -116,14 +111,14 @@ void CFontSelectionDlg::UpdateDialogSize()
 	m_LabelFontRender.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
 
 	m_LabelFontFace.InitControl(8, 8, 432, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
-	m_LabelFontScale.InitControl(8, 76, 432, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
-	m_LabelFontRender.InitControl(8, 144, 432, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
+	m_LabelFontScale.InitControl(8, 76, 208, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
+	m_LabelFontRender.InitControl(240, 76, 208, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
 	m_CtrlFontFace.InitControl(20, 36, 440, 360, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
-	m_CtrlFontScale.InitControl(20, 104, 440, 360, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
-	m_CtrlFontRender.InitControl(20, 172, 440, 360, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
+	m_CtrlFontScale.InitControl(20, 104, 208, 360, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
+	m_CtrlFontRender.InitControl(252, 104, 208, 360, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 
-	m_CtrlDefault.InitControl(40, 224, 168, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_CtrlOk.InitControl(280, 224, 168, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_CtrlDefault.InitControl(40, 156, 168, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_CtrlOk.InitControl(272, 156, 168, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
 
 	m_CtrlFontFace.SetMargin(0, 4, 0, 0, m_ZoomRatio);
 	m_CtrlFontScale.SetMargin(0, 4, 0, 0, m_ZoomRatio);
@@ -172,7 +167,14 @@ void CFontSelectionDlg::OnOk()
 	m_CtrlFontFace.GetLBText(m_CtrlFontFace.GetCurSel(), m_FontFace);
 	m_CtrlFontScale.GetLBText(m_CtrlFontScale.GetCurSel(), cstr);
 	m_FontScale = _wtoi(cstr);
-	m_FontRender = m_CtrlFontRender.GetCurSel();
+	if (m_CtrlFontRender.GetCurSel() == 0)
+	{
+		m_FontRender = CLEARTYPE_NATURAL_QUALITY;
+	}
+	else
+	{
+		m_FontRender = ANTIALIASED_QUALITY;
+	}
 
 	CDialog::OnOK();
 }
@@ -194,7 +196,7 @@ void CFontSelectionDlg::OnSetDefault()
 {
 	SetDefaultFont(L"");
 	m_CtrlFontScale.SetCurSel(5);
-	m_CtrlFontRender.SetCurSel(6);
+	m_CtrlFontRender.SetCurSel(0);
 }
 
 void CFontSelectionDlg::SetDefaultFont(CString fontFace)

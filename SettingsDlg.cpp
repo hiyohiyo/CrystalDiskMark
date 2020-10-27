@@ -33,7 +33,7 @@ CSettingsDlg::CSettingsDlg(CWnd* pParent /*=NULL*/)
 	m_MeasureTime = ((CDiskMarkDlg*)pParent)->m_MeasureTime;
 	m_IntervalTime = ((CDiskMarkDlg*)pParent)->m_IntervalTime;
 	m_TestData = ((CDiskMarkDlg*)pParent)->m_TestData;
-	m_Affinity = ((CDiskMarkDlg*)pParent)->m_Affinity;
+//	m_Affinity = ((CDiskMarkDlg*)pParent)->m_Affinity;
 }
 
 CSettingsDlg::~CSettingsDlg()
@@ -54,12 +54,12 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Control(pDX, IDC_LABEL_MEASURE_TIME, m_LabelMeasureTime);
 	DDX_Control(pDX, IDC_LABEL_INTERVAL_TIME, m_LabelIntervalTime);
-	DDX_Control(pDX, IDC_LABEL_AFFINITY, m_LabelAffinity);
-	DDX_Control(pDX, IDC_LABEL_DATA, m_LabelData);
+//	DDX_Control(pDX, IDC_LABEL_AFFINITY, m_LabelAffinity);
+//	DDX_Control(pDX, IDC_LABEL_DATA, m_LabelData);
 
 	DDX_Control(pDX, IDC_SET_DEFAULT, m_ButtonSetDefault);
 	DDX_Control(pDX, IDC_SET_NVME_8, m_ButtonSetNVMe8);
-	DDX_Control(pDX, IDC_SET_NVME_7, m_ButtonSetNVMe7);
+//	DDX_Control(pDX, IDC_SET_NVME_9, m_ButtonSetNVMe9);
 
 	DDX_Control(pDX, IDC_COMBO_BENCH_TYPE_0, m_ComboBenchType0);
 	DDX_Control(pDX, IDC_COMBO_BENCH_TYPE_1, m_ComboBenchType1);
@@ -93,8 +93,8 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_BENCH_THREAD_5, m_ComboBenchThreads5);
 	DDX_Control(pDX, IDC_COMBO_BENCH_THREAD_8, m_ComboBenchThreads8);
 
-	DDX_Control(pDX, IDC_COMBO_DATA, m_ComboData);
-	DDX_Control(pDX, IDC_COMBO_AFFINITY, m_ComboAffinity);
+//	DDX_Control(pDX, IDC_COMBO_DATA, m_ComboData);
+//	DDX_Control(pDX, IDC_COMBO_AFFINITY, m_ComboAffinity);
 	DDX_Control(pDX, IDC_COMBO_MEASURE_TIME, m_ComboMeasureTime);
 	DDX_Control(pDX, IDC_COMBO_INTERVAL_TIME, m_ComboIntervalTime);
 	DDX_Control(pDX, IDC_OK, m_ButtonOk);
@@ -103,7 +103,7 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSettingsDlg, CDialogFx)
 	ON_BN_CLICKED(IDC_SET_DEFAULT, &CSettingsDlg::OnSetDefault)
 	ON_BN_CLICKED(IDC_SET_NVME_8, &CSettingsDlg::OnSetNVMe8)
-	ON_BN_CLICKED(IDC_SET_NVME_7, &CSettingsDlg::OnSetNVMe7)
+//	ON_BN_CLICKED(IDC_SET_NVME_9, &CSettingsDlg::OnSetNVMe9)
 	ON_BN_CLICKED(IDC_OK, &CSettingsDlg::OnOk)
 END_MESSAGE_MAP()
 
@@ -123,9 +123,9 @@ void CSettingsDlg::OnSetDefault()
 	}
 
 	m_TestData = 0;
-	m_Affinity = 1;
+//	m_Affinity = 1;
 	m_MeasureTime = 5;
-	m_IntervalTime = 0;
+	m_IntervalTime = 5;
 	InitComboBox();
 }
 
@@ -145,13 +145,14 @@ void CSettingsDlg::OnSetNVMe8()
 	}
 
 	m_TestData = 0;
-	m_Affinity = 1;
+//	m_Affinity = 1;
 	m_MeasureTime = 5;
-	m_IntervalTime = 0;
+	m_IntervalTime = 5;
 
 	InitComboBox();
 }
 
+/*
 void CSettingsDlg::OnSetNVMe7()
 {
 	int type[9] =    {   0,     0,  1, 1,    0,  1,    0, 1,    0 };
@@ -168,12 +169,13 @@ void CSettingsDlg::OnSetNVMe7()
 	}
 
 	m_TestData = 0;
-	m_Affinity = 0;
+//	m_Affinity = 0;
 	m_MeasureTime = 5;
-	m_IntervalTime = 0;
+	m_IntervalTime = 5;
 
 	InitComboBox();
 }
+*/
 
 BOOL CSettingsDlg::OnInitDialog()
 {
@@ -205,11 +207,13 @@ BOOL CSettingsDlg::OnInitDialog()
 		if (m_BenchThreads[i] <= 0 || m_BenchThreads[i] > MAX_THREADS) { m_BenchThreads[i] = threads[i]; }
 	}
 
+	/*
 	m_Affinity = GetPrivateProfileInt(L"Setting", L"Affinity", 0, m_Ini);
 	if (m_Affinity < 0 || m_Affinity > 1)
 	{
 		m_Affinity = 0;
 	}
+	*/
 
 	m_TestData = GetPrivateProfileInt(L"Setting", L"TestData", 0, m_Ini);
 	if (m_TestData < 0 || m_TestData > 1)
@@ -226,8 +230,8 @@ BOOL CSettingsDlg::OnInitDialog()
 	m_LabelDefault.SetWindowTextW(L" " + i18n(L"Dialog", L"PROFILE_DEFAULT"));
 	m_LabelPeak.SetWindowTextW(L" " + i18n(L"Dialog", L"PROFILE_PEAK_PERFORMANCE"));
 	m_LabelDemo.SetWindowTextW(L" " + i18n(L"Dialog", L"PROFILE_DEMO"));
-	m_LabelAffinity.SetWindowTextW(L" " + i18n(L"Dialog", L"DEFAULT_AFFINITY"));
-	m_LabelData.SetWindowTextW(L" " + i18n(L"Menu", L"TEST_DATA"));
+//	m_LabelAffinity.SetWindowTextW(L" " + i18n(L"Dialog", L"DEFAULT_AFFINITY"));
+//	m_LabelData.SetWindowTextW(L" " + i18n(L"Menu", L"TEST_DATA"));
 	m_LabelMeasureTime.SetWindowTextW(L" " + i18n(L"Dialog", L"MEASURE_TIME"));
 	m_LabelIntervalTime.SetWindowTextW(L" " + i18n(L"Dialog", L"INTERVAL_TIME"));
 
@@ -344,6 +348,7 @@ void CSettingsDlg::InitComboBox()
 		m_ComboBenchThreads8.AddString(cstr); if (m_BenchThreads[8] == i) { m_ComboBenchThreads8.SetCurSel(i - 1); }
 	}
 
+	/*
 	m_ComboAffinity.ResetContent();
 	m_ComboAffinity.AddString(i18n(L"Dialog", L"DISABLED") + L" (-n)");
 	m_ComboAffinity.AddString(i18n(L"Dialog", L"ENABLED") + L" (-ag)");
@@ -369,6 +374,7 @@ void CSettingsDlg::InitComboBox()
 	{
 		m_ComboData.SetCurSel(0);
 	}
+	*/
 
 	m_ComboMeasureTime.ResetContent();
 	int measureTimes[] = { 5, 10, 20, 30, 60 };
@@ -449,8 +455,8 @@ void CSettingsDlg::OnOk()
 	m_ComboBenchThreads5.GetWindowTextW(cstr); WritePrivateProfileString(L"Setting", L"BenchThreads5", cstr, m_Ini);
 	m_ComboBenchThreads8.GetWindowTextW(cstr); WritePrivateProfileString(L"Setting", L"BenchThreads8", cstr, m_Ini);
 
-	cstr.Format(L"%d", m_ComboData.GetCurSel()); WritePrivateProfileString(L"Setting", L"TestData", cstr, m_Ini);
-	cstr.Format(L"%d", m_ComboAffinity.GetCurSel()); WritePrivateProfileString(L"Setting", L"Affinity", cstr, m_Ini);
+//	cstr.Format(L"%d", m_ComboData.GetCurSel()); WritePrivateProfileString(L"Setting", L"TestData", cstr, m_Ini);
+//	cstr.Format(L"%d", m_ComboAffinity.GetCurSel()); WritePrivateProfileString(L"Setting", L"Affinity", cstr, m_Ini);
 	m_ComboMeasureTime.GetWindowTextW(cstr); WritePrivateProfileString(L"Setting", L"MeasureTime", cstr, m_Ini);
 	m_ComboIntervalTime.GetWindowTextW(cstr); WritePrivateProfileString(L"Setting", L"IntervalTime", cstr, m_Ini);
 
@@ -487,8 +493,8 @@ void CSettingsDlg::UpdateDialogSize()
 	m_LabelDemo.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
 	m_LabelMeasureTime.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
 	m_LabelIntervalTime.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
-	m_LabelAffinity.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
-	m_LabelData.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
+//	m_LabelAffinity.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
+//	m_LabelData.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, RGB(0, 0, 0), FW_NORMAL, m_FontRender);
 
 	m_ComboBenchType0.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 	m_ComboBenchType1.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
@@ -522,13 +528,13 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboBenchThreads5.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 	m_ComboBenchThreads8.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 
-	m_ComboData.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
-	m_ComboAffinity.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
+//	m_ComboData.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
+//	m_ComboAffinity.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 	m_ComboMeasureTime.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 	m_ComboIntervalTime.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 	m_ButtonSetDefault.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_NORMAL, m_FontRender);
 	m_ButtonSetNVMe8.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_NORMAL, m_FontRender);
-	m_ButtonSetNVMe7.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_NORMAL, m_FontRender);
+//	m_ButtonSetNVMe9.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_NORMAL, m_FontRender);
 	m_ButtonOk.SetFontEx(m_FontFace, fontSize, fontSize, m_ZoomRatio, m_FontRatio, m_MeterText, FW_NORMAL, m_FontRender);
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
@@ -539,10 +545,10 @@ void CSettingsDlg::UpdateDialogSize()
 	m_LabelDefault.InitControl(8, 32, 664, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
 	m_LabelPeak.InitControl(8, 172, 664, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
 	m_LabelDemo.InitControl(8, 256, 664, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_LabelData.InitControl(344, 316, 328, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_LabelAffinity.InitControl(8, 316, 328, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_LabelMeasureTime.InitControl(8, 372, 328, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_LabelIntervalTime.InitControl(344, 372, 328, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
+//	m_LabelData.InitControl(344, 316, 328, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
+//	m_LabelAffinity.InitControl(8, 316, 328, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_LabelMeasureTime.InitControl(8, 316, 328, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_LabelIntervalTime.InitControl(344, 316, 328, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
 
 	m_ComboBenchType0.InitControl(8,  60, 160, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 	m_ComboBenchType1.InitControl(8,  88, 160, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
@@ -576,15 +582,15 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboBenchThreads5.InitControl(512, 228, 160, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 	m_ComboBenchThreads8.InitControl(512, 284, 160, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 
-	m_ComboData.InitControl(352, 344, 320, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
-	m_ComboAffinity.InitControl(16, 344, 320, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
-	m_ComboMeasureTime.InitControl(16, 400, 320, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
-	m_ComboIntervalTime.InitControl(352, 400, 320, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
+//	m_ComboData.InitControl(352, 344, 320, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
+//	m_ComboAffinity.InitControl(16, 344, 320, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
+	m_ComboMeasureTime.InitControl(8, 344, 328, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
+	m_ComboIntervalTime.InitControl(344, 344, 328, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 
-	m_ButtonSetDefault.InitControl(8, 432, 160, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_ButtonSetNVMe8.InitControl(176, 432, 160, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_ButtonSetNVMe7.InitControl(344, 432, 160, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_ButtonOk.InitControl(512, 432, 160, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_ButtonSetDefault.InitControl(8, 376, 160, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_ButtonSetNVMe8.InitControl(176, 376, 160, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+//	m_ButtonSetNVMe9.InitControl(344, 376, 160, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_ButtonOk.InitControl(512, 376, 160, 32, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
 #else
 	m_LabelType.InitControl(8, 8, 100, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
 	m_LabelSize.InitControl(116, 8, 100, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode);
@@ -593,10 +599,10 @@ void CSettingsDlg::UpdateDialogSize()
 	m_LabelDefault.InitControl(8, 28, 424, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
 	m_LabelPeak.InitControl(8, 148, 424, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
 	m_LabelDemo.InitControl(8, 220, 424, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_LabelAffinity.InitControl(8, 272, 208, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_LabelData.InitControl(224, 272, 208, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_LabelMeasureTime.InitControl(8, 320, 208, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_LabelIntervalTime.InitControl(224, 320, 208, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
+//	m_LabelAffinity.InitControl(8, 272, 208, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
+//	m_LabelData.InitControl(224, 272, 208, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_LabelMeasureTime.InitControl(8, 272, 208, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_LabelIntervalTime.InitControl(224, 272, 208, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_LEFT, SystemDraw, m_bHighContrast, m_bDarkMode);
 
 	m_ComboBenchType0.InitControl(8, 52, 100, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 	m_ComboBenchType1.InitControl(8, 76, 100, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
@@ -630,26 +636,26 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboBenchThreads5.InitControl(332, 196, 100, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 	m_ComboBenchThreads8.InitControl(332, 244, 100, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 
-	m_ComboData.InitControl(232, 296, 200, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
-	m_ComboAffinity.InitControl(16, 296, 200, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
-	m_ComboMeasureTime.InitControl(16, 344, 200, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
-	m_ComboIntervalTime.InitControl(232, 344, 200, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
+//	m_ComboData.InitControl(232, 296, 200, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
+//	m_ComboAffinity.InitControl(16, 296, 200, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
+	m_ComboMeasureTime.InitControl(8, 296, 208, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
+	m_ComboIntervalTime.InitControl(224, 296, 208, 200, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawTransparent, m_bHighContrast, m_bDarkMode, RGB(255, 255, 255), RGB(160, 220, 255), RGB(255, 255, 255), 0);
 
-	m_ButtonSetDefault.InitControl(8, 372, 100, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_ButtonSetNVMe8.InitControl(116, 372, 100, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_ButtonSetNVMe7.InitControl(224, 372, 100, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
-	m_ButtonOk.InitControl(332, 372, 100, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_ButtonSetDefault.InitControl(8, 324, 100, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_ButtonSetNVMe8.InitControl(116, 324, 100, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+//	m_ButtonSetNVMe9.InitControl(224, 324, 100, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
+	m_ButtonOk.InitControl(332, 324, 100, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, SystemDraw, m_bHighContrast, m_bDarkMode);
 #endif
 
 	m_ButtonSetDefault.SetHandCursor();
 	m_ButtonSetNVMe8.SetHandCursor();
-	m_ButtonSetNVMe7.SetHandCursor();
+//	m_ButtonSetNVMe9.SetHandCursor();
 	m_ButtonOk.SetHandCursor();
 
 	SetDarkModeControl(m_ButtonOk.GetSafeHwnd(), m_bDarkMode);
 	SetDarkModeControl(m_ButtonSetDefault.GetSafeHwnd(), m_bDarkMode);
 	SetDarkModeControl(m_ButtonSetNVMe8.GetSafeHwnd(), m_bDarkMode);
-	SetDarkModeControl(m_ButtonSetNVMe7.GetSafeHwnd(), m_bDarkMode);
+//	SetDarkModeControl(m_ButtonSetNVMe9.GetSafeHwnd(), m_bDarkMode);
 
 	m_ComboBenchType0.SetItemHeightAll(comboHeight, m_ZoomRatio, m_FontRatio);
 	m_ComboBenchType1.SetItemHeightAll(comboHeight, m_ZoomRatio, m_FontRatio);
@@ -683,8 +689,8 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboBenchThreads5.SetItemHeightAll(comboHeight, m_ZoomRatio, m_FontRatio);
 	m_ComboBenchThreads8.SetItemHeightAll(comboHeight, m_ZoomRatio, m_FontRatio);
 
-	m_ComboData.SetItemHeightAll(comboHeight, m_ZoomRatio, m_FontRatio);
-	m_ComboAffinity.SetItemHeightAll(comboHeight, m_ZoomRatio, m_FontRatio);
+//	m_ComboData.SetItemHeightAll(comboHeight, m_ZoomRatio, m_FontRatio);
+//	m_ComboAffinity.SetItemHeightAll(comboHeight, m_ZoomRatio, m_FontRatio);
 	m_ComboMeasureTime.SetItemHeightAll(comboHeight, m_ZoomRatio, m_FontRatio);
 	m_ComboIntervalTime.SetItemHeightAll(comboHeight, m_ZoomRatio, m_FontRatio);
 
@@ -720,8 +726,8 @@ void CSettingsDlg::UpdateDialogSize()
 	m_ComboBenchThreads5.SetMargin(0, 4, 0, 0, m_ZoomRatio);
 	m_ComboBenchThreads8.SetMargin(0, 4, 0, 0, m_ZoomRatio);
 
-	m_ComboData.SetMargin(0, 4, 0, 0, m_ZoomRatio);
-	m_ComboAffinity.SetMargin(0, 4, 0, 0, m_ZoomRatio);
+//	m_ComboData.SetMargin(0, 4, 0, 0, m_ZoomRatio);
+//	m_ComboAffinity.SetMargin(0, 4, 0, 0, m_ZoomRatio);
 	m_ComboMeasureTime.SetMargin(0, 4, 0, 0, m_ZoomRatio);
 	m_ComboIntervalTime.SetMargin(0, 4, 0, 0, m_ZoomRatio);
 
