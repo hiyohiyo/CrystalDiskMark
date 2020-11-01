@@ -142,6 +142,7 @@ protected:
 
 	void SetControlFont();
 	void InitDrive();
+	void UpdateDriveToolTip();
 
 	BOOL CheckRadioZoomType(int id, int value);
 	void CheckRadioZoomType();

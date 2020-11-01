@@ -986,10 +986,10 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 {
 	CString cstr;
 
-	int type[9] =   {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
-	int size[9] =   { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
-	int queues[9] = {    8,    1, 32, 1,    8, 32,    1, 1,    8 };
-	int threads[9] ={    1,    1,  1, 1,    1,  1,    1, 1,    1 };
+	int type[9] =   {    0,   0,  1, 1,    0,  1,    0, 1,    0 };
+	int size[9] =   { 1024, 128,  4, 4, 1024,  4, 1024, 4, 1024 };
+	int queues[9] = {    8,  32, 32, 1,    8, 32,    1, 1,    8 };
+	int threads[9] ={    1,   1,  1, 1,    1,  1,    1, 1,    1 };
 	int measureTimes[5] = { 5, 10, 20, 30, 60 };
 	int intervalTimes[10] = { 0, 1, 3, 5, 10, 30, 60, 180, 300, 600 };
 
@@ -2358,8 +2358,15 @@ void CDiskMarkDlg::InitDrive()
 	}
 	m_MaxIndexTestDrive = count;
 
+	UpdateDriveToolTip();
+
+	UpdateData(FALSE);
+}
+
+void CDiskMarkDlg::UpdateDriveToolTip()
+{
 	m_ComboDrive.SetCurSel(m_IndexTestDrive);
-	if (m_TestDriveLetter == 99 && ! m_TestTargetPath.IsEmpty())
+	if (m_TestDriveLetter == 99 && !m_TestTargetPath.IsEmpty())
 	{
 		m_ComboDrive.SetToolTipText(m_TestTargetPath);
 	}
@@ -2367,8 +2374,6 @@ void CDiskMarkDlg::InitDrive()
 	{
 		m_ComboDrive.SetToolTipText(i18n(L"Title", L"TEST_DRIVE"));
 	}
-
-	UpdateData(FALSE);
 }
 
 void CDiskMarkDlg::ChangeLang(CString LangName)
@@ -2531,7 +2536,7 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 	m_MesDiskReadError = i18n(L"Message", L"DISK_READ_ERROR");
 	m_MesDiskSpdNotFound = i18n(L"Message", L"DISK_SPD_NOT_FOUND");
 
-	InitDrive();
+	UpdateDriveToolTip();
 
 	WritePrivateProfileString(L"Setting", L"Language", LangName, m_Ini);
 }

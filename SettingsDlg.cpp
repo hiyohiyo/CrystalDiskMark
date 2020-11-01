@@ -184,8 +184,8 @@ BOOL CSettingsDlg::OnInitDialog()
 	CString cstr;
 
 	int type[9] =    {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
-	int size[9] =    { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
-	int queues[9] =  {    8,    1, 32, 1,    8, 32,    1, 1,    8 };
+	int size[9] =    { 1024,  128,  4, 4, 1024,  4, 1024, 4, 1024 };
+	int queues[9] =  {    8,   32, 32, 1,    8, 32,    1, 1,    8 };
 	int threads[9] = {    1,    1,  1, 1,    1,  1,    1, 1,    1 };
 
 	for (int i = 0; i < 9; i++)
