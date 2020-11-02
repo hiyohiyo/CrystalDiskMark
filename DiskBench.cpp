@@ -569,7 +569,6 @@ BOOL Init(void* dlg)
 		BenchThreads[i] = ((CDiskMarkDlg*)dlg)->m_BenchThreads[i];
 	}
 
-//	Affinity = ((CDiskMarkDlg*)dlg)->m_Affinity;
 	MixMode = ((CDiskMarkDlg*)dlg)->m_MixMode;
 	MixRatio = ((CDiskMarkDlg*)dlg)->m_MixRatio;
 

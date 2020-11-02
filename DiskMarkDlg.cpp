@@ -141,19 +141,7 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialogFx)
 	ON_COMMAND(ID_ZOOM_200, &CDiskMarkDlg::OnZoom200)
 	ON_COMMAND(ID_ZOOM_250, &CDiskMarkDlg::OnZoom250)
 	ON_COMMAND(ID_ZOOM_300, &CDiskMarkDlg::OnZoom300)
-//	ON_COMMAND(ID_ZOOM_400, &CDiskMarkDlg::OnZoom400)
 	ON_COMMAND(ID_ZOOM_AUTO, &CDiskMarkDlg::OnZoomAuto)
-
-	ON_COMMAND(ID_INTERVAL_TIME_0, &CDiskMarkDlg::OnIntervalTime0)
-	ON_COMMAND(ID_INTERVAL_TIME_1, &CDiskMarkDlg::OnIntervalTime1)
-	ON_COMMAND(ID_INTERVAL_TIME_3, &CDiskMarkDlg::OnIntervalTime3)
-	ON_COMMAND(ID_INTERVAL_TIME_5, &CDiskMarkDlg::OnIntervalTime5)
-	ON_COMMAND(ID_INTERVAL_TIME_10, &CDiskMarkDlg::OnIntervalTime10)
-	ON_COMMAND(ID_INTERVAL_TIME_30, &CDiskMarkDlg::OnIntervalTime30)
-	ON_COMMAND(ID_INTERVAL_TIME_60, &CDiskMarkDlg::OnIntervalTime60)
-	ON_COMMAND(ID_INTERVAL_TIME_180, &CDiskMarkDlg::OnIntervalTime180)
-	ON_COMMAND(ID_INTERVAL_TIME_300, &CDiskMarkDlg::OnIntervalTime300)
-	ON_COMMAND(ID_INTERVAL_TIME_600, &CDiskMarkDlg::OnIntervalTime600)
 
 	ON_COMMAND(ID_HELP, &CDiskMarkDlg::OnHelp)
 	ON_COMMAND(ID_CRYSTALDEWWORLD, &CDiskMarkDlg::OnCrystalDewWorld)
@@ -356,14 +344,6 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	{
 		m_FontRender = CLEARTYPE_NATURAL_QUALITY;
 	}
-
-	/*
-	m_Affinity = GetPrivateProfileInt(L"Setting", L"Affinity", AFFINITY_DISABLED, m_Ini);
-	if (m_Affinity < 0 || m_Affinity > 1)
-	{
-		m_Affinity = AFFINITY_DISABLED;
-	}
-	*/
 
 	// Unit
 	m_ComboUnit.AddString(L"MB/s");
@@ -595,7 +575,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_Comment.SetMargin(0, 4, 0, 4, m_ZoomRatio);
 		m_Comment.Adjust();
 
-		m_DemoSetting.InitControl(140 + offsetX, 52, 528, 38, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
+		m_DemoSetting.InitControl(140 + offsetX, 56, 528, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
 		m_ReadUnit.InitControl(12 + offsetX, 96, 120, 32, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
 		m_WriteUnit.InitControl(672 + offsetX, 96, 116, 32, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
 
@@ -659,8 +639,8 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_Comment.SetMargin(0, 4, 0, 4, m_ZoomRatio);
 		m_Comment.Adjust();
 
-		m_ReadUnit.InitControl(140 + offsetX, 52, 320, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
-		m_WriteUnit.InitControl(468 + offsetX, 52, 320, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
+		m_ReadUnit.InitControl(140 + offsetX, 56, 320, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
+		m_WriteUnit.InitControl(468 + offsetX, 56, 320, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
 
 		m_ComboCount.InitControl(140 + offsetX, 8, 60, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		m_ComboSize.InitControl(204 + offsetX, 8, 140, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
@@ -902,10 +882,10 @@ void CDiskMarkDlg::SetControlFont()
 	m_WriteUnit.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_LabelText, FW_BOLD, m_FontRender);
 	m_DemoSetting.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
 
-	m_ComboCount.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
-	m_ComboSize.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
-	m_ComboDrive.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
-	m_ComboUnit.SetFontEx(m_FontFace, 24, 24, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
+	m_ComboCount.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
+	m_ComboSize.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
+	m_ComboDrive.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
+	m_ComboUnit.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 
 	m_ButtonTest0.SetMargin(8, 0, 8, 0, m_ZoomRatio);
 	m_ButtonTest1.SetMargin(8, 0, 8, 0, m_ZoomRatio);
@@ -948,10 +928,10 @@ void CDiskMarkDlg::SetControlFont()
 	m_WriteUnit.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_LabelText, FW_BOLD, m_FontRender);
 	m_DemoSetting.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
 
-	m_ComboCount.SetFontEx(m_FontFace, 14, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
-	m_ComboSize.SetFontEx(m_FontFace, 14, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
-	m_ComboDrive.SetFontEx(m_FontFace, 14, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
-	m_ComboUnit.SetFontEx(m_FontFace, 14, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
+	m_ComboCount.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
+	m_ComboSize.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
+	m_ComboDrive.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
+	m_ComboUnit.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 
 	m_ButtonTest0.SetMargin(4, 0, 4, 0, m_ZoomRatio);
 	m_ButtonTest1.SetMargin(4, 0, 4, 0, m_ZoomRatio);
@@ -966,7 +946,7 @@ void CDiskMarkDlg::SetControlFont()
 #ifdef MIX_MODE
 	if(m_MixMode)
 	{
-		m_ComboMix.SetFontEx(m_FontFace, 14, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
+		m_ComboMix.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 		m_ComboMix.SetItemHeightAll(24, m_ZoomRatio, m_FontRatio);
 
 		m_MixUnit.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_LabelText, FW_BOLD, m_FontRender);
@@ -1011,14 +991,6 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 		m_BenchThreads[i] = GetPrivateProfileInt(L"Setting", cstr, threads[i], m_Ini);
 		if (m_BenchThreads[i] <= 0 || m_BenchThreads[i] > MAX_THREADS) { m_BenchThreads[i] = threads[i]; }
 	}
-
-	/*
-	m_Affinity = GetPrivateProfileInt(L"Setting", L"Affinity", 0, m_Ini);
-	if (m_Affinity < 0 || m_Affinity > 1)
-	{
-		m_Affinity = 0;
-	}
-	*/
 
 	m_TestData = GetPrivateProfileInt(L"Setting", L"TestData", TEST_DATA_RANDOM, m_Ini);
 	if (m_TestData < 0 || m_TestData > 1)
@@ -2525,8 +2497,6 @@ void CDiskMarkDlg::ChangeLang(CString LangName)
 		break;
 	}
 
-	CheckIntervalTime();
-
 	SetMenu(menu);
 
 	m_MesStopBenchmark = i18n(L"Message", L"STOP_BENCHMARK");
@@ -2667,8 +2637,7 @@ Profile: Demo\r\n\
    Time: Measure %MeasureTime% / Interval %IntervalTime% \r\n\
    Date: %Date%\r\n\
      OS: %OS%\r\n\
-%Comment%\r\n\
-";
+%Comment%";
 	}
 	else if (m_Profile == PROFILE_DEFAULT || m_Profile == PROFILE_DEFAULT_MIX)
 	{
@@ -2715,8 +2684,7 @@ Profile: Default\r\n\
    Time: Measure %MeasureTime% / Interval %IntervalTime% \r\n\
    Date: %Date%\r\n\
      OS: %OS%\r\n\
-%Comment%\r\n\
-";
+%Comment%";
 	}
 	else
 	{
@@ -2769,8 +2737,7 @@ Profile: Real\r\n\
    Time: Measure %MeasureTime% / Interval %IntervalTime% \r\n\
    Date: %Date%\r\n\
      OS: %OS%\r\n\
-%Comment%\
-";
+%Comment%";
 	}
 
 	clip.Replace(L"%PRODUCT%", PRODUCT_NAME);
@@ -2872,7 +2839,6 @@ Profile: Real\r\n\
 	cstr = L"";
 	if (m_AdminMode){ cstr += L" [Admin]"; }
 	if (m_TestData) { cstr += L" <0Fill>"; }
-//	if (m_Affinity) { cstr += L" <Affinity>"; }
 	clip.Replace(L"%TestMode%", cstr);
 
 	m_Comment.GetWindowText(cstr);
@@ -2905,7 +2871,6 @@ Profile: Real\r\n\
 	{
 		clip.Replace(L"%Capacity%", L"");
 	}
-
 
 	if (fileName.IsEmpty())
 	{
@@ -3068,73 +3033,6 @@ void CDiskMarkDlg::CheckRadioZoomType()
 
 	CMenu *menu = GetMenu();
 	menu->CheckMenuRadioItem(ID_ZOOM_100, ID_ZOOM_AUTO, id, MF_BYCOMMAND);
-	SetMenu(menu);
-	DrawMenuBar();
-}
-
-void CDiskMarkDlg::OnIntervalTime0(){   CheckRadioIntervalTime(ID_INTERVAL_TIME_0, 0);}
-void CDiskMarkDlg::OnIntervalTime1(){   CheckRadioIntervalTime(ID_INTERVAL_TIME_1, 1); }
-void CDiskMarkDlg::OnIntervalTime3(){   CheckRadioIntervalTime(ID_INTERVAL_TIME_3, 3); }
-void CDiskMarkDlg::OnIntervalTime5(){   CheckRadioIntervalTime(ID_INTERVAL_TIME_5, 5); }
-void CDiskMarkDlg::OnIntervalTime10(){  CheckRadioIntervalTime(ID_INTERVAL_TIME_10, 10); }
-void CDiskMarkDlg::OnIntervalTime30(){  CheckRadioIntervalTime(ID_INTERVAL_TIME_30, 30); }
-void CDiskMarkDlg::OnIntervalTime60(){  CheckRadioIntervalTime(ID_INTERVAL_TIME_60, 60); }
-void CDiskMarkDlg::OnIntervalTime180(){ CheckRadioIntervalTime(ID_INTERVAL_TIME_180, 180); }
-void CDiskMarkDlg::OnIntervalTime300(){ CheckRadioIntervalTime(ID_INTERVAL_TIME_300, 300); }
-void CDiskMarkDlg::OnIntervalTime600(){ CheckRadioIntervalTime(ID_INTERVAL_TIME_600, 600); }
-
-BOOL CDiskMarkDlg::CheckRadioIntervalTime(int id, int value)
-{
-	if (m_WinThread != NULL)
-	{
-		AfxMessageBox(m_MesStopBenchmark);
-		return FALSE;
-	}
-
-	if (m_IntervalTime == value)
-	{
-		return FALSE;
-	}
-
-	CMenu *menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_INTERVAL_TIME_0, ID_INTERVAL_TIME_600, id, MF_BYCOMMAND);
-	SetMenu(menu);
-	DrawMenuBar();
-
-	m_IntervalTime = value;
-
-	CString cstr;
-	cstr.Format(L"%d", value);
-	WritePrivateProfileString(L"Setting", L"IntervalTime", cstr, m_Ini);
-
-	return TRUE;
-}
-
-void CDiskMarkDlg::CheckIntervalTime()
-{
-	int id;
-	m_IntervalTime = GetPrivateProfileInt(L"Setting", L"IntervalTime", 5, m_Ini);
-
-	switch (m_IntervalTime)
-	{
-	case   0: id = ID_INTERVAL_TIME_0;	break;
-	case   1: id = ID_INTERVAL_TIME_1;	break;
-	case   3: id = ID_INTERVAL_TIME_3;	break;
-	case   5: id = ID_INTERVAL_TIME_5;	break;
-	case  10: id = ID_INTERVAL_TIME_10;	break;
-	case  30: id = ID_INTERVAL_TIME_30;	break;
-	case  60: id = ID_INTERVAL_TIME_60;	break;
-	case 180: id = ID_INTERVAL_TIME_180;break;
-	case 300: id = ID_INTERVAL_TIME_300;break;
-	case 600: id = ID_INTERVAL_TIME_600;break;
-	default:
-		id = ID_INTERVAL_TIME_5;
-		WritePrivateProfileString(L"Setting", L"IntervalTime", L"5", m_Ini); 
-		break;
-	}
-
-	CMenu *menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_INTERVAL_TIME_0, ID_INTERVAL_TIME_600, id, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 }
@@ -3383,7 +3281,6 @@ void CDiskMarkDlg::ProfileRealMix()
 
 void CDiskMarkDlg::OnBenchmarkReadWrite()
 {
-//	InitScore();
 	BenchmarkReadWrite();
 }
 
@@ -3400,7 +3297,6 @@ void CDiskMarkDlg::BenchmarkReadWrite()
 
 void CDiskMarkDlg::OnBenchmarkReadOnly()
 {
-//	InitScore();
 	BenchmarkReadOnly();
 }
 
@@ -3417,7 +3313,6 @@ void CDiskMarkDlg::BenchmarkReadOnly()
 
 void CDiskMarkDlg::OnBenchmarkWriteOnly()
 {
-//	InitScore();
 	BenchmarkWriteOnly();
 }
 
@@ -3633,13 +3528,6 @@ void CDiskMarkDlg::SetWindowTitle(CString message)
 	{
 		title += L" <0Fill>";
 	}
-
-	/*
-	if (m_Affinity)
-	{
-		title += L" <Affinity>";
-	}
-	*/
 
 	SetWindowText(title);
 }

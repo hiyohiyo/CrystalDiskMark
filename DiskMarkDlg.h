@@ -84,7 +84,6 @@ public:
 	int m_BenchQueues[9];
 	int m_BenchThreads[9];
 	int m_IntervalTime;
-//	int m_Affinity;
 	int m_MeasureTime;
 
 	int m_TestData;
@@ -148,9 +147,6 @@ protected:
 	void CheckRadioZoomType();
 	void CheckRadioPresetMode();
 	void UpdateQueuesThreads();
-
-	BOOL CheckRadioIntervalTime(int id, int value);
-	void CheckIntervalTime();
 
 	void EnableMenus();
 	void DisableMenus();
@@ -219,19 +215,7 @@ protected:
 	afx_msg void OnZoom200();
 	afx_msg void OnZoom250();
 	afx_msg void OnZoom300();
-//	afx_msg void OnZoom400();
 	afx_msg void OnZoomAuto();
-
-	afx_msg void OnIntervalTime0();
-	afx_msg void OnIntervalTime1();
-	afx_msg void OnIntervalTime3();
-	afx_msg void OnIntervalTime5();
-	afx_msg void OnIntervalTime10();
-	afx_msg void OnIntervalTime30();
-	afx_msg void OnIntervalTime60();
-	afx_msg void OnIntervalTime180();
-	afx_msg void OnIntervalTime300();
-	afx_msg void OnIntervalTime600();
 	
 	afx_msg void OnExit();
 	afx_msg void OnAbout();

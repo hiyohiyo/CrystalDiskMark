@@ -33,7 +33,6 @@ CSettingsDlg::CSettingsDlg(CWnd* pParent /*=NULL*/)
 	m_MeasureTime = ((CDiskMarkDlg*)pParent)->m_MeasureTime;
 	m_IntervalTime = ((CDiskMarkDlg*)pParent)->m_IntervalTime;
 	m_TestData = ((CDiskMarkDlg*)pParent)->m_TestData;
-//	m_Affinity = ((CDiskMarkDlg*)pParent)->m_Affinity;
 }
 
 CSettingsDlg::~CSettingsDlg()
@@ -123,7 +122,6 @@ void CSettingsDlg::OnSetDefault()
 	}
 
 	m_TestData = 0;
-//	m_Affinity = 1;
 	m_MeasureTime = 5;
 	m_IntervalTime = 5;
 	InitComboBox();
@@ -145,7 +143,6 @@ void CSettingsDlg::OnSetNVMe8()
 	}
 
 	m_TestData = 0;
-//	m_Affinity = 1;
 	m_MeasureTime = 5;
 	m_IntervalTime = 5;
 
@@ -153,12 +150,12 @@ void CSettingsDlg::OnSetNVMe8()
 }
 
 /*
-void CSettingsDlg::OnSetNVMe7()
+void CSettingsDlg::OnSetNVMe9()
 {
-	int type[9] =    {   0,     0,  1, 1,    0,  1,    0, 1,    0 };
-	int size[9] =    { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
-	int queues[9] =  {    8,    1, 32, 1,    8, 32,    1, 1,    8 };
-	int threads[9] = {    1,    1, 16, 1,    1, 16,    1, 1,    1 };
+	int type[9] =    {   0,    0,  1, 1,    0,  1,    0, 1,    0 };
+	int size[9] =    { 1024, 128,  4, 4, 1024,  4, 1024, 4, 1024 };
+	int queues[9] =  {    8,  32, 32, 1,    8, 32,    1, 1,    8 };
+	int threads[9] = {    4,   4, 16, 1,    4, 16,    1, 1,    1 };
 
 	for (int i = 0; i < 9; i++)
 	{
@@ -169,7 +166,6 @@ void CSettingsDlg::OnSetNVMe7()
 	}
 
 	m_TestData = 0;
-//	m_Affinity = 0;
 	m_MeasureTime = 5;
 	m_IntervalTime = 5;
 
@@ -207,14 +203,6 @@ BOOL CSettingsDlg::OnInitDialog()
 		if (m_BenchThreads[i] <= 0 || m_BenchThreads[i] > MAX_THREADS) { m_BenchThreads[i] = threads[i]; }
 	}
 
-	/*
-	m_Affinity = GetPrivateProfileInt(L"Setting", L"Affinity", 0, m_Ini);
-	if (m_Affinity < 0 || m_Affinity > 1)
-	{
-		m_Affinity = 0;
-	}
-	*/
-
 	m_TestData = GetPrivateProfileInt(L"Setting", L"TestData", 0, m_Ini);
 	if (m_TestData < 0 || m_TestData > 1)
 	{
@@ -230,8 +218,6 @@ BOOL CSettingsDlg::OnInitDialog()
 	m_LabelDefault.SetWindowTextW(L" " + i18n(L"Dialog", L"PROFILE_DEFAULT"));
 	m_LabelPeak.SetWindowTextW(L" " + i18n(L"Dialog", L"PROFILE_PEAK_PERFORMANCE"));
 	m_LabelDemo.SetWindowTextW(L" " + i18n(L"Dialog", L"PROFILE_DEMO"));
-//	m_LabelAffinity.SetWindowTextW(L" " + i18n(L"Dialog", L"DEFAULT_AFFINITY"));
-//	m_LabelData.SetWindowTextW(L" " + i18n(L"Menu", L"TEST_DATA"));
 	m_LabelMeasureTime.SetWindowTextW(L" " + i18n(L"Dialog", L"MEASURE_TIME"));
 	m_LabelIntervalTime.SetWindowTextW(L" " + i18n(L"Dialog", L"INTERVAL_TIME"));
 
@@ -347,34 +333,6 @@ void CSettingsDlg::InitComboBox()
 		m_ComboBenchThreads5.AddString(cstr); if (m_BenchThreads[5] == i) { m_ComboBenchThreads5.SetCurSel(i - 1); }
 		m_ComboBenchThreads8.AddString(cstr); if (m_BenchThreads[8] == i) { m_ComboBenchThreads8.SetCurSel(i - 1); }
 	}
-
-	/*
-	m_ComboAffinity.ResetContent();
-	m_ComboAffinity.AddString(i18n(L"Dialog", L"DISABLED") + L" (-n)");
-	m_ComboAffinity.AddString(i18n(L"Dialog", L"ENABLED") + L" (-ag)");
-
-	if (m_Affinity == 1)
-	{
-		m_ComboAffinity.SetCurSel(1);
-	}
-	else
-	{
-		m_ComboAffinity.SetCurSel(0);
-	}
-
-	m_ComboData.ResetContent();
-	m_ComboData.AddString(i18n(L"Menu", L"DEFAULT_RANDOM"));
-	m_ComboData.AddString(i18n(L"Menu", L"ALL_ZERO"));
-
-	if (m_TestData == 1)
-	{
-		m_ComboData.SetCurSel(1);
-	}
-	else
-	{
-		m_ComboData.SetCurSel(0);
-	}
-	*/
 
 	m_ComboMeasureTime.ResetContent();
 	int measureTimes[] = { 5, 10, 20, 30, 60 };

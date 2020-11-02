@@ -48,8 +48,6 @@ protected:
 	CStaticFx m_LabelDemo;
 	CStaticFx m_LabelMeasureTime;
 	CStaticFx m_LabelIntervalTime;
-//	CStaticFx m_LabelAffinity;
-//	CStaticFx m_LabelData;
 
 	CComboBoxFx m_ComboBenchType0;
 	CComboBoxFx m_ComboBenchType1;
@@ -102,7 +100,6 @@ protected:
 	int m_BenchThreads[9];
 
 	int m_TestData;
-//	int m_Affinity;
 	int m_MeasureTime;
 	int m_IntervalTime;
 	DWORD m_Profile;
