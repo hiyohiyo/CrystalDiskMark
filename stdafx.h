@@ -44,7 +44,6 @@
 
 #ifdef UWP
 #ifdef SUISHO_SHIZUKU_SUPPORT
-#define PRODUCT_SHORT_NAME		L""
 #ifdef _M_ARM
 #define PRODUCT_EDITION			L"Shizuku Edition ARM32 (UWP)"
 #elif _M_ARM64
@@ -55,7 +54,6 @@
 #define PRODUCT_EDITION			L"Shizuku Edition x86 (UWP)"
 #endif
 #else
-#define PRODUCT_SHORT_NAME		L""
 #ifdef _M_ARM
 #define PRODUCT_EDITION			L"ARM32 (UWP)"
 #elif _M_ARM64
@@ -70,7 +68,6 @@
 #else
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-#define PRODUCT_SHORT_NAME		L""
 #ifdef _M_ARM
 #define PRODUCT_EDITION			L"Shizuku Edition ARM32"
 #elif _M_ARM64
@@ -81,7 +78,6 @@
 #define PRODUCT_EDITION			L"Shizuku Edition x86"
 #endif
 #else
-#define PRODUCT_SHORT_NAME		L""
 #ifdef _M_ARM
 #define PRODUCT_EDITION			L"ARM32"
 #elif _M_ARM64
@@ -97,9 +93,9 @@
 // Version Information
 #define PRODUCT_NAME				L"CrystalDiskMark"
 #define PRODUCT_VERSION				L"8.0.0"
-#define PRODUCT_ROMING_NAME			L"Cecile"
+#define PRODUCT_SHORT_NAME		    L"CDM8"
 
-#define PRODUCT_RELEASE				L"2020/11/01"
+#define PRODUCT_RELEASE				L"2020/11/08"
 #define PRODUCT_COPY_YEAR			L"2007-2020"
 #define PRODUCT_COPYRIGHT			L"© 2007-2020 hiyohiyo"
 #define PRODUCT_LICENSE				L"The MIT License"

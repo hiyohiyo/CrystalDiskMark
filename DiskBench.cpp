@@ -902,7 +902,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 		else
 		{
 			duration = ((CDiskMarkDlg*)dlg)->m_MeasureTime;
-			cstr.Format(L"%s [%d/%d]", title.GetString(), j, DiskTestCount);
+			cstr.Format(L"%s (%d/%d)", title.GetString(), j, DiskTestCount);
 		}
 		::PostMessage(((CDiskMarkDlg*) dlg)->GetSafeHwnd(), WM_UPDATE_MESSAGE, (WPARAM) &cstr, 0);
 		

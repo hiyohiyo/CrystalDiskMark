@@ -413,8 +413,6 @@ void CSettingsDlg::OnOk()
 	m_ComboBenchThreads5.GetWindowTextW(cstr); WritePrivateProfileString(L"Setting", L"BenchThreads5", cstr, m_Ini);
 	m_ComboBenchThreads8.GetWindowTextW(cstr); WritePrivateProfileString(L"Setting", L"BenchThreads8", cstr, m_Ini);
 
-//	cstr.Format(L"%d", m_ComboData.GetCurSel()); WritePrivateProfileString(L"Setting", L"TestData", cstr, m_Ini);
-//	cstr.Format(L"%d", m_ComboAffinity.GetCurSel()); WritePrivateProfileString(L"Setting", L"Affinity", cstr, m_Ini);
 	m_ComboMeasureTime.GetWindowTextW(cstr); WritePrivateProfileString(L"Setting", L"MeasureTime", cstr, m_Ini);
 	m_ComboIntervalTime.GetWindowTextW(cstr); WritePrivateProfileString(L"Setting", L"IntervalTime", cstr, m_Ini);
 
