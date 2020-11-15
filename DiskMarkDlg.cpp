@@ -218,7 +218,7 @@ int CALLBACK EnumFontFamExProcDefaultFont(ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX
 BOOL CDiskMarkDlg::IsDefaultMode()
 {
 	if (m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1 && m_BenchType[0] == BENCH_SEQ
-	&&  m_BenchSize[1] == 128  && m_BenchQueues[1] == 32 && m_BenchThreads[1] == 1 && m_BenchType[1] == BENCH_SEQ
+	&&  m_BenchSize[1] == 1024 && m_BenchQueues[1] == 1  && m_BenchThreads[1] == 1 && m_BenchType[1] == BENCH_SEQ
 	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 1 && m_BenchType[2] == BENCH_RND
 	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1 && m_BenchType[3] == BENCH_RND
 	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 1 && m_BenchType[4] == BENCH_SEQ
@@ -966,10 +966,10 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 {
 	CString cstr;
 
-	int type[9] =   {    0,   0,  1, 1,    0,  1,    0, 1,    0 };
-	int size[9] =   { 1024, 128,  4, 4, 1024,  4, 1024, 4, 1024 };
-	int queues[9] = {    8,  32, 32, 1,    8, 32,    1, 1,    8 };
-	int threads[9] ={    1,   1,  1, 1,    1,  1,    1, 1,    1 };
+	int type[9] =   {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
+	int size[9] =   { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
+	int queues[9] = {    8,    1, 32, 1,    8, 32,    1, 1,    8 };
+	int threads[9] ={    1,    1,  1, 1,    1,  1,    1, 1,    1 };
 	int measureTimes[5] = { 5, 10, 20, 30, 60 };
 	int intervalTimes[10] = { 0, 1, 3, 5, 10, 30, 60, 180, 300, 600 };
 
@@ -1039,8 +1039,8 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 	case 0:// Default
 		{
 			int type[9] =   {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
-			int size[9] =   { 1024,  128,  4, 4, 1024,  4, 1024, 4, 1024 };
-			int queues[9] = {    8,   32, 32, 1,    8, 32,    1, 1,    8 };
+			int size[9] =   { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
+			int queues[9] = {    8,    1, 32, 1,    8, 32,    1, 1,    8 };
 			int threads[9] ={    1,    1,  1, 1,    1,  1,    1, 1,    1 };
 
 			for (int i = 0; i < 9; i++)
