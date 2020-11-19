@@ -868,19 +868,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 #endif
 	}
 
-	option += L" -n";
-	/*
-	if (Affinity == 0)
-	{
-	//	AfxMessageBox(L"Affinity OFF/-n");
-		option += L" -n";
-	}
-	else
-	{
-	//	AfxMessageBox(L"Affinity ON/-ag");
-		option += L" -ag";
-	}
-	*/
+	option += L" -ag";
 
 	double score = 0.0;
 	double latency = 0.0;

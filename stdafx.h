@@ -95,7 +95,7 @@
 #define PRODUCT_VERSION				L"8.0.0"
 #define PRODUCT_SHORT_NAME		    L"CDM8"
 
-#define PRODUCT_RELEASE				L"2020/11/15"
+#define PRODUCT_RELEASE				L"2020/11/19"
 #define PRODUCT_COPY_YEAR			L"2007-2020"
 #define PRODUCT_COPYRIGHT			L"© 2007-2020 hiyohiyo"
 #define PRODUCT_LICENSE				L"The MIT License"
