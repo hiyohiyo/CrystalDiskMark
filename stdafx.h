@@ -92,12 +92,12 @@
 
 // Version Information
 #define PRODUCT_NAME				L"CrystalDiskMark"
-#define PRODUCT_VERSION				L"8.0.0"
+#define PRODUCT_VERSION				L"8.0.1"
 #define PRODUCT_SHORT_NAME		    L"CDM8"
 
-#define PRODUCT_RELEASE				L"2020/11/20"
-#define PRODUCT_COPY_YEAR			L"2007-2020"
-#define PRODUCT_COPYRIGHT			L"© 2007-2020 hiyohiyo"
+#define PRODUCT_RELEASE				L"2021/01/12"
+#define PRODUCT_COPY_YEAR			L"2007-2021"
+#define PRODUCT_COPYRIGHT			L"© 2007-2021 hiyohiyo"
 #define PRODUCT_LICENSE				L"The MIT License"
 
 #define URL_CRYSTAL_DEW_WORLD_JA	L"https://crystalmark.info/ja/"

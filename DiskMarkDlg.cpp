@@ -339,6 +339,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 	{
 		m_FontRatio = m_FontScale / 100.0;
 	}
+
 	m_FontRender = GetPrivateProfileInt(L"Setting", L"FontRender", CLEARTYPE_NATURAL_QUALITY, m_Ini);
 	if (m_FontRender > CLEARTYPE_NATURAL_QUALITY)
 	{
@@ -2633,7 +2634,7 @@ void CDiskMarkDlg::SaveText(CString fileName)
 \r\n\
 Profile: Demo\r\n\
    Test: %TestSize% (x%TestCount%)%Capacity%\r\n\
-   Mode: %Affinity%%TestMode%\r\n\
+   Mode:%TestMode%\r\n\
    Time: Measure %MeasureTime% / Interval %IntervalTime% \r\n\
    Date: %Date%\r\n\
      OS: %OS%\r\n\
@@ -2763,40 +2764,41 @@ Profile: Real\r\n\
 		clip.Replace(L"%BenchWrite1%", GetResultString(m_BenchType[8], m_WriteScore[8], m_WriteLatency[8], m_BenchSize[8], m_BenchQueues[8], m_BenchThreads[8]));
 
 	}
-	else if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
-	{
-		clip.Replace(L"%SequentialRead1%", GetResultString(BENCH_SEQ, m_ReadScore[0], m_ReadLatency[0], 1024, 1, 1));
-		clip.Replace(L"%SequentialWrite1%", GetResultString(BENCH_SEQ, m_WriteScore[0], m_WriteLatency[0], 1024, 1, 1));
-		clip.Replace(L"%RandomRead1%", GetResultString(BENCH_RND, m_ReadScore[1], m_ReadLatency[1], 4, 1, 1));
-		clip.Replace(L"%RandomWrite1%", GetResultString(BENCH_RND, m_WriteScore[1], m_WriteLatency[1], 4, 1, 1));
-
-#ifdef MIX_MODE
-		if (m_MixMode)
-		{
-			clip.Replace(L"%SequentialMix1%", GetResultString(BENCH_SEQ, m_MixScore[0], m_MixLatency[0], 1024, 1, 1));
-			clip.Replace(L"%RandomMix1%", GetResultString(BENCH_RND, m_MixScore[1], m_MixLatency[1], 4, 1, 1));
-			cstr.Format(L"Read %d%%/Write %d%%", 100 - m_MixRatio, m_MixRatio);
-			clip.Replace(L"%MixRatio%", cstr);
-		}
-#endif
-	}
 	else if (m_Profile == PROFILE_PEAK || m_Profile == PROFILE_PEAK_MIX)
 	{
-		clip.Replace(L"%SequentialRead1%", GetResultString(BENCH_SEQ, m_ReadScore[0], m_ReadLatency[0], m_BenchSize[4], m_BenchQueues[4], m_BenchThreads[4]));
-		clip.Replace(L"%SequentialWrite1%", GetResultString(BENCH_SEQ, m_WriteScore[0], m_WriteLatency[0], m_BenchSize[4], m_BenchQueues[4], m_BenchThreads[4]));
-		clip.Replace(L"%RandomRead1%", GetResultString(BENCH_RND, m_ReadScore[1], m_ReadLatency[1], m_BenchSize[5], m_BenchQueues[5], m_BenchThreads[5]));
-		clip.Replace(L"%RandomWrite1%", GetResultString(BENCH_RND, m_WriteScore[1], m_WriteLatency[1], m_BenchSize[5], m_BenchQueues[5], m_BenchThreads[5]));
+		clip.Replace(L"%SequentialRead1%", GetResultString(BENCH_SEQ, m_ReadScore[4], m_ReadLatency[4], m_BenchSize[4], m_BenchQueues[4], m_BenchThreads[4]));
+		clip.Replace(L"%SequentialWrite1%", GetResultString(BENCH_SEQ, m_WriteScore[4], m_WriteLatency[4], m_BenchSize[4], m_BenchQueues[4], m_BenchThreads[4]));
+		clip.Replace(L"%RandomRead1%", GetResultString(BENCH_RND, m_ReadScore[5], m_ReadLatency[5], m_BenchSize[5], m_BenchQueues[5], m_BenchThreads[5]));
+		clip.Replace(L"%RandomWrite1%", GetResultString(BENCH_RND, m_WriteScore[5], m_WriteLatency[5], m_BenchSize[5], m_BenchQueues[5], m_BenchThreads[5]));
 
 #ifdef MIX_MODE
 		if (m_MixMode)
 		{
-			clip.Replace(L"%SequentialMix1%", GetResultString(BENCH_SEQ, m_MixScore[0], m_MixLatency[0], m_BenchSize[4], m_BenchQueues[4], m_BenchThreads[4]));
-			clip.Replace(L"%RandomMix1%", GetResultString(BENCH_RND, m_MixScore[1], m_MixLatency[1], m_BenchSize[5], m_BenchQueues[5], m_BenchThreads[5]));
+			clip.Replace(L"%SequentialMix1%", GetResultString(BENCH_SEQ, m_MixScore[4], m_MixLatency[4], m_BenchSize[4], m_BenchQueues[4], m_BenchThreads[4]));
+			clip.Replace(L"%RandomMix1%", GetResultString(BENCH_RND, m_MixScore[5], m_MixLatency[5], m_BenchSize[5], m_BenchQueues[5], m_BenchThreads[5]));
 			cstr.Format(L"Read %d%%/Write %d%%", 100 - m_MixRatio, m_MixRatio);
 			clip.Replace(L"%MixRatio%", cstr);
 		}
 #endif
 	}
+	else if (m_Profile == PROFILE_REAL || m_Profile == PROFILE_REAL_MIX)
+	{
+		clip.Replace(L"%SequentialRead1%", GetResultString(BENCH_SEQ, m_ReadScore[6], m_ReadLatency[6], 1024, 1, 1));
+		clip.Replace(L"%SequentialWrite1%", GetResultString(BENCH_SEQ, m_WriteScore[6], m_WriteLatency[6], 1024, 1, 1));
+		clip.Replace(L"%RandomRead1%", GetResultString(BENCH_RND, m_ReadScore[7], m_ReadLatency[7], 4, 1, 1));
+		clip.Replace(L"%RandomWrite1%", GetResultString(BENCH_RND, m_WriteScore[7], m_WriteLatency[7], 4, 1, 1));
+
+#ifdef MIX_MODE
+		if (m_MixMode)
+		{
+			clip.Replace(L"%SequentialMix1%", GetResultString(BENCH_SEQ, m_MixScore[6], m_MixLatency[6], 1024, 1, 1));
+			clip.Replace(L"%RandomMix1%", GetResultString(BENCH_RND, m_MixScore[7], m_MixLatency[7], 4, 1, 1));
+			cstr.Format(L"Read %d%%/Write %d%%", 100 - m_MixRatio, m_MixRatio);
+			clip.Replace(L"%MixRatio%", cstr);
+		}
+#endif
+	}
+
 	else 
 	{
 		clip.Replace(L"%BenchRead1%", GetResultString(m_BenchType[0], m_ReadScore[0], m_ReadLatency[0], m_BenchSize[0], m_BenchQueues[0], m_BenchThreads[0]));

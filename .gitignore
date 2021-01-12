@@ -2,3 +2,7 @@
 Build/
 DiskMark.vcxproj.user
 DiskMark.aps
+Priscilla/ScrollBarFx.cpp
+Priscilla/ScrollBarFx.h
+Priscilla/SliderCtrlFx.cpp
+Priscilla/SliderCtrlFx.h
