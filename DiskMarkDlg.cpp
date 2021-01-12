@@ -2583,6 +2583,10 @@ CString CDiskMarkDlg::GetResultString(int type, double score, double latency, in
 	double iops = 0.0;
 
 	iops = score * 1000 * 1000 / ((double)size * 1024);
+	if (latency < 0.0)
+	{
+		latency = 0.0;
+	}
 
 	if (type == BENCH_RND)
 	{
