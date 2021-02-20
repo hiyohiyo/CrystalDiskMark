@@ -645,6 +645,17 @@ BOOL Init(void* dlg)
 		return FALSE;
 	}
 
+// Set End Of File to prevent fragmentation of test file
+	LARGE_INTEGER nFileSize;
+	nFileSize.QuadPart = 1024 * 1024 * DiskTestSize;
+
+	LARGE_INTEGER nStart;
+	nStart.QuadPart = 0;
+
+	SetFilePointerEx(hFile, nFileSize, NULL, FILE_BEGIN);
+	SetEndOfFile(hFile);
+	SetFilePointerEx(hFile, nStart, NULL, FILE_BEGIN);
+
 // COMPRESSION_FORMAT_NONE
 	USHORT lpInBuffer = COMPRESSION_FORMAT_NONE;
 	DWORD lpBytesReturned = 0;
