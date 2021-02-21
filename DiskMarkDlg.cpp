@@ -2517,7 +2517,30 @@ BOOL CDiskMarkDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 	// Select Theme
 	if (WM_THEME_ID <= wParam && wParam < WM_THEME_ID + (UINT)m_MenuArrayTheme.GetSize())
 	{
-		CMainDialogFx::OnCommand(wParam, lParam);
+		CMenu menu;
+		CMenu subMenu;
+		menu.Attach(GetMenu()->GetSafeHmenu());
+		subMenu.Attach(menu.GetSubMenu(MENU_THEME_INDEX)->GetSafeHmenu());
+
+		m_CurrentTheme = m_MenuArrayTheme.GetAt(wParam - WM_THEME_ID);
+		ChangeTheme(m_MenuArrayTheme.GetAt(wParam - WM_THEME_ID));
+		subMenu.CheckMenuRadioItem(WM_THEME_ID, WM_THEME_ID + (UINT)m_MenuArrayTheme.GetSize(),
+			(UINT)wParam, MF_BYCOMMAND);
+		subMenu.Detach();
+		menu.Detach();
+
+		if (m_Profile == PROFILE_DEMO && IsFileExist(m_ThemeDir + m_CurrentTheme + L"\\BackgroundDemo-300.png"))
+		{
+			m_BackgroundName = L"BackgroundDemo";
+		}
+		else
+		{
+			m_BackgroundName = L"Background";
+		}
+
+		UpdateThemeInfo();
+		UpdateDialogSize();
+
 		return TRUE;
 	}
 
@@ -3149,6 +3172,7 @@ void CDiskMarkDlg::ProfileDefault()
 	m_Profile = PROFILE_DEFAULT;
 	m_MixMode = FALSE;
 	WritePrivateProfileString(L"Setting", L"Profile", L"0", m_Ini);
+	m_BackgroundName = L"Background";
 }
 
 void CDiskMarkDlg::OnProfilePeak()
@@ -3171,6 +3195,7 @@ void CDiskMarkDlg::ProfilePeak()
 	m_Profile = PROFILE_PEAK;
 	m_MixMode = FALSE;
 	WritePrivateProfileString(L"Setting", L"Profile", L"1", m_Ini);
+	m_BackgroundName = L"Background";
 }
 
 void CDiskMarkDlg::OnProfileReal()
@@ -3193,6 +3218,7 @@ void CDiskMarkDlg::ProfileReal()
 	m_Profile = PROFILE_REAL;
 	m_MixMode = FALSE;
 	WritePrivateProfileString(L"Setting", L"Profile", L"2", m_Ini);
+	m_BackgroundName = L"Background";
 }
 
 void CDiskMarkDlg::OnProfileDemo()
@@ -3215,6 +3241,15 @@ void CDiskMarkDlg::ProfileDemo()
 	m_Profile = PROFILE_DEMO;
 	m_MixMode = FALSE;
 	WritePrivateProfileString(L"Setting", L"Profile", L"3", m_Ini);
+
+	if (IsFileExist(m_ThemeDir + m_CurrentTheme + L"\\BackgroundDemo-300.png"))
+	{
+		m_BackgroundName = L"BackgroundDemo";
+	}
+	else
+	{
+		m_BackgroundName = L"Background";
+	}
 }
 
 #ifdef MIX_MODE
@@ -3238,6 +3273,7 @@ void CDiskMarkDlg::ProfileDefaultMix()
 	m_Profile = PROFILE_DEFAULT_MIX;
 	m_MixMode = TRUE;
 	WritePrivateProfileString(L"Setting", L"Profile", L"4", m_Ini);
+	m_BackgroundName = L"Background";
 }
 
 void CDiskMarkDlg::OnProfilePeakMix()
@@ -3260,6 +3296,7 @@ void CDiskMarkDlg::ProfilePeakMix()
 	m_Profile = PROFILE_PEAK_MIX;
 	m_MixMode = TRUE;
 	WritePrivateProfileString(L"Setting", L"Profile", L"5", m_Ini);
+	m_BackgroundName = L"Background";
 }
 
 void CDiskMarkDlg::OnProfileRealMix()
@@ -3282,6 +3319,7 @@ void CDiskMarkDlg::ProfileRealMix()
 	m_Profile = PROFILE_REAL_MIX;
 	m_MixMode = TRUE;
 	WritePrivateProfileString(L"Setting", L"Profile", L"6", m_Ini);
+	m_BackgroundName = L"Background";
 }
 #endif
 
