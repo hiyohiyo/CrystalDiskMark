@@ -573,7 +573,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_TestWrite0.InitControl(404 + offsetX, 96, 384, 348, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawGlass, m_bHighContrast, FALSE);
 
 		m_Comment.InitControl(12 + offsetX, 452, 776, 40, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE);
-		m_Comment.SetMargin(0, 4, 0, 4, m_ZoomRatio);
+		m_Comment.SetMargin(0, 16, 0, 64, m_ZoomRatio);
 		m_Comment.Adjust();
 
 		m_DemoSetting.InitControl(140 + offsetX, 56, 528, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
@@ -637,7 +637,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_TestWrite3.InitControl(468 + offsetX, 360, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE);
 
 		m_Comment.InitControl(12 + offsetX, 452, 776, 40, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE);
-		m_Comment.SetMargin(0, 4, 0, 4, m_ZoomRatio);
+		m_Comment.SetMargin(0, 16, 0, 64, m_ZoomRatio);
 		m_Comment.Adjust();
 
 		m_ReadUnit.InitControl(140 + offsetX, 56, 320, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
@@ -714,15 +714,15 @@ void CDiskMarkDlg::UpdateDialogSize()
 	}
 	else
 	{
-		m_TestRead0.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-		m_TestRead1.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-		m_TestRead2.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-		m_TestRead3.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+		m_TestRead0.SetMargin(0, 0, 0, 16, m_ZoomRatio);
+		m_TestRead1.SetMargin(0, 0, 0, 16, m_ZoomRatio);
+		m_TestRead2.SetMargin(0, 0, 0, 16, m_ZoomRatio);
+		m_TestRead3.SetMargin(0, 0, 0, 16, m_ZoomRatio);
 
-		m_TestWrite0.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-		m_TestWrite1.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-		m_TestWrite2.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-		m_TestWrite3.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+		m_TestWrite0.SetMargin(0, 0, 0, 16, m_ZoomRatio);
+		m_TestWrite1.SetMargin(0, 0, 0, 16, m_ZoomRatio);
+		m_TestWrite2.SetMargin(0, 0, 0, 16, m_ZoomRatio);
+		m_TestWrite3.SetMargin(0, 0, 0, 16, m_ZoomRatio);
 	}
 
 	m_ComboCount.SetMargin(0, 4, 0, 0, m_ZoomRatio);
