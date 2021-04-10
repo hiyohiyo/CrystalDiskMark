@@ -63,6 +63,7 @@ public:
 	void UpdateDialogSize();
 	void ChangeButtonStatus(BOOL status);
 	void SetScoreToolTip(CStaticFx* cx, double score, double latency, int blockSize);
+	void ChangeTheme(CString themeName);
 
 	CString m_ValueTestUnit;
 	CString m_ValueTestCount;
@@ -89,6 +90,23 @@ public:
 	int m_TestData;
 	int m_Profile;
 	int m_Benchmark;
+
+	int m_MarginButtonTop;
+	int m_MarginButtonLeft;
+	int m_MarginButtonBottom;
+	int m_MarginButtonRight;
+	int m_MarginMeterTop;
+	int m_MarginMeterLeft;
+	int m_MarginMeterBottom;
+	int m_MarginMeterRight;
+	int m_MarginCommentTop;
+	int m_MarginCommentLeft;
+	int m_MarginCommentBottom;
+	int m_MarginCommentRight;
+	int m_MarginDemoTop;
+	int m_MarginDemoLeft;
+	int m_MarginDemoBottom;
+	int m_MarginDemoRight;
 
 	BOOL m_AdminMode;
 	BOOL m_MixMode;

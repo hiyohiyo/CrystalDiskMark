@@ -47,6 +47,23 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 	m_DefaultTheme = L"Shizuku";
 	m_RecommendTheme = L"Shizuku";
 	m_ThemeKeyName = L"ThemeShizuku";
+
+	m_MarginButtonTop = 8;
+	m_MarginButtonLeft = 0;
+	m_MarginButtonBottom = 8;
+	m_MarginButtonRight = 0;
+	m_MarginMeterTop = 0;
+	m_MarginMeterLeft = 0;
+	m_MarginMeterBottom = 0;
+	m_MarginMeterRight = 16;
+	m_MarginCommentTop = 0;
+	m_MarginCommentLeft = 16;
+	m_MarginCommentBottom = 0;
+	m_MarginCommentRight = 64;
+	m_MarginDemoTop = 24;
+	m_MarginDemoLeft = 24;
+	m_MarginDemoBottom = 24;
+	m_MarginDemoRight = 24;
 #elif KUREI_KEI_SUPPORT
 	m_DefaultTheme = L"KureiKei";
 	m_RecommendTheme = L"KureiKeiRecoding";
@@ -54,12 +71,74 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 #else
 	m_DefaultTheme = L"Default";
 	m_ThemeKeyName = L"Theme";
+
+	m_MarginButtonTop = 4;
+	m_MarginButtonLeft = 0;
+	m_MarginButtonBottom = 4;
+	m_MarginButtonRight = 0;
+	m_MarginMeterTop = 0;
+	m_MarginMeterLeft = 0;
+	m_MarginMeterBottom = 0;
+	m_MarginMeterRight = 4;
+	m_MarginCommentTop = 0;
+	m_MarginCommentLeft = 4;
+	m_MarginCommentBottom = 0;
+	m_MarginCommentRight = 4;
+	m_MarginDemoTop = 8;
+	m_MarginDemoLeft = 8;
+	m_MarginDemoBottom = 8;
+	m_MarginDemoRight = 8;
 #endif
 
 	m_BackgroundName = L"Background";
 
 	m_AdminMode = IsUserAnAdmin();
 }
+
+
+void CDiskMarkDlg::ChangeTheme(CString themeName)
+{
+	CMainDialogFx::ChangeTheme(themeName);
+
+	CString theme = m_ThemeDir + m_CurrentTheme + L"\\theme.ini";
+
+#ifdef SUISHO_SHIZUKU_SUPPORT
+	m_MarginButtonTop = GetPrivateProfileInt(L"Margin", L"ButtonTop", 8, theme);
+	m_MarginButtonLeft = GetPrivateProfileInt(L"Margin", L"ButtonLeft", 0, theme);
+	m_MarginButtonBottom = GetPrivateProfileInt(L"Margin", L"ButtonBottom", 8, theme);
+	m_MarginButtonRight = GetPrivateProfileInt(L"Margin", L"ButtonRight", 0, theme);
+	m_MarginMeterTop = GetPrivateProfileInt(L"Margin", L"MeterTop", 0, theme);
+	m_MarginMeterLeft = GetPrivateProfileInt(L"Margin", L"MeterLeft", 0, theme);
+	m_MarginMeterBottom = GetPrivateProfileInt(L"Margin", L"MeterBottom", 0, theme);
+	m_MarginMeterRight = GetPrivateProfileInt(L"Margin", L"MeterRight", 4, theme);
+	m_MarginCommentTop = GetPrivateProfileInt(L"Margin", L"CommentTop", 0, theme);
+	m_MarginCommentLeft = GetPrivateProfileInt(L"Margin", L"CommentLeft", 4, theme);
+	m_MarginCommentBottom = GetPrivateProfileInt(L"Margin", L"CommentBottom", 0, theme);
+	m_MarginCommentRight = GetPrivateProfileInt(L"Margin", L"CommentRight", 4, theme);
+	m_MarginDemoTop = GetPrivateProfileInt(L"Margin", L"DemoTop", 16, theme);
+	m_MarginDemoLeft = GetPrivateProfileInt(L"Margin", L"DemoLeft", 16, theme);
+	m_MarginDemoBottom = GetPrivateProfileInt(L"Margin", L"DemoBottom", 16, theme);
+	m_MarginDemoRight = GetPrivateProfileInt(L"Margin", L"DemoRight", 16, theme);
+#else
+	m_MarginButtonTop = GetPrivateProfileInt(L"Margin", L"ButtonTop", 4, theme);
+	m_MarginButtonLeft = GetPrivateProfileInt(L"Margin", L"ButtonLeft", 0, theme);
+	m_MarginButtonBottom = GetPrivateProfileInt(L"Margin", L"ButtonBottom", 4, theme);
+	m_MarginButtonRight = GetPrivateProfileInt(L"Margin", L"ButtonRight", 0, theme);
+	m_MarginMeterTop = GetPrivateProfileInt(L"Margin", L"MeterTop", 0, theme);
+	m_MarginMeterLeft = GetPrivateProfileInt(L"Margin", L"MeterLeft", 0, theme);
+	m_MarginMeterBottom = GetPrivateProfileInt(L"Margin", L"MeterBottom", 0, theme);
+	m_MarginMeterRight = GetPrivateProfileInt(L"Margin", L"MeterRight", 16, theme);
+	m_MarginCommentTop = GetPrivateProfileInt(L"Margin", L"CommentTop", 0, theme);
+	m_MarginCommentLeft = GetPrivateProfileInt(L"Margin", L"CommentLeft", 16, theme);
+	m_MarginCommentBottom = GetPrivateProfileInt(L"Margin", L"CommentBottom", 0, theme);
+	m_MarginCommentRight = GetPrivateProfileInt(L"Margin", L"CommentRight", 64, theme);
+	m_MarginDemoTop = GetPrivateProfileInt(L"Margin", L"DemoTop", 24, theme);
+	m_MarginDemoLeft = GetPrivateProfileInt(L"Margin", L"DemoLeft", 24, theme);
+	m_MarginDemoBottom = GetPrivateProfileInt(L"Margin", L"DemoBottom", 24, theme);
+	m_MarginDemoRight = GetPrivateProfileInt(L"Margin", L"DemoRight", 24, theme);
+#endif
+}
+
 
 CDiskMarkDlg::~CDiskMarkDlg()
 {
@@ -559,21 +638,21 @@ void CDiskMarkDlg::UpdateDialogSize()
 
 	if (m_Profile == PROFILE_DEMO)
 	{
-		m_TestRead0.SetDrawFrameEx(TRUE, m_Frame);
-		m_TestWrite0.SetDrawFrameEx(TRUE, m_Frame);
-
 #ifdef SUISHO_SHIZUKU_SUPPORT
 		m_ButtonAll.InitControl(12 + offsetX, 8, 120, 80, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE);
 		m_ButtonAll.SetHandCursor(TRUE);
-
+/*
 		m_TestRead0.SetGlassColor(m_Glass, m_GlassAlpha);
 		m_TestWrite0.SetGlassColor(m_Glass, m_GlassAlpha);
 
 		m_TestRead0.InitControl(12 + offsetX, 96, 384, 348, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawGlass, m_bHighContrast, FALSE);
 		m_TestWrite0.InitControl(404 + offsetX, 96, 384, 348, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawGlass, m_bHighContrast, FALSE);
+*/
+		m_TestRead0.InitControl(12 + offsetX, 96, 384, 348, m_ZoomRatio, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE);
+		m_TestWrite0.InitControl(404 + offsetX, 96, 384, 348, m_ZoomRatio, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE);
 
 		m_Comment.InitControl(12 + offsetX, 452, 776, 40, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE);
-		m_Comment.SetMargin(0, 16, 0, 64, m_ZoomRatio);
+		m_Comment.SetMargin(m_MarginCommentTop, m_MarginCommentLeft, m_MarginCommentBottom, m_MarginCommentRight, m_ZoomRatio);
 		m_Comment.Adjust();
 
 		m_DemoSetting.InitControl(140 + offsetX, 56, 528, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
@@ -585,6 +664,9 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_ComboDrive.InitControl(348 + offsetX, 8, 320, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		m_ComboUnit.InitControl(672 + offsetX, 8, 116, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 #else
+		m_TestRead0.SetDrawFrameEx(TRUE, m_Frame);
+		m_TestWrite0.SetDrawFrameEx(TRUE, m_Frame);
+
 		m_ButtonAll.InitControl(8 + offsetX, 8, 72, 48, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE);
 		m_ButtonAll.SetHandCursor(TRUE);
 
@@ -595,7 +677,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_TestWrite0.InitControl(244 + offsetX, 64, 228, 196, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawGlass, m_bHighContrast, FALSE);
 
 		m_Comment.InitControl(8 + offsetX, 268, 464, 24, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE);
-		m_Comment.SetMargin(0, 4, 0, 4, m_ZoomRatio);
+		m_Comment.SetMargin(m_MarginCommentTop, m_MarginCommentLeft, m_MarginCommentBottom, m_MarginCommentRight, m_ZoomRatio);
 		m_Comment.Adjust();
 
 		m_DemoSetting.InitControl(84 + offsetX, 36, 320, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
@@ -637,7 +719,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_TestWrite3.InitControl(468 + offsetX, 360, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE);
 
 		m_Comment.InitControl(12 + offsetX, 452, 776, 40, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE);
-		m_Comment.SetMargin(0, 16, 0, 64, m_ZoomRatio);
+		m_Comment.SetMargin(m_MarginCommentTop, m_MarginCommentLeft, m_MarginCommentBottom, m_MarginCommentRight, m_ZoomRatio);
 		m_Comment.Adjust();
 
 		m_ReadUnit.InitControl(140 + offsetX, 56, 320, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
@@ -686,7 +768,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 		{
 			m_Comment.InitControl(8 + offsetX, 268, 464, 24, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE);
 		}
-		m_Comment.SetMargin(0, 4, 0, 4, m_ZoomRatio);
+		m_Comment.SetMargin(m_MarginCommentTop, m_MarginCommentLeft, m_MarginCommentBottom, m_MarginCommentRight, m_ZoomRatio);
 		m_Comment.Adjust();
 
 		m_ReadUnit.InitControl(84 + offsetX, 36, 192, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
@@ -709,20 +791,20 @@ void CDiskMarkDlg::UpdateDialogSize()
 
 	if(m_Profile == PROFILE_DEMO)
 	{
-		m_TestRead0.SetMargin(4, 4, 4, 4, m_ZoomRatio);
-		m_TestWrite0.SetMargin(4, 4, 4, 4, m_ZoomRatio);
+		m_TestRead0.SetMargin(m_MarginDemoTop, m_MarginDemoLeft, m_MarginDemoBottom, m_MarginDemoRight, m_ZoomRatio);
+		m_TestWrite0.SetMargin(m_MarginDemoTop, m_MarginDemoLeft, m_MarginDemoBottom, m_MarginDemoRight, m_ZoomRatio);
 	}
 	else
 	{
-		m_TestRead0.SetMargin(0, 0, 0, 16, m_ZoomRatio);
-		m_TestRead1.SetMargin(0, 0, 0, 16, m_ZoomRatio);
-		m_TestRead2.SetMargin(0, 0, 0, 16, m_ZoomRatio);
-		m_TestRead3.SetMargin(0, 0, 0, 16, m_ZoomRatio);
+		m_TestRead0.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
+		m_TestRead1.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
+		m_TestRead2.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
+		m_TestRead3.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
 
-		m_TestWrite0.SetMargin(0, 0, 0, 16, m_ZoomRatio);
-		m_TestWrite1.SetMargin(0, 0, 0, 16, m_ZoomRatio);
-		m_TestWrite2.SetMargin(0, 0, 0, 16, m_ZoomRatio);
-		m_TestWrite3.SetMargin(0, 0, 0, 16, m_ZoomRatio);
+		m_TestWrite0.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
+		m_TestWrite1.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
+		m_TestWrite2.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
+		m_TestWrite3.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
 	}
 
 	m_ComboCount.SetMargin(0, 4, 0, 0, m_ZoomRatio);
@@ -738,10 +820,10 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ComboMix.InitControl(480 + offsetX, 8, 192, 300, m_ZoomRatio,  &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 	m_MixUnit.InitControl(480 + offsetX, 36, 192, 24, m_ZoomRatio,   &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
 
-	m_TestMix0.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-	m_TestMix1.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-	m_TestMix2.SetMargin(0, 0, 0, 4, m_ZoomRatio);
-	m_TestMix3.SetMargin(0, 0, 0, 4, m_ZoomRatio);
+	m_TestMix0.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
+	m_TestMix1.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
+	m_TestMix2.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
+	m_TestMix3.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
 	m_ComboMix.SetMargin(0, 4, 0, 0, m_ZoomRatio);
 
 	if (m_MixMode)
@@ -865,17 +947,17 @@ void CDiskMarkDlg::SetControlFont()
 	}
 	else
 	{
-		m_TestRead0.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
-		m_TestWrite0.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
+		m_TestRead0.SetFontEx(m_FontFace, 52, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
+		m_TestWrite0.SetFontEx(m_FontFace, 52, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
 	}
 
-	m_TestRead1.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
-	m_TestRead2.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
-	m_TestRead3.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
+	m_TestRead1.SetFontEx(m_FontFace, 52, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
+	m_TestRead2.SetFontEx(m_FontFace, 52, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
+	m_TestRead3.SetFontEx(m_FontFace, 52, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
 
-	m_TestWrite1.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
-	m_TestWrite2.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
-	m_TestWrite3.SetFontEx(m_FontFace, 56, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
+	m_TestWrite1.SetFontEx(m_FontFace, 52, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
+	m_TestWrite2.SetFontEx(m_FontFace, 52, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
+	m_TestWrite3.SetFontEx(m_FontFace, 52, 28, m_ZoomRatio, m_FontRatio, m_MeterText, FW_BOLD, m_FontRender);
 
 	m_Comment.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_EditText, FW_BOLD, m_FontRender);
 
@@ -888,10 +970,10 @@ void CDiskMarkDlg::SetControlFont()
 	m_ComboDrive.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 	m_ComboUnit.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 
-	m_ButtonTest0.SetMargin(8, 0, 8, 0, m_ZoomRatio);
-	m_ButtonTest1.SetMargin(8, 0, 8, 0, m_ZoomRatio);
-	m_ButtonTest2.SetMargin(8, 0, 8, 0, m_ZoomRatio);
-	m_ButtonTest3.SetMargin(8, 0, 8, 0, m_ZoomRatio);
+	m_ButtonTest0.SetMargin(m_MarginButtonTop, m_MarginButtonLeft, m_MarginButtonBottom, m_MarginButtonRight, m_ZoomRatio);
+	m_ButtonTest1.SetMargin(m_MarginButtonTop, m_MarginButtonLeft, m_MarginButtonBottom, m_MarginButtonRight, m_ZoomRatio);
+	m_ButtonTest2.SetMargin(m_MarginButtonTop, m_MarginButtonLeft, m_MarginButtonBottom, m_MarginButtonRight, m_ZoomRatio);
+	m_ButtonTest3.SetMargin(m_MarginButtonTop, m_MarginButtonLeft, m_MarginButtonBottom, m_MarginButtonRight, m_ZoomRatio);
 
 	m_ComboCount.SetItemHeightAll(40, m_ZoomRatio, m_FontRatio);
 	m_ComboSize.SetItemHeightAll(40, m_ZoomRatio, m_FontRatio);
@@ -934,10 +1016,10 @@ void CDiskMarkDlg::SetControlFont()
 	m_ComboDrive.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 	m_ComboUnit.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ComboText, m_ComboTextSelected, FW_NORMAL, m_FontRender);
 
-	m_ButtonTest0.SetMargin(4, 0, 4, 0, m_ZoomRatio);
-	m_ButtonTest1.SetMargin(4, 0, 4, 0, m_ZoomRatio);
-	m_ButtonTest2.SetMargin(4, 0, 4, 0, m_ZoomRatio);
-	m_ButtonTest3.SetMargin(4, 0, 4, 0, m_ZoomRatio);
+	m_ButtonTest0.SetMargin(m_MarginButtonTop, m_MarginButtonLeft, m_MarginButtonBottom, m_MarginButtonRight, m_ZoomRatio);
+	m_ButtonTest1.SetMargin(m_MarginButtonTop, m_MarginButtonLeft, m_MarginButtonBottom, m_MarginButtonRight, m_ZoomRatio);
+	m_ButtonTest2.SetMargin(m_MarginButtonTop, m_MarginButtonLeft, m_MarginButtonBottom, m_MarginButtonRight, m_ZoomRatio);
+	m_ButtonTest3.SetMargin(m_MarginButtonTop, m_MarginButtonLeft, m_MarginButtonBottom, m_MarginButtonRight, m_ZoomRatio);
 
 	m_ComboCount.SetItemHeightAll(24, m_ZoomRatio, m_FontRatio);
 	m_ComboSize.SetItemHeightAll(24, m_ZoomRatio, m_FontRatio);

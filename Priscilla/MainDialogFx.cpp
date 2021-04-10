@@ -373,9 +373,9 @@ BOOL CMainDialogFx::OnInitDialog()
 	return CDialogFx::OnInitDialog();
 }
 
-void CMainDialogFx::ChangeTheme(CString ThemeName)
+void CMainDialogFx::ChangeTheme(CString themeName)
 {
-	WritePrivateProfileString(L"Setting", m_ThemeKeyName, ThemeName, m_Ini);
+	WritePrivateProfileString(L"Setting", m_ThemeKeyName, themeName, m_Ini);
 }
 
 BOOL CMainDialogFx::OnCommand(WPARAM wParam, LPARAM lParam) 
