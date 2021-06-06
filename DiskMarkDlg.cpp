@@ -43,9 +43,30 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 	m_AboutDlg = NULL;
 	m_SettingsDlg = NULL;
 
-#ifdef SUISHO_SHIZUKU_SUPPORT
+#ifdef TSUKUMO_TOKKA_SUPPORT
+	m_DefaultTheme = L"Tokka01_Cute";
+	m_RecommendTheme = L"Tokka01_Cute";
+	m_ThemeKeyName = L"ThemeTokka";
+
+	m_MarginButtonTop = 16;
+	m_MarginButtonLeft = 0;
+	m_MarginButtonBottom = 16;
+	m_MarginButtonRight = 0;
+	m_MarginMeterTop = 0;
+	m_MarginMeterLeft = 0;
+	m_MarginMeterBottom = 0;
+	m_MarginMeterRight = 16;
+	m_MarginCommentTop = 0;
+	m_MarginCommentLeft = 16;
+	m_MarginCommentBottom = 0;
+	m_MarginCommentRight = 16;
+	m_MarginDemoTop = 24;
+	m_MarginDemoLeft = 24;
+	m_MarginDemoBottom = 24;
+	m_MarginDemoRight = 24;
+#elif SUISHO_SHIZUKU_SUPPORT
 	m_DefaultTheme = L"Shizuku";
-	m_RecommendTheme = L"Shizuku";
+	m_RecommendTheme = L"ShizukuIdol";
 	m_ThemeKeyName = L"ThemeShizuku";
 
 	m_MarginButtonTop = 8;
@@ -64,10 +85,6 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 	m_MarginDemoLeft = 24;
 	m_MarginDemoBottom = 24;
 	m_MarginDemoRight = 24;
-#elif KUREI_KEI_SUPPORT
-	m_DefaultTheme = L"KureiKei";
-	m_RecommendTheme = L"KureiKeiRecoding";
-	m_ThemeKeyName = L"ThemeKureiKei";
 #else
 	m_DefaultTheme = L"Default";
 	m_ThemeKeyName = L"Theme";
@@ -91,38 +108,40 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 #endif
 
 	m_BackgroundName = L"Background";
+	m_RandomThemeLabel = L"Random";
+	m_RandomThemeName = L"";
 
 	m_AdminMode = IsUserAnAdmin();
 }
 
 
-void CDiskMarkDlg::ChangeTheme(CString themeName)
+void CDiskMarkDlg::UpdateThemeInfo()
 {
-	CMainDialogFx::ChangeTheme(themeName);
+	CMainDialogFx::UpdateThemeInfo();
 
 	CString theme = m_ThemeDir + m_CurrentTheme + L"\\theme.ini";
 
-#ifdef SUISHO_SHIZUKU_SUPPORT
-	m_MarginButtonTop = GetPrivateProfileInt(L"Margin", L"ButtonTop", 8, theme);
+#ifdef TSUKUMO_TOKKA_SUPPORT
+	m_MarginButtonTop = GetPrivateProfileInt(L"Margin", L"ButtonTop", 16, theme);
 	m_MarginButtonLeft = GetPrivateProfileInt(L"Margin", L"ButtonLeft", 0, theme);
-	m_MarginButtonBottom = GetPrivateProfileInt(L"Margin", L"ButtonBottom", 8, theme);
+	m_MarginButtonBottom = GetPrivateProfileInt(L"Margin", L"ButtonBottom", 16, theme);
 	m_MarginButtonRight = GetPrivateProfileInt(L"Margin", L"ButtonRight", 0, theme);
 	m_MarginMeterTop = GetPrivateProfileInt(L"Margin", L"MeterTop", 0, theme);
 	m_MarginMeterLeft = GetPrivateProfileInt(L"Margin", L"MeterLeft", 0, theme);
 	m_MarginMeterBottom = GetPrivateProfileInt(L"Margin", L"MeterBottom", 0, theme);
-	m_MarginMeterRight = GetPrivateProfileInt(L"Margin", L"MeterRight", 4, theme);
+	m_MarginMeterRight = GetPrivateProfileInt(L"Margin", L"MeterRight", 16, theme);
 	m_MarginCommentTop = GetPrivateProfileInt(L"Margin", L"CommentTop", 0, theme);
 	m_MarginCommentLeft = GetPrivateProfileInt(L"Margin", L"CommentLeft", 4, theme);
 	m_MarginCommentBottom = GetPrivateProfileInt(L"Margin", L"CommentBottom", 0, theme);
 	m_MarginCommentRight = GetPrivateProfileInt(L"Margin", L"CommentRight", 4, theme);
-	m_MarginDemoTop = GetPrivateProfileInt(L"Margin", L"DemoTop", 16, theme);
-	m_MarginDemoLeft = GetPrivateProfileInt(L"Margin", L"DemoLeft", 16, theme);
-	m_MarginDemoBottom = GetPrivateProfileInt(L"Margin", L"DemoBottom", 16, theme);
-	m_MarginDemoRight = GetPrivateProfileInt(L"Margin", L"DemoRight", 16, theme);
-#else
-	m_MarginButtonTop = GetPrivateProfileInt(L"Margin", L"ButtonTop", 4, theme);
+	m_MarginDemoTop = GetPrivateProfileInt(L"Margin", L"DemoTop", 24, theme);
+	m_MarginDemoLeft = GetPrivateProfileInt(L"Margin", L"DemoLeft", 24, theme);
+	m_MarginDemoBottom = GetPrivateProfileInt(L"Margin", L"DemoBottom", 24, theme);
+	m_MarginDemoRight = GetPrivateProfileInt(L"Margin", L"DemoRight", 24, theme);
+#elif SUISHO_SHIZUKU_SUPPORT
+	m_MarginButtonTop = GetPrivateProfileInt(L"Margin", L"ButtonTop", 8, theme);
 	m_MarginButtonLeft = GetPrivateProfileInt(L"Margin", L"ButtonLeft", 0, theme);
-	m_MarginButtonBottom = GetPrivateProfileInt(L"Margin", L"ButtonBottom", 4, theme);
+	m_MarginButtonBottom = GetPrivateProfileInt(L"Margin", L"ButtonBottom", 8, theme);
 	m_MarginButtonRight = GetPrivateProfileInt(L"Margin", L"ButtonRight", 0, theme);
 	m_MarginMeterTop = GetPrivateProfileInt(L"Margin", L"MeterTop", 0, theme);
 	m_MarginMeterLeft = GetPrivateProfileInt(L"Margin", L"MeterLeft", 0, theme);
@@ -131,11 +150,28 @@ void CDiskMarkDlg::ChangeTheme(CString themeName)
 	m_MarginCommentTop = GetPrivateProfileInt(L"Margin", L"CommentTop", 0, theme);
 	m_MarginCommentLeft = GetPrivateProfileInt(L"Margin", L"CommentLeft", 16, theme);
 	m_MarginCommentBottom = GetPrivateProfileInt(L"Margin", L"CommentBottom", 0, theme);
-	m_MarginCommentRight = GetPrivateProfileInt(L"Margin", L"CommentRight", 64, theme);
+	m_MarginCommentRight = GetPrivateProfileInt(L"Margin", L"CommentRight", 16, theme);
 	m_MarginDemoTop = GetPrivateProfileInt(L"Margin", L"DemoTop", 24, theme);
 	m_MarginDemoLeft = GetPrivateProfileInt(L"Margin", L"DemoLeft", 24, theme);
 	m_MarginDemoBottom = GetPrivateProfileInt(L"Margin", L"DemoBottom", 24, theme);
 	m_MarginDemoRight = GetPrivateProfileInt(L"Margin", L"DemoRight", 24, theme);
+#else
+	m_MarginButtonTop = GetPrivateProfileInt(L"Margin", L"ButtonTop", 4, theme);
+	m_MarginButtonLeft = GetPrivateProfileInt(L"Margin", L"ButtonLeft", 0, theme);
+	m_MarginButtonBottom = GetPrivateProfileInt(L"Margin", L"ButtonBottom", 4, theme);
+	m_MarginButtonRight = GetPrivateProfileInt(L"Margin", L"ButtonRight", 0, theme);
+	m_MarginMeterTop = GetPrivateProfileInt(L"Margin", L"MeterTop", 0, theme);
+	m_MarginMeterLeft = GetPrivateProfileInt(L"Margin", L"MeterLeft", 0, theme);
+	m_MarginMeterBottom = GetPrivateProfileInt(L"Margin", L"MeterBottom", 0, theme);
+	m_MarginMeterRight = GetPrivateProfileInt(L"Margin", L"MeterRight", 4, theme);
+	m_MarginCommentTop = GetPrivateProfileInt(L"Margin", L"CommentTop", 0, theme);
+	m_MarginCommentLeft = GetPrivateProfileInt(L"Margin", L"CommentLeft", 8, theme);
+	m_MarginCommentBottom = GetPrivateProfileInt(L"Margin", L"CommentBottom", 0, theme);
+	m_MarginCommentRight = GetPrivateProfileInt(L"Margin", L"CommentRight", 8, theme);
+	m_MarginDemoTop = GetPrivateProfileInt(L"Margin", L"DemoTop", 8, theme);
+	m_MarginDemoLeft = GetPrivateProfileInt(L"Margin", L"DemoLeft", 8, theme);
+	m_MarginDemoBottom = GetPrivateProfileInt(L"Margin", L"DemoBottom", 8, theme);
+	m_MarginDemoRight = GetPrivateProfileInt(L"Margin", L"DemoRight", 8, theme);
 #endif
 }
 
@@ -274,12 +310,14 @@ LRESULT CDiskMarkDlg::OnQueryEndSession(WPARAM wParam, LPARAM lParam)
 
 BOOL CDiskMarkDlg::CheckThemeEdition(CString name)
 {
-#ifdef SUISHO_SHIZUKU_SUPPORT
+#ifdef TSUKUMO_TOKKA_SUPPORT
+	if (name.Find(L"Tokka") == 0) { return TRUE; }
+#elif SUISHO_SHIZUKU_SUPPORT
 	if(name.Find(L"Shizuku") == 0) { return TRUE; }
 #elif KUREI_KEI_SUPPORT
 	if(name.Find(L"KureiKei") == 0) { return TRUE; }
 #else
-	if(name.Find(L"Shizuku") != 0 && name.Find(L"KureiKei") != 0 && name.Find(L".") != 0) { return TRUE; }
+	if(name.Find(L"Shizuku") != 0 && name.Find(L"Tokka") != 0 && name.Find(L"KureiKei") != 0 && name.Find(L".") != 0) { return TRUE; }
 #endif
 
 	return FALSE;
@@ -454,7 +492,7 @@ BOOL CDiskMarkDlg::OnInitDialog()
 
 	InitThemeLang();
 	InitMenu();
-	ChangeTheme(m_CurrentTheme);
+	UpdateThemeInfo();
 	ChangeLang(m_CurrentLang);
 
 	UpdateQueuesThreads();
@@ -659,7 +697,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_ReadUnit.InitControl(12 + offsetX, 96, 120, 32, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
 		m_WriteUnit.InitControl(672 + offsetX, 96, 116, 32, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE);
 
-		m_ComboCount.InitControl(140 + offsetX, 8, 60, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+		m_ComboCount.InitControl(140 + offsetX, 8, 60, 500, m_ZoomRatio, &m_BkDC, IP(L"Count"), 1, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		m_ComboSize.InitControl(204 + offsetX, 8, 140, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		m_ComboDrive.InitControl(348 + offsetX, 8, 320, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		m_ComboUnit.InitControl(672 + offsetX, 8, 116, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
@@ -2605,7 +2643,23 @@ BOOL CDiskMarkDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 		subMenu.Attach(menu.GetSubMenu(MENU_THEME_INDEX)->GetSafeHmenu());
 
 		m_CurrentTheme = m_MenuArrayTheme.GetAt(wParam - WM_THEME_ID);
-		ChangeTheme(m_MenuArrayTheme.GetAt(wParam - WM_THEME_ID));
+		if (m_CurrentTheme.Compare(m_RandomThemeLabel) == 0)
+		{
+			m_CurrentTheme = GetRandomTheme();
+			m_RandomThemeLabel = L"Random";
+			m_RandomThemeName = L" (" + m_CurrentTheme + L")";
+
+			// ChangeTheme save the theme configuration to profile; so if we are on
+			// Random, then save Random to profile.
+			ChangeTheme(m_RandomThemeLabel);
+		}
+		else
+		{
+			ChangeTheme(m_MenuArrayTheme.GetAt(wParam - WM_THEME_ID));
+			m_RandomThemeName = L"";
+		}
+
+		subMenu.ModifyMenu(WM_THEME_ID, MF_STRING, WM_THEME_ID, m_RandomThemeLabel + m_RandomThemeName);
 		subMenu.CheckMenuRadioItem(WM_THEME_ID, WM_THEME_ID + (UINT)m_MenuArrayTheme.GetSize(),
 			(UINT)wParam, MF_BYCOMMAND);
 		subMenu.Detach();
@@ -3164,11 +3218,11 @@ void CDiskMarkDlg::OnCrystalDewWorld()
 {
 	if (GetUserDefaultLCID() == 0x0411) // Japanese
 	{
-		OpenUrl(URL_CRYSTAL_DEW_WORLD_JA);
+		OpenUrl(URL_MAIN_JA);
 	}
 	else // Other Language
 	{
-		OpenUrl(URL_CRYSTAL_DEW_WORLD_EN);
+		OpenUrl(URL_MAIN_EN);
 	}
 }
 
@@ -3236,6 +3290,7 @@ void CDiskMarkDlg::OnModeAll0x00()
 
 void CDiskMarkDlg::OnProfileDefault()
 {
+	ShowWindow(SW_HIDE);
 	ProfileDefault();
 	UpdateUnitLabel();
 	InitScore();
@@ -3259,6 +3314,7 @@ void CDiskMarkDlg::ProfileDefault()
 
 void CDiskMarkDlg::OnProfilePeak()
 {
+	ShowWindow(SW_HIDE);
 	ProfilePeak();
 	UpdateUnitLabel();
 	InitScore();
@@ -3282,6 +3338,7 @@ void CDiskMarkDlg::ProfilePeak()
 
 void CDiskMarkDlg::OnProfileReal()
 {
+	ShowWindow(SW_HIDE);
 	ProfileReal();
 	UpdateUnitLabel();
 	InitScore();
@@ -3305,6 +3362,7 @@ void CDiskMarkDlg::ProfileReal()
 
 void CDiskMarkDlg::OnProfileDemo()
 {
+	ShowWindow(SW_HIDE);
 	ProfileDemo();
 	UpdateUnitLabel();
 	InitScore();

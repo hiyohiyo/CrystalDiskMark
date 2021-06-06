@@ -52,9 +52,10 @@
 #define IDC_PROJECT_SITE_5              1105
 #define IDC_VERSION                     1106
 #define IDC_RELEASE                     1107
-#define IDC_COPYRIGHT                   1108
-#define IDC_LICENSE                     1109
-#define IDC_EDITION                     1110
+#define IDC_COPYRIGHT1                  1108
+#define IDC_COPYRIGHT2                  1109
+#define IDC_LICENSE                     1110
+#define IDC_EDITION                     1111
 
 #define IDC_FONT_FACE_COMBO		        1201
 #define IDC_FONT_SCALE_COMBO			1202

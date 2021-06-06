@@ -45,30 +45,6 @@
 #ifdef UWP
 #ifdef SUISHO_SHIZUKU_SUPPORT
 #ifdef _M_ARM
-#define PRODUCT_EDITION			L"Shizuku Edition ARM32 (UWP)"
-#elif _M_ARM64
-#define PRODUCT_EDITION			L"Shizuku Edition ARM64 (UWP)"
-#elif _M_X64
-#define PRODUCT_EDITION			L"Shizuku Edition x64 (UWP)"
-#else
-#define PRODUCT_EDITION			L"Shizuku Edition x86 (UWP)"
-#endif
-#else
-#ifdef _M_ARM
-#define PRODUCT_EDITION			L"ARM32 (UWP)"
-#elif _M_ARM64
-#define PRODUCT_EDITION			L"ARM64 (UWP)"
-#elif _M_X64
-#define PRODUCT_EDITION			L"x64 (UWP)"
-#else
-#define PRODUCT_EDITION			L"x86 (UWP)"
-#endif
-#endif
-
-#else
-
-#ifdef SUISHO_SHIZUKU_SUPPORT
-#ifdef _M_ARM
 #define PRODUCT_EDITION			L"Shizuku Edition ARM32"
 #elif _M_ARM64
 #define PRODUCT_EDITION			L"Shizuku Edition ARM64"
@@ -88,6 +64,42 @@
 #define PRODUCT_EDITION			L"x86"
 #endif
 #endif
+
+#else
+
+#ifdef TSUKUMO_TOKKA_SUPPORT
+#ifdef _M_ARM
+#define PRODUCT_EDITION			L"Tsukumo Tokka Edition ARM32"
+#elif _M_ARM64
+#define PRODUCT_EDITION			L"Tsukumo Tokka Edition ARM64"
+#elif _M_X64
+#define PRODUCT_EDITION			L"Tsukumo Tokka Edition x64"
+#else
+#define PRODUCT_EDITION			L"Tsukumo Tokka Edition x86"
+#endif
+
+#elif SUISHO_SHIZUKU_SUPPORT
+#ifdef _M_ARM
+#define PRODUCT_EDITION			L"Shizuku Edition ARM32"
+#elif _M_ARM64
+#define PRODUCT_EDITION			L"Shizuku Edition ARM64"
+#elif _M_X64
+#define PRODUCT_EDITION			L"Shizuku Edition x64"
+#else
+#define PRODUCT_EDITION			L"Shizuku Edition x86"
+#endif
+
+#else
+#ifdef _M_ARM
+#define PRODUCT_EDITION			L"ARM32"
+#elif _M_ARM64
+#define PRODUCT_EDITION			L"ARM64"
+#elif _M_X64
+#define PRODUCT_EDITION			L"x64"
+#else
+#define PRODUCT_EDITION			L"x86"
+#endif
+#endif
 #endif
 
 // Version Information
@@ -95,13 +107,29 @@
 #define PRODUCT_VERSION				L"8.0.2"
 #define PRODUCT_SHORT_NAME		    L"CDM8"
 
-#define PRODUCT_RELEASE				L"2021/05/XX"
+#define PRODUCT_RELEASE				L"2021/06/01"
 #define PRODUCT_COPY_YEAR			L"2007-2021"
-#define PRODUCT_COPYRIGHT			L"© 2007-2021 hiyohiyo"
 #define PRODUCT_LICENSE				L"The MIT License"
 
-#define URL_CRYSTAL_DEW_WORLD_JA	L"https://crystalmark.info/ja/"
-#define URL_CRYSTAL_DEW_WORLD_EN 	L"https://crystalmark.info/en/"
+#ifdef TSUKUMO_TOKKA_SUPPORT
+#define PRODUCT_COPYRIGHT_1         L"© 2007-2021 hiyohiyo"
+#define PRODUCT_COPYRIGHT_2         L"© 2021 AURYN/TSUKUMO"
+
+#elif SUISHO_SHIZUKU_SUPPORT
+#define PRODUCT_COPYRIGHT_1         L"© 2007-2021 hiyohiyo"
+#define PRODUCT_COPYRIGHT_2         L"© 2012-2021 kirino kasumu"
+#else
+#define PRODUCT_COPYRIGHT_1			L"© 2007-2021 hiyohiyo"
+#define PRODUCT_COPYRIGHT_2			L""
+#endif
+
+#ifdef TSUKUMO_TOKKA_SUPPORT
+#define URL_MAIN_JA					L"https://shop.tsukumo.co.jp/features/99tokka"
+#define URL_MAIN_EN					L"https://shop.tsukumo.co.jp/features/99tokka"
+#else
+#define URL_MAIN_JA					L"https://crystalmark.info/ja/"
+#define URL_MAIN_EN 				L"https://crystalmark.info/en/"
+#endif
 
 #define	URL_VERSION_JA				L"https://crystalmark.info/ja/software/crystaldiskmark/crystaldiskmark-history/"
 #define	URL_VERSION_EN				L"https://crystalmark.info/en/software/crystaldiskmark/crystaldiskmark-history/"
@@ -118,7 +146,7 @@
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
 #define	URL_PROJECT_SITE_1		    L"https://twitter.com/kirinokasumu"
-#define URL_PROJECT_SITE_2		    L"https://linux-ha.sourceforge.jp/wp/"
+#define URL_PROJECT_SITE_2		    L"https://linux-ha.osdn.jp/wp/"
 #define URL_PROJECT_SITE_3	        L"https://ch.nicovideo.jp/oss"
 #define URL_PROJECT_SITE_4			L"https://twitter.com/bellche"
 #define URL_PROJECT_SITE_5			L"https://suishoshizuku.com/"

@@ -102,8 +102,7 @@ BOOL RunAsRestart()
 	{
 		TCHAR path[MAX_PATH];
 		::GetModuleFileName(NULL, path, MAX_PATH);
-		if (::ShellExecute(NULL, L"runas", path, L"runas", NULL, SW_SHOWNORMAL)
-	> (HINSTANCE)32)
+		if (::ShellExecute(NULL, L"runas", path, L"runas", NULL, SW_SHOWNORMAL) > (HINSTANCE)32)
 		{
 			return TRUE;
 		}

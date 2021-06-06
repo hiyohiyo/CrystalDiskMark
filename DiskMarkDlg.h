@@ -63,7 +63,7 @@ public:
 	void UpdateDialogSize();
 	void ChangeButtonStatus(BOOL status);
 	void SetScoreToolTip(CStaticFx* cx, double score, double latency, int blockSize);
-	void ChangeTheme(CString themeName);
+	void UpdateThemeInfo();
 
 	CString m_ValueTestUnit;
 	CString m_ValueTestCount;

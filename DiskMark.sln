@@ -26,6 +26,10 @@ Global
 		ReleaseShizuku|ARM64 = ReleaseShizuku|ARM64
 		ReleaseShizuku|Win32 = ReleaseShizuku|Win32
 		ReleaseShizuku|x64 = ReleaseShizuku|x64
+		ReleaseTokka|ARM = ReleaseTokka|ARM
+		ReleaseTokka|ARM64 = ReleaseTokka|ARM64
+		ReleaseTokka|Win32 = ReleaseTokka|Win32
+		ReleaseTokka|x64 = ReleaseTokka|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.Debug|ARM.ActiveCfg = Debug|ARM
@@ -68,6 +72,14 @@ Global
 		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.ReleaseShizuku|Win32.Build.0 = ReleaseShizuku|Win32
 		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.ReleaseShizuku|x64.ActiveCfg = ReleaseShizuku|x64
 		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.ReleaseShizuku|x64.Build.0 = ReleaseShizuku|x64
+		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.ReleaseTokka|ARM.ActiveCfg = ReleaseTokka|ARM
+		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.ReleaseTokka|ARM.Build.0 = ReleaseTokka|ARM
+		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.ReleaseTokka|ARM64.ActiveCfg = ReleaseTokka|ARM64
+		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.ReleaseTokka|ARM64.Build.0 = ReleaseTokka|ARM64
+		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.ReleaseTokka|Win32.ActiveCfg = ReleaseTokka|Win32
+		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.ReleaseTokka|Win32.Build.0 = ReleaseTokka|Win32
+		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.ReleaseTokka|x64.ActiveCfg = ReleaseTokka|x64
+		{CDF33C67-147E-4C50-BC76-99A6BCB214D9}.ReleaseTokka|x64.Build.0 = ReleaseTokka|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
