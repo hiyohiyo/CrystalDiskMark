@@ -104,10 +104,10 @@
 
 // Version Information
 #define PRODUCT_NAME				L"CrystalDiskMark"
-#define PRODUCT_VERSION				L"8.0.3"
+#define PRODUCT_VERSION				L"8.0.4"
 #define PRODUCT_SHORT_NAME		    L"CDM8"
 
-#define PRODUCT_RELEASE				L"2021/07/03"
+#define PRODUCT_RELEASE				L"2021/07/11"
 #define PRODUCT_COPY_YEAR			L"2007-2021"
 #define PRODUCT_LICENSE				L"The MIT License"
 
