@@ -2,7 +2,7 @@
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
-//      License : The MIT License
+//      License : MIT License
 /*---------------------------------------------------------------------------*/
 
 #include "stdafx.h"
@@ -33,7 +33,7 @@ static BOOL MixMode;
 static int MixRatio;
 
 static void ShowErrorMessage(CString message);
-static void Interval(UINT time, void* dlg);
+static void Interval(void* dlg);
 
 static BOOL Init(void* dlg);
 static void DiskSpd(void* dlg, DISK_SPD_CMD cmd);
@@ -116,7 +116,7 @@ void ShowErrorMessage(CString message)
 	LocalFree( lpMessageBuffer );
 }
 
-VOID Interval(void* dlg)
+void Interval(void* dlg)
 {
 	int intervalTime = ((CDiskMarkDlg*) dlg)->m_IntervalTime;
 	CString title;

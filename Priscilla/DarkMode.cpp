@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------*/
 //       Author : Richard Yu
 //          Web : https://github.com/ysc3839/win32-darkmode
-//      License : The MIT License
+//      License : MIT License
 //                https://github.com/ysc3839/win32-darkmode/blob/master/LICENSE
 /*---------------------------------------------------------------------------*/
 
@@ -16,7 +16,7 @@ enum IMMERSIVE_HC_CACHE_MODE
 };
 
 // 1903 18362
-enum PreferredAppMode
+enum class PreferredAppMode
 {
 	Default,
 	AllowDark,
@@ -117,7 +117,7 @@ void AllowDarkModeForApp(bool allow)
 	if (_AllowDarkModeForApp)
 		_AllowDarkModeForApp(allow);
 	else if (_SetPreferredAppMode)
-		_SetPreferredAppMode(allow ? AllowDark : Default);
+		_SetPreferredAppMode(allow ? PreferredAppMode::AllowDark : PreferredAppMode::Default);
 }
 
 void RefreshTitleBarThemeColor(HWND hWnd)
@@ -141,13 +141,6 @@ void RefreshTitleBarThemeColor(HWND hWnd)
 constexpr bool CheckBuildNumber(DWORD buildNumber)
 {
 	return (buildNumber >= 17763);
-	/*
-	return (buildNumber == 17763 || // 1809
-		buildNumber == 18362 || // 1903
-		buildNumber == 18363 || // 1909
-		buildNumber == 19041  // 2004
-		);
-	*/
 }
 
 void FixDarkScrollBar()
@@ -179,7 +172,10 @@ void FixDarkScrollBar()
 
 BOOL InitDarkMode()
 {
-	auto RtlGetNtVersionNumbers = reinterpret_cast<fnRtlGetNtVersionNumbers>(GetProcAddress(GetModuleHandleW(L"ntdll.dll"), "RtlGetNtVersionNumbers"));
+	HMODULE ntdll = GetModuleHandle(L"ntdll.dll");
+	HMODULE user32 = GetModuleHandle(L"user32.dll");
+	if (!ntdll || !user32) return FALSE;
+	auto RtlGetNtVersionNumbers = reinterpret_cast<fnRtlGetNtVersionNumbers>(GetProcAddress(ntdll, "RtlGetNtVersionNumbers"));
 	if (RtlGetNtVersionNumbers)
 	{
 		DWORD major, minor;
@@ -205,7 +201,7 @@ BOOL InitDarkMode()
 				//_FlushMenuThemes = reinterpret_cast<fnFlushMenuThemes>(GetProcAddress(hUxtheme, MAKEINTRESOURCEA(136)));
 				_IsDarkModeAllowedForWindow = reinterpret_cast<fnIsDarkModeAllowedForWindow>(GetProcAddress(hUxtheme, MAKEINTRESOURCEA(137)));
 
-				_SetWindowCompositionAttribute = reinterpret_cast<fnSetWindowCompositionAttribute>(GetProcAddress(GetModuleHandleW(L"user32.dll"), "SetWindowCompositionAttribute"));
+				_SetWindowCompositionAttribute = reinterpret_cast<fnSetWindowCompositionAttribute>(GetProcAddress(user32, "SetWindowCompositionAttribute"));
 
 				if (_OpenNcThemeData &&
 					_RefreshImmersiveColorPolicyState &&

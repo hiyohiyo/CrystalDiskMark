@@ -44,7 +44,7 @@
 #define IDC_DEMO_SETTING                1033
 #define IDC_HIDE                        1034
 
-#define IDC_CRYSTAL_DEW_WORLD           1100
+#define IDC_LOGO                        1100
 #define IDC_PROJECT_SITE_1              1101
 #define IDC_PROJECT_SITE_2              1102
 #define IDC_PROJECT_SITE_3              1103

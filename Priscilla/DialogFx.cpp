@@ -2,7 +2,7 @@
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
-//      License : The MIT License
+//      License : MIT License
 /*---------------------------------------------------------------------------*/
 
 #include "../stdafx.h"
@@ -41,7 +41,7 @@ CDialogFx::CDialogFx(UINT dlgResouce, CWnd* pParent)
 	m_MenuId = 0;
 	m_ParentWnd = NULL;
 	m_DlgWnd = NULL;
-	m_hAccelerator = 0;
+	m_hAccelerator = NULL;
 	m_bDrag = FALSE;
 	m_FontScale = 100;
 	m_FontRatio = 1.0;
@@ -105,11 +105,11 @@ BOOL CDialogFx::OnInitDialog()
 	ReleaseDC(pDC);
 
 	HMODULE hModule = GetModuleHandle(L"Shcore.dll");
-	if (hModule != NULL)
+	if (hModule)
 	{
 		typedef HRESULT(WINAPI* FuncGetDpiForMonitor) (HMONITOR hmonitor, UINT dpiType, UINT* dpiX, UINT* dpiY);
 		FuncGetDpiForMonitor pGetDpiForMonitor = (FuncGetDpiForMonitor)GetProcAddress(hModule, "GetDpiForMonitor");
-		if (pGetDpiForMonitor != NULL)
+		if (pGetDpiForMonitor)
 		{
 			UINT dpiX, dpiY;
 			pGetDpiForMonitor(MonitorFromWindow(m_hWnd, MONITOR_DEFAULTTONEAREST), 0, &dpiX, &dpiY);
@@ -119,7 +119,7 @@ BOOL CDialogFx::OnInitDialog()
 
 	m_hAccelerator = ::LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_ACCELERATOR));
 
-	m_bInitializing = FALSE;
+	// m_bInitializing = FALSE;
 
 	return TRUE;
 }
@@ -191,7 +191,6 @@ void CDialogFx::SetClientSize(int sizeX, int sizeY, double zoomRatio)
 void CDialogFx::UpdateBackground(BOOL resize, BOOL bDarkMode)
 {
 	HRESULT hr;
-	BOOL    br = FALSE;
 	CImage srcBitmap;
 	double ratio = m_ZoomRatio;
 	m_bBkImage = FALSE;
@@ -381,8 +380,7 @@ DWORD CDialogFx::ChangeZoomType(DWORD zoomType)
 
 BOOL CDialogFx::IsHighContrast()
 {
-	HIGHCONTRAST hc;
-	hc.cbSize = sizeof(HIGHCONTRAST);
+	HIGHCONTRAST hc = { sizeof(HIGHCONTRAST) };
 	SystemParametersInfoW(SPI_GETHIGHCONTRAST, sizeof(HIGHCONTRAST), &hc, 0);
 
 	return hc.dwFlags & HCF_HIGHCONTRASTON;
@@ -431,16 +429,16 @@ CString CDialogFx::i18n(CString section, CString key, BOOL inEnglish)
 
 	if(inEnglish)
 	{
-		GetPrivateProfileString(section, key, L"", str, 256, m_DefaultLangPath);
+		GetPrivateProfileStringFx(section, key, L"", str, 256, m_DefaultLangPath);
 		cstr = str;
 	}
 	else
 	{
-		GetPrivateProfileString(section, key, L"", str, 256, m_CurrentLangPath);
+		GetPrivateProfileStringFx(section, key, L"", str, 256, m_CurrentLangPath);
 		cstr = str;
 		if(cstr.IsEmpty())
 		{
-			GetPrivateProfileString(section, key, L"", str, 256, m_DefaultLangPath);
+			GetPrivateProfileStringFx(section, key, L"", str, 256, m_DefaultLangPath);
 			cstr = str;
 		}
 	}
@@ -542,7 +540,7 @@ afx_msg LRESULT CDialogFx::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 
 	m_Dpi = (INT)HIWORD(wParam);
 
-	if (GetWin10Version() >= 1709) // DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2
+	if (IsWindowBuildOrGreater(16299)) // DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2
 	{
 		ChangeZoomType(m_ZoomType);
 		m_bDpiChanging = TRUE;

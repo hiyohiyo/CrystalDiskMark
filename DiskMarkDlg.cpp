@@ -2,7 +2,7 @@
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
-//      License : The MIT License
+//      License : MIT License
 /*---------------------------------------------------------------------------*/
 
 #include "stdafx.h"
@@ -43,10 +43,10 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 	m_AboutDlg = NULL;
 	m_SettingsDlg = NULL;
 
-#ifdef TSUKUMO_TOKKA_SUPPORT
-	m_DefaultTheme = L"Tokka01_Cute";
-	m_RecommendTheme = L"Tokka01_Cute";
-	m_ThemeKeyName = L"ThemeTokka";
+#ifdef SUISHO_AOI_SUPPORT
+	m_DefaultTheme = L"Aoi";
+	m_RecommendTheme = L"Aoi";
+	m_ThemeKeyName = L"ThemeAoi";
 
 	m_MarginButtonTop = 16;
 	m_MarginButtonLeft = 0;
@@ -60,6 +60,27 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 	m_MarginCommentLeft = 16;
 	m_MarginCommentBottom = 0;
 	m_MarginCommentRight = 16;
+	m_MarginDemoTop = 24;
+	m_MarginDemoLeft = 24;
+	m_MarginDemoBottom = 24;
+	m_MarginDemoRight = 24;
+#elif MSI_MEI_SUPPORT
+	m_DefaultTheme = L"MSIMei";
+	m_RecommendTheme = L"MSIMeiDemo";
+	m_ThemeKeyName = L"ThemeMSIMei";
+
+	m_MarginButtonTop = 8;
+	m_MarginButtonLeft = 0;
+	m_MarginButtonBottom = 8;
+	m_MarginButtonRight = 0;
+	m_MarginMeterTop = 0;
+	m_MarginMeterLeft = 0;
+	m_MarginMeterBottom = 0;
+	m_MarginMeterRight = 16;
+	m_MarginCommentTop = 0;
+	m_MarginCommentLeft = 16;
+	m_MarginCommentBottom = 0;
+	m_MarginCommentRight = 64;
 	m_MarginDemoTop = 24;
 	m_MarginDemoLeft = 24;
 	m_MarginDemoBottom = 24;
@@ -121,7 +142,7 @@ void CDiskMarkDlg::UpdateThemeInfo()
 
 	CString theme = m_ThemeDir + m_CurrentTheme + L"\\theme.ini";
 
-#ifdef TSUKUMO_TOKKA_SUPPORT
+#ifdef SUISHO_AOI_SUPPORT
 	m_MarginButtonTop = GetPrivateProfileInt(L"Margin", L"ButtonTop", 16, theme);
 	m_MarginButtonLeft = GetPrivateProfileInt(L"Margin", L"ButtonLeft", 0, theme);
 	m_MarginButtonBottom = GetPrivateProfileInt(L"Margin", L"ButtonBottom", 16, theme);
@@ -138,6 +159,25 @@ void CDiskMarkDlg::UpdateThemeInfo()
 	m_MarginDemoLeft = GetPrivateProfileInt(L"Margin", L"DemoLeft", 24, theme);
 	m_MarginDemoBottom = GetPrivateProfileInt(L"Margin", L"DemoBottom", 24, theme);
 	m_MarginDemoRight = GetPrivateProfileInt(L"Margin", L"DemoRight", 24, theme);
+
+#elif MSI_MEI_SUPPORT
+	m_MarginButtonTop = GetPrivateProfileInt(L"Margin", L"ButtonTop", 8, theme);
+	m_MarginButtonLeft = GetPrivateProfileInt(L"Margin", L"ButtonLeft", 0, theme);
+	m_MarginButtonBottom = GetPrivateProfileInt(L"Margin", L"ButtonBottom", 8, theme);
+	m_MarginButtonRight = GetPrivateProfileInt(L"Margin", L"ButtonRight", 0, theme);
+	m_MarginMeterTop = GetPrivateProfileInt(L"Margin", L"MeterTop", 0, theme);
+	m_MarginMeterLeft = GetPrivateProfileInt(L"Margin", L"MeterLeft", 0, theme);
+	m_MarginMeterBottom = GetPrivateProfileInt(L"Margin", L"MeterBottom", 0, theme);
+	m_MarginMeterRight = GetPrivateProfileInt(L"Margin", L"MeterRight", 16, theme);
+	m_MarginCommentTop = GetPrivateProfileInt(L"Margin", L"CommentTop", 0, theme);
+	m_MarginCommentLeft = GetPrivateProfileInt(L"Margin", L"CommentLeft", 16, theme);
+	m_MarginCommentBottom = GetPrivateProfileInt(L"Margin", L"CommentBottom", 0, theme);
+	m_MarginCommentRight = GetPrivateProfileInt(L"Margin", L"CommentRight", 16, theme);
+	m_MarginDemoTop = GetPrivateProfileInt(L"Margin", L"DemoTop", 24, theme);
+	m_MarginDemoLeft = GetPrivateProfileInt(L"Margin", L"DemoLeft", 24, theme);
+	m_MarginDemoBottom = GetPrivateProfileInt(L"Margin", L"DemoBottom", 24, theme);
+	m_MarginDemoRight = GetPrivateProfileInt(L"Margin", L"DemoRight", 24, theme);
+
 #elif SUISHO_SHIZUKU_SUPPORT
 	m_MarginButtonTop = GetPrivateProfileInt(L"Margin", L"ButtonTop", 8, theme);
 	m_MarginButtonLeft = GetPrivateProfileInt(L"Margin", L"ButtonLeft", 0, theme);
@@ -310,14 +350,16 @@ LRESULT CDiskMarkDlg::OnQueryEndSession(WPARAM wParam, LPARAM lParam)
 
 BOOL CDiskMarkDlg::CheckThemeEdition(CString name)
 {
-#ifdef TSUKUMO_TOKKA_SUPPORT
-	if (name.Find(L"Tokka") == 0) { return TRUE; }
+#ifdef SUISHO_AOI_SUPPORT
+	if (name.Find(L"Aoi") == 0) { return TRUE; }
+#elif MSI_MEI_SUPPORT
+	if (name.Find(L"MSIMei") == 0) { return TRUE; }
 #elif SUISHO_SHIZUKU_SUPPORT
 	if(name.Find(L"Shizuku") == 0) { return TRUE; }
 #elif KUREI_KEI_SUPPORT
 	if(name.Find(L"KureiKei") == 0) { return TRUE; }
 #else
-	if(name.Find(L"Shizuku") != 0 && name.Find(L"Tokka") != 0 && name.Find(L"KureiKei") != 0 && name.Find(L".") != 0) { return TRUE; }
+	if(name.Find(L"Shizuku") != 0 && name.Find(L"Aoi") != 0 && name.Find(L"MSIMei") != 0 && name.Find(L"Tokka") != 0 && name.Find(L"KureiKei") != 0 && name.Find(L".") != 0) { return TRUE; }
 #endif
 
 	return FALSE;
@@ -687,10 +729,15 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_TestRead0.InitControl(12 + offsetX, 96, 384, 348, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawGlass, m_bHighContrast, FALSE);
 		m_TestWrite0.InitControl(404 + offsetX, 96, 384, 348, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawGlass, m_bHighContrast, FALSE);
 */
+#ifdef SUISHO_AOI_SUPPORT
+		m_TestRead0.InitControl(12 + offsetX, 96, 384, 344, m_ZoomRatio, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
+		m_TestWrite0.InitControl(404 + offsetX, 96, 384, 344, m_ZoomRatio, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
+		m_Comment.InitControl(12 + offsetX, 440, 776, 60, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+#else
 		m_TestRead0.InitControl(12 + offsetX, 96, 384, 348, m_ZoomRatio, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
 		m_TestWrite0.InitControl(404 + offsetX, 96, 384, 348, m_ZoomRatio, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
-
 		m_Comment.InitControl(12 + offsetX, 452, 776, 40, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+#endif
 		m_Comment.SetMargin(m_MarginCommentTop, m_MarginCommentLeft, m_MarginCommentBottom, m_MarginCommentRight, m_ZoomRatio);
 		m_Comment.Adjust();
 
@@ -698,7 +745,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_ReadUnit.InitControl(12 + offsetX, 96, 120, 32, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
 		m_WriteUnit.InitControl(672 + offsetX, 96, 116, 32, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
 
-		m_ComboCount.InitControl(140 + offsetX, 8, 60, 500, m_ZoomRatio, &m_BkDC, IP(L"Count"), 1, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+		m_ComboCount.InitControl(140 + offsetX, 8, 60, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		m_ComboSize.InitControl(204 + offsetX, 8, 140, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		m_ComboDrive.InitControl(348 + offsetX, 8, 320, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		m_ComboUnit.InitControl(672 + offsetX, 8, 116, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
@@ -754,7 +801,12 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_TestWrite2.InitControl(468 + offsetX, 272, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 		m_TestWrite3.InitControl(468 + offsetX, 360, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 
+#ifdef SUISHO_AOI_SUPPORT
+		m_Comment.InitControl(12 + offsetX, 440, 776, 60, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+#else
 		m_Comment.InitControl(12 + offsetX, 452, 776, 40, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+#endif
+
 		m_Comment.SetMargin(m_MarginCommentTop, m_MarginCommentLeft, m_MarginCommentBottom, m_MarginCommentRight, m_ZoomRatio);
 		m_Comment.Adjust();
 
@@ -829,6 +881,11 @@ void CDiskMarkDlg::UpdateDialogSize()
 	{
 		m_TestRead0.SetMargin(m_MarginDemoTop, m_MarginDemoLeft, m_MarginDemoBottom, m_MarginDemoRight, m_ZoomRatio);
 		m_TestWrite0.SetMargin(m_MarginDemoTop, m_MarginDemoLeft, m_MarginDemoBottom, m_MarginDemoRight, m_ZoomRatio);
+
+#ifdef SUISHO_AOI_SUPPORT
+		m_TestRead0.SetLabelUnitFormat(DT_LEFT | DT_BOTTOM | DT_SINGLELINE, DT_RIGHT | DT_BOTTOM | DT_SINGLELINE);
+		m_TestWrite0.SetLabelUnitFormat(DT_LEFT | DT_BOTTOM | DT_SINGLELINE, DT_RIGHT | DT_BOTTOM | DT_SINGLELINE);
+#endif
 	}
 	else
 	{
@@ -3204,11 +3261,11 @@ void CDiskMarkDlg::OnHelp()
 {
 	if (GetUserDefaultLCID() == 0x0411) // Japanese
 	{
-		OpenUrl(URL_HTML_HELP_JA);
+		OpenUrl(URL_HELP_JA);
 	}
 	else // Other Language
 	{
-		OpenUrl(URL_HTML_HELP_EN);
+		OpenUrl(URL_HELP_EN);
 	}
 }
 
@@ -3216,11 +3273,11 @@ void CDiskMarkDlg::OnCrystalDewWorld()
 {
 	if (GetUserDefaultLCID() == 0x0411) // Japanese
 	{
-		OpenUrl(URL_MAIN_JA);
+		OpenUrl(URL_CRYSTAL_DEW_WORLD_JA);
 	}
 	else // Other Language
 	{
-		OpenUrl(URL_MAIN_EN);
+		OpenUrl(URL_CRYSTAL_DEW_WORLD_EN);
 	}
 }
 

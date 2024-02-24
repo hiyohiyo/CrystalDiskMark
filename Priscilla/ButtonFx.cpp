@@ -2,7 +2,7 @@
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
-//      License : The MIT License
+//      License : MIT License
 /*---------------------------------------------------------------------------*/
 
 #include "../stdafx.h"
@@ -72,8 +72,8 @@ BOOL CButtonFx::InitControl(int x, int y, int width, int height, double zoomRati
 {
 	m_X = (int)(x * zoomRatio);
 	m_Y = (int)(y * zoomRatio);
-	m_CtrlSize.cx = (int)(width * zoomRatio);
-	m_CtrlSize.cy = (int)(height * zoomRatio);
+	m_CtrlSize.cx = (int)(width * zoomRatio + 0.5);
+	m_CtrlSize.cy = (int)(height * zoomRatio + 0.5);
 	MoveWindow(m_X, m_Y, m_CtrlSize.cx, m_CtrlSize.cy);
 
 	m_BkDC = bkDC;
@@ -157,10 +157,13 @@ BOOL CButtonFx::InitControl(int x, int y, int width, int height, double zoomRati
 		{
 			for (int x = 0; x < m_CtrlSize.cx; x++)
 			{
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = b;
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = g;
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = r;
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = a;
+				DWORD p = (y * m_CtrlSize.cx + x) * 4;
+#pragma warning( disable : 6386 )
+				bitmapBits[p + 0] = b;
+				bitmapBits[p + 1] = g;
+				bitmapBits[p + 2] = r;
+				bitmapBits[p + 3] = a;
+#pragma warning( default : 6386 )
 			}
 		}
 
@@ -320,6 +323,8 @@ void CButtonFx::DrawControl(CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, CBit
 				int cn = (baseY + py) * CtlLineBytes;
 				for (LONG px = 0; px < DstBmpInfo.bmWidth; px++)
 				{
+#pragma warning( disable : 6385 )
+#pragma warning( disable : 6386 )
 					BYTE a = CtlBuffer[cn + 3];
 					BYTE na = 255 - a;
 					DstBuffer[dn + 0] = (BYTE)((CtlBuffer[cn + 0] * a + DstBuffer[dn + 0] * na) / 255);
@@ -327,6 +332,8 @@ void CButtonFx::DrawControl(CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct, CBit
 					DstBuffer[dn + 2] = (BYTE)((CtlBuffer[cn + 2] * a + DstBuffer[dn + 2] * na) / 255);
 					dn += (DstBmpInfo.bmBitsPixel / 8);
 					cn += (CtlBmpInfo.bmBitsPixel / 8);
+#pragma warning( default : 6386 )
+#pragma warning( default : 6385 )
 				}
 			}
 
@@ -442,7 +449,7 @@ void CButtonFx::DrawString(CDC* drawDC, LPDRAWITEMSTRUCT lpDrawItemStruct)
 	{
 		CRect r;
 		r.top = rect.top + (LONG)(((double)rect.Height()) / arr.GetCount() * i);
-		r.bottom = rect.top + (LONG)(((double)rect.Height()) / arr.GetCount() * (i + 1));
+		r.bottom = rect.top + (LONG)(((double)rect.Height()) / arr.GetCount() * (i + 1.0));
 		r.left = rect.left;
 		r.right = rect.right;
 
@@ -616,8 +623,7 @@ void CButtonFx::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if (!m_bTrackingNow)
 	{
-		TRACKMOUSEEVENT tme;
-		tme.cbSize = sizeof(tme);
+		TRACKMOUSEEVENT tme = { sizeof(TRACKMOUSEEVENT) };
 		tme.hwndTrack = m_hWnd;
 		tme.dwFlags = TME_LEAVE | TME_HOVER;
 		tme.dwHoverTime = 1;

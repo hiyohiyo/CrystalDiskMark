@@ -2,7 +2,7 @@
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
-//      License : The MIT License
+//      License : MIT License
 /*---------------------------------------------------------------------------*/
 
 #pragma once
@@ -50,8 +50,12 @@ protected:
 	virtual BOOL CheckThemeEdition(CString name);
 	virtual CString GetDefaultFont();
 
+	virtual void SaveWindowPosition();
+	virtual void RestoreWindowPosition();
+
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
+	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 
 	// Common
 	BOOL m_bStartup;

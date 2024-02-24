@@ -2,7 +2,7 @@
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
-//      License : The MIT License
+//      License : MIT License
 /*---------------------------------------------------------------------------*/
 
 #include "../stdafx.h"
@@ -26,6 +26,7 @@ CEditFx::CEditFx()
 	m_Margin.left = 0;
 	m_Margin.bottom = 0;
 	m_Margin.right = 0;
+	m_bMultiLine = FALSE;
 
 	// Glass
 	m_GlassColor = RGB(255, 255, 255);
@@ -61,13 +62,14 @@ END_MESSAGE_MAP()
 //------------------------------------------------
 
 BOOL CEditFx::InitControl(int x, int y, int width, int height, double zoomRatio, CDC* bkDC, 
-	LPCWSTR imagePath, int imageCount, DWORD textAlign, int renderMode, BOOL bHighContrast, BOOL bDarkMode, BOOL bDrawFrame)
+	LPCWSTR imagePath, int imageCount, DWORD textAlign, int renderMode, BOOL bHighContrast, BOOL bDarkMode, BOOL bDrawFrame, BOOL bMultiLine)
 {
 	m_X = (int)(x * zoomRatio);
 	m_Y = (int)(y * zoomRatio);
 	m_CtrlSize.cx = (int)(width * zoomRatio);
 	m_CtrlSize.cy = (int)(height * zoomRatio);
 	MoveWindow(m_X, m_Y, m_CtrlSize.cx, m_CtrlSize.cy);
+	m_bMultiLine = bMultiLine;
 
 	m_BkDC = bkDC;
 	m_ImagePath = imagePath;
@@ -142,10 +144,13 @@ BOOL CEditFx::InitControl(int x, int y, int width, int height, double zoomRatio,
 		{
 			for (int x = 0; x < m_CtrlSize.cx; x++)
 			{
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 0] = b;
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 1] = g;
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 2] = r;
-				bitmapBits[(y * m_CtrlSize.cx + x) * 4 + 3] = a;
+				DWORD p = (y * m_CtrlSize.cx + x) * 4;
+#pragma warning( disable : 6386 )
+				bitmapBits[p + 0] = b;
+				bitmapBits[p + 1] = g;
+				bitmapBits[p + 2] = r;
+				bitmapBits[p + 3] = a;
+#pragma warning( default : 6386 )
 			}
 		}
 
@@ -170,7 +175,17 @@ void CEditFx::SetMargin(int top, int left, int bottom, int right, double zoomRat
 	m_Margin.bottom = (int)(bottom * zoomRatio);
 	m_Margin.right = (int)(right * zoomRatio);
 
-	SetMargins(m_Margin.left, m_Margin.right);
+//	SetMargins(m_Margin.left, m_Margin.right);
+
+	CRect rectGet, rectSet;
+	GetRect(rectGet);
+
+	rectSet.top = m_Margin.top;
+	rectSet.bottom = rectGet.bottom - m_Margin.bottom - m_Margin.top;
+	rectSet.left = m_Margin.left;
+	rectSet.right = rectGet.right - m_Margin.right - m_Margin.left;
+
+	SetRect(rectSet);
 }
 
 CSize CEditFx::GetSize(void)
@@ -359,6 +374,8 @@ void CEditFx::SetupControlImage(CBitmap& bkBitmap, CBitmap& ctrlBitmap)
 				int cn = (baseY + py) * CtlLineBytes;
 				for (LONG px = 0; px < DstBmpInfo.bmWidth; px++)
 				{
+#pragma warning( disable : 6385 )
+#pragma warning( disable : 6386 )
 					BYTE a = CtlBuffer[cn + 3];
 					BYTE na = 255 - a;
 					CtlBuffer[dn + 0] = (BYTE)((CtlBuffer[cn + 0] * a + DstBuffer[dn + 0] * na) / 255);
@@ -366,6 +383,8 @@ void CEditFx::SetupControlImage(CBitmap& bkBitmap, CBitmap& ctrlBitmap)
 					CtlBuffer[dn + 2] = (BYTE)((CtlBuffer[cn + 2] * a + DstBuffer[dn + 2] * na) / 255);
 					dn += (DstBmpInfo.bmBitsPixel / 8);
 					cn += (CtlBmpInfo.bmBitsPixel / 8);
+#pragma warning( default : 6386 )
+#pragma warning( default : 6385 )
 				}
 			}
 
@@ -464,7 +483,7 @@ void CEditFx::OnEnChange()
 
 void CEditFx::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	if (nChar == VK_RETURN)
+	if (nChar == VK_RETURN && m_bMultiLine == FALSE)
 	{
 		return ;
 	}

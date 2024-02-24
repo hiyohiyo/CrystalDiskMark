@@ -123,7 +123,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "CrystalDiskMark"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    PUSHBUTTON      "",IDC_CRYSTAL_DEW_WORLD,26,17,156,107
+    PUSHBUTTON      "",IDC_LOGO,26,17,156,107
 	PUSHBUTTON      "",IDC_VERSION,240,18,193,8
     LTEXT           "",IDC_EDITION,241,38,33,8
     LTEXT           "",IDC_RELEASE,239,62,33,8
@@ -212,8 +212,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 8,0,4,0
- PRODUCTVERSION 8,0,4,0
+ FILEVERSION 8,0,5,0
+ PRODUCTVERSION 8,0,5,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -228,27 +228,31 @@ BEGIN
     BEGIN
         BLOCK "041103a4"
         BEGIN
-            VALUE "FileVersion", "8.0.4.0"
-            VALUE "ProductVersion", "8.0.4.0"
+            VALUE "FileVersion", "8.0.5.0"
+            VALUE "ProductVersion", "8.0.5.0"
             VALUE "OriginalFilename", "DiskMark.exe"
             VALUE "InternalName", "DiskMark.exe"
-            VALUE "Comments", "https://crystalmark.info/, The MIT License"
+            VALUE "Comments", "https://crystalmark.info/, MIT License"
             VALUE "CompanyName", "Crystal Dew World"
-#ifdef SUISHO_SHIZUKU_SUPPORT
-#ifdef TSUKUMO_TOKKA_SUPPORT
-            VALUE "FileDescription", "CrystalDiskMark 8 Tsukumo Tokka Edition"
-            VALUE "ProductName", "CrystalDiskMark 8 Tsukumo Tokka Edition"
-            VALUE "LegalCopyright", "(C) 2007-2021 hiyohiyo, (C) 2021 AURYN/TSUKUMO"
+
+#ifdef SUISHO_AOI_SUPPORT
+            VALUE "FileDescription", "CrystalDiskMark Aoi Edition"
+            VALUE "ProductName", "CrystalDiskMark Aoi Edition"
+            VALUE "LegalCopyright", "(C) 2007-2024 hiyohiyo, (C) 2023-2024 nijihashi sola"
+#elif MSI_MEI_SUPPORT
+            VALUE "FileDescription", "CrystalDiskMark MSI Mei Mihoshi Edition"
+            VALUE "ProductName", "CrystalDiskMark MSI Mei Mihoshi Edition"
+            VALUE "LegalCopyright", "(C) 2007-2024 hiyohiyo, (C) 2024 Micro-Star INT'L CO., LTD."
+#elif SUISHO_SHIZUKU_SUPPORT
+            VALUE "FileDescription", "CrystalDiskMark Shizuku Edition"
+            VALUE "ProductName", "CrystalDiskMark Shizuku Edition"
+            VALUE "LegalCopyright", "(C) 2007-2024 hiyohiyo, (C) 2012-2024 kirino kasumu"
 #else
-            VALUE "FileDescription", "CrystalDiskMark 8 Shizuku Edition"
-            VALUE "ProductName", "CrystalDiskMark 8 Shizuku Edition"
-            VALUE "LegalCopyright", "(C) 2007-2021 hiyohiyo, (C) 2012-2021 kirino kasumu"
+            VALUE "FileDescription", "CrystalDiskMark"
+            VALUE "ProductName", "CrystalDiskMark"
+            VALUE "LegalCopyright", "(C) 2007-2024 hiyohiyo"
 #endif
-#else
-            VALUE "FileDescription", "CrystalDiskMark 8"
-            VALUE "ProductName", "CrystalDiskMark 8"
-            VALUE "LegalCopyright", "(C) 2007-2021 hiyohiyo"
-#endif
+
         END
     END
     BLOCK "VarFileInfo"
@@ -372,11 +376,7 @@ BEGIN
     POPUP "&Help"
     BEGIN
         MENUITEM "Help",                            ID_HELP
-#ifdef TSUKUMO_TOKKA_SUPPORT
-        MENUITEM "Tokka [Web]",                     ID_CRYSTALDEWWORLD
-#else
         MENUITEM "Crystal Dew World [Web]",         ID_CRYSTALDEWWORLD
-#endif
         MENUITEM SEPARATOR
         MENUITEM "About CrystalDiskMark",           ID_ABOUT
     END
@@ -401,9 +401,12 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-#ifdef TSUKUMO_TOKKA_SUPPORT
-IDR_MAINFRAME           ICON                    "res\\DiskMarkT.ico"
-IDI_TRAY_ICON           ICON                    "res\\DiskMarkT16.ico"
+#ifdef SUISHO_AOI_SUPPORT
+IDR_MAINFRAME           ICON                    "res\\DiskMarkA.ico"
+IDI_TRAY_ICON           ICON                    "res\\DiskMarkA16.ico"
+#elif MSI_MEI_SUPPORT
+IDR_MAINFRAME           ICON                    "res\\DiskMarkM.ico"
+IDI_TRAY_ICON           ICON                    "res\\DiskMarkM16.ico"
 #elif SUISHO_SHIZUKU_SUPPORT
 IDR_MAINFRAME           ICON                    "res\\DiskMarkS.ico"
 IDI_TRAY_ICON           ICON                    "res\\DiskMarkS16.ico"

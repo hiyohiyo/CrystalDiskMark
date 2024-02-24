@@ -2,7 +2,7 @@
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
-//      License : The MIT License
+//      License : MIT License
 /*---------------------------------------------------------------------------*/
 
 #pragma once
@@ -13,6 +13,9 @@
 //   OS Info
 ////------------------------------------------------
 
+BOOL IsWindowsVersionOrGreaterFx(WORD wMajorVersion, WORD wMinorVersion, WORD wServicePackMajor = 0);
+BOOL IsWindowBuildOrGreater(DWORD build);
+
 BOOL IsX64();
 BOOL IsIa64();
 BOOL IsArm32();
@@ -21,6 +24,7 @@ BOOL IsWow64();
 BOOL IsIe556();
 BOOL IsDotNet2();
 BOOL IsDotNet4();
+BOOL IsDotNet48();
 BOOL IsNT5();
 BOOL IsNT6orLater();
 BOOL IsWin2k();
@@ -31,8 +35,9 @@ BOOL IsWin81orLater();
 BOOL IsDarkModeSupport();
 BOOL HasSidebar();
 DWORD GetIeVersion();
-DWORD GetWin10Version();
-void GetOsName(CString& OsFullName);
+// DWORD GetWin10Version();
+void GetOsName(CString& osName);
+void GetOsNameWmi(CString& osName);
 
 ////------------------------------------------------
 //   Define

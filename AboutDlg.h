@@ -2,7 +2,7 @@
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
-//      License : The MIT License
+//      License : MIT License
 /*---------------------------------------------------------------------------*/
 
 #pragma once
@@ -14,7 +14,10 @@ class CAboutDlg : public CDialogFx
 {
 	DECLARE_DYNCREATE(CAboutDlg)
 
-#ifdef SUISHO_SHIZUKU_SUPPORT
+#ifdef SUISHO_AOI_SUPPORT
+	static const int SIZE_X = 640;
+	static const int SIZE_Y = 640;
+#elif SUISHO_SHIZUKU_SUPPORT
 	static const int SIZE_X = 640;
 	static const int SIZE_Y = 660;
 #else
@@ -34,7 +37,7 @@ protected:
 	virtual void UpdateDialogSize();
 
 	DECLARE_MESSAGE_MAP()
-	afx_msg void OnCrystalDewWorld();
+	afx_msg void OnLogo();
 	afx_msg void OnVersion();
 	afx_msg void OnLicense();
 	afx_msg void OnProjectSite1();
@@ -43,7 +46,7 @@ protected:
 	afx_msg void OnProjectSite4();
 	afx_msg void OnProjectSite5();
 
-	CButtonFx m_CtrlCrystalDewWorld;
+	CButtonFx m_CtrlLogo;
 	CButtonFx m_CtrlSecretVoice;
 	CButtonFx m_CtrlProjectSite1;
 	CButtonFx m_CtrlProjectSite2;

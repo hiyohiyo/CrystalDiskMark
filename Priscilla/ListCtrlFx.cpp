@@ -2,7 +2,7 @@
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
-//      License : The MIT License
+//      License : MIT License
 /*---------------------------------------------------------------------------*/
 
 #include "../stdafx.h"
@@ -40,9 +40,11 @@ CListCtrlFx::~CListCtrlFx()
 {
 }
 
+#pragma warning( disable : 26454 )
 BEGIN_MESSAGE_MAP(CListCtrlFx, CListCtrl)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, &CListCtrlFx::OnCustomdraw)
 END_MESSAGE_MAP()
+#pragma warning( default : 26454 )
 
 BOOL CListCtrlFx::InitControl(int x, int y, int width, int height, int maxWidth, int maxHeight, double zoomRatio, CDC* bkDC, int renderMode, BOOL bHighContrast, BOOL bDarkMode)
 {
@@ -61,7 +63,7 @@ BOOL CListCtrlFx::InitControl(int x, int y, int width, int height, int maxWidth,
 
 	if (m_bHighContrast)
 	{
-		SetBkImage(L"");
+		SetBkImage((LPTSTR)L"");
 	}
 	else if (renderMode & OwnerDrawGlass || renderMode & OwnerDrawTransparent)
 	{
@@ -75,7 +77,7 @@ BOOL CListCtrlFx::InitControl(int x, int y, int width, int height, int maxWidth,
 		m_CtrlImage.Destroy();
 		m_CtrlImage.Create(maxWidth, maxHeight, 32);
 
-		RECT rect;
+		RECT rect{};
 		rect.top = 0;
 		rect.left = 0;
 		rect.right = maxWidth;
@@ -108,10 +110,13 @@ BOOL CListCtrlFx::InitControl(int x, int y, int width, int height, int maxWidth,
 		{
 			for (int x = 0; x < maxWidth; x++)
 			{
-				bitmapBits[(y * maxWidth + x) * 4 + 0] = b;
-				bitmapBits[(y * maxWidth + x) * 4 + 1] = g;
-				bitmapBits[(y * maxWidth + x) * 4 + 2] = r;
-				bitmapBits[(y * maxWidth + x) * 4 + 3] = a;
+				DWORD p = (y * maxWidth + x) * 4;
+#pragma warning( disable : 6386 )
+				bitmapBits[p + 0] = b;
+				bitmapBits[p + 1] = g;
+				bitmapBits[p + 2] = r;
+				bitmapBits[p + 3] = a;
+#pragma warning( default : 6386 )
 			}
 		}
 
@@ -134,7 +139,7 @@ BOOL CListCtrlFx::InitControl(int x, int y, int width, int height, int maxWidth,
 	{
 		if(m_bNT6orLater)
 		{
-			SetBkImage(L"");
+			SetBkImage((LPTSTR)L"");
 			SetBkColor(m_BkColor1);
 			m_Header.InitControl(x, y, zoomRatio, bkDC, NULL, m_TextColor1, m_BkColor1, m_LineColor1, m_RenderMode, m_bHighContrast, m_bDarkMode);
 		}
@@ -185,6 +190,8 @@ void CListCtrlFx::SetupControlImage(CBitmap& bkBitmap, CBitmap& ctrlBitmap)
 		int cn = (baseY + py) * CtlLineBytes;
 		for (LONG px = 0; px < DstBmpInfo.bmWidth; px++)
 		{
+#pragma warning( disable : 6385 )
+#pragma warning( disable : 6386 )
 			BYTE a = CtlBuffer[cn + 3];
 			BYTE na = 255 - a;
 			CtlBuffer[dn + 0] = (BYTE)((CtlBuffer[cn + 0] * a + DstBuffer[dn + 0] * na) / 255);
@@ -192,6 +199,8 @@ void CListCtrlFx::SetupControlImage(CBitmap& bkBitmap, CBitmap& ctrlBitmap)
 			CtlBuffer[dn + 2] = (BYTE)((CtlBuffer[cn + 2] * a + DstBuffer[dn + 2] * na) / 255);
 			dn += (DstBmpInfo.bmBitsPixel / 8);
 			cn += (CtlBmpInfo.bmBitsPixel / 8);
+#pragma warning( default : 6386 )
+#pragma warning( default : 6385 )
 		}
 	}
 
@@ -237,7 +246,7 @@ void CListCtrlFx::OnCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case CDDS_ITEMPOSTPAINT | CDDS_SUBITEM:
 		{
-			RECT rc;
+			RECT rc{};
 			CBrush br1(m_LineColor1);
 			CBrush br2(m_LineColor2);
 

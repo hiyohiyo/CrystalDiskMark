@@ -2,7 +2,7 @@
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
-//      License : The MIT License
+//      License : MIT License
 /*---------------------------------------------------------------------------*/
 
 #pragma once
@@ -67,15 +67,26 @@
 
 #else
 
-#ifdef TSUKUMO_TOKKA_SUPPORT
+#ifdef SUISHO_AOI_SUPPORT
 #ifdef _M_ARM
-#define PRODUCT_EDITION			L"Tsukumo Tokka Edition ARM32"
+#define PRODUCT_EDITION			L"Aoi Edition ARM32"
 #elif _M_ARM64
-#define PRODUCT_EDITION			L"Tsukumo Tokka Edition ARM64"
+#define PRODUCT_EDITION			L"Aoi Edition ARM64"
 #elif _M_X64
-#define PRODUCT_EDITION			L"Tsukumo Tokka Edition x64"
+#define PRODUCT_EDITION			L"Aoi Edition x64"
 #else
-#define PRODUCT_EDITION			L"Tsukumo Tokka Edition x86"
+#define PRODUCT_EDITION			L"Aoi Edition x86"
+#endif
+
+#elif MSI_MEI_SUPPORT
+#ifdef _M_ARM
+#define PRODUCT_EDITION			L"MSI Mei Mihoshi Edition ARM32"
+#elif _M_ARM64
+#define PRODUCT_EDITION			L"MSI Mei Mihoshi Edition ARM64"
+#elif _M_X64
+#define PRODUCT_EDITION			L"MSI Mei Mihoshi Edition x64"
+#else
+#define PRODUCT_EDITION			L"MSI Mei Mihoshi Edition x86"
 #endif
 
 #elif SUISHO_SHIZUKU_SUPPORT
@@ -104,47 +115,65 @@
 
 // Version Information
 #define PRODUCT_NAME				L"CrystalDiskMark"
-#define PRODUCT_VERSION				L"8.0.4"
-#define PRODUCT_SHORT_NAME		    L"CDM8"
+#define PRODUCT_VERSION				L"8.0.5"
+#define PRODUCT_SHORT_NAME		    L"CDM"
 
-#define PRODUCT_RELEASE				L"2021/07/11"
-#define PRODUCT_COPY_YEAR			L"2007-2021"
-#define PRODUCT_LICENSE				L"The MIT License"
+#define PRODUCT_RELEASE				L"2024/02/24"
+#define PRODUCT_COPY_YEAR			L"2007-2024"
+#define PRODUCT_LICENSE				L"MIT License"
 
-#ifdef TSUKUMO_TOKKA_SUPPORT
-#define PRODUCT_COPYRIGHT_1         L"© 2007-2021 hiyohiyo"
-#define PRODUCT_COPYRIGHT_2         L"© 2021 AURYN/TSUKUMO"
+#ifdef SUISHO_AOI_SUPPORT
+#define PRODUCT_COPYRIGHT_1         L"© 2007-2024 hiyohiyo"
+#define PRODUCT_COPYRIGHT_2         L"© 2023-2024 nijihashi sola"
+
+#elif MSI_MEI_SUPPORT
+#define PRODUCT_COPYRIGHT_1         L"© 2007-2024 hiyohiyo"
+#define PRODUCT_COPYRIGHT_2         L"© 2024 Micro-Star INT'L CO., LTD."
 
 #elif SUISHO_SHIZUKU_SUPPORT
 #define PRODUCT_COPYRIGHT_1         L"© 2007-2021 hiyohiyo"
 #define PRODUCT_COPYRIGHT_2         L"© 2012-2021 kirino kasumu"
+
 #else
 #define PRODUCT_COPYRIGHT_1			L"© 2007-2021 hiyohiyo"
 #define PRODUCT_COPYRIGHT_2			L""
 #endif
 
-#ifdef TSUKUMO_TOKKA_SUPPORT
-#define URL_MAIN_JA					L"https://shop.tsukumo.co.jp/features/99tokka"
-#define URL_MAIN_EN					L"https://shop.tsukumo.co.jp/features/99tokka"
+#ifdef MSI_MEI_SUPPORT
+#define URL_MAIN_JA					L"https://jp.msi.com/"
+#define URL_MAIN_EN 				L"https://www.msi.com/"
 #else
 #define URL_MAIN_JA					L"https://crystalmark.info/ja/"
 #define URL_MAIN_EN 				L"https://crystalmark.info/en/"
 #endif
 
+#define URL_CRYSTAL_DEW_WORLD_JA	L"https://crystalmark.info/ja/"
+#define URL_CRYSTAL_DEW_WORLD_EN 	L"https://crystalmark.info/en/"
+
 #define	URL_VERSION_JA				L"https://crystalmark.info/ja/software/crystaldiskmark/crystaldiskmark-history/"
 #define	URL_VERSION_EN				L"https://crystalmark.info/en/software/crystaldiskmark/crystaldiskmark-history/"
 #define	URL_LICENSE_JA				L"https://crystalmark.info/ja/software/crystaldiskmark/crystaldiskmark-license/"
 #define	URL_LICENSE_EN				L"https://crystalmark.info/en/software/crystaldiskmark/crystaldiskmark-license/"
-
-#define	URL_PROJECT_SHIZUKU_JA		L"https://suishoshizuku.com/ja/"
-#define	URL_PROJECT_SHIZUKU_EN		L"https://suishoshizuku.com/en/"
+#define URL_HELP_JA					L"https://crystalmark.info/ja/software/crystaldiskmark/"
+#define URL_HELP_EN			 		L"https://crystalmark.info/en/software/crystaldiskmark/"
 
 #define URL_DISKSPD					L"https://github.com/microsoft/diskspd"
 
-#define URL_HTML_HELP_JA			L"https://crystalmark.info/ja/software/crystaldiskmark/"
-#define URL_HTML_HELP_EN 			L"https://crystalmark.info/en/software/crystaldiskmark/"
+#ifdef SUISHO_AOI_SUPPORT
+#define	URL_PROJECT_SITE_1		    L"https://twitter.com/sola_no_crayon"
+#define URL_PROJECT_SITE_2		    L"https://twitter.com/harakeiko0718"
+#define URL_PROJECT_SITE_3	        L"https://instagram.com/kotomi_wicke?igshid=OGQ5ZDc2ODk2ZA=="
+#define URL_PROJECT_SITE_4			L"https://twitter.com/bellche"
+#define URL_PROJECT_SITE_5			L""
 
-#ifdef SUISHO_SHIZUKU_SUPPORT
+#elif MSI_MEI_SUPPORT
+#define	URL_PROJECT_SITE_1		    L"https://jp.msi.com/Landing/mihoshimei/nb"
+#define URL_PROJECT_SITE_2		    L"https://twitter.com/hoshi_u3"
+#define URL_PROJECT_SITE_3	        L"https://twitter.com/mokowata"
+#define URL_PROJECT_SITE_4			L"https://jp.msi.com/"
+#define URL_PROJECT_SITE_5			L"https://jp.msi.com/"
+
+#elif SUISHO_SHIZUKU_SUPPORT
 #define	URL_PROJECT_SITE_1		    L"https://twitter.com/kirinokasumu"
 #define URL_PROJECT_SITE_2		    L"https://linux-ha.osdn.jp/wp/"
 #define URL_PROJECT_SITE_3	        L"https://ch.nicovideo.jp/oss"
@@ -184,6 +213,6 @@ static const int RE_EXEC = 5963;
 
 #define TIMER_UPDATE_DIALOG			500
 
-#define WM_UPDATE_SCORE		(WM_APP+0x1001)
-#define WM_UPDATE_MESSAGE	(WM_APP+0x1002)
-#define WM_EXIT_BENCHMARK	(WM_APP+0x1003)
+#define WM_UPDATE_SCORE				(WM_APP+0x1001)
+#define WM_UPDATE_MESSAGE			(WM_APP+0x1002)
+#define WM_EXIT_BENCHMARK			(WM_APP+0x1003)
