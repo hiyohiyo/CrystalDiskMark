@@ -119,11 +119,11 @@ void CAboutDlg::UpdateDialogSize()
 	m_CtrlProjectSite5.SetHandCursor();
 
 #elif MSI_MEI_SUPPORT
-	m_CtrlProjectSite1.InitControl(24, 476, 348, 128, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
-	m_CtrlProjectSite2.InitControl(168, 632, 36, 20, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
-	m_CtrlProjectSite3.InitControl(332, 632, 104, 20, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
+	m_CtrlProjectSite1.InitControl(24, 460, 348, 128, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
+	m_CtrlProjectSite2.InitControl(168, 604, 36, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
+	m_CtrlProjectSite3.InitControl(332, 604, 104, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
 	m_CtrlProjectSite4.InitControl(20, 20, 120, 40, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
-	m_CtrlProjectSite5.InitControl(460, 632, 168, 20, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
+	m_CtrlProjectSite5.InitControl(464, 604, 168, 24, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
 	m_CtrlLogo.InitControl(80, 64, 128, 128, m_ZoomRatio, &m_BkDC, IP(L"Logo"), 1, BS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
 	m_CtrlProjectSite1.SetHandCursor();
 	m_CtrlProjectSite2.SetHandCursor();
@@ -161,7 +161,7 @@ void CAboutDlg::UpdateDialogSize()
 #endif
 
 	m_CtrlVersion.SetFontEx(m_FontFace, 22, 22, m_ZoomRatio, m_FontRatio, fontColor, FW_BOLD, m_FontRender);
-	m_CtrlEdition.SetFontEx(m_FontFace, 22, 22, m_ZoomRatio, m_FontRatio, fontColor, FW_BOLD, m_FontRender);
+	m_CtrlEdition.SetFontEx(m_FontFace, 18, 18, m_ZoomRatio, m_FontRatio, fontColor, FW_BOLD, m_FontRender);
 	m_CtrlRelease.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, fontColor, FW_NORMAL, m_FontRender);
 	m_CtrlCopyright1.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, fontColor, FW_NORMAL, m_FontRender);
 	m_CtrlCopyright2.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, fontColor, FW_NORMAL, m_FontRender);
@@ -184,7 +184,7 @@ void CAboutDlg::UpdateDialogSize()
 	m_CtrlRelease.InitControl(0, 268, 288, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
 	m_CtrlCopyright1.InitControl(0, 288, 288, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
 	m_CtrlCopyright2.InitControl(0, 308, 288, 20, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
-	m_CtrlLicense.InitControl(0, 328, 288, 20, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
+	m_CtrlLicense.InitControl(0, 0, 0, 0, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);
 
 #elif SUISHO_SHIZUKU_SUPPORT
 	m_CtrlVersion.InitControl(0, 152, 288, 28, m_ZoomRatio, &m_BkDC, NULL, 0, BS_CENTER, OwnerDrawTransparent, FALSE, FALSE, FALSE);

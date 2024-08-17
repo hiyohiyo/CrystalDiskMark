@@ -115,10 +115,11 @@
 
 // Version Information
 #define PRODUCT_NAME				L"CrystalDiskMark"
+#define PRODUCT_FILENAME			L"CrystalDiskMark"
 #define PRODUCT_VERSION				L"8.0.5"
 #define PRODUCT_SHORT_NAME		    L"CDM"
 
-#define PRODUCT_RELEASE				L"2024/02/24"
+#define PRODUCT_RELEASE				L"2024/04/30"
 #define PRODUCT_COPY_YEAR			L"2007-2024"
 #define PRODUCT_LICENSE				L"MIT License"
 
@@ -204,6 +205,8 @@ static const int RE_EXEC = 5963;
 
 #define THEME_DIR					L"CdmResource\\themes\\"
 #define LANGUAGE_DIR				L"CdmResource\\language\\"
+#define VOICE_DIR					L"CdmResource\\voice\\"
+
 
 #define MENU_THEME_INDEX			3
 #define MENU_LANG_INDEX				5

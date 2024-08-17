@@ -66,7 +66,7 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 	m_MarginDemoRight = 24;
 #elif MSI_MEI_SUPPORT
 	m_DefaultTheme = L"MSIMei";
-	m_RecommendTheme = L"MSIMeiDemo";
+	m_RecommendTheme = L"MSIMei";
 	m_ThemeKeyName = L"ThemeMSIMei";
 
 	m_MarginButtonTop = 8;

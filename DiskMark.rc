@@ -232,7 +232,11 @@ BEGIN
             VALUE "ProductVersion", "8.0.5.0"
             VALUE "OriginalFilename", "DiskMark.exe"
             VALUE "InternalName", "DiskMark.exe"
-            VALUE "Comments", "https://crystalmark.info/, MIT License"
+#ifdef MSI_MEI_SUPPORT
+            VALUE "Comments", "https://crystalmark.info/"
+#else
+            VALUE "Comments", "https://crystalmark.info/ MIT License"
+#endif
             VALUE "CompanyName", "Crystal Dew World"
 
 #ifdef SUISHO_AOI_SUPPORT
