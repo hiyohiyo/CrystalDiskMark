@@ -3075,7 +3075,8 @@ Profile: Real\r\n\
 	cstr.Format(L"%d sec", m_MeasureTime);
 	clip.Replace(L"%MeasureTime%", cstr);
 
-	GetOsName(cstr);
+	CString null;
+	GetOsName(cstr, null, null, null);
 	clip.Replace(L"%OS%", cstr);
 
 	SYSTEMTIME st;

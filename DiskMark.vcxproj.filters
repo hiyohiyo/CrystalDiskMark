@@ -16,6 +16,9 @@
     <Filter Include="Priscilla">
       <UniqueIdentifier>{342a84d1-5b9a-4a10-b0ca-cc618409b820}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library">
+      <UniqueIdentifier>{1e1cebf3-7ec5-4e7b-b130-da0db639e588}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp">
@@ -28,9 +31,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DiskMarkDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SettingsDlg.cpp">
@@ -69,6 +69,12 @@
     <ClCompile Include="Priscilla\DarkMode.cpp">
       <Filter>Priscilla</Filter>
     </ClCompile>
+    <ClCompile Include="Library\stdafx.cpp">
+      <Filter>Library</Filter>
+    </ClCompile>
+    <ClCompile Include="Priscilla\UAHMenuBar.cpp">
+      <Filter>Priscilla</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -84,9 +90,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SettingsDlg.h">
@@ -126,6 +129,15 @@
       <Filter>Priscilla</Filter>
     </ClInclude>
     <ClInclude Include="Priscilla\DarkMode.h">
+      <Filter>Priscilla</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Resource.h">
+      <Filter>Library</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\stdafx.h">
+      <Filter>Library</Filter>
+    </ClInclude>
+    <ClInclude Include="Priscilla\UAHMenuBar.h">
       <Filter>Priscilla</Filter>
     </ClInclude>
   </ItemGroup>
