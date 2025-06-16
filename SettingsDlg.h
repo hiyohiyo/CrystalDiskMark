@@ -85,12 +85,12 @@ protected:
 
 	CButtonFx m_ButtonSetDefault;
 	CButtonFx m_ButtonSetNVMe8;
-//	CButtonFx m_ButtonSetNVMe9;
+	CButtonFx m_ButtonSetFlashMemory;
 	CButtonFx m_ButtonOk;
 
 	void OnSetDefault();
 	void OnSetNVMe8();
-//	void OnSetNVMe9();
+	void OnSetFlashMemory();
 	void OnOk();
 	void InitComboBox();
 

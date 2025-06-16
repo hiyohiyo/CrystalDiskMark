@@ -1,4 +1,4 @@
-/*---------------------------------------------------------------------------*/
+﻿/*---------------------------------------------------------------------------*/
 //       Author : hiyohiyo
 //         Mail : hiyohiyo@crystalmark.info
 //          Web : https://crystalmark.info/
@@ -47,6 +47,8 @@ DWORD CountSetBits(ULONG_PTR bitMask) {
 }
 
 typedef ULONGLONG(WINAPI* FuncGetLogicalProcessorInformationEx)(LOGICAL_PROCESSOR_RELATIONSHIP, PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, PDWORD);
+typedef BOOL(WINAPI* FuncGetLogicalProcessorInformation)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
+
 #endif
 
 void GetProcessorInfo(int* cores, int* threads)
@@ -57,10 +59,13 @@ void GetProcessorInfo(int* cores, int* threads)
 #if _MSC_VER > 1310
 	HMODULE hModule = GetModuleHandle(_T("kernel32.dll"));
 	FuncGetLogicalProcessorInformationEx pGetLogicalProcessorInformationEx = NULL;
+	FuncGetLogicalProcessorInformation pGetLogicalProcessorInformation = NULL;
 
 	if (hModule)
 	{
 		pGetLogicalProcessorInformationEx = (FuncGetLogicalProcessorInformationEx)GetProcAddress(hModule, "GetLogicalProcessorInformationEx");
+		pGetLogicalProcessorInformation = (FuncGetLogicalProcessorInformation)GetProcAddress(hModule, "GetLogicalProcessorInformation");
+
 	}
 
 	// for Windows 7 or later
@@ -87,14 +92,14 @@ void GetProcessorInfo(int* cores, int* threads)
 		}
 		delete[] buffer;
 	}
-	// for Windows XP/Vista
-	else
+	// for Windows XP SP3/Vista
+	else if(pGetLogicalProcessorInformation != NULL)
 	{
 		DWORD length = 0;
-		GetLogicalProcessorInformation(NULL, &length);
+		pGetLogicalProcessorInformation(NULL, &length);
 
 		SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer = new SYSTEM_LOGICAL_PROCESSOR_INFORMATION[length / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION)];
-		GetLogicalProcessorInformation(&buffer[0], &length);
+		pGetLogicalProcessorInformation(&buffer[0], &length);
 
 		for (DWORD i = 0; i != length / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION); ++i) {
 			if (buffer[i].Relationship == RelationProcessorCore) {
@@ -110,6 +115,14 @@ void GetProcessorInfo(int* cores, int* threads)
 		}
 		delete[] buffer;
 	}
+	else // - Windows XP SP2
+	{
+		SYSTEM_INFO si = { 0 };
+		GetSystemInfo(&si);
+
+		*cores = si.dwNumberOfProcessors;
+		*threads = si.dwNumberOfProcessors;
+	}
 #else
 	SYSTEM_INFO si = {0};
 	GetSystemInfo(&si);
@@ -121,34 +134,55 @@ void GetProcessorInfo(int* cores, int* threads)
 
 #if defined(_M_IX86) || defined(_M_X64)
 
+void getProcessorBrandString(char* brandString);
+void getCpuName(char* cpuName);
+unsigned int getCacheInfoIntel(int test);
+CStringA getCpuModelName(CStringA vendor, unsigned int family, unsigned int model, unsigned int stepping, unsigned int type, unsigned int L2Cashe, unsigned int fpu);
+
 #if _MSC_VER > 1310
 #include <intrin.h> // for __cpuid
 
-void getProcessorBrandString(char* brandString) {
+void GetCpuid(unsigned int param, unsigned int* _eax, unsigned int* _ebx, unsigned int* _ecx, unsigned int* _edx)
+{
+	int cpuInfo[4] = { 0 };
+	__cpuid(cpuInfo, param);
 
-	__try
-	{
-		int cpuInfo[4] = { 0 };
-		__cpuid(cpuInfo, 0x80000000);
-		if (cpuInfo[0] >= 0x80000004) {
-			for (int i = 0x80000002; i <= 0x80000004; ++i) {
-				__cpuid(cpuInfo, i);
-				memcpy(brandString + (i - 0x80000002) * 16, cpuInfo, sizeof(cpuInfo));
-			}
-		}
-		else {
-			strcpy(brandString, "");
-		}	
-	}
-	__except (EXCEPTION_EXECUTE_HANDLER)
-	{
-		strcpy(brandString, "");
-	}
+	*_eax = cpuInfo[0];
+	*_ebx = cpuInfo[1];
+	*_ecx = cpuInfo[2];
+	*_edx = cpuInfo[3];
 }
 #else
-void getCpuid(unsigned int param, unsigned int* _eax, unsigned int* _ebx, unsigned int* _ecx, unsigned int* _edx)
+BOOL IsCpuidSupported()
 {
-	unsigned int a, b, c, d; 
+	bool supported = false;
+	__asm {
+		pushfd
+		pop     eax
+		mov     ebx, eax
+		xor eax, 0x200000
+		push    eax
+		popfd
+		pushfd
+		pop     eax
+		xor eax, ebx
+		test    eax, 0x200000
+		jz      not_supported
+		mov     supported, 1
+		not_supported:
+		push    ebx
+		popfd
+	}
+
+	return supported;
+}
+
+void GetCpuid(unsigned int param, unsigned int* _eax, unsigned int* _ebx, unsigned int* _ecx, unsigned int* _edx)
+{
+	static BOOL bIsCpuid = IsCpuidSupported();
+	if (!bIsCpuid) { return; }
+
+	unsigned int a, b, c, d;
 	__asm {
 		MOV EAX, param
 		CPUID
@@ -162,6 +196,7 @@ void getCpuid(unsigned int param, unsigned int* _eax, unsigned int* _ebx, unsign
 	*_ecx = c;
 	*_edx = d;
 }
+#endif
 
 void getProcessorBrandString(char* brandString)
 {
@@ -173,7 +208,7 @@ void getProcessorBrandString(char* brandString)
 	__try
 	{
 		// Check if CPUID supports brand string
-		getCpuid(0x80000000, &eax, &ebx, &ecx, &edx);
+		GetCpuid(0x80000000, &eax, &ebx, &ecx, &edx);
 		if (eax < 0x80000004) {
 			strcpy(brandString, "");
 			return;
@@ -181,7 +216,7 @@ void getProcessorBrandString(char* brandString)
 
 		// Get brand string
 		for (int i = 0x80000002; i <= 0x80000004; ++i) {
-			getCpuid(i, &eax, &ebx, &ecx, &edx);
+			GetCpuid(i, &eax, &ebx, &ecx, &edx);
 			memcpy(brandString + (i - 0x80000002) * 16, &eax, 4);
 			memcpy(brandString + (i - 0x80000002) * 16 + 4, &ebx, 4);
 			memcpy(brandString + (i - 0x80000002) * 16 + 8, &ecx, 4);
@@ -194,17 +229,801 @@ void getProcessorBrandString(char* brandString)
 	}
 }
 
+void GetHypervisorVendorString(char* vendorString)
+{
+	unsigned int eax = 0;
+	unsigned int ebx = 0;
+	unsigned int ecx = 0;
+	unsigned int edx = 0;
+
+	__try
+	{
+		GetCpuid(0x40000000, &eax, &ebx, &ecx, &edx);
+		memcpy(vendorString, &ebx, 4);
+		memcpy(vendorString + 4, &ecx, 4);
+		memcpy(vendorString + 8, &edx, 4);
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER)
+	{
+		strcpy(vendorString, "");
+	}
+}
+
+#if _MSC_VER <= 1310
+
+BOOL Is486orAbove();
+BOOL IsCyrixCPU();
+BOOL IsAmd486();
+BOOL readCcr(BYTE addr, BYTE* value);
+CStringA getCyrixModelName();
+
+inline unsigned char inpb(unsigned short port)
+{
+	unsigned char val;
+	__asm {
+		mov dx, port
+		in  al, dx
+		mov val, al
+	}
+	return val;
+}
+
+inline void outpb(unsigned short port, unsigned char data)
+{
+	__asm {
+		mov dx, port
+		mov al, data
+		out dx, al
+	}
+}
+
+// https://github.com/captainys/TOWNSEMU/issues/147#issuecomment-2764633838
+BOOL IsFMTOWNS()
+{
+	static BOOL b = -1;
+	if (b == -1)
+	{
+		b = FALSE;
+
+		if (IsPC98())
+		{
+			return FALSE;
+		}
+
+		if (! IsWin95First())
+		{
+			return FALSE;
+		}
+
+		if (GetUserDefaultLCID() != 0x0411) // Japanese
+		{
+			return FALSE;
+		}
+
+		__try
+		{
+			BYTE in30 = (BYTE)inpb(0x30);
+			BYTE in31 = (BYTE)inpb(0x31);
+			if (in30 && in30 != 0xFF && in31 && in31 != 0xFF)
+			{
+				b = TRUE;
+				return TRUE;
+			}
+		}
+		__except (EXCEPTION_EXECUTE_HANDLER)
+		{
+			return FALSE;
+		}
+	}
+
+	return b;
+}
+
+BOOL Is486orAbove()
+{
+	BOOL result = FALSE;
+
+	__asm {
+		pushfd
+		pop eax
+		mov ecx, eax
+		xor eax, 0x40000
+		push eax
+		popfd
+
+		pushfd
+		pop eax
+		cmp eax, ecx
+		jz is_not_80486
+
+		mov result, 1
+		jmp end
+
+		is_not_80486 :
+			mov result, 0
+			end :
+	}
+
+	return result;
+}
+
+BOOL IsCyrixCPU()
+{
+	BOOL result = FALSE;
+
+	__asm {
+		xor ax, ax
+		sahf
+		mov ax, 5
+		mov bx, 2
+		div bl
+		lahf
+		cmp ah, 2
+		jne not_cyrix
+
+		mov result, 1
+		jmp end
+
+		not_cyrix:
+			mov result, 0
+			end:
+	}
+
+	return result;
+}
+
+BOOL IsAmd486()
+{
+	__try
+	{
+		outpb(0xC0, 0x55);
+		BYTE val = (BYTE)inpb(0xC0);
+		if (val == 0x55)
+		{
+			return TRUE;
+		}
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER)
+	{
+		return FALSE;
+	}
+
+	return FALSE;
+}
+
+BOOL readCcr(BYTE addr, BYTE* value)
+{
+	__try
+	{
+		outpb(0x22, addr);
+		*value = inpb(0x23);
+		return TRUE;
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER)
+	{
+		return FALSE;
+	}
+}
+
+// http://www.bitsavers.org/components/cyrix/appnotes/Cyrix_CPU_Detection_Guide_1997.pdf
+CStringA getCyrixModelName()
+{
+	BYTE dir0 = 0;
+
+	if(! readCcr(0xFE, &dir0))
+	{
+		return "Cyrix Unknown CPU";
+	}
+		 if (0x00 <= dir0 && dir0 <= 0x1F) { return "Cyrix Cx486"; }
+	else if (0x20 <= dir0 && dir0 <= 0x2F) { return "Cyrix 5x86"; }
+	else if (0x30 <= dir0 && dir0 <= 0x3F) { return "Cyrix 6x86"; }
+	else if (0x40 <= dir0 && dir0 <= 0x4F) { return "Cyrix MediaGX"; }
+	else if (0x50 <= dir0 && dir0 <= 0x5F) { return "Cyrix 6x86MX/MII"; }
+	else
+	{
+		 return "Cyrix Unknown CPU";
+	}
+}
+
 #endif
+
+void getCpuName(char* cpuName)
+{
+	unsigned int eax = 0;
+	unsigned int ebx = 0;
+	unsigned int ecx = 0;
+	unsigned int edx = 0;
+	unsigned int maxCpuId = 0;
+
+#if _MSC_VER <= 1310
+	if(! IsCpuidSupported())
+	{
+		CStringA modelName = "";
+
+		if (! Is486orAbove())
+		{
+			modelName = "386 Generation Processor";
+		}
+		else if (IsFMTOWNS())
+		{
+			
+		}
+		else if (IsCyrixCPU())
+		{
+			modelName = "Cyrix Unknown CPU";
+			if (IsWin9x() && !IsPC98() && !IsFMTOWNS()) // PC-98 and FM TOWNS are not supported. 
+			{
+				modelName = getCyrixModelName();
+			}
+		}
+		else if (IsWin9x())
+		{
+			if (IsAmd486())
+			{
+				modelName = "AMD Am486/Am5x86";
+			}
+		}
+
+		if (modelName.IsEmpty())
+		{
+			SYSTEM_INFO si = { 0 };
+			GetSystemInfo(&si);
+
+			switch (si.dwProcessorType)
+			{
+			case PROCESSOR_INTEL_386:
+				modelName = "386 Generation Processor";
+				break;
+			case PROCESSOR_INTEL_486:
+				modelName = "486 Generation Processor";
+				break;
+			case PROCESSOR_INTEL_PENTIUM:
+				modelName = "586 Generation Processor";
+				break;
+			case PROCESSOR_ARCHITECTURE_UNKNOWN:
+			default:
+				modelName = "Unknown Processor";
+				break;
+			}
+		}
+
+		sprintf(cpuName, "%s", modelName.GetString());
+		return;
+	}
+#endif
+
+	char vendorString[13] = {0};
+	GetCpuid(0x00, &eax, &ebx, &ecx, &edx);
+	memcpy(vendorString, &ebx, 4);
+	memcpy(vendorString + 4, &edx, 4);
+	memcpy(vendorString + 8, &ecx, 4);
+
+	GetCpuid(0x80000000, &eax, &ebx, &ecx, &edx);
+	maxCpuId = eax;
+
+	if (maxCpuId >= 0x80000004)
+	{
+		getProcessorBrandString(cpuName);
+	}
+	else 
+	{
+		CStringA vendor = vendorString;
+		GetCpuid(0x1, &eax, &ebx, &ecx, &edx);
+
+		unsigned int version = eax;
+		unsigned int family = (version >> 8) & 0xF;
+		unsigned int model = (version >> 4) & 0xF;
+		unsigned int stepping = version & 0xF;
+		unsigned int type = (version >> 12) & 0x3;
+
+		unsigned int fpu = 1; // Under Construction
+
+		unsigned int cacheL2 = 0;
+		unsigned int temp = 0;
+		if (vendor.Find("GenuineIntel") == 0)
+		{
+			GetCpuid(0x2, &eax, &ebx, &ecx, &edx);
+			temp = getCacheInfoIntel((eax & 0xFF000000) >> 24); if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((eax & 0x00FF0000) >> 16); if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((eax & 0x0000FF00) >> 8);  if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((eax & 0x000000FF) >> 0);  if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((ebx & 0xFF000000) >> 24); if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((ebx & 0x00FF0000) >> 16); if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((ebx & 0x0000FF00) >> 8);  if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((ebx & 0x000000FF) >> 0);  if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((ecx & 0xFF000000) >> 24); if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((ecx & 0x00FF0000) >> 16); if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((ecx & 0x0000FF00) >> 8);  if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((ecx & 0x000000FF) >> 0);  if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((edx & 0xFF000000) >> 24); if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((edx & 0x00FF0000) >> 16); if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((edx & 0x0000FF00) >> 8);  if (temp > 0) { cacheL2 = temp; }
+			temp = getCacheInfoIntel((edx & 0x000000FF) >> 0);  if (temp > 0) { cacheL2 = temp; }
+		}
+
+		if(maxCpuId >= 0x80000006)
+		{
+			GetCpuid(0x80000006, &eax, &ebx, &ecx, &edx);
+			cacheL2 = ((ebx >> 12) & 0xF) * 256;
+		}
+
+		CStringA modelName = getCpuModelName(vendor, family, model, stepping, type, cacheL2, fpu);
+
+		sprintf(cpuName, "%s", modelName.GetString());
+	}
+}
+
+unsigned int getCacheInfoIntel(int test)
+{
+	unsigned int CacheL2 = 0;
+	switch (test)
+	{
+	case 0x39:CacheL2 = 128;break;
+	case 0x3A:CacheL2 = 192;break;
+	case 0x3B:CacheL2 = 128;break;
+	case 0x3C:CacheL2 = 256;break;
+	case 0x3D:CacheL2 = 384;break;
+	case 0x3E:CacheL2 = 512;break;
+	case 0x41:CacheL2 = 128;break;
+	case 0x42:CacheL2 = 256;break;
+	case 0x43:CacheL2 = 512;break;
+	case 0x44:CacheL2 = 1024;break;
+	case 0x45:CacheL2 = 2048;break;
+	case 0x48:CacheL2 = 3072;break;
+	case 0x49:CacheL2 = 4096;break;
+	case 0x4E:CacheL2 = 6144;break;
+	case 0x78:CacheL2 = 1024;break;
+	case 0x79:CacheL2 = 128;break;
+	case 0x7A:CacheL2 = 256;break;
+	case 0x7B:CacheL2 = 512;break;
+	case 0x7C:CacheL2 = 1024;break;
+	case 0x7D:CacheL2 = 2048;break;
+	case 0x7E:CacheL2 = 256;break;
+	case 0x7F:CacheL2 = 512;break;
+	case 0x81:CacheL2 = 128;break;
+	case 0x82:CacheL2 = 256;break;
+	case 0x83:CacheL2 = 512;break;
+	case 0x84:CacheL2 = 1024;break;
+	case 0x85:CacheL2 = 2048;break;
+	case 0x86:CacheL2 = 512;break;
+	case 0x87:CacheL2 = 1024;break;
+	default:;
+	}
+
+	return CacheL2;
+}
+
+CStringA getCpuModelName(CStringA vendor, unsigned int family, unsigned int model, unsigned int stepping, unsigned int type, unsigned int cacheL2, unsigned int fpu)
+{
+	CStringA modelName;
+	int F = family;
+	int M = model;
+	int S = stepping;
+	int CacheL2 = cacheL2;
+	char* n = NULL;
+	char* v = NULL;
+
+	if (vendor.Find("GenuineIntel") == 0)
+	{
+		v = "Intel";
+		switch (family)
+		{
+		case 0x06:
+			switch (model)
+			{
+				/////////////
+				// Cascades
+				/////////////
+			case 0xA:
+				n = "Pentium III Xeon";
+				break;
+				///////////
+				// Banias
+				///////////
+			case 9:
+				if (CacheL2 == 1024) {
+					n = "Pentium M";
+				} else {
+					n = "Celeron M";
+				}
+				break;
+				///////////////
+				// Coppermine
+				///////////////
+			case 8:
+				if (CacheL2 >= 256) {
+					n = "Pentium III";
+				} else if (CacheL2 <= 128) {
+					n = "Celeron";
+				}
+				break;
+			///////////
+			// Katmai
+			///////////
+			case 7:
+				if (CacheL2 == 1024) {
+					n = "Pentium III Xeon";
+				} else {
+					n = "Pentium III";
+				}
+				break;
+			//////////////////////
+			// Dixon & Mendocino
+			//////////////////////
+			case 6:
+				if ((S == 0xA || S == 0xD) && CacheL2 == 256) {
+					n = "Mobile Pentium II";
+				} else if ((S == 0xA || S == 0xD) && CacheL2 == 128) {
+					n = "Mobile Celeron";
+				} else {
+					n = "Celeron";
+				}
+				break;
+			//////////////
+			// Deschutes
+			//////////////
+			case 5:
+				if (CacheL2 > 512) {
+					n = "Pentium II Xeon";
+				} else if (CacheL2 == 512 && type == 0x1) {
+					n = "Pentium II OverDrive";
+				} else if (CacheL2 == 512) {
+					n = "Pentium II";
+				} else if (CacheL2 == 0) {
+					n = "Celeron";
+				}
+				break;
+			case 4:
+				n = "OverDrive";
+				break;
+			case 3:
+				if (type == 0x1) {
+					n = "Pentium II OverDrive";
+				} else {
+					n = "Pentium II";
+				}
+				break;
+			///////
+			// P6
+			///////
+			case 2:
+				n = "Pentium Pro";
+				break;
+			case 1:
+				n = "Pentium Pro";
+				break;
+			case 0:
+				n = "Pentium Pro";
+				break;
+			}
+			break;
+		////////////
+		// Pentium 
+		////////////
+		case 5:
+			switch (model) {
+			case 8:
+				n = "Pentium MMX";
+				break;
+			case 7:
+				n = "Pentium";
+				break;
+			case 6:
+				n = "Pentium OverDrive";
+				break;
+			case 5:
+				n = "Pentium OverDrive";
+				break;
+			case 4:
+				if (type == 1) {
+					n = "Pentium MMX OverDrive";
+				} else {
+					n = "Pentium MMX";
+				}
+				break;
+			case 3:
+				n = "Pentium OverDrive";
+				break;
+			case 2:
+				if (type == 1) {
+					n = "Pentium OverDrive";
+				} else {
+					n = "Pentium";
+				}
+				break;
+			case 1:
+			case 0:
+				if (type == 1) {
+					n = "Pentium OverDrive";
+				} else {
+					n = "Pentium";
+				}
+				break;
+			default:
+				n = "Pentium";
+				break;
+			}
+			break;
+		////////
+		// 486
+		////////
+		case 4:
+			switch (model) {
+			case 9:
+				n = "486DX4 WB";
+				break;
+			case 8:
+				n = "486DX4";
+				break;
+			case 7:
+				n = "486DX2 WB";
+				break;
+			case 5:
+				n = "486SX2";
+				break;
+			case 4:
+				n = "486SL";
+				break;
+			case 3:
+				n = "486DX2";
+				break;
+			case 2:
+				n = "486SX";
+				break;
+			case 1:
+			case 0:
+				n = "486DX";
+				break;
+			default:
+				n = "486";
+				break;
+			}
+			break;
+		case 3:
+			n = "386";
+			break;
+		default:
+			n = "Unknown CPU";
+			break;
+		}
+	}
+	else if (vendor.Find("AuthenticAMD") == 0)
+	{
+		v = "AMD";
+		switch (family)
+		{
+		case 5:
+			switch (model) {
+			case 0xD:
+			case 0xC:
+				if (CacheL2 == 256) {
+					n = "K6-III+";
+				} else {
+					n = "K6-2+";
+				}
+				break;
+			case 0xA:
+				n = "Geode LX";
+				break;
+			case 9:
+				n = "K6-III";
+				break;
+			case 8:
+				n = "K6-2";
+				break;
+			case 7:
+				n = "K6";
+				break;
+			case 3:
+			case 2:
+			case 1:
+			case 0:
+				n = "K5";
+				break;
+			default:
+				n = "Unknown CPU";
+				break;
+			}
+			break;
+		case 4:
+			switch (model) {
+			case 0xF:
+			case 0xE:
+				n = "Am5x86";
+				break;
+			case 9:
+			case 8:
+				n = "Am486DX4/Am5x86";
+				break;
+			case 7:
+			case 3:
+				if (fpu)
+				{
+					n = "Am486DX2";
+				}
+				else
+				{
+					n = "Am486SX2";
+				}
+				break;
+			default:
+				n = "Unknown CPU";
+				break;
+			}
+			break;
+		default:
+			n = "Unknown CPU";
+			break;
+		}
+	}
+	else if (vendor.Find("CentaurHauls") == 0 || vendor.Find("VIA VIA VIA") == 0)
+	{
+		v = "";
+		switch (family)
+		{
+		case 6:
+			switch (model)
+			{
+			case 0xF:
+				n = "VIA Nano";
+				break;
+			case 0xD:
+			case 0xC:
+			case 0xB:
+			case 0xA:
+				n = "VIA C7";
+				break;
+			case 9:
+			case 8:
+			case 7:
+				n = "VIA C3";
+				break;
+			case 6:
+				n = "VIA Cyrix III";
+				break;
+			case 5:
+				if (stepping == 0)
+				{
+					n = "VIA 6x86MX";
+				}
+				else
+				{
+					n = "VIA Cyrix III";
+				}				
+				break;
+			case 4:
+				n = "VIA Cyrix III";
+				break;
+			case 3:
+				n = "VIA 6x86MX";
+				break;
+			case 2:
+				n = "VIA Cyrix III";
+				break;
+			case 0:
+				n = "VIA 6x86MX";
+				break;
+			default:
+				n = "VIA Unknown CPU";
+				break;
+			}
+			break;
+		case 5:
+			switch (model)
+			{
+			case 9:
+				n = "IDT WinChip 3";
+				break;
+			case 8:
+				n = "IDT WinChip 2";
+				break;
+			case 4:
+				n = "IDT WinChip C6";
+				break;
+			default:
+				n = "VIA Unknown CPU";
+				break;
+			}
+			break;
+		default:
+			n = "VIA Unknown CPU";
+			break;
+		}
+	}
+	else if (vendor.Find("CyrixInstead") == 0)
+	{
+		v = "Cyrix";
+		switch (family)
+		{
+		case 6:
+			switch (model)
+			{
+			case 0:
+				n = "MII";
+				break;
+			default:
+				n = "Unknown CPU";
+				break;
+			}
+			break;
+		case 5:
+			switch (model)
+			{
+			case 9:
+				n = "Geode";
+				break;
+			case 4:
+				n = "MediaGX";
+				break;
+			case 2:
+				n = "6x86";
+				break;
+			default:
+				n = "Unknown CPU";
+				break;
+			}
+			break;
+		case 4:
+			switch (model)
+			{
+			case 4:
+				n = "MediaGX";
+				break;
+			default:
+				n = "Unknown CPU";
+				break;
+			}
+			break;
+		default:
+			n = "Unknown CPU";
+			break;
+		}
+	}
+	else if (vendor.Find("SiS SiS SiS") == 0)
+	{
+		v = "SiS";
+		n = "55x";
+	}
+	else if (vendor.Find("Geode by NSC") == 0)
+	{
+		v = "NSC";
+		n = "Geode";
+	}
+	else if (vendor.Find("NexGenDriven") == 0)
+	{
+		v = "NexGen";
+		n = "Nx586";
+	}
+	else if (vendor.Find("RiseRiseRise") == 0)
+	{
+		v = "Rise";
+		n = "mP6";
+	}
+	else if (vendor.Find("UMC UMC UMC") == 0)
+	{
+		v = "UMC";
+		n = "Green CPU";
+	}
+	else
+	{
+		v = NULL;
+		n = NULL;
+	}
+
+	if (v != NULL && n != NULL)
+	{
+		modelName.Format("%s %s", v, n);
+		return modelName;
+	}
+	else
+	{
+		return "";
+	}	
+}
 #endif
 
 void GetCpuInfo(CString& cpuInfo, CString& cpuName, int* clock, int* cores, int* threads)
 {
-
-#if _MSC_VER <= 1310
-	if (!IsWin9x())
-	{
-#endif
-
 	CString query = _T("Select * from Win32_Processor");
 
 	IWbemLocator*			pIWbemLocator = NULL;
@@ -241,9 +1060,18 @@ void GetCpuInfo(CString& cpuInfo, CString& cpuName, int* clock, int* cores, int*
 							// UINT32 cores = 0;
 							// UINT32 threads = 0;
 
+#if defined(_M_IX86) || defined(_M_X64)
+							char brandString[49] = { 0 };
+							getCpuName(brandString);
+							//getProcessorBrandString(brandString);
+							name = brandString;
+							name.TrimLeft();
+							name.TrimRight();
+							cpuName = name;
+#endif
 							VARIANT pVal;
 							VariantInit(&pVal);
-							if (pCOMDev->Get(L"Name", 0L, &pVal, NULL, NULL) == WBEM_S_NO_ERROR && pVal.vt > VT_NULL)
+							if (name.IsEmpty() && pCOMDev->Get(L"Name", 0L, &pVal, NULL, NULL) == WBEM_S_NO_ERROR && pVal.vt > VT_NULL)
 							{
 								name = pVal.bstrVal;
 								name.TrimLeft();
@@ -325,10 +1153,6 @@ void GetCpuInfo(CString& cpuInfo, CString& cpuName, int* clock, int* cores, int*
 	SAFE_RELEASE(pIWbemServices);
 	SAFE_RELEASE(pIWbemLocator);
 
-#if _MSC_VER <= 1310
-	}
-#endif
-
 	if (cpuInfo.IsEmpty())
 	{
 		TCHAR str[256] = {};
@@ -337,7 +1161,16 @@ void GetCpuInfo(CString& cpuInfo, CString& cpuName, int* clock, int* cores, int*
 		ULONG size = 256 * sizeof(TCHAR);
 		HKEY  hKey = NULL;
 
-		if (! IsWin9x())
+#if defined(_M_IX86) || defined(_M_X64)
+		char brandString[49] = { 0 };
+		getCpuName(brandString);
+		//getProcessorBrandString(brandString);
+		cpuInfo = brandString;
+		cpuInfo.TrimLeft();
+		cpuInfo.TrimRight();
+#endif
+
+		if (cpuInfo.IsEmpty() && !IsWin9x())
 		{
 			if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0"), 0, KEY_READ, &hKey) == ERROR_SUCCESS)
 			{
@@ -350,40 +1183,8 @@ void GetCpuInfo(CString& cpuInfo, CString& cpuName, int* clock, int* cores, int*
 			}
 		}
 
-#if defined(_M_IX86) || defined(_M_X64)
-		if (cpuInfo.IsEmpty())
-		{
-			char brandString[48] = { 0 };
-			getProcessorBrandString(brandString);
-			cpuInfo = brandString;
-			cpuInfo.TrimLeft();
-			cpuInfo.TrimRight();
-		}
-#endif
-
 #ifdef _M_IX86
-		if (cpuInfo.IsEmpty())
-		{
-			SYSTEM_INFO si = { 0 };
-			GetSystemInfo(&si);
 
-			switch (si.dwProcessorType)
-			{
-			case PROCESSOR_INTEL_386:
-				cpuInfo = _T("Intel 386 Processor");
-				break;
-			case PROCESSOR_INTEL_486:
-				cpuInfo = _T("Intel 486 Processor");
-				break;
-			case PROCESSOR_INTEL_PENTIUM:
-				cpuInfo = _T("Intel Pentium Processor");
-				break;
-			case PROCESSOR_ARCHITECTURE_UNKNOWN:
-			default:
-				cpuInfo = _T("Unknown Processor");
-				break;
-			}			
-		}
 #endif
 		cpuName = cpuInfo;
 
@@ -423,14 +1224,19 @@ void GetCpuInfo(CString& cpuInfo, CString& cpuName, int* clock, int* cores, int*
 		}		
 	}
 
+	cpuName.Replace(_T("(R)"), _T(""));
+	cpuName.Replace(_T("(r)"), _T(""));
+	cpuName.Replace(_T("(TM)"), _T(""));
+	cpuName.Replace(_T("(tm)"), _T(""));
 	cpuInfo.Replace(_T("(R)"), _T(""));
 	cpuInfo.Replace(_T("(TM)"), _T(""));
+	cpuInfo.Replace(_T("(t)"), _T(""));
+	cpuInfo.Replace(_T("(tm)"), _T(""));
 }
 
 void GetGpuInfo(CString& gpuInfo)
 {
 #if _MSC_VER > 1310
-
 	#pragma comment(lib, "dxgi.lib")
 
 	HMODULE hModule = LoadLibraryEx(_T("dxgi.dll"), NULL, LOAD_LIBRARY_SEARCH_SYSTEM32);
@@ -455,7 +1261,7 @@ void GetGpuInfo(CString& gpuInfo)
 				pAdapter->GetDesc(&adapterDesc);
 
 				CString cstr;
-				cstr.Format(L"%s [%d MB]", adapterDesc.Description, (int)(adapterDesc.DedicatedVideoMemory / (1024 * 1024)));
+				cstr.Format(L"%s [%dMB]", adapterDesc.Description, (int)(adapterDesc.DedicatedVideoMemory / (1024 * 1024)));
 
 				if (cstr.Find(L"Microsoft Basic Render Driver") == 0)
 				{
@@ -466,6 +1272,10 @@ void GetGpuInfo(CString& gpuInfo)
 				if (gpuInfo.IsEmpty())
 				{
 					gpuInfo = cstr;
+				}
+				else if (gpuInfo.Find(cstr) >= 0)
+				{
+					// Duplication
 				}
 				else
 				{
@@ -554,6 +1364,15 @@ void GetGpuInfo(CString& gpuInfo)
 	SAFE_RELEASE(pIWbemServices);
 	SAFE_RELEASE(pIWbemLocator);
 
+#ifndef UNICODE
+	if (IsWin9x())
+	{
+		TCHAR str[256] = { 0 };
+		GetPrivateProfileStringFx(_T("boot.description"), _T("display.drv"), _T(""), str, 256, _T("system.ini"));
+		gpuInfo = str;
+	}
+#endif
+
 	if (gpuInfo.IsEmpty())
 	{
 		TCHAR str[256] = {};
@@ -586,6 +1405,100 @@ void GetGpuInfo(CString& gpuInfo)
 					gpuInfo = str;
 					gpuInfo.TrimLeft();
 					gpuInfo.TrimRight();
+				}
+				RegCloseKey(hKey);
+			}
+		}
+		if (gpuInfo.IsEmpty())
+		{
+			TCHAR str[256] = {};
+			DWORD value = 0;
+			DWORD type = REG_SZ;
+			ULONG size = 256 * sizeof(TCHAR);
+			HKEY  hKey = NULL;
+			HKEY  hKey2 = NULL;
+			type = REG_SZ;
+			size = 256 * sizeof(TCHAR);
+			CString videoKey, key;
+			if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("HARDWARE\\DEVICEMAP\\VIDEO"), 0, KEY_READ, &hKey) == ERROR_SUCCESS)
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					videoKey.Format(_T("\\Device\\Video%d"), i);
+					key = _T("");
+					if (RegQueryValueEx(hKey, videoKey, NULL, &type, (LPBYTE)str, &size) == ERROR_SUCCESS)
+					{
+						key = str;
+					}
+
+					if (!key.IsEmpty())
+					{
+						key.MakeLower().Replace(_T("\\registry\\machine\\"), _T(""));
+						if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key, 0, KEY_READ, &hKey2) == ERROR_SUCCESS)
+						{
+							type = REG_SZ;
+							size = 256 * sizeof(TCHAR);
+							if (RegQueryValueEx(hKey2, _T("DriverDesc"), NULL, &type, (LPBYTE)str, &size) == ERROR_SUCCESS)
+							{
+								CString cstr = str;
+								cstr.TrimLeft();
+								cstr.TrimRight();
+
+								if (gpuInfo.IsEmpty())
+								{
+									gpuInfo = cstr;
+								}
+								else
+								{
+									gpuInfo += _T(" | ") + cstr;
+								}
+								RegCloseKey(hKey2);
+								break;
+							}
+							
+							type = REG_BINARY;
+							if (RegQueryValueEx(hKey2, _T("HardwareInformation.AdapterString"), NULL, &type, (LPBYTE)str, &size) == ERROR_SUCCESS)
+							{
+							#ifndef UNICODE
+								char buf[256] = {};
+								WideCharToMultiByte(CP_ACP, 0, (WCHAR*)str, size, buf, 256, 0, 0);
+								CString cstr = buf;
+							#else
+								CString cstr = str;
+							#endif
+								cstr.TrimLeft();
+								cstr.TrimRight();
+
+								if (gpuInfo.IsEmpty())
+								{
+									gpuInfo = cstr;
+								}
+								else
+								{
+									gpuInfo += _T(" | ") + cstr;
+								}
+								RegCloseKey(hKey2);
+								break;
+							}
+							else
+							{
+								_tcscpy(str, key);
+								PathRemoveFileSpec(str);
+								CString cstr = PathFindFileName(str);
+								cstr += _T(" compatible device");
+								if (gpuInfo.IsEmpty())
+								{
+									gpuInfo = cstr;
+								}
+								else
+								{
+									gpuInfo += _T(" | ") + cstr;
+								}
+								RegCloseKey(hKey2);
+								break;
+							}
+						}
+					}
 				}
 				RegCloseKey(hKey);
 			}
@@ -817,6 +1730,17 @@ void GetComputerSystemInfo(CString& computerSystemInfo)
 			RegCloseKey(hKey);
 		}
 	}
+
+#if _MSC_VER <= 1310
+	if (IsPC98())
+	{
+		computerSystemInfo = _T("[PC-98] ") + computerSystemInfo;
+	}
+	else if (IsFMTOWNS())
+	{
+		computerSystemInfo = _T("[FM TOWNS] ") + computerSystemInfo;
+	}
+#endif
 }
 
 void GetScreenInfo(CString& screenInfo, int* width, int* height, int* color, CString& smoothing)
@@ -858,12 +1782,12 @@ void GetMemoryInfo(CString& memoryInfo, int* size)
 
 	if ((int)(memory.ullTotalPhys / 1024 / 1024 / 1024 + 1) > 1)
 	{
-		memoryInfo.Format(_T("%.1f GB"), (memory.ullTotalPhys / 1024.0 / 1024 / 1024));
+		memoryInfo.Format(_T("%.1fGB"), (memory.ullTotalPhys / 1024.0 / 1024 / 1024));
 
 	}
 	else
 	{
-		memoryInfo.Format(_T("%d MB"), (int)(memory.ullTotalPhys / 1024.0 / 1024 + 1));
+		memoryInfo.Format(_T("%dMB"), (int)(memory.ullTotalPhys / 1024.0 / 1024 + 1));
 	}
 	if(size != NULL){*size = (int)(memory.ullTotalPhys / 1024.0 / 1024 + 1);}
 #else
@@ -885,12 +1809,12 @@ void GetMemoryInfo(CString& memoryInfo, int* size)
 
 		if ((int)(memory.ullTotalPhys / 1024 / 1024 / 1024 + 1) > 1)
 		{
-			memoryInfo.Format(_T("%.1f GB"), (memory.ullTotalPhys / 1024.0 / 1024 / 1024));
+			memoryInfo.Format(_T("%.1fGB"), (memory.ullTotalPhys / 1024.0 / 1024 / 1024));
 
 		}
 		else
 		{
-			memoryInfo.Format(_T("%d MB"), (int)(memory.ullTotalPhys / 1024.0 / 1024 + 1));
+			memoryInfo.Format(_T("%dMB"), (int)(memory.ullTotalPhys / 1024.0 / 1024 + 1));
 		}
 		if (size != NULL) { *size = (int)(memory.ullTotalPhys / 1024.0 / 1024 + 1); }
 	}
@@ -902,14 +1826,57 @@ void GetMemoryInfo(CString& memoryInfo, int* size)
 
 		if ((int)(memory.dwTotalPhys / 1024 / 1024 / 1024 + 1) > 1)
 		{
-			memoryInfo.Format(_T("%.1f GB"), (memory.dwTotalPhys / 1024.0 / 1024 / 1024));
+			memoryInfo.Format(_T("%.1fGB"), (memory.dwTotalPhys / 1024.0 / 1024 / 1024));
 
 		}
 		else
 		{
-			memoryInfo.Format(_T("%d MB"), (int)(memory.dwTotalPhys / 1024.0 / 1024 + 1));
+			memoryInfo.Format(_T("%dMB"), (int)(memory.dwTotalPhys / 1024.0 / 1024 + 1));
 }
 		if (size != NULL) { *size = (int)(memory.dwTotalPhys / 1024.0 / 1024 + 1); }
 	}
 #endif
 }
+
+#if _MSC_VER <= 1310
+/// https://www.betaarchive.com/wiki/index.php/Microsoft_KB_Archive/124207
+BOOL IsCoProcessorPresent()
+{
+#define MY_ERROR_WRONG_OS 0x20000000
+	HKEY hKey;
+	SYSTEM_INFO SystemInfo;
+
+	// return FALSE if we are not running under Windows NT
+	// this should be expanded to cover alternative Win32 platforms
+
+	if (!(GetVersion() & 0x7FFFFFFF))
+	{
+		SetLastError(MY_ERROR_WRONG_OS);
+		return(FALSE);
+	}
+
+	// we return TRUE if we're not running on x86
+	// other CPUs have built in floating-point, with no registry entry
+
+	GetSystemInfo(&SystemInfo);
+
+	if ((SystemInfo.dwProcessorType != PROCESSOR_INTEL_386) &&
+		(SystemInfo.dwProcessorType != PROCESSOR_INTEL_486) &&
+		(SystemInfo.dwProcessorType != PROCESSOR_INTEL_PENTIUM))
+	{
+		return(TRUE);
+	}
+
+	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("HARDWARE\\DESCRIPTION\\System\\FloatingPointProcessor"),
+		0, KEY_EXECUTE,	&hKey) != ERROR_SUCCESS)
+	{
+		// GetLastError() will indicate ERROR_RESOURCE_DATA_NOT_FOUND
+		// if we can't find the key.  This indicates no coprocessor present
+		return(FALSE);
+	}
+
+	RegCloseKey(hKey);
+	return(TRUE);
+}
+#endif
+

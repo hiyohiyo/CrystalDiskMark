@@ -197,21 +197,21 @@
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseMSIMei|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|ARM64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -312,7 +312,7 @@
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -475,21 +475,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Cecile\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Hotori\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Cecile\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Hotori\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|Win32'">..\Cecile\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi|Win32'">..\Cecile\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseMSIMei|Win32'">..\Cecile\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|Win32'">..\Cecile\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi(UWP)|Win32'">..\Cecile\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Cecile\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|Win32'">..\Cecile\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|Win32'">..\Hotori\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi|Win32'">..\Hotori\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseMSIMei|Win32'">..\Hotori\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|Win32'">..\Hotori\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi(UWP)|Win32'">..\Hotori\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Hotori\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|Win32'">..\Hotori\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|Win32'">Build\$(Platform)\$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi|Win32'">Build\$(Platform)\$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseMSIMei|Win32'">Build\$(Platform)\$(Configuration)\</IntDir>
@@ -511,13 +511,13 @@
     <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi(UWP)|Win32'">true</EmbedManifest>
     <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</EmbedManifest>
     <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|Win32'">true</EmbedManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|x64'">..\Cecile\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi|x64'">..\Cecile\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseMSIMei|x64'">..\Cecile\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|x64'">..\Cecile\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi(UWP)|x64'">..\Cecile\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Cecile\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|x64'">..\Cecile\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|x64'">..\Hotori\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi|x64'">..\Hotori\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseMSIMei|x64'">..\Hotori\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|x64'">..\Hotori\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi(UWP)|x64'">..\Hotori\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Hotori\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|x64'">..\Hotori\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|x64'">Build\$(Platform)\$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi|x64'">Build\$(Platform)\$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseMSIMei|x64'">Build\$(Platform)\$(Configuration)\</IntDir>
@@ -575,32 +575,32 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|ARM64'">
     <TargetName>$(ProjectName)A64S</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi|ARM64'">
     <TargetName>$(ProjectName)A64A</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseMSIMei|ARM64'">
     <TargetName>$(ProjectName)A64M</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|ARM'">
     <TargetName>$(ProjectName)A32S</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi|ARM'">
     <TargetName>$(ProjectName)A32A</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseMSIMei|ARM'">
     <TargetName>$(ProjectName)A32M</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|x64'">
@@ -613,22 +613,22 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|ARM64'">
     <TargetName>$(ProjectName)A64S_UWP</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi(UWP)|ARM64'">
     <TargetName>$(ProjectName)A64A_UWP</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku(UWP)|ARM'">
     <TargetName>$(ProjectName)A32S_UWP</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseAoi(UWP)|ARM'">
     <TargetName>$(ProjectName)A32A_UWP</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -637,12 +637,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <TargetName>$(ProjectName)A64</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <TargetName>$(ProjectName)A32</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|x64'">
@@ -651,12 +651,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|ARM64'">
     <TargetName>$(ProjectName)A64_UWP</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(UWP)|ARM'">
     <TargetName>$(ProjectName)A32_UWP</TargetName>
-    <OutDir>..\Cecile\</OutDir>
+    <OutDir>..\Hotori\</OutDir>
     <IncludePath>.\Library;.\Priscilla;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseShizuku|Win32'">
@@ -709,7 +709,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>TSUKUMO_TOKKA_SUPPORT;SUISHO_SHIZUKU_SUPPORT;WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MIX_MODE;WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -721,7 +721,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>SUISHO_SHIZUKU_SUPPORT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MIX_MODE;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0411</Culture>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
@@ -732,7 +732,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
-      <OutputFile>..\Cecile\DiskMark.exe</OutputFile>
+      <OutputFile>..\Hotori\DiskMark.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -869,7 +869,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\Cecile\$(ProjectName)32S.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)32S.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -911,7 +911,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\Cecile\$(ProjectName)32A.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)32A.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -953,7 +953,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\Cecile\$(ProjectName)32M.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)32M.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -995,7 +995,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\Cecile\$(ProjectName)32S_UWP.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)32S_UWP.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -1037,7 +1037,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\Cecile\$(ProjectName)32A_UWP.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)32A_UWP.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -1079,7 +1079,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\Cecile\$(ProjectName)32.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)32.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -1121,7 +1121,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\Cecile\$(ProjectName)32_UWP.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)32_UWP.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -1171,7 +1171,8 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <OutputFile>..\Cecile\$(ProjectName)64S.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)64S.exe</OutputFile>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1212,7 +1213,8 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <OutputFile>..\Cecile\$(ProjectName)64A.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)64A.exe</OutputFile>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1253,7 +1255,8 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <OutputFile>..\Cecile\$(ProjectName)64M.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)64M.exe</OutputFile>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1292,7 +1295,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A64S.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A64S.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1331,7 +1334,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A64A.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A64A.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1370,7 +1373,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A64M.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A64M.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1409,7 +1412,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A32S.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A32S.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1448,7 +1451,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A32A.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A32A.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1487,7 +1490,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A32M.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A32M.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1526,7 +1529,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <OutputFile>..\Cecile\$(ProjectName)64S_UWP.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)64S_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1565,7 +1568,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <OutputFile>..\Cecile\$(ProjectName)64A_UWP.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)64A_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1604,7 +1607,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A64S_UWP.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A64S_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1643,7 +1646,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A64A_UWP.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A64A_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1682,7 +1685,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A32S_UWP.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A32S_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1721,7 +1724,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A32A_UWP.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A32A_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1762,7 +1765,8 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <OutputFile>..\Cecile\$(ProjectName)64.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)64.exe</OutputFile>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1801,7 +1805,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A64.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A64.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1840,7 +1844,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A32.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A32.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1879,7 +1883,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <OutputFile>..\Cecile\$(ProjectName)64_UWP.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)64_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1918,7 +1922,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A64_UWP.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A64_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -1957,7 +1961,7 @@
       </RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <OutputFile>..\Cecile\$(ProjectName)A32_UWP.exe</OutputFile>
+      <OutputFile>..\Hotori\$(ProjectName)A32_UWP.exe</OutputFile>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -3175,7 +3179,6 @@
     <ClInclude Include="Priscilla\StaticFx.h" />
     <ClInclude Include="Priscilla\UAHMenuBar.h" />
     <ClInclude Include="Priscilla\UtilityFx.h" />
-    <ClInclude Include="Resource.h" />
     <ClInclude Include="SettingsDlg.h" />
   </ItemGroup>
   <ItemGroup>

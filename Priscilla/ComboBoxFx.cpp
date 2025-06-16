@@ -147,6 +147,13 @@ BOOL CComboBoxFx::InitControl(int x, int y, int width, int height, double zoomRa
 
 	if (renderMode & SystemDraw)
 	{
+#if _MSC_VER <= 1310
+		if (IsNT3())
+		{
+			ModifyStyle(0, WS_BORDER, SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
+		}
+#endif
+
 		return TRUE;
 	}
 	else
@@ -349,6 +356,16 @@ void CComboBoxFx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 			FillRect(lpDrawItemStruct->hDC, &rc, (HBRUSH)Brush);
 		}
 		DrawString(title, pDC, lpDrawItemStruct, textColor);
+
+#if _MSC_VER <= 1310
+		if (IsNT3() && IsWindowEnabled())
+		{
+			DWORD oldTextAlign = m_TextAlign;
+			m_TextAlign = ES_RIGHT;
+			DrawString(_T("v"), pDC, lpDrawItemStruct, textColor);
+			m_TextAlign = oldTextAlign;
+		}
+#endif
 	}
 	else
 	{
@@ -659,6 +676,34 @@ void CComboBoxFx::SetHandCursor(BOOL bHandCuror)
 
 void CComboBoxFx::OnMouseMove(UINT nFlags, CPoint point)
 {
+#if _MSC_VER <= 1310
+	typedef BOOL(WINAPI* Func_TrackMouseEvent)(LPTRACKMOUSEEVENT);
+	static Func_TrackMouseEvent p_TrackMouseEvent = NULL;
+	static BOOL bInit_TrackMouseEvent = FALSE;
+
+	if (bInit_TrackMouseEvent && p_TrackMouseEvent == NULL)
+	{
+		return; // TrackMouseEvent is not available
+	}
+	else
+	{
+		HMODULE hModule = GetModuleHandle(_T("user32.dll"));
+		if (hModule)
+		{
+			p_TrackMouseEvent = (Func_TrackMouseEvent)GetProcAddress(hModule, "TrackMouseEvent");
+		}
+	}
+
+	if (p_TrackMouseEvent != NULL)
+	{
+		TRACKMOUSEEVENT tme = { sizeof(TRACKMOUSEEVENT) };
+		tme.hwndTrack = m_hWnd;
+		tme.dwFlags = TME_LEAVE | TME_HOVER;
+		tme.dwHoverTime = 1;
+		m_bTrackingNow = p_TrackMouseEvent(&tme);
+	}
+	bInit_TrackMouseEvent = TRUE;
+#else
 	if (!m_bTrackingNow)
 	{
 		TRACKMOUSEEVENT tme = { sizeof(TRACKMOUSEEVENT) };
@@ -667,6 +712,7 @@ void CComboBoxFx::OnMouseMove(UINT nFlags, CPoint point)
 		tme.dwHoverTime = 1;
 		m_bTrackingNow = _TrackMouseEvent(&tme);
 	}
+#endif
 
 	CComboBox::OnMouseMove(nFlags, point);
 }

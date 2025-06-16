@@ -116,28 +116,32 @@
 // Version Information
 #define PRODUCT_NAME				L"CrystalDiskMark"
 #define PRODUCT_FILENAME			L"CrystalDiskMark"
-#define PRODUCT_VERSION				L"8.0.6"
+#define PRODUCT_VERSION				L"9.0.0"
 #define PRODUCT_SHORT_NAME		    L"CDM"
 
-#define PRODUCT_RELEASE				L"2024/11/20"
-#define PRODUCT_COPY_YEAR			L"2007-2024"
+#define PRODUCT_RELEASE				L"2025/06/16"
+#define PRODUCT_COPY_YEAR			L"2007-2025"
 #define PRODUCT_LICENSE				L"MIT License"
 
 #ifdef SUISHO_AOI_SUPPORT
-#define PRODUCT_COPYRIGHT_1         L"© 2007-2024 hiyohiyo"
-#define PRODUCT_COPYRIGHT_2         L"© 2023-2024 nijihashi sola"
+#define PRODUCT_COPYRIGHT_1         L"© 2007-2025 hiyohiyo"
+#define PRODUCT_COPYRIGHT_2			L"© 2025 CrystalMark Inc."
+#define PRODUCT_COPYRIGHT_3         L"© 2023-2025 nijihashi sola"
 
 #elif MSI_MEI_SUPPORT
-#define PRODUCT_COPYRIGHT_1         L"© 2007-2024 hiyohiyo"
-#define PRODUCT_COPYRIGHT_2         L"© 2024 Micro-Star INT'L CO., LTD."
+#define PRODUCT_COPYRIGHT_1         L"© 2007-2025 hiyohiyo"
+#define PRODUCT_COPYRIGHT_2			L"© 2025 CrystalMark Inc."
+#define PRODUCT_COPYRIGHT_3         L"© 2024-2025 Micro-Star INT'L CO., LTD."
 
 #elif SUISHO_SHIZUKU_SUPPORT
-#define PRODUCT_COPYRIGHT_1         L"© 2007-2021 hiyohiyo"
-#define PRODUCT_COPYRIGHT_2         L"© 2012-2021 kirino kasumu"
+#define PRODUCT_COPYRIGHT_1         L"© 2007-2025 hiyohiyo"
+#define PRODUCT_COPYRIGHT_2			L"© 2025 CrystalMark Inc."
+#define PRODUCT_COPYRIGHT_3         L"© 2012-2025 kirino kasumu"
 
 #else
-#define PRODUCT_COPYRIGHT_1			L"© 2007-2021 hiyohiyo"
-#define PRODUCT_COPYRIGHT_2			L""
+#define PRODUCT_COPYRIGHT_1			L"© 2007-2025 hiyohiyo"
+#define PRODUCT_COPYRIGHT_2			L"© 2025 CrystalMark Inc."
+#define PRODUCT_COPYRIGHT_3			L""
 #endif
 
 #ifdef MSI_MEI_SUPPORT

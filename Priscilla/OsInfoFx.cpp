@@ -8,6 +8,7 @@
 #include "stdafx.h"
 #include "OsInfoFx.h"
 #include "UtilityFx.h"
+#include "SystemInfoFx.h"
 
 typedef BOOL (WINAPI* FuncGetProductInfo)(DWORD, DWORD, DWORD, DWORD, PDWORD);
 typedef BOOL (WINAPI* FuncGetNativeSystemInfo)(LPSYSTEM_INFO);
@@ -459,6 +460,26 @@ DWORD GetIeVersion()
 }
 #endif
 
+BOOL IsNT3()
+{
+	static BOOL b = -1;
+	if (b == -1)
+	{
+		b = FALSE;
+
+		OSVERSIONINFO osvi = { 0 };
+		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+		GetVersionEx((OSVERSIONINFO*)&osvi);
+
+		if ((osvi.dwPlatformId == VER_PLATFORM_WIN32_NT)
+			&& (osvi.dwMajorVersion == 3))
+		{
+			b = TRUE;
+		}
+	}
+	return b;
+}
+
 BOOL IsNT4()
 {
 	static BOOL b = -1;
@@ -514,6 +535,28 @@ BOOL IsWin95()
 
 		if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS
 		&&  osvi.dwMajorVersion == 4 &&  osvi.dwMinorVersion == 0)
+		{
+			b = TRUE;
+		}
+	}
+
+	return b;
+}
+
+BOOL IsWin95First()
+{
+	static BOOL b = -1;
+
+	if (b == -1)
+	{
+		b = FALSE;
+
+		OSVERSIONINFO osvi = { 0 };
+		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+		GetVersionEx((OSVERSIONINFO*)&osvi);
+
+		if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS
+			&& osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 0 && osvi.dwBuildNumber <= 950)
 		{
 			b = TRUE;
 		}
@@ -586,6 +629,39 @@ BOOL IsPC98()
 	return b;
 }
 
+BOOL IsNT51orlater()
+{
+	static BOOL b = -1;
+	if (b == -1)
+	{
+		b = FALSE;
+
+		OSVERSIONINFO osvi = { 0 };
+		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+		GetVersionEx((OSVERSIONINFO*)&osvi);
+
+		if ((osvi.dwPlatformId == VER_PLATFORM_WIN32_NT)
+			&&
+			((osvi.dwMajorVersion == 5 && osvi.dwMinorVersion >= 1) || (osvi.dwMajorVersion > 5)))
+		{
+			b = TRUE;
+		}
+	}
+	return b;
+}
+
+BOOL IsRunningOnWine()
+{
+	HMODULE hModule = LoadLibraryA("ntdll.dll");
+	if (hModule)
+	{
+		void* pWineGetVersion = (void*)GetProcAddress(hModule, "wine_get_version");
+		FreeLibrary(hModule);
+		return pWineGetVersion != NULL;
+	}
+	return FALSE;
+}
+
 void GetOsName(CString& osFullName, CString& name, CString& version, CString& architecture)
 {
 	CString osName, osType, osCsd, osVersion, osBuild, osArchitecture, osDisplayVersion;
@@ -652,7 +728,7 @@ void GetOsName(CString& osFullName, CString& name, CString& version, CString& ar
 		osFullName.Format(_T("%s [%s Build %s]"), (LPCTSTR)osName, (LPCTSTR)osVersion, (LPCTSTR)osBuild);
 
 		name = osName;
-		version = osVersion;
+		version.Format(_T("%s Build %s"), (LPCTSTR)osVersion, (LPCTSTR)osBuild);
 		architecture = _T("x86");
 
 		return;
@@ -667,12 +743,19 @@ void GetOsName(CString& osFullName, CString& name, CString& version, CString& ar
 		OSVERSIONINFOEX osvi = { sizeof(osvi), 0, 0, 0, 0, {0}, 0, 0 };
 		GetVersionEx((OSVERSIONINFO*)&osvi);
 	#endif
-
 #else
 	OSVERSIONINFOEXW osviw = { sizeof(osviw), 0, 0, 0, 0, {0}, 0, 0 };
 	OSVERSIONINFOEX osvi = { sizeof(osvi), 0, 0, 0, 0, {0}, 0, 0 };
 
 	GetVersionEx((OSVERSIONINFO*)&osvi);
+	if (osvi.dwMajorVersion == 0) // Windows NT 3.51, NT 4.0 SP4 or earlier
+	{
+		osvi.dwMajorVersion = osv.dwMajorVersion;
+		osvi.dwMinorVersion = osv.dwMinorVersion;
+		osvi.dwBuildNumber = osv.dwBuildNumber;
+		osvi.dwPlatformId = osv.dwPlatformId;
+		wsprintf(osvi.szCSDVersion, osv.szCSDVersion);
+	}
 
 	if (osvi.dwMajorVersion >= 6 && GetVersionFx((OSVERSIONINFOEXW*)&osviw))
 	{
@@ -687,7 +770,22 @@ void GetOsName(CString& osFullName, CString& name, CString& version, CString& ar
 #endif
 
 	GetOsNameWmi(osNameWmi);
-	
+
+	// Windows 11/Server 2025
+	CString osNameWmiBackup = osNameWmi;
+	CString osNameWmiMajorVersion = osNameWmi;
+	osNameWmiMajorVersion.Replace(_T("(R)"), _T(""));
+	osNameWmiMajorVersion.Replace(_T("Microsoft "), _T(""));
+	osNameWmiMajorVersion.Replace(_T("Windows "), _T(""));
+	osNameWmiMajorVersion.Replace(_T("Server "), _T(""));
+
+	int majorVersion = _ttoi(osNameWmiMajorVersion);
+
+	if ((3 <= majorVersion && majorVersion <= 11) || (2000 <= majorVersion && majorVersion <= 2025))
+	{
+		osNameWmi = _T("");
+	}
+
 	if (osNameWmi.IsEmpty())
 	{
 		switch (osvi.dwPlatformId)
@@ -855,10 +953,10 @@ void GetOsName(CString& osFullName, CString& name, CString& version, CString& ar
 						osType = _T("Cluster Server");
 						break;
 					case PRODUCT_DATACENTER_SERVER:
-						osType = _T("Datacenter (Full installation)");
+						osType = _T("Datacenter");
 						break;
 					case PRODUCT_DATACENTER_SERVER_CORE:
-						osType = _T("Datacenter (Server Core installation)");
+						osType = _T("Datacenter");
 						break;
 					case PRODUCT_ENTERPRISE:
 						osType = _T("Enterprise");
@@ -866,11 +964,14 @@ void GetOsName(CString& osFullName, CString& name, CString& version, CString& ar
 					case PRODUCT_ENTERPRISE_N:
 						osType = _T("Enterprise N");
 						break;
+					case PRODUCT_ENTERPRISE_G:
+						osType = _T("Enterprise G");
+						break;
 					case PRODUCT_ENTERPRISE_SERVER:
-						osType = _T("Enterprise (Full installation)");
+						osType = _T("Enterprise");
 						break;
 					case PRODUCT_ENTERPRISE_SERVER_CORE:
-						osType = _T("Enterprise (Server Core installation)");
+						osType = _T("Enterprise");
 						break;
 					case PRODUCT_ENTERPRISE_SERVER_IA64:
 						osType = _T("Datacenter Enterprise for Itanium-based Systems");
@@ -900,16 +1001,19 @@ void GetOsName(CString& osFullName, CString& name, CString& version, CString& ar
 						osType = _T("Small Business Server Premium");
 						break;
 					case PRODUCT_STANDARD_SERVER:
-						osType = _T("Server Standard (full installation)");
+						osType = _T("Server Standard");
 						break;
 					case PRODUCT_STANDARD_SERVER_CORE:
-						osType = _T("Server Standard (core installation)");
+						osType = _T("Server Standard");
 						break;
 					case PRODUCT_STARTER:
 						osType = _T("Starter");
 						break;
 					case PRODUCT_STARTER_N:
 						osType = _T("Starter N");
+						break;
+					case  PRODUCT_STARTER_E:
+						osType = _T("Starter E");
 						break;
 					case PRODUCT_STORAGE_ENTERPRISE_SERVER:
 						osType = _T("Storage Server Enterprise");
@@ -953,9 +1057,11 @@ void GetOsName(CString& osFullName, CString& name, CString& version, CString& ar
 						}
 						break;
 					case PRODUCT_PRO_WORKSTATION:
+					case PRODUCT_PROFESSIONAL_WORKSTATION:
 						osType = _T("Pro for Workstation");
 						break;
 					case PRODUCT_PRO_WORKSTATION_N:
+					case PRODUCT_PROFESSIONAL_WORKSTATION_N:
 						osType = _T("Pro for Workstation N");
 						break;
 					case PRODUCT_PRO_FOR_EDUCATION:
@@ -983,6 +1089,28 @@ void GetOsName(CString& osFullName, CString& name, CString& version, CString& ar
 					if (osvi.wSuiteMask & VER_SUITE_ENTERPRISE)
 					{
 						osType = _T("Server Enterprise Edition");
+					}
+					else
+					{
+						osType = _T("Server");
+					}
+				}
+			}
+			else if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0)
+			{
+				if (osvi.wProductType == VER_NT_WORKSTATION)
+				{
+					osType = _T("Professional");
+				}
+				else if (osvi.wProductType == VER_NT_SERVER || osvi.wProductType == VER_NT_DOMAIN_CONTROLLER)
+				{
+					if (osvi.wSuiteMask & VER_SUITE_ENTERPRISE)
+					{
+						osType = _T("Advanced Server");
+					}
+					else if (osvi.wSuiteMask & VER_SUITE_DATACENTER)
+					{
+						osType = _T("Datacenter Server");
 					}
 					else
 					{
@@ -1110,6 +1238,12 @@ void GetOsName(CString& osFullName, CString& name, CString& version, CString& ar
 	osArchitecture = _T("x86");
 #endif
 
+	// for Unknown Edition
+	if (osType.IsEmpty())
+	{
+		osNameWmi = osNameWmiBackup;
+	}
+
 	if (!osNameWmi.IsEmpty())
 	{
 		if (!osDisplayVersion.IsEmpty())
@@ -1165,6 +1299,8 @@ void GetOsName(CString& osFullName, CString& name, CString& version, CString& ar
 			architecture = osArchitecture;
 		}	
 	}
+
+	osFullName.Replace(_T("  "), _T(" "));
 }
 
 //------------------------------------------------
@@ -1235,7 +1371,9 @@ void GetOsNameWmi(CString& osName)
 								name.Replace(_T("™"), _T(""));
 								name.Replace(_T("®"), _T(""));
 #endif
+								name.Replace(_T("(R)"), _T(""));
 								name.Replace(_T("Microsoft "), _T(""));
+								
 								name.Trim();
 							}
 							VariantInit(&pVal);

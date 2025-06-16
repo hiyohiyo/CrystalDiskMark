@@ -45,7 +45,7 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 
 #ifdef SUISHO_AOI_SUPPORT
 	m_DefaultTheme = L"Aoi";
-	m_RecommendTheme = L"Aoi";
+	m_RecommendTheme = L"AoiLightAnimalEars~TenmuShinryuusai";
 	m_ThemeKeyName = L"ThemeAoi";
 
 	m_MarginButtonTop = 16;
@@ -87,7 +87,7 @@ CDiskMarkDlg::CDiskMarkDlg(CWnd* pParent /*=NULL*/)
 	m_MarginDemoRight = 24;
 #elif SUISHO_SHIZUKU_SUPPORT
 	m_DefaultTheme = L"Shizuku";
-	m_RecommendTheme = L"ShizukuIdol";
+	m_RecommendTheme = L"ShizukuLightAnimalEars~TenmuShinryuusai";
 	m_ThemeKeyName = L"ThemeShizuku";
 
 	m_MarginButtonTop = 8;
@@ -305,7 +305,7 @@ BEGIN_MESSAGE_MAP(CDiskMarkDlg, CMainDialogFx)
 
 	ON_COMMAND(ID_SETTING_DEFAULT, &CDiskMarkDlg::OnSettingDefault)
 	ON_COMMAND(ID_SETTING_NVME_8, &CDiskMarkDlg::OnSettingNVMe8)
-//	ON_COMMAND(ID_SETTING_NVME_9, &CDiskMarkDlg::OnSettingNVMe9)
+	ON_COMMAND(ID_SETTING_FLASH_MEMORY, &CDiskMarkDlg::OnSettingFlashMemory)
 
 	ON_COMMAND(ID_PROFILE_DEFAULT, &CDiskMarkDlg::OnProfileDefault)
 	ON_COMMAND(ID_PROFILE_REAL, &CDiskMarkDlg::OnProfileReal)
@@ -376,7 +376,8 @@ int CALLBACK EnumFontFamExProcDefaultFont(ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX
 
 BOOL CDiskMarkDlg::IsDefaultMode()
 {
-	if (m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1 && m_BenchType[0] == BENCH_SEQ
+	if (m_MeasureTime == 5
+	&&	m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1 && m_BenchType[0] == BENCH_SEQ
 	&&  m_BenchSize[1] == 1024 && m_BenchQueues[1] == 1  && m_BenchThreads[1] == 1 && m_BenchType[1] == BENCH_SEQ
 	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 1 && m_BenchType[2] == BENCH_RND
 	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1 && m_BenchType[3] == BENCH_RND
@@ -392,7 +393,8 @@ BOOL CDiskMarkDlg::IsDefaultMode()
 
 BOOL CDiskMarkDlg::IsNVMe8Mode()
 {
-	if (m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1  && m_BenchType[0] == BENCH_SEQ
+	if (m_MeasureTime == 5
+	&&  m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1  && m_BenchType[0] == BENCH_SEQ
 	&&  m_BenchSize[1] == 128  && m_BenchQueues[1] == 32 && m_BenchThreads[1] == 1  && m_BenchType[1] == BENCH_SEQ
 	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 16 && m_BenchType[2] == BENCH_RND
 	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1  && m_BenchType[3] == BENCH_RND
@@ -406,23 +408,23 @@ BOOL CDiskMarkDlg::IsNVMe8Mode()
 	return FALSE;
 }
 
-/*
-BOOL CDiskMarkDlg::IsNVMe9Mode()
+
+BOOL CDiskMarkDlg::IsFlashMemoryMode()
 {
-	if (m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 4  && m_BenchType[0] == BENCH_SEQ
-	&&  m_BenchSize[1] == 128  && m_BenchQueues[1] == 32 && m_BenchThreads[1] == 4  && m_BenchType[1] == BENCH_SEQ
-	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 16 && m_BenchType[2] == BENCH_RND
-	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1  && m_BenchType[3] == BENCH_RND
-	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 4  && m_BenchType[4] == BENCH_SEQ
-	&&  m_BenchSize[5] == 4    && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 16 && m_BenchType[5] == BENCH_RND
-	&&  m_BenchSize[8] == 1024 && m_BenchQueues[8] == 8  && m_BenchThreads[8] == 4  && m_BenchType[8] == BENCH_SEQ
+	if (m_MeasureTime == 1
+	&&  m_BenchSize[0] == 1024 && m_BenchQueues[0] == 8  && m_BenchThreads[0] == 1 && m_BenchType[0] == BENCH_SEQ
+	&&  m_BenchSize[1] == 1024 && m_BenchQueues[1] == 1  && m_BenchThreads[1] == 1 && m_BenchType[1] == BENCH_SEQ
+	&&  m_BenchSize[2] == 4    && m_BenchQueues[2] == 32 && m_BenchThreads[2] == 1 && m_BenchType[2] == BENCH_RND
+	&&  m_BenchSize[3] == 4    && m_BenchQueues[3] == 1  && m_BenchThreads[3] == 1 && m_BenchType[3] == BENCH_RND
+	&&  m_BenchSize[4] == 1024 && m_BenchQueues[4] == 8  && m_BenchThreads[4] == 1 && m_BenchType[4] == BENCH_SEQ
+	&&  m_BenchSize[5] == 4    && m_BenchQueues[5] == 32 && m_BenchThreads[5] == 1 && m_BenchType[5] == BENCH_RND
+	&&  m_BenchSize[8] == 1024 && m_BenchQueues[8] == 8  && m_BenchThreads[8] == 1 && m_BenchType[8] == BENCH_SEQ
 	)
 	{
 		return TRUE;
 	}
 	return FALSE;
 }
-*/
 
 BOOL CDiskMarkDlg::OnInitDialog()
 {
@@ -539,10 +541,10 @@ BOOL CDiskMarkDlg::OnInitDialog()
 
 	UpdateQueuesThreads();
 
-	m_IndexTestCount = GetPrivateProfileInt(L"Setting", L"TestCount", 4, m_Ini);
+	m_IndexTestCount = GetPrivateProfileInt(L"Setting", L"TestCount", 2, m_Ini);
 	if (m_IndexTestCount < 0 || m_IndexTestCount >= 9)
 	{
-		m_IndexTestCount = 4;	// default value is 5.
+		m_IndexTestCount = 2;	// default value is 3.
 	}
 	m_ComboCount.SetCurSel(m_IndexTestCount);
 
@@ -720,7 +722,7 @@ void CDiskMarkDlg::UpdateDialogSize()
 	if (m_Profile == PROFILE_DEMO)
 	{
 #ifdef SUISHO_SHIZUKU_SUPPORT
-		m_ButtonAll.InitControl(12 + offsetX, 8, 120, 80, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_ButtonAll.InitControl(12 + offsetX, 8, 120, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 		m_ButtonAll.SetHandCursor(TRUE);
 /*
 		m_TestRead0.SetGlassColor(m_Glass, m_GlassAlpha);
@@ -730,20 +732,20 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_TestWrite0.InitControl(404 + offsetX, 96, 384, 348, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawGlass, m_bHighContrast, FALSE);
 */
 #ifdef SUISHO_AOI_SUPPORT
-		m_TestRead0.InitControl(12 + offsetX, 96, 384, 344, m_ZoomRatio, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
-		m_TestWrite0.InitControl(404 + offsetX, 96, 384, 344, m_ZoomRatio, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
+		m_TestRead0.InitControl(12 + offsetX, 96, 384, 344, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
+		m_TestWrite0.InitControl(404 + offsetX, 96, 384, 344, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
 		m_Comment.InitControl(12 + offsetX, 440, 776, 60, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 #else
-		m_TestRead0.InitControl(12 + offsetX, 96, 384, 348, m_ZoomRatio, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
-		m_TestWrite0.InitControl(404 + offsetX, 96, 384, 348, m_ZoomRatio, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
+		m_TestRead0.InitControl(12 + offsetX, 96, 384, 348, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
+		m_TestWrite0.InitControl(404 + offsetX, 96, 384, 348, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Demo"), 1, SS_CENTER, OwnerDrawImage, FALSE, FALSE, FALSE);
 		m_Comment.InitControl(12 + offsetX, 452, 776, 40, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 #endif
 		m_Comment.SetMargin(m_MarginCommentTop, m_MarginCommentLeft, m_MarginCommentBottom, m_MarginCommentRight, m_ZoomRatio);
 		m_Comment.Adjust();
 
-		m_DemoSetting.InitControl(140 + offsetX, 56, 528, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
-		m_ReadUnit.InitControl(12 + offsetX, 96, 120, 32, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
-		m_WriteUnit.InitControl(672 + offsetX, 96, 116, 32, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
+		m_DemoSetting.InitControl(140 + offsetX, 56, 528, 40, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
+		m_ReadUnit.InitControl(12 + offsetX, 96, 120, 32, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
+		m_WriteUnit.InitControl(672 + offsetX, 96, 116, 32, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
 
 		m_ComboCount.InitControl(140 + offsetX, 8, 60, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		m_ComboSize.InitControl(204 + offsetX, 8, 140, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
@@ -753,22 +755,22 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_TestRead0.SetDrawFrameEx(TRUE, m_Frame);
 		m_TestWrite0.SetDrawFrameEx(TRUE, m_Frame);
 
-		m_ButtonAll.InitControl(8 + offsetX, 8, 72, 48, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_ButtonAll.InitControl(8 + offsetX, 8, 72, 48, m_ZoomRatio, m_hPal, &m_BkDC,  IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 		m_ButtonAll.SetHandCursor(TRUE);
 
 		m_TestRead0.SetGlassColor(m_Glass, m_GlassAlpha);
 		m_TestWrite0.SetGlassColor(m_Glass, m_GlassAlpha);
 
-		m_TestRead0.InitControl(8 + offsetX, 64, 228, 196, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawGlass, m_bHighContrast, TRUE, FALSE);
-		m_TestWrite0.InitControl(244 + offsetX, 64, 228, 196, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawGlass, m_bHighContrast, TRUE, FALSE);
+		m_TestRead0.InitControl(8 + offsetX, 64, 228, 196, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawGlass, m_bHighContrast, TRUE, FALSE);
+		m_TestWrite0.InitControl(244 + offsetX, 64, 228, 196, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawGlass, m_bHighContrast, TRUE, FALSE);
 
 		m_Comment.InitControl(8 + offsetX, 268, 464, 24, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 		m_Comment.SetMargin(m_MarginCommentTop, m_MarginCommentLeft, m_MarginCommentBottom, m_MarginCommentRight, m_ZoomRatio);
 		m_Comment.Adjust();
 
-		m_DemoSetting.InitControl(84 + offsetX, 36, 320, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
-		m_ReadUnit.InitControl(84 + offsetX, 36, 124, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
-		m_WriteUnit.InitControl(280 + offsetX, 36, 124, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
+		m_DemoSetting.InitControl(84 + offsetX, 36, 320, 24, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
+		m_ReadUnit.InitControl(84 + offsetX, 36, 124, 24, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
+		m_WriteUnit.InitControl(280 + offsetX, 36, 124, 24, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
 
 		m_ComboCount.InitControl(84 + offsetX, 8, 40, 300, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		m_ComboSize.InitControl(128 + offsetX, 8, 80, 300, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
@@ -779,11 +781,11 @@ void CDiskMarkDlg::UpdateDialogSize()
 	else
 	{
 #ifdef SUISHO_SHIZUKU_SUPPORT
-		m_ButtonAll.InitControl(12 + offsetX, 8, 120, 80, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_ButtonTest0.InitControl(12 + offsetX, 96, 120, 80, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_ButtonTest1.InitControl(12 + offsetX, 184, 120, 80, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_ButtonTest2.InitControl(12 + offsetX, 272, 120, 80, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_ButtonTest3.InitControl(12 + offsetX, 360, 120, 80, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_ButtonAll.InitControl(12 + offsetX, 8, 120, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_ButtonTest0.InitControl(12 + offsetX, 96, 120, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_ButtonTest1.InitControl(12 + offsetX, 184, 120, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_ButtonTest2.InitControl(12 + offsetX, 272, 120, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_ButtonTest3.InitControl(12 + offsetX, 360, 120, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 
 		m_ButtonAll.SetHandCursor(TRUE);
 		m_ButtonTest0.SetHandCursor(TRUE);
@@ -791,15 +793,15 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_ButtonTest2.SetHandCursor(TRUE);
 		m_ButtonTest3.SetHandCursor(TRUE);
 
-		m_TestRead0.InitControl(140 + offsetX, 96, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_TestRead1.InitControl(140 + offsetX, 184, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_TestRead2.InitControl(140 + offsetX, 272, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_TestRead3.InitControl(140 + offsetX, 360, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestRead0.InitControl(140 + offsetX, 96, 320, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestRead1.InitControl(140 + offsetX, 184, 320, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestRead2.InitControl(140 + offsetX, 272, 320, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestRead3.InitControl(140 + offsetX, 360, 320, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 
-		m_TestWrite0.InitControl(468 + offsetX, 96, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_TestWrite1.InitControl(468 + offsetX, 184, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_TestWrite2.InitControl(468 + offsetX, 272, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_TestWrite3.InitControl(468 + offsetX, 360, 320, 80, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestWrite0.InitControl(468 + offsetX, 96, 320, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestWrite1.InitControl(468 + offsetX, 184, 320, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestWrite2.InitControl(468 + offsetX, 272, 320, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestWrite3.InitControl(468 + offsetX, 360, 320, 80, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 
 #ifdef SUISHO_AOI_SUPPORT
 		m_Comment.InitControl(12 + offsetX, 440, 776, 60, m_ZoomRatio, &m_BkDC, IP(L"Comment"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
@@ -810,8 +812,8 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_Comment.SetMargin(m_MarginCommentTop, m_MarginCommentLeft, m_MarginCommentBottom, m_MarginCommentRight, m_ZoomRatio);
 		m_Comment.Adjust();
 
-		m_ReadUnit.InitControl(140 + offsetX, 56, 320, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
-		m_WriteUnit.InitControl(468 + offsetX, 56, 320, 40, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
+		m_ReadUnit.InitControl(140 + offsetX, 56, 320, 40, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
+		m_WriteUnit.InitControl(468 + offsetX, 56, 320, 40, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
 
 		m_ComboCount.InitControl(140 + offsetX, 8, 60, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		m_ComboSize.InitControl(204 + offsetX, 8, 140, 500, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
@@ -827,11 +829,11 @@ void CDiskMarkDlg::UpdateDialogSize()
 		}
 #else
 
-		m_ButtonAll.InitControl(8 + offsetX, 8, 72, 48, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_ButtonTest0.InitControl(8 + offsetX, 60, 72, 48, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_ButtonTest1.InitControl(8 + offsetX, 112, 72, 48, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_ButtonTest2.InitControl(8 + offsetX, 164, 72, 48, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_ButtonTest3.InitControl(8 + offsetX, 216, 72, 48, m_ZoomRatio, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_ButtonAll.InitControl(8 + offsetX, 8, 72, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_ButtonTest0.InitControl(8 + offsetX, 60, 72, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_ButtonTest1.InitControl(8 + offsetX, 112, 72, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_ButtonTest2.InitControl(8 + offsetX, 164, 72, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_ButtonTest3.InitControl(8 + offsetX, 216, 72, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Button"), 3, BS_CENTER, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 
 		m_ButtonAll.SetHandCursor(TRUE);
 		m_ButtonTest0.SetHandCursor(TRUE);
@@ -839,15 +841,15 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_ButtonTest2.SetHandCursor(TRUE);
 		m_ButtonTest3.SetHandCursor(TRUE);
 
-		m_TestRead0.InitControl(84 + offsetX, 60, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_TestRead1.InitControl(84 + offsetX, 112, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_TestRead2.InitControl(84 + offsetX, 164, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_TestRead3.InitControl(84 + offsetX, 216, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestRead0.InitControl(84 + offsetX, 60, 192, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestRead1.InitControl(84 + offsetX, 112, 192, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestRead2.InitControl(84 + offsetX, 164, 192, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestRead3.InitControl(84 + offsetX, 216, 192, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 
-		m_TestWrite0.InitControl(280 + offsetX, 60, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_TestWrite1.InitControl(280 + offsetX, 112, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_TestWrite2.InitControl(280 + offsetX, 164, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-		m_TestWrite3.InitControl(280 + offsetX, 216, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestWrite0.InitControl(280 + offsetX, 60, 192, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestWrite1.InitControl(280 + offsetX, 112, 192, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestWrite2.InitControl(280 + offsetX, 164, 192, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+		m_TestWrite3.InitControl(280 + offsetX, 216, 192, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
 		if (m_MixMode)
 		{
 			m_Comment.InitControl(8 + offsetX, 268, 664, 24, m_ZoomRatio, &m_BkDC, IP(L"CommentL"), 1, ES_LEFT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
@@ -859,8 +861,8 @@ void CDiskMarkDlg::UpdateDialogSize()
 		m_Comment.SetMargin(m_MarginCommentTop, m_MarginCommentLeft, m_MarginCommentBottom, m_MarginCommentRight, m_ZoomRatio);
 		m_Comment.Adjust();
 
-		m_ReadUnit.InitControl(84 + offsetX, 36, 192, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
-		m_WriteUnit.InitControl(280 + offsetX, 36, 192, 24, m_ZoomRatio, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
+		m_ReadUnit.InitControl(84 + offsetX, 36, 192, 24, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
+		m_WriteUnit.InitControl(280 + offsetX, 36, 192, 24, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
 
 		m_ComboCount.InitControl(84 + offsetX, 8, 40, 300, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
 		m_ComboSize.InitControl(128 + offsetX, 8, 80, 300, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
@@ -906,12 +908,12 @@ void CDiskMarkDlg::UpdateDialogSize()
 	m_ComboUnit.SetMargin (0, 4, 0, 0, m_ZoomRatio);
 
 #ifdef MIX_MODE
-	m_TestMix0.InitControl(480 + offsetX, 60, 192, 48, m_ZoomRatio,  &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-	m_TestMix1.InitControl(480 + offsetX, 112, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-	m_TestMix2.InitControl(480 + offsetX, 164, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-	m_TestMix3.InitControl(480 + offsetX, 216, 192, 48, m_ZoomRatio, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
-	m_ComboMix.InitControl(480 + offsetX, 8, 192, 300, m_ZoomRatio,  &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
-	m_MixUnit.InitControl(480 + offsetX, 36, 192, 24, m_ZoomRatio,   &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
+	m_TestMix0.InitControl(480 + offsetX, 60, 192, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+	m_TestMix1.InitControl(480 + offsetX, 112, 192, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+	m_TestMix2.InitControl(480 + offsetX, 164, 192, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+	m_TestMix3.InitControl(480 + offsetX, 216, 192, 48, m_ZoomRatio, m_hPal, &m_BkDC, IP(L"Meter"), 2, SS_RIGHT, OwnerDrawImage, m_bHighContrast, FALSE, FALSE);
+	m_ComboMix.InitControl(480 + offsetX, 8, 192, 300, m_ZoomRatio, &m_BkDC, NULL, 0, ES_LEFT, OwnerDrawGlass, m_bHighContrast, FALSE, m_ComboBk, m_ComboBkSelected, m_Glass, m_GlassAlpha);
+	m_MixUnit.InitControl(480 + offsetX, 36, 192, 24, m_ZoomRatio, m_hPal, &m_BkDC, NULL, 0, SS_CENTER, OwnerDrawTransparent, m_bHighContrast, FALSE, FALSE);
 
 	m_TestMix0.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
 	m_TestMix1.SetMargin(m_MarginMeterTop, m_MarginMeterLeft, m_MarginMeterBottom, m_MarginMeterRight, m_ZoomRatio);
@@ -1027,7 +1029,7 @@ void CDiskMarkDlg::SetControlFont()
 #endif
 
 #ifdef SUISHO_SHIZUKU_SUPPORT
-	m_ButtonAll.SetFontEx(m_FontFace, 28, 28, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD, m_FontRender);
+	m_ButtonAll.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD, m_FontRender);
 	m_ButtonTest0.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD, m_FontRender);
 	m_ButtonTest1.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD, m_FontRender);
 	m_ButtonTest2.SetFontEx(m_FontFace, 20, 20, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD, m_FontRender);
@@ -1073,7 +1075,7 @@ void CDiskMarkDlg::SetControlFont()
 	m_ComboDrive.SetItemHeightAll(40, m_ZoomRatio, m_FontRatio);
 	m_ComboUnit.SetItemHeightAll(40, m_ZoomRatio, m_FontRatio);
 #else
-	m_ButtonAll.SetFontEx(m_FontFace, 16, 16, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD, m_FontRender);
+	m_ButtonAll.SetFontEx(m_FontFace, 12, 16, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD, m_FontRender);
 	m_ButtonTest0.SetFontEx(m_FontFace, 12, 16, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD, m_FontRender);
 	m_ButtonTest1.SetFontEx(m_FontFace, 12, 16, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD, m_FontRender);
 	m_ButtonTest2.SetFontEx(m_FontFace, 12, 16, m_ZoomRatio, m_FontRatio, m_ButtonText, FW_BOLD, m_FontRender);
@@ -1146,7 +1148,7 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 	int size[9] =   { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
 	int queues[9] = {    8,    1, 32, 1,    8, 32,    1, 1,    8 };
 	int threads[9] ={    1,    1,  1, 1,    1,  1,    1, 1,    1 };
-	int measureTimes[5] = { 5, 10, 20, 30, 60 };
+	int measureTimes[13] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 60 };
 	int intervalTimes[10] = { 0, 1, 3, 5, 10, 30, 60, 180, 300, 600 };
 
 	for (int i = 0; i < 9; i++)
@@ -1177,7 +1179,7 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 
 	BOOL bMeasureflag = FALSE;
 	m_MeasureTime = GetPrivateProfileInt(L"Setting", L"MeasureTime", 5, m_Ini);
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 13; i++)
 	{
 		if (m_MeasureTime == measureTimes[i])
 		{
@@ -1209,6 +1211,7 @@ void CDiskMarkDlg::UpdateQueuesThreads()
 void CDiskMarkDlg::SettingsQueuesThreads(int type)
 {
 	CString key, value;
+	CString cstr;
 
 	switch (type)
 	{
@@ -1232,6 +1235,10 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 			}
 			WritePrivateProfileString(L"Setting", L"Affinity", L"1", m_Ini);
 		}
+		m_MeasureTime = 5; cstr.Format(L"%d", m_MeasureTime);
+		WritePrivateProfileString(L"Setting", L"MeasureTime", cstr, m_Ini);
+		m_IntervalTime = 5; cstr.Format(L"%d", m_IntervalTime);
+		WritePrivateProfileString(L"Setting", L"IntervalTime", cstr, m_Ini);
 		UpdateQueuesThreads();
 		ChangeButtonStatus(TRUE);
 		break;
@@ -1254,33 +1261,39 @@ void CDiskMarkDlg::SettingsQueuesThreads(int type)
 			}
 			WritePrivateProfileString(L"Setting", L"Affinity", L"1", m_Ini);
 		}
+		m_MeasureTime = 5; cstr.Format(L"%d", m_MeasureTime);
+		WritePrivateProfileString(L"Setting", L"MeasureTime", cstr, m_Ini);
+		m_IntervalTime = 5; cstr.Format(L"%d", m_IntervalTime);
+		WritePrivateProfileString(L"Setting", L"IntervalTime", cstr, m_Ini);
 		UpdateQueuesThreads();
 		ChangeButtonStatus(TRUE);
 		break;
-	/*
-	case 2: // NVMe SSD Ver.9
-	{
-		int type[9] =    {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
-		int size[9] =    { 1024,  128,  4, 4, 1024,  4, 1024, 4, 1024 };
-		int queues[9] =  {    8,   32, 32, 1,    8, 32,    1, 1,    8 };
-		int threads[9] = {    4,    4, 16, 1,    4, 16,    1, 1,    4 };
-		for (int i = 0; i < 9; i++)
+	case 2: // Flash Memory
 		{
-			key.Format(L"BenchType%d", i); value.Format(L"%d", type[i]);
-			WritePrivateProfileString(L"Setting", key, value, m_Ini);
-			key.Format(L"BenchSize%d", i); value.Format(L"%d", size[i]);
-			WritePrivateProfileString(L"Setting", key, value, m_Ini);
-			key.Format(L"BenchQueues%d", i); value.Format(L"%d", queues[i]);
-			WritePrivateProfileString(L"Setting", key, value, m_Ini);
-			key.Format(L"BenchThreads%d", i); value.Format(L"%d", threads[i]);
-			WritePrivateProfileString(L"Setting", key, value, m_Ini);
+			int type[9] =   {    0,    0,  1, 1,    0,  1,    0, 1,    0 };
+			int size[9] =   { 1024, 1024,  4, 4, 1024,  4, 1024, 4, 1024 };
+			int queues[9] = {    8,    1, 32, 1,    8, 32,    1, 1,    8 };
+			int threads[9] ={    1,    1,  1, 1,    1,  1,    1, 1,    1 };
+			for (int i = 0; i < 9; i++)
+			{
+				key.Format(L"BenchType%d", i); value.Format(L"%d", type[i]);
+				WritePrivateProfileString(L"Setting", key, value, m_Ini);
+				key.Format(L"BenchSize%d", i); value.Format(L"%d", size[i]);
+				WritePrivateProfileString(L"Setting", key, value, m_Ini);
+				key.Format(L"BenchQueues%d", i); value.Format(L"%d", queues[i]);
+				WritePrivateProfileString(L"Setting", key, value, m_Ini);
+				key.Format(L"BenchThreads%d", i); value.Format(L"%d", threads[i]);
+				WritePrivateProfileString(L"Setting", key, value, m_Ini);
+			}
+			WritePrivateProfileString(L"Setting", L"Affinity", L"1", m_Ini);
 		}
-		WritePrivateProfileString(L"Setting", L"Affinity", L"0", m_Ini);
-	}
+		m_MeasureTime = 1; cstr.Format(L"%d", m_MeasureTime);
+		WritePrivateProfileString(L"Setting", L"MeasureTime", cstr, m_Ini);
+		m_IntervalTime = 30; cstr.Format(L"%d", m_IntervalTime);
+		WritePrivateProfileString(L"Setting", L"IntervalTime", cstr, m_Ini);
 		UpdateQueuesThreads();
 		ChangeButtonStatus(TRUE);
-	break;
-	*/
+		break;
 	default:
 		OnSettingsQueuesThreads();
 		break;
@@ -2150,7 +2163,17 @@ void CDiskMarkDlg::ChangeButtonStatus(BOOL status)
 		m_ComboDrive.EnableWindow(TRUE);
 		m_ComboUnit.EnableWindow(TRUE);
 
-		m_ButtonAll.SetWindowTextW(L"All");
+		CString cstr;
+		if (m_MeasureTime == 5)
+		{
+			cstr.Format(L"All");
+		}
+		else
+		{
+			cstr.Format(L"All\n%dsec", m_MeasureTime);
+		}
+		
+		m_ButtonAll.SetWindowTextW(cstr);
 
 		if (m_Profile == PROFILE_DEMO)
 		{
@@ -3104,9 +3127,18 @@ Profile: Real\r\n\
 			if (clipbuffer != NULL)
 			{
 				buffer = (TCHAR*)GlobalLock(clipbuffer);
-				_tcscpy_s(buffer, clip.GetLength() + 1, LPCTSTR(clip));
-				GlobalUnlock(clipbuffer);
-				SetClipboardData(CF_UNICODETEXT, clipbuffer);
+				if (buffer == NULL)
+				{
+					GlobalFree(clipbuffer);
+					CloseClipboard();
+					return;
+				}
+				else
+				{
+					_tcscpy_s(buffer, clip.GetLength() + 1, LPCTSTR(clip));
+					GlobalUnlock(clipbuffer);
+					SetClipboardData(CF_UNICODETEXT, clipbuffer);
+				}
 			}
 			CloseClipboard();
 		}
@@ -3137,30 +3169,29 @@ void CDiskMarkDlg::CheckRadioPresetMode()
 	if (IsDefaultMode())
 	{
 		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_8, ID_SETTING_DEFAULT, MF_BYCOMMAND);
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_FLASH_MEMORY, ID_SETTING_DEFAULT, MF_BYCOMMAND);
 		SetMenu(menu);
 		DrawMenuBar();
 	}
 	else if (IsNVMe8Mode())
 	{
 		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_8, ID_SETTING_NVME_8, MF_BYCOMMAND);
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_FLASH_MEMORY, ID_SETTING_NVME_8, MF_BYCOMMAND);
 		SetMenu(menu);
 		DrawMenuBar();
 	}
-	/*
-	else if (IsNVMe9Mode())
+
+	else if (IsFlashMemoryMode())
 	{
 		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_9, ID_SETTING_NVME_9, MF_BYCOMMAND);
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_FLASH_MEMORY, ID_SETTING_FLASH_MEMORY, MF_BYCOMMAND);
 		SetMenu(menu);
 		DrawMenuBar();
 	}
-	*/
 	else
 	{
 		CMenu* menu = GetMenu();
-		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_8, 0, MF_BYCOMMAND);
+		menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_FLASH_MEMORY, 0, MF_BYCOMMAND);
 		SetMenu(menu);
 		DrawMenuBar();
 	}
@@ -3291,7 +3322,7 @@ void CDiskMarkDlg::OnCrystalDewWorld()
 void CDiskMarkDlg::OnSettingDefault()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_8, ID_SETTING_DEFAULT, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_FLASH_MEMORY, ID_SETTING_DEFAULT, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
@@ -3301,24 +3332,22 @@ void CDiskMarkDlg::OnSettingDefault()
 void CDiskMarkDlg::OnSettingNVMe8()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_8, ID_SETTING_NVME_8, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_FLASH_MEMORY, ID_SETTING_NVME_8, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
 	SettingsQueuesThreads(1);
 }
 
-/*
-void CDiskMarkDlg::OnSettingNVMe9()
+void CDiskMarkDlg::OnSettingFlashMemory()
 {
 	CMenu* menu = GetMenu();
-	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_NVME_9, ID_SETTING_NVME_9, MF_BYCOMMAND);
+	menu->CheckMenuRadioItem(ID_SETTING_DEFAULT, ID_SETTING_FLASH_MEMORY, ID_SETTING_FLASH_MEMORY, MF_BYCOMMAND);
 	SetMenu(menu);
 	DrawMenuBar();
 
 	SettingsQueuesThreads(2);
 }
-*/
 
 void CDiskMarkDlg::OnModeDefault()
 {

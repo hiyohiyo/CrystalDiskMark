@@ -27,37 +27,40 @@ CMainDialogFx::CMainDialogFx(UINT dlgResouce, CWnd* pParent)
 	TCHAR tmp[MAX_PATH];
 	CString directry;
 
+
+	GetModuleFileName(NULL, ini, MAX_PATH);
+	if ((ptrEnd = _tcsrchr(ini, '.')) != NULL)
+	{
+		*ptrEnd = '\0';
 #if _MSC_VER > 1310
-#ifdef ADMIN// for CrystalDiskInfo
-	GetModuleFileName(NULL, ini, MAX_PATH);
-	if ((ptrEnd = _tcsrchr(ini, '.')) != NULL)
-	{
-		*ptrEnd = '\0';
-		_tcscat_s(ini, MAX_PATH, _T(".ini");
-		m_Ini = ini;
-	}
+		_tcscat_s(ini, MAX_PATH, _T(".ini"));
 #else
-	TCHAR drive[_MAX_DRIVE];
-	TCHAR ext[_MAX_EXT];
-	TCHAR appData[MAX_PATH];
-	TCHAR dir[_MAX_DIR];
-	TCHAR fileName[_MAX_FNAME];
-	GetModuleFileName(NULL, ini, MAX_PATH);
-	_tsplitpath(ini, drive, dir, fileName, ext);
-	SHGetSpecialFolderPath(NULL, appData, CSIDL_APPDATA, 0);
-	directry.Format(_T("%s\\%s"), appData, PRODUCT_FILENAME);
-	CreateDirectory(directry, NULL);
-	m_Ini.Format(_T("%s\\%s\\%s.ini"), appData, PRODUCT_FILENAME, fileName);
-#endif
-#else
-	GetModuleFileName(NULL, ini, MAX_PATH);
-	if ((ptrEnd = _tcsrchr(ini, '.')) != NULL)
-	{
-		*ptrEnd = '\0';
 		_tcscat(ini, _T(".ini"));
+#endif
 		m_Ini = ini;
 	}
+
+#if _MSC_VER > 1310
+	CString tmpPath;
+	tmpPath = m_Ini;
+	tmpPath.Replace(_T(".ini"), _T(".tmp"));
+
+	if (! CanWriteFile(tmpPath))
+	{
+		TCHAR drive[_MAX_DRIVE];
+		TCHAR ext[_MAX_EXT];
+		TCHAR appData[MAX_PATH];
+		TCHAR dir[_MAX_DIR];
+		TCHAR fileName[_MAX_FNAME];
+		GetModuleFileName(NULL, ini, MAX_PATH);
+		_tsplitpath(ini, drive, dir, fileName, ext);
+		SHGetSpecialFolderPath(NULL, appData, CSIDL_APPDATA, 0);
+		directry.Format(_T("%s\\%s"), appData, PRODUCT_FILENAME);
+		CreateDirectory(directry, NULL);
+		m_Ini.Format(_T("%s\\%s\\%s.ini"), appData, PRODUCT_FILENAME, fileName);
+	}
 #endif
+
 	GetModuleFileName(NULL, tmp, MAX_PATH);
 	if ((ptrEnd = _tcsrchr(tmp, '\\')) != NULL) { *ptrEnd = '\0'; }
 	m_ThemeDir.Format(_T("%s\\%s"), tmp, THEME_DIR);
@@ -89,21 +92,34 @@ LRESULT CMainDialogFx::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 int CALLBACK HasFontProc(ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* lpntme, int FontType, LPARAM lParam)
 {
-	if (_tcscmp(lpelfe->elfLogFont.lfFaceName, DEFAULT_FONT_FACE_1) == 0)
-	{
-		lParam = TRUE;
-	}
-	return TRUE;
+	*(BOOL*)lParam = TRUE;
+	return 0;
 }
 
 CString CMainDialogFx::GetDefaultFont()
 {
+#if _MSC_VER <= 1310
+	int stockFont = DEFAULT_GUI_FONT;
+	if (IsNT3())
+	{
+		return _T("MS Shell Dlg");
+	}
+	HFONT hFont = (HFONT)GetStockObject(stockFont);
+	LOGFONT lf = { 0 };
+
+	if (GetObject(hFont, sizeof(LOGFONT), &lf))
+	{
+		return lf.lfFaceName;
+	}
+#endif
+
 	CClientDC dc(this);
 	LOGFONT logfont;
 	BOOL hasFont = FALSE;
 	ZeroMemory(&logfont, sizeof(LOGFONT));
+	lstrcpy(logfont.lfFaceName, DEFAULT_FONT_FACE_1);
 	logfont.lfCharSet = DEFAULT_CHARSET;
-	::EnumFontFamiliesEx(dc.m_hDC, &logfont, (FONTENUMPROC)HasFontProc, (INT_PTR)(&hasFont), 0);
+	::EnumFontFamiliesEx(dc.m_hDC, &logfont, (FONTENUMPROC)HasFontProc, (LPARAM)(&hasFont), 0);
 
 	if (hasFont)
 	{
@@ -187,11 +203,17 @@ void CMainDialogFx::InitThemeLang()
 	if(m_CurrentTheme.IsEmpty())
 	{
 		CString defaultTheme = m_DefaultTheme;
-
+#if _MSC_VER > 1310
 		if (IsFileExist(m_ThemeDir + m_RecommendTheme + _T("\\") + m_BackgroundName + _T("-300.png")))
 		{
 			defaultTheme = m_RecommendTheme;
 		}
+#else
+		if (IsFileExist(m_ThemeDir + m_RecommendTheme + _T("\\") + m_BackgroundName + _T("-100.png")))
+		{
+			defaultTheme = m_RecommendTheme;
+		}
+#endif
 
 		GetPrivateProfileStringFx(_T("Setting"), m_ThemeKeyName, defaultTheme, str, 256, m_Ini);
 		m_CurrentTheme = str;
@@ -367,7 +389,7 @@ void CMainDialogFx::InitMenu()
 		// Keep currentItemID the same as the first item if "Random".
 		currentItemID = WM_THEME_ID;
 
-		subMenu.ModifyMenu(WM_THEME_ID, MF_STRING, WM_THEME_ID, m_RandomThemeLabel + m_RandomThemeName);
+		SUBMENU_MODIFY_MENU(WM_THEME_ID, MF_STRING, WM_THEME_ID, m_RandomThemeLabel + m_RandomThemeName);
 	}
 	else if(! FlagHitTheme)
 	{
@@ -454,7 +476,7 @@ void CMainDialogFx::InitMenu()
 
 	if(! FlagHitLang)
 	{
-		AfxMessageBox(_T("FATAL ERROR: Missing Language Files!!"));
+		AfxMessageBox(_T("FATAL ERROR: Missing Language File!!"));
 	}
 }
 
@@ -502,7 +524,7 @@ BOOL CMainDialogFx::OnCommand(WPARAM wParam, LPARAM lParam)
 			m_RandomThemeName = _T("");
 		}
 
-		subMenu.ModifyMenu(WM_THEME_ID, MF_STRING, WM_THEME_ID, m_RandomThemeLabel + m_RandomThemeName);
+		SUBMENU_MODIFY_MENU(WM_THEME_ID, MF_STRING, WM_THEME_ID, m_RandomThemeLabel + m_RandomThemeName);
 		subMenu.CheckMenuRadioItem(WM_THEME_ID, WM_THEME_ID + (UINT)m_MenuArrayTheme.GetSize(),
 			(UINT)wParam, MF_BYCOMMAND);
 		subMenu.Detach();

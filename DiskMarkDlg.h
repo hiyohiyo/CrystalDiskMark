@@ -178,7 +178,7 @@ protected:
 
 	BOOL IsDefaultMode();
 	BOOL IsNVMe8Mode();
-//	BOOL IsNVMe9Mode();
+	BOOL IsFlashMemoryMode();
 
 #ifdef MIX_MODE
 	CStaticFx m_TestMix0;
@@ -251,7 +251,7 @@ public:
 	afx_msg void OnModeAll0x00();
 	afx_msg void OnSettingDefault();
 	afx_msg void OnSettingNVMe8();
-//	afx_msg void OnSettingNVMe9();
+	afx_msg void OnSettingFlashMemory();
 
 	afx_msg void OnProfileDefault();
 	afx_msg void OnProfilePeak();

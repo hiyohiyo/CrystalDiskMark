@@ -54,8 +54,9 @@
 #define IDC_RELEASE                     1107
 #define IDC_COPYRIGHT1                  1108
 #define IDC_COPYRIGHT2                  1109
-#define IDC_LICENSE                     1110
-#define IDC_EDITION                     1111
+#define IDC_COPYRIGHT3                  1110
+#define IDC_LICENSE                     1111
+#define IDC_EDITION                     1112
 
 #define IDC_FONT_FACE_COMBO		        1201
 #define IDC_FONT_SCALE_COMBO			1202
@@ -69,7 +70,7 @@
 #define IDC_LABEL_DATA  				1303
 #define IDC_SET_DEFAULT					1304
 #define IDC_SET_NVME_8     				1306
-#define IDC_SET_NVME_9     			    1307
+#define IDC_SET_FLASH_MEMORY		    1307
 #define IDC_LABEL_AFFINITY				1308
 #define IDC_COMBO_AFFINITY		        1309
 #define IDC_LABEL_PEAK			        1310
@@ -147,7 +148,7 @@
 #define ID_FONT_SETTING                 32821
 #define ID_SETTING_DEFAULT              32822
 #define ID_SETTING_NVME_8               32823
-#define ID_SETTING_NVME_9               32824
+#define ID_SETTING_FLASH_MEMORY         32824
 
 #define ID_INTERVAL_TIME_0              33820
 #define ID_INTERVAL_TIME_1              33821

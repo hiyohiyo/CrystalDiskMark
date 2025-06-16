@@ -577,7 +577,7 @@ BOOL Init(void* dlg)
 	{
 
 		drive = ((CDiskMarkDlg*)dlg)->m_ValueTestDrive.GetAt(0);
-		cstr.Format(L"%C:", drive);
+		cstr.Format(L"%C:\\", drive);
 		GetDiskFreeSpaceEx(cstr, &freeBytesAvailableToCaller, &totalNumberOfBytes, &totalNumberOfFreeBytes);
 		if (totalNumberOfBytes.QuadPart < ((ULONGLONG)8 * 1024 * 1024 * 1024)) // < 8 GB
 		{
@@ -880,6 +880,10 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	}
 
 	option += L" -ag";
+	if(IsWin8orLater() && BenchType[index] == 0 && BenchThreads[index] > 1) // Sequential 
+	{
+		option += L" -si";
+	}
 
 	double score = 0.0;
 	double latency = 0.0;
@@ -895,7 +899,7 @@ void DiskSpd(void* dlg, DISK_SPD_CMD cmd)
 	{
 		if (j == 0)
 		{
-			duration = 5;
+			duration = ((CDiskMarkDlg*)dlg)->m_MeasureTime;
 			cstr.Format(L"Preparing... %s", title.GetString());
 		}
 		else

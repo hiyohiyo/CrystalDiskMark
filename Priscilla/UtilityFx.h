@@ -21,6 +21,7 @@ void DebugPrint(CString cstr);
 int GetFileVersion(const TCHAR* fileName, TCHAR* version = NULL);
 void GetFileVersionEx(const TCHAR* file, CString& version);
 BOOL IsFileExist(const TCHAR* fileName);
+BOOL CanWriteFile(const TCHAR* fileName);
 
 ////------------------------------------------------
 //   Utility
@@ -64,10 +65,9 @@ CStringA MD5(const CStringA& str);
 //   Character Converter
 ////------------------------------------------------
 
-CStringA C16T8(const CStringW& utf16str);
-CStringW C8T16(const CStringA& utf8str);
+CStringW UTF8toUTF16(const CStringA& utf8str);
+CStringA UTF16toUTF8(const CStringW& utf16str);
 CStringA URLEncode(const CStringA& str);
-CStringA ANSI2UTF8(const CStringA& ansiStr);
 CStringA UE(const CStringW& utf16str);
 CStringA UE(const CStringA& ansiStr);
 
